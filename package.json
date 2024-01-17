@@ -16,12 +16,6 @@
   "engines": {
     "node": "18.19.0"
   },
-  "cpu": [
-    "x64"
-  ],
-  "os": [
-    "darwin"
-  ],
   "dependencies": {
     "@astrojs/check": "0.4.1",
     "@astrojs/mdx": "2.0.4",
