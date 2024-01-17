@@ -1,1 +1,3 @@
-# Hello world!
+# My website
+
+Made with [Astro](https://astro.build/)
