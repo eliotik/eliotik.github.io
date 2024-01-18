@@ -19,10 +19,10 @@ export default defineConfig({
     react(),
     sitemap(),
   ],
-  image: {
-   // https://docs.astro.build/en/reference/errors/missing-sharp/
-   service: passthroughImageService(),
-  },
+  // image: {
+  //  // https://docs.astro.build/en/reference/errors/missing-sharp/
+  //  service: passthroughImageService(),
+  // },
   markdown: {
     remarkPlugins: [
       remarkToc,
