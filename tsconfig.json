@@ -1,9 +1,15 @@
 {
-  "extends": "astro/tsconfigs/strict",
+  "extends": "astro/tsconfigs/strictest",
   "compilerOptions": {
-    "strictNullChecks": true,
     "baseUrl": "src",
     "jsx": "react-jsx",
+    "exactOptionalPropertyTypes": false,
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      },
+    ],
+    "verbatimModuleSyntax": true,
     "paths": {
       "@assets/*": [
         "assets/*"
