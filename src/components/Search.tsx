@@ -58,7 +58,7 @@ export default function SearchBar({ searchList }: Props) {
   useEffect(() => {
     // Add search result only if
     // input value is more than one character
-    let inputResult = inputVal.length > 1 ? fuse.search(inputVal) : [];
+    const inputResult = inputVal.length > 1 ? fuse.search(inputVal) : [];
     setSearchResults(inputResult);
 
     // Update search string in URL
@@ -113,7 +113,7 @@ export default function SearchBar({ searchList }: Props) {
           searchResults.map(({ item, refIndex }) => (
             <Card
               href={`/posts/${item.slug}`}
-              frontmatter={item.data}
+              frontmatter={item.data as CollectionEntry<'blog'>['data']}
               key={`${refIndex}-${item.slug}`}
             />
           ))}

@@ -6,6 +6,7 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
+import TipCard from "@components/TipCard";
 import getSortedCollection from "@utils/getSortedCollection";
 
 const posts = await getCollection("blog");
@@ -45,9 +46,9 @@ const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
           <section id="recent-tip">
             <h2>Recent tip</h2>
             <ul>
-                <Card
+                <TipCard
                   href={`/tips`}
-                  frontmatter={sortedTips[0].data}
+                  frontmatter={sortedTips[0]!.data}
                   secHeading={false}
                 />
             </ul>

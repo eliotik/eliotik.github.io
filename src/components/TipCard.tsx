@@ -1,15 +1,14 @@
 import { slugifyStr } from "@utils/slugify";
-import type { CollectionEntry, Render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   href?: string;
-  tip: CollectionEntry<"tips">['data'];
+  frontmatter: CollectionEntry<"tips">["data"];
   secHeading?: boolean;
-  content: Render<'md'>['Content'];
 }
 
-export default function TipCard({ href, tip, content: Content, secHeading = true }: Props) {
-  const { title } = tip;
+export default function TipCard({ href, frontmatter, secHeading = true }: Props) {
+  const { title } = frontmatter;
 
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
@@ -28,9 +27,6 @@ export default function TipCard({ href, tip, content: Content, secHeading = true
           <h3 {...headerProps}>{title}</h3>
         )}
       </a>
-      <p>
-          <Content/>
-      </p>
     </li>
   );
 }

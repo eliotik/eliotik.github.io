@@ -7,7 +7,6 @@ import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
 import { SITE } from "@config";
 import { slugifyStr } from "@utils/slugify";
-import ShareLinks from '../components/ShareLinks.astro';
 
 export interface Props {
   currentPage: number;
@@ -39,7 +38,7 @@ for (const entity of paginatedEntities) {
   <Main pageTitle="Tips & Thoughts" pageDesc="All the tips & thoughts I've posted.">
     <ul>
       {
-        tips.map(({ title, content: TipContent, headerProps }) => (
+        tips.map(({ title, content: TipContent }) => (
           <li class="my-6">
             <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
             <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
