@@ -35,8 +35,8 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
 
 const postsByTag = getPostsByTag(posts, tag);
 
-const pagination = getPagination({
-  posts: postsByTag,
+const pagination = getPagination<CollectionEntry<'blog'>>({
+  entities: postsByTag,
   page,
 });
 ---

@@ -1,17 +1,19 @@
 ---
-import { getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import getSortedPosts from "@utils/getSortedPosts";
+import getSortedCollection from "@utils/getSortedCollection";
 
 const posts = await getCollection("blog");
+const tips = await getCollection("tips");
 
-const sortedPosts = getSortedPosts(posts);
+const sortedPosts = getSortedCollection<CollectionEntry<'blog'>>(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
 ---
 
 <Layout>
@@ -30,6 +32,24 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
                   secHeading={false}
                 />
               ))}
+            </ul>
+          </section>
+          <Hr />
+        </>
+      )
+    }
+
+    {
+      sortedTips.length > 0 && (
+        <>
+          <section id="recent-tip">
+            <h2>Recent tip</h2>
+            <ul>
+                <Card
+                  href={`/tips`}
+                  frontmatter={sortedTips[0].data}
+                  secHeading={false}
+                />
             </ul>
           </section>
           <Hr />
@@ -103,11 +123,13 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 
   /* ===== Featured & Recent Posts Sections ===== */
   #featured,
-  #recent-posts {
+  #recent-posts,
+  #recent-tip {
     @apply pb-6 pt-12;
   }
   #featured h2,
-  #recent-posts h2 {
+  #recent-posts h2,
+  #recent-tip h2 {
     @apply text-2xl font-semibold tracking-wide;
   }
   .all-posts-btn-wrapper {

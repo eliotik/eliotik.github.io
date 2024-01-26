@@ -1,11 +1,11 @@
 import rss from "@astrojs/rss";
-import { getCollection } from "astro:content";
-import getSortedPosts from "@utils/getSortedPosts";
+import { type CollectionEntry, getCollection } from "astro:content";
+import getSortedCollection from "@utils/getSortedCollection.ts";
 import { SITE } from "@config";
 
 export async function GET() {
   const posts = await getCollection("blog");
-  const sortedPosts = getSortedPosts(posts);
+  const sortedPosts = getSortedCollection<CollectionEntry<'blog'>>(posts);
   return rss({
     title: SITE.title,
     description: SITE.desc,

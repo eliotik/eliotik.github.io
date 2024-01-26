@@ -1,0 +1,18 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Tips from "@layouts/Tips.astro";
+import getSortedCollection from "@utils/getSortedCollection";
+import getPagination from "@utils/getPagination";
+
+const tips = await getCollection("tips");
+
+const sortedTips = getSortedCollection<CollectionEntry<"tips">>(tips);
+
+const pagination = getPagination<CollectionEntry<'tips'>>({
+  entities: sortedTips,
+  page: 1,
+  isIndex: true,
+});
+---
+
+<Tips {...pagination} />

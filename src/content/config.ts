@@ -23,4 +23,16 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+const tips = defineCollection({
+  type: "content",
+  schema: () =>
+    z.object({
+      author: z.string().default(SITE.author),
+      pubDatetime: z.date(),
+      modDatetime: z.date().optional().nullable(),
+      title: z.string(),
+      draft: z.boolean().optional(),
+    }),
+});
+
+export const collections = { blog, tips };

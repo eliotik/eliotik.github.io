@@ -7,7 +7,7 @@ export const SITE: Site = {
   title: "Novi Fyx",
   ogImage: "novifyx-og.jpg",
   lightAndDarkMode: true,
-  postPerPage: 5,
+  entitiesPerPage: 5,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };
 

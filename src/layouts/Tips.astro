@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Pagination from "@components/Pagination.astro";
+import { SITE } from "@config";
+import { slugifyStr } from "@utils/slugify";
+import ShareLinks from '../components/ShareLinks.astro';
+
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  paginatedEntities: CollectionEntry<"tips">[];
+}
+
+const { currentPage, totalPages, paginatedEntities } = Astro.props;
+
+const tips = [];
+for (const entity of paginatedEntities) {
+  const { Content } = await entity.render();
+
+  tips.push({
+    title: entity.data.title,
+    content: Content,
+    headerProps: {
+      style: {
+        viewTransitionName: slugifyStr(entity.data.title),
+        className: "text-lg font-medium decoration-dashed hover:underline",
+      }
+    }
+  });
+}
+---
+
+<Layout title={`Tips & Thoughts | ${SITE.title}`}>
+  <Header activeNav="tips" />
+  <Main pageTitle="Tips & Thoughts" pageDesc="All the tips & thoughts I've posted.">
+    <ul>
+      {
+        tips.map(({ title, content: TipContent, headerProps }) => (
+          <li class="my-6">
+            <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
+            <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+              <TipContent />
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+    <div
+      class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
+    >
+      <button
+        id="back-to-top"
+        class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
+          <path
+            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+          ></path>
+        </svg>
+        <span>Back to Top</span>
+      </button>
+    </div>
+  </Main>
+
+  <Pagination
+    {currentPage}
+    {totalPages}
+    prevUrl={`/tips${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}`}
+    nextUrl={`/tips/${currentPage + 1}`}
+  />
+
+  <Footer noMarginTop={totalPages > 1} />
+</Layout>
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+  }
+  .tip-title {
+    @apply text-2xl font-semibold text-skin-accent;
+  }
+</style>
+
+<script is:inline>
+   /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+  document.addEventListener("astro:after-swap", backToTop);
+</script>
