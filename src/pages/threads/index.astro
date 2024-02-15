@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import Threads from "@layouts/Threads.astro";
+import getPagination from "@utils/getPagination";
+import getSortedThreads from '@utils/getSortedThreads';
+import type { SortedThread } from '../../types';
+
+const posts = await getCollection("blog");
+
+const sortedThreads = getSortedThreads(posts);
+
+const pagination = getPagination<SortedThread>({
+  entities: sortedThreads,
+  page: 1,
+  isIndex: true,
+});
+---
+
+<Threads {...pagination} />

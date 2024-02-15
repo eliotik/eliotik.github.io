@@ -1,0 +1,54 @@
+---
+import { slugifyStr } from '@utils/slugify';
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Pagination from "@components/Pagination.astro";
+import Thread from "@components/Thread";
+import { SITE } from "@config";
+import type { SortedThread } from '../types';
+
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  paginatedEntities: SortedThread[];
+}
+
+const { currentPage, totalPages, paginatedEntities } = Astro.props;
+
+const noThreadsFoundMessage = "No threads found";
+const noThreadsHeaderProps = {
+  style: { viewTransitionName: slugifyStr(noThreadsFoundMessage) },
+  className: "text-lg font-medium",
+};
+---
+
+<Layout title={`Threads | ${SITE.title}`}>
+  <Header activeNav="threads" />
+  <Main pageTitle="Threads" pageDesc="All the articles I've posted grouped by thread (project).">
+    {
+      paginatedEntities.map(({ thread, slug, posts }) => {
+        console.log('paginatedEntities',thread, slug, posts);
+        return (<Thread thread={thread} slug={slug} posts={posts} />);
+      })
+    }
+
+    {
+      !paginatedEntities.length && (
+        <>
+          <h2 {...noThreadsHeaderProps}>{noThreadsFoundMessage} [¬º-°]¬</h2>
+        </>
+      )
+    }
+  </Main>
+
+  <Pagination
+    {currentPage}
+    {totalPages}
+    prevUrl={`/threads${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}`}
+    nextUrl={`/threads/${currentPage + 1}`}
+  />
+
+  <Footer noMarginTop={totalPages > 1} />
+</Layout>

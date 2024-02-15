@@ -1,4 +1,5 @@
 import type socialIcons from "@assets/socialIcons";
+import type { CollectionEntry } from 'astro:content';
 
 export type Site = {
   website: string;
@@ -17,3 +18,9 @@ export type SocialObjects = {
   active: boolean;
   linkTitle: string;
 }[];
+
+export type SortedThread = {
+  thread: string;
+  slug: string;
+  posts: CollectionEntry<"blog">[];
+};
