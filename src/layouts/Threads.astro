@@ -29,7 +29,6 @@ const noThreadsHeaderProps = {
   <Main pageTitle="Threads" pageDesc="All the articles I've posted grouped by thread (project).">
     {
       paginatedEntities.map(({ thread, slug, posts }) => {
-        console.log('paginatedEntities',thread, slug, posts);
         return (<Thread thread={thread} slug={slug} posts={posts} />);
       })
     }

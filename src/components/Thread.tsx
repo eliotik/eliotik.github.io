@@ -9,7 +9,6 @@ export interface Props {
 }
 
 export default function Thread({ thread, slug, posts }: Props) {
-    console.log('components/thread', thread, slug, posts)
   const headerProps = {
     style: { viewTransitionName: slugifyStr(thread) },
     className: "text-lg font-medium decoration-dashed",
