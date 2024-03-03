@@ -7,16 +7,24 @@ import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import { SITE } from "./src/config";
 
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
+
+import expressiveCode from "astro-expressive-code";
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
+  tailwind({
+    applyBaseStyles: false
+  }),
+  expressiveCode({
+      plugins: [pluginLineNumbers()],
     }),
-    mdx(),
-    react(),
+  mdx(),
+  react({
+    experimentalReactChildren: true
+  }),
     sitemap(),
   ],
   // image: {
@@ -24,24 +32,18 @@ export default defineConfig({
   //  service: passthroughImageService(),
   // },
   markdown: {
-    remarkPlugins: [
-      remarkToc,
-      [
-        remarkCollapse,
-        {
-          test: "Table of contents",
-        },
-      ],
-    ],
+    remarkPlugins: [remarkToc, [remarkCollapse, {
+      test: "Table of contents"
+    }]],
     shikiConfig: {
       theme: "one-dark-pro",
-      wrap: true,
-    },
+      wrap: true
+    }
   },
   vite: {
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
-    },
+      exclude: ["@resvg/resvg-js"]
+    }
   },
-  scopedStyleStrategy: "where",
+  scopedStyleStrategy: "where"
 });
