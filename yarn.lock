@@ -870,7 +870,7 @@
     postcss "^8.4.21"
     postcss-nested "^6.0.1"
 
-"@expressive-code/plugin-collapsible-sections@^0.33.4":
+"@expressive-code/plugin-collapsible-sections@0.33.4":
   version "0.33.4"
   resolved "https://registry.yarnpkg.com/@expressive-code/plugin-collapsible-sections/-/plugin-collapsible-sections-0.33.4.tgz#08668154c50f3aee06881e08b8173c1351d90ca8"
   integrity sha512-seLBBFPunq84GsJ1wqwsUmyMwhZf+5Lwpmo5qq4QYDy2gGFqUQbmSxHEl+XJLVygwdMxkgIr25x0k8Dmgv375g==
