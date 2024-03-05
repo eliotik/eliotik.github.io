@@ -1,0 +1,17 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface Props {
+  image: ImageMetadata;
+  title: string;
+}
+
+const { image, title } = Astro.props;
+---
+
+<div class="h-96 relative w-full">
+    <a href={image.src} target="_blank">
+        <Image src={image} className="h-full object-contain !my-0 border-none" alt={title} />
+    </a>
+</div>

@@ -5,17 +5,17 @@ modDatetime: 2024-02-28T15:59:20-05:00
 title: Flutter Google Maps - Embedded Map
 slug: flutter-google-maps-embedded-map
 featured: false
-draft: true
+draft: false
 thread: Flutter and Google Maps
 tags:
     - flutter
     - google maps
+    - embedded map
 description: How to add and use Embedded Google Maps in Flutter project
 ---
 
 import ImageSlider from '../../components/ImageSlider.astro';
-import initialAppRender from '../../assets/images/flutter-google-maps/initial-app-render.png';
-import projectStructure from '../../assets/images/flutter-google-maps/project-structure.png';
+import ClickableImage from '../../components/ClickableImage.astro';
 
 Second post in the series of Flutter and Google Maps.
 
@@ -29,13 +29,16 @@ In this post, I will cover how to add embedded Google Maps to your Flutter proje
 
 We want to have a simple Flutter app with a Google Map embedded in it.
 
-The map should appear on the child screen after User taps on the `Show map` button.
+The map should appear on the child screen after User taps on the `Show Map` button.
 
 The map should show a marker at the user's current location.
 
-## Add a new screen
+## Initial State
 
-The current folder structure of the project is as follows:
+The current folder structure of the project is as following:
+
+import initialAppRender from '../../assets/images/flutter-google-maps/initial-app-render.png';
+import projectStructure from '../../assets/images/flutter-google-maps/project-structure.png';
 
 <ImageSlider
     images={[
@@ -44,6 +47,576 @@ The current folder structure of the project is as follows:
     ]}
 />
 
+Initial state of code including settings for `.env` from the previous post:
+
+```dart title='src/main.dart'
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_project/theme.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: defaultTheme,
+      home: Center(
+        child: Text(
+          'Hello World!',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+I put theme into a separate file for convenience.
+
+```dart title=' src/theme.dart'
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+final defaultColorScheme = ColorScheme.fromSeed(
+  brightness: Brightness.dark,
+  seedColor: Colors.lightBlue,
+  background: Colors.blueGrey,
+);
+
+final defaultTextTheme = GoogleFonts.ubuntuCondensedTextTheme().copyWith(
+  titleSmall: GoogleFonts.ubuntuCondensed(
+    fontWeight: FontWeight.bold,
+  ),
+  titleMedium: GoogleFonts.ubuntuCondensed(
+    fontWeight: FontWeight.bold,
+  ),
+  titleLarge: GoogleFonts.ubuntuCondensed(
+    fontWeight: FontWeight.bold,
+  ),
+);
+
+final defaultTheme = ThemeData(useMaterial3: true).copyWith(
+  scaffoldBackgroundColor: defaultColorScheme.background,
+  colorScheme: defaultColorScheme,
+  textTheme: defaultTextTheme,
+);
+```
+
+> Note: `theme.dart` is optional, use your own setup for theming
+
+## Add a new Home screen
+
 We will add a new screen to the project to serve as a home screen: HomeScreen.
 
-... TBD
+Create `screens` folder and add a new file `home.dart`. Check in-line comments in the code bellow for explanations.
+
+```dart title='src/screens/home.dart' showLineNumbers=false {"1. Simple StatefulWidget, we will expand its scope in following post:":3-11} {"2. Text component moved as is from main.dart:":21-27}
+import 'package:flutter/material.dart';
+
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Google Maps Case'),
+      ),
+      body: Center(
+
+        child: Text(
+          'Hello World!',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Remember to update `main.dart` file to use our new `Home Screen`
+
+```dart title='src/main.dart' showLineNumbers=false {"Replace Text component, with instance of HomeScreen:":24-25} collapse={1-14}
+# Example: src/main.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_project/screens/home.dart';
+import 'package:google_maps_project/theme.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: defaultTheme,
+
+      home: const HomeScreen(),
+    );
+  }
+}
+```
+
+If you follow theme setup from the above part, your app look should be as next:
+
+import initialHomeView from '../../assets/images/flutter-google-maps/initial-home-screen-render.png';
+
+<ClickableImage image={initialHomeView} title="Initial Home Screen View" />
+
+Now, let's replace a `dummy` text with a button.
+Idea is next: when a user clicks on the button, we will show interactive Google Map widget.
+
+```dart title='src/screens/home.dart' showLineNumbers=false {"I used Column to organize widgets and add a button wih icon:":23-36} collapse={1-17, 37-38}
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  void _showInteractiveMap() async {
+    return;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Google Maps Case'),
+      ),
+
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: TextButton.icon(
+              icon: const Icon(Icons.map),
+              label: const Text('Show Map'),
+              onPressed: _showInteractiveMap,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+We will leave `Home Screen` for a moment, our next step is to add `Map Screen`.
+
+## Add a new Map Screen
+
+We will follow similar concept as with `Home Screen`.
+Create a new file `map.dart` under `screens` folder.
+Check in-line comments in the code bellow for details.
+
+```dart title='src/screens/map.dart' showLineNumbers=false {"A new StatefulWidget for MapScreen:":4-12} {"For now we will use as default location Google's Head office:":17-19} {"GoogleMap widget is from google_maps_flutter package:":25-26} {"This post won't cover Tap on map, check next post:":27-28} {"This way we set View for map widget(what user will see when open's map screen):":29-36} {"And this way we set a red marker of current location:":37-46}
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
+  @override
+  State<MapScreen> createState() {
+    return _MapScreenState();
+  }
+}
+
+class _MapScreenState extends State<MapScreen> {
+  @override
+  Widget build(BuildContext context) {
+
+    const latitude = 37.422;
+    const longitude = -122.084;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Interactive Map'),
+      ),
+
+      body: GoogleMap(
+
+        onTap: null,
+
+        initialCameraPosition: const CameraPosition(
+          target: LatLng(
+            latitude,
+            longitude,
+          ),
+          zoom: 8,
+        ),
+
+        markers: {
+          const Marker(
+            markerId: MarkerId('my-marker-id-1'),
+            position: LatLng(
+              latitude,
+              longitude,
+            ),
+          ),
+        },
+      ),
+    );
+  }
+}
+```
+
+Now we need to open `Map Screen` after user click's on `Show Map` button on the `Home Screen`.
+It's a small change in the `home.dart` file.
+
+```dart title='src/screens/home.dart' collapse={1-2, 4-13, 23-36, 39-45} showLineNumbers=false {"We will call this method to route user to MapScreen:":15-22} {"Add call of _showInteractiveMap to our button":37-38}
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_project/screens/map.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  void _showInteractiveMap() async {
+    Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+        builder: (ctx) => const MapScreen(),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Google Maps Case'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: TextButton.icon(
+              icon: const Icon(Icons.map),
+              label: const Text('Show Map'),
+
+              onPressed: _showInteractiveMap,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+Restart your app and click on the `Show Map` button. You should see a new screen opened with a map rendered all over it.
+
+## Use Current User's Location
+
+In this section, we will request user permission to read the current location.
+
+If user rejects to provide permission, we will use fallback `lat` and `lng` values as in the previous section.
+
+Otherwise, we will show Google Map's `Marker` at User's current location.
+
+> Note: If you use a simulator (Android/iOS), it has predefined default location values set for you. It can be changed under specific simulator settings.
+
+We will leverage `location` package, which you installed in the first post.
+
+First, for better code organization, we will create a `model` to store location data.
+
+Create a new folder `models` in the `src` folder, and add a new file `user_location.dart`.
+We will add a simple class to store `latitude` and `long` values, so we can reuse it in various places.
+
+```dart
+# Example: src/models/user_location.dart
+class UserLocation {
+  const UserLocation({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  final double latitude;
+  final double longitude;
+}
+```
+
+Open `home.dart` screen file and let's update it. Follow in-line comments in the code below.
+
+```dart title='src/home.dart' collapse={1-2,6-17,92-102} showLineNumbers=false {"_isLoading will help us to control loading animation":19-20} {"_userLocation we set to default location in case location permissions rejected":21-23} {"We added initState to trigger permissions request and location data manipulation":25-30} {"This helper method we use to ask for permissions and receive location data":32-33} {"Enable Location service":44-55} {"Request Location permissions":57-68} {"Manipulate received location data":70-87} {"Moved default content Widget to variable to use conditionally":105-117} {"If we are still requesting/manipulating location data, we'll show Loader instead":119-122} {"Using conditional content, prepared above":128-129}
+# Example: src/screens/home.dart
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_project/models/user_location.dart';
+import 'package:location/location.dart';
+import 'package:google_maps_project/screens/map.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  var _isLoading = false;
+
+  UserLocation _userLocation =
+      UserLocation(latitude: 37.422, longitude: -122.084);
+
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+
+  void _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+
+    serviceEnabled = await location.serviceEnabled();
+
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+
+    permissionGranted = await location.hasPermission();
+
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if (lat == null || lng == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (kDebugMode) {
+      print('Using Users current location');
+    }
+
+    _userLocation = UserLocation(latitude: lat, longitude: lng);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _showInteractiveMap() async {
+    Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          location: _userLocation,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.map),
+            label: const Text('Show Map'),
+            onPressed: _showInteractiveMap,
+          ),
+        ),
+      ],
+    );
+
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Google Maps Case'),
+        ),
+
+        body: content
+    );
+  }
+}
+```
+
+And the last part,
+we need to update `map.dart` screen file to use provided `location` parameter with `UserLocation` data.
+
+```dart title='src/screens/map.dart' collapse={1-2,10-25,41-47} showLineNumbers=false {"Added required parameter: location; passed when we init this screen in HomeScreen":6-9} {"we can access location parameter from host widget and use it here":28-30} {"and also here":38-40}
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_project/models/user_location.dart';
+
+class MapScreen extends StatefulWidget {
+
+  const MapScreen({super.key, required this.location});
+
+  final UserLocation location;
+
+  @override
+  State<MapScreen> createState() {
+    return _MapScreenState();
+  }
+}
+
+class _MapScreenState extends State<MapScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Interactive Map'),
+      ),
+      body: GoogleMap(
+        onTap: null,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(
+
+            widget.location.latitude,
+            widget.location.longitude,
+          ),
+          zoom: 8,
+        ),
+        markers: {
+          Marker(
+            markerId: const MarkerId('my-marker-id-1'),
+            position: LatLng(
+
+              widget.location.latitude,
+              widget.location.longitude,
+            ),
+          ),
+        },
+      ),
+    );
+  }
+}
+```
+
+Once you are done updating your code, reload application, you should see request to provide Location permissions,
+approve it, and you will see a loading circle animation created with `CircularProgressIndicator` for a couple of seconds.
+
+If everything worked well, in the console you will see a message:
+
+```bash
+I/flutter (15845): Using Users current location
+```
+
+If not, the application will use fallback location data silently.
+Click on the `Show Map` button, and you should see a marker placed at your Device's location.
+
+import deviceLocationRequest from '../../assets/images/flutter-google-maps/device-location-request.png';
+import loadingCircleAnimation from '../../assets/images/flutter-google-maps/loading-circle-animation.png';
+import showingUserLocationMarker from '../../assets/images/flutter-google-maps/map-screen-with-marker.png';
+
+<ImageSlider
+    images={[
+        [deviceLocationRequest, "Device's Location Request"],
+        [loadingCircleAnimation, 'Loading Animation'],
+        [showingUserLocationMarker, "User's Location shown as Marker"],
+    ]}
+/>
+
+> Note: implementation of error/fault tolerance flows is not a part of this post
+
+## Summary
+
+In this post we used two packages: `google_maps_flutter`
+and `location` to show Google Maps embedded into screen
+and added request for User's location to show it also on the mentioned map.
+
+We created a couple of screens and a model to support our goals:
+
+-   `screens/home.dart` - contains implementation of `Home Screen`. It's a simple screen, with a CTA button to `Show Map`. On this screen, we implemented request for User's current location with a simple fallback to use default location if permissions request failed.
+-   `screens/map.dart` - purpose of this screen is to show interactive/embedded Google Map with current location `Marker`.
+-   `models/user_location.dart` - a simple class/model to hold location data. We use an object of this class to pass data from `Home Screen` to `Map Screen`
+
+import finalProjectStructure from '../../assets/images/flutter-google-maps/final-project-structure.png';
+
+<ClickableImage image={finalProjectStructure} title="Final Project Structure" />
+
+Congratulations, we were able to cover all TODO items from the Desired Outcome.
+
+Now, you should treat well yourself, go and have some tasty gummy bears! ʕ⌐■ᴥ■ʔ

@@ -8,6 +8,7 @@ import remarkCollapse from "remark-collapse";
 import { SITE } from "./src/config";
 
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 
 import expressiveCode from "astro-expressive-code";
 
@@ -19,7 +20,7 @@ export default defineConfig({
     applyBaseStyles: false
   }),
   expressiveCode({
-      plugins: [pluginLineNumbers()],
+      plugins: [pluginLineNumbers(), pluginCollapsibleSections()],
     }),
   mdx(),
   react({
