@@ -1,0 +1,690 @@
+---
+author: Alexander
+pubDatetime: 2024-03-28T14:52:04-04:00
+modDatetime: 2024-03-28T14:52:04-04:00
+title: Flutter Google Maps - Address Manipulation
+slug: flutter-google-maps-address-manipulation
+featured: false
+draft: false
+thread: Flutter and Google Maps
+tags:
+    - flutter
+    - google maps
+    - address
+description: How to convert coordinates to address and vice versa in Flutter Google Maps
+---
+
+import ImageSlider from '../../components/ImageSlider.astro';
+
+Third post in the series of Flutter and Google Maps.
+
+In the [Second post](./flutter-google-maps-embedded-map) we have implemented a simple Flutter app with an embedded Google Map.
+
+We also learned how to request location permissions and how to use current coordinates to show a marker on the map.
+
+In this post, I will cover how to convert coordinates to address and vice versa in Flutter Google Maps.
+
+## Table of contents
+
+## Desired Outcome
+
+We want to let user tap on the map and set a new location for the marker.
+
+When the user exits `Map` screen, we will convert the coordinates to an address and display it on the Home screen.
+
+## Coordinates retrival from Embedded Map screen
+
+In the previous part we added `MapScreen` under `screens` folder in `map.dart` file.
+
+We will update this screen by letting user select a new location and showing a Save button in the top right corner.
+
+Follow comments in the code snipped bellow to update the `MapScreen`:
+
+```dart title='src/screens/map.dart' collapse={1-16,68-75,81-84} showLineNumbers=false {"Add a local variable to preserve user selected coordinates":17-18} {"Add a helper to update selected location when user Tap on a map":20-28} {"Define default state for Actions and Marker":32-40} {"Override Actions/Marker if user selected a new location":42-60} {"Override Actions/Marker if user selected a new location":42-60} {"When User tap on Save icon, we will return to Home screen selected location":55-56} {"Add a new property 'actions' and use our variable as value":65-66} {"Update 'markers' to use our variable":77-80}
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_project/models/user_location.dart';
+
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key, required this.location});
+
+  final UserLocation location;
+
+  @override
+  State<MapScreen> createState() {
+    return _MapScreenState();
+  }
+}
+
+class _MapScreenState extends State<MapScreen> {
+
+  UserLocation? _selectedLocation;
+
+
+  void selectLocation(LatLng position) {
+    setState(() {
+      _selectedLocation = UserLocation(
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    List<Widget> actions = [];
+    Marker marker = Marker(
+      markerId: const MarkerId('my-marker-id-1'),
+      position: LatLng(
+        widget.location.latitude,
+        widget.location.longitude,
+      ),
+    );
+
+
+    if (_selectedLocation != null) {
+      marker = Marker(
+        markerId: const MarkerId('my-marker-id-1'),
+        position: LatLng(
+          _selectedLocation!.latitude,
+          _selectedLocation!.longitude,
+        ),
+      );
+      actions.add(
+        IconButton(
+          icon: const Icon(Icons.save),
+          onPressed: () {
+
+            Navigator.of(context).pop(_selectedLocation);
+          },
+        ),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Interactive Map'),
+
+        actions: actions,
+      ),
+      body: GoogleMap(
+        onTap: selectLocation,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(
+            widget.location.latitude,
+            widget.location.longitude,
+          ),
+          zoom: 8,
+        ),
+
+        markers: {
+          marker,
+        },
+      ),
+    );
+  }
+}
+```
+
+Compile, run, and click on `Show map` button on the Home screen. You will see the familiar Map screen.
+
+Now touch anywhere on the map, and you will see a Save button in the top right corner.
+
+Before trying out the Save button, let's update the Home screen to accept a correct object type when MapScreen is closed.
+
+```dart title='src/screens/home.dart' collapse={1-82,94-120} showLineNumbers=false {"Replace 'LatLng' with our UserLocation interface":85-86}
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_project/models/user_location.dart';
+import 'package:google_maps_project/screens/map.dart';
+import 'package:location/location.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _isLoading = false;
+  UserLocation _userLocation =
+      const UserLocation(latitude: 37.422, longitude: -122.084);
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if (lat == null || lng == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (kDebugMode) {
+      print('Using Users current location');
+    }
+
+    _userLocation = UserLocation(latitude: lat, longitude: lng);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _showInteractiveMap() async {
+
+    Navigator.of(context).push<UserLocation>(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          location: _userLocation,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.map),
+            label: const Text('Show Map'),
+            onPressed: _showInteractiveMap,
+          ),
+        ),
+      ],
+    );
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Google Maps Case'),
+        ),
+        body: content);
+  }
+}
+```
+
+Now it should work, let's try to tap on the Save button; the app will return to the `Home` screen with the selected User location.
+
+import showingUserLocationMarker from '../../assets/images/flutter-google-maps/map-screen-with-marker.png';
+import showingSaveLocationButton from '../../assets/images/flutter-google-maps/map-screen-with-save-button.png';
+
+<ImageSlider
+    images={[
+        [showingUserLocationMarker, "User's Location shown as Marker"],
+        [
+            showingSaveLocationButton,
+            'Save location button shown when user taps on the map',
+        ],
+    ]}
+/>
+
+## Show coordinates on the Home screen
+
+As a quick change we will add a new `Text` widget to show the selected location on the Home screen.
+
+```dart title='src/screens/home.dart' collapse={1-82,132-143} showLineNumbers=false {"Add store of returned location from Map screen to the optional local variable":85-87} {"Update current _userLocation with a new selectedLocation from Map screen":95-100} {"Save to local variable text of coordinates (we will update it later)":105-112} {"Add a label and addressValue to show above 'Show Map' button":117-122}
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_project/models/user_location.dart';
+import 'package:google_maps_project/screens/map.dart';
+import 'package:location/location.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _isLoading = false;
+  UserLocation _userLocation =
+      const UserLocation(latitude: 37.422, longitude: -122.084);
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if (lat == null || lng == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (kDebugMode) {
+      print('Using Users current location');
+    }
+
+    _userLocation = UserLocation(latitude: lat, longitude: lng);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _showInteractiveMap() async {
+
+    UserLocation? selectedLocation =
+        await Navigator.of(context).push<UserLocation>(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          location: _userLocation,
+        ),
+      ),
+    );
+
+
+    if (selectedLocation != null) {
+      setState(() {
+        _userLocation = selectedLocation;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Widget addressValue = Text(
+      '${_userLocation.latitude}, ${_userLocation.longitude}',
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.onBackground,
+        fontSize: 24,
+      ),
+    );
+
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+
+        const Text('Your current location is:'),
+        addressValue,
+        const SizedBox(
+          height: 16,
+        ),
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.map),
+            label: const Text('Show Map'),
+            onPressed: _showInteractiveMap,
+          ),
+        ),
+      ],
+    );
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Google Maps Case'),
+        ),
+        body: content);
+  }
+}
+```
+
+Restart the app, and you will see your coordinates above the `Show Map` button.
+
+Open `Map` screen, and tap anywhere on the map. After tapping on the `Save` button, you will see the updated coordinates on the `Home` screen.
+
+Try to open the `Map` screen again, and you will see `Marker` showing the last selected location.
+
+import showingDefaultUserCoordinates from '../../assets/images/flutter-google-maps/home-screen-with-default-user-location-coordinates.png';
+import showingNewUserCoordinates from '../../assets/images/flutter-google-maps/home-screen-with-updated-user-coordinates.png';
+import showingUpdatedMarkerLocation from '../../assets/images/flutter-google-maps/map-screen-showing-newly-selected-location.png';
+
+<ImageSlider
+    images={[
+        [
+            showingDefaultUserCoordinates,
+            "Showing default User's Location coordinates on the Home screen",
+        ],
+        [
+            showingNewUserCoordinates,
+            "Showing newly selected User's Location coordinates on the Home screen",
+        ],
+        [
+            showingUpdatedMarkerLocation,
+            "Showing newly selected User's Location on the Map screen",
+        ],
+    ]}
+/>
+
+## Convert coordinates to Human readable address
+
+We will focus on updating the `Home` screen to show the address instead of coordinates.
+
+The core change is small, and I'll hint about it in the code.
+
+We will use `http` package introduced in the [First post](./flutter-google-maps-setup) to call Google Maps API.
+
+For this, we will also use `dotenv` package to read the API key from `GOOGLE_MAPS_API_KEY` environment variable.
+
+```dart title='src/screens/home.dart' collapse={3-5,8-9,12-22,32-38,40-89,118-126,154-183} showLineNumbers=true {"This package we need to parse JSON":1-2} {"dotenv package to read API key from environment variables":6-7} {"http package to send network requests":10-11} {"Here we read in advance API key from env variable":25-26} {"Kind of state variables: show loading animation or UNKNOWN value if adress fetch failed":29-31} {"Here we enable address loading animation":93-94} {"And here we use our new helper method to fetch address based on coordinates":97-98} {"Core change: helper method to send GET request to Google Maps API and parse response":101-115} {"When we close Map screen we also want to update address value":130-135} {"Now we will show loading animation when waiting on API response":140-141} {"If address fetching's done, we will replace animation":143-144} {"And as a value we will use fetched address from API":146-147}
+//
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_project/models/user_location.dart';
+import 'package:google_maps_project/screens/map.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _isLoading = false;
+
+  final String _apiKey = dotenv.get('GOOGLE_MAPS_API_KEY');
+  UserLocation _userLocation =
+      const UserLocation(latitude: 37.422, longitude: -122.084);
+
+  var _isLoadingAddress = false;
+  var _parsedAddress = 'UNKNOWN';
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if (lat == null || lng == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (kDebugMode) {
+      print('Using Users current location');
+    }
+
+    _userLocation = UserLocation(latitude: lat, longitude: lng);
+    setState(() {
+      _isLoading = false;
+
+      _isLoadingAddress = true;
+    });
+
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+
+  Future<void> _fetchAddress(double latitude, double longitude) async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$_apiKey',
+    );
+
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    final address = resData['results'][0]['formatted_address'];
+
+    setState(() {
+      _parsedAddress = address;
+      _isLoadingAddress = false;
+    });
+  }
+
+  void _showInteractiveMap() async {
+    UserLocation? selectedLocation =
+        await Navigator.of(context).push<UserLocation>(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          location: _userLocation,
+        ),
+      ),
+    );
+
+    if (selectedLocation != null) {
+      setState(() {
+        _userLocation = selectedLocation;
+
+        _isLoadingAddress = true;
+      });
+    }
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Widget addressValue = const CircularProgressIndicator();
+
+
+    if (!_isLoadingAddress) {
+      addressValue = Text(
+
+        _parsedAddress,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+          fontSize: 24,
+        ),
+      );
+    }
+
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Your current location is:'),
+        addressValue,
+        const SizedBox(
+          height: 16,
+        ),
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.map),
+            label: const Text('Show Map'),
+            onPressed: _showInteractiveMap,
+          ),
+        ),
+      ],
+    );
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Google Maps Case'),
+        ),
+        body: content);
+  }
+}
+```
+
+As you can see, the main change is in the `_fetchAddress` method, where we send a GET request to Google Maps API and parse the response.
+
+All the rest changes are up to you and a way how you want to show the address on the screen.
+
+Now, restart the app, and you will see the address instead of coordinates above the `Show Map` button.
+
+Since fetching address information from Google Maps API is asynchronous, we show a loading spinner while fetching the address (it also can take a while).
+
+import homeScreenWithDefaultAddress from '../../assets/images/flutter-google-maps/home-screen-with-default-address.png';
+import homeScreenWithAddressLoading from '../../assets/images/flutter-google-maps/home-screen-with-address-loading.png';
+import homeScreenWithNewAddress from '../../assets/images/flutter-google-maps/home-screen-with-new-address.png';
+
+<ImageSlider
+    images={[
+        [
+            homeScreenWithDefaultAddress,
+            "Home screen showing default User's Location coordinates as an address",
+        ],
+        [
+            homeScreenWithAddressLoading,
+            'Home screen showing loading spinner while fetching address from Google Maps API',
+        ],
+        [
+            homeScreenWithNewAddress,
+            "Home screen showing newly selected User's Location as an address",
+        ],
+    ]}
+/>
+
+## Summary
+
+In this post, we have learned how to convert coordinates to an address and vice versa in Flutter Google Maps.
+
+We have updated the `Map` screen to let the user select a new location and show a Save button.
+
+We have also updated the `Home` screen to show the address instead of coordinates.
+
+We used the `http` package to send a GET request to Google Maps API and the `dotenv` package to read the API key from the environment variable.
+
+> Optional: you can use `dio` package for network requests.
+
+I'm happy for you; you have learned a new thing - how to manipulate addresses in Flutter Google Maps.
+
+Don't forget to treat yourself with a cupcake 🧁
