@@ -7,12 +7,14 @@ import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
+import LinkButton from '@components/LinkButton.astro';
 
 export interface Props {
   post: CollectionEntry<"blog">;
+  relatedPosts?: CollectionEntry<"blog">[];
 }
 
-const { post } = Astro.props;
+const { post, relatedPosts } = Astro.props;
 
 const {
   title,
@@ -68,6 +70,22 @@ const layoutProps = {
     <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
+ 		{
+ 			relatedPosts?.length ? (
+              <aside class="related-posts">
+                <>
+                  <h2>You might like to read one of these posts next:</h2>
+                    {relatedPosts.map((post) =>
+                        <p>
+                          <LinkButton href={`/posts/${post.slug}`} title={post.data.title} ariaLabel={post.slug}>
+                          {post.data.description}
+                          </LinkButton>
+                        </p>
+                    )}
+                </>
+              </aside>
+ 			) : null
+ 		}
     </article>
 
     <ul class="my-8">

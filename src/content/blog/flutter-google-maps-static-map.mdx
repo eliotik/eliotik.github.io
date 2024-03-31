@@ -1,0 +1,870 @@
+---
+author: Alexander
+pubDatetime: 2024-03-30T18:41:19-04:00
+modDatetime: 2024-03-30T18:41:19-04:00
+title: Flutter Google Maps - Static Map
+slug: flutter-google-maps-static-map
+featured: false
+draft: false
+thread: Flutter and Google Maps
+tags:
+    - flutter
+    - google maps
+    - static map
+description: How to show a static map in Flutter using Google Maps.
+relatedPosts:
+    - flutter-google-maps-setup
+    - flutter-google-maps-embedded-map
+    - flutter-google-maps-address-manipulation
+---
+
+import ImageSlider from '../../components/ImageSlider.astro';
+import ClickableImage from '../../components/ClickableImage.astro';
+
+Fourth post in the series of Flutter and Google Maps.
+
+In the [Third post](./flutter-google-maps-address-manipulation) we have implemented conversion of coordinates to human-readable address using Google Maps API.
+
+In this post, I will show you how to show a static map in Flutter Google Maps.
+
+## Table of contents
+
+## Desired Outcome
+
+We want to show user a static map image on the Home screen.
+
+## Prerequisites
+
+Google Maps `Static map` is a simple image that shows a map with markers, lines, and shapes.
+
+It requires an API key to access the Google Maps API.
+
+Before implementing your solution, spend time reading the [Google Maps Static API documentation](https://developers.google.com/maps/documentation/maps-static/start).
+
+To summarize approach: you will send a network request to `https://maps.googleapis.com/maps/api/staticmap` with various `parameters` to get the desired map image.
+
+The parameter list is big and provides you with a lot of flexibility to customize the map image.
+
+In this post, we will show a simple map with a marker at a specific location with a zoom level, also we will set `maptype` as `roadmap`.
+
+Once we are done with this example, I encourage you to play with other parameters and see how it affects the map image.
+
+## Home Screen preparation
+
+Let's start by preparing the Home screen to show the static map.
+
+Follow code snippet below to update the `home.dart` file.
+
+```dart title='lib/screens/home.dart' collapse={1-129,131-142,146-153,172-185,195-197} showLineNumbers=false {"Let's add a container with Border decoration":154-171} {"For now let's add a simple dummy text as a placeholder":166-167} {"(optional) I updated also 'body', put everything into scrollable view ":190-194}
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_project/models/user_location.dart';
+import 'package:google_maps_project/screens/map.dart';
+import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _isLoading = false;
+  final String _apiKey = dotenv.get('GOOGLE_MAPS_API_KEY');
+  UserLocation _userLocation =
+      const UserLocation(latitude: 37.422, longitude: -122.084);
+  var _isLoadingAddress = false;
+  var _parsedAddress = 'Unknown Address';
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if (lat == null || lng == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (kDebugMode) {
+      print('Using Users current location');
+    }
+
+    _userLocation = UserLocation(latitude: lat, longitude: lng);
+    setState(() {
+      _isLoading = false;
+      _isLoadingAddress = true;
+    });
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+  Future<void> _fetchAddress(double latitude, double longitude) async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$_apiKey',
+    );
+
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    final address = resData['results'][0]['formatted_address'];
+
+    setState(() {
+      _parsedAddress = address;
+      _isLoadingAddress = false;
+    });
+  }
+
+  void _showInteractiveMap() async {
+    UserLocation? selectedLocation =
+        await Navigator.of(context).push<UserLocation>(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          location: _userLocation,
+        ),
+      ),
+    );
+
+    if (selectedLocation != null) {
+      setState(() {
+        _userLocation = selectedLocation;
+        _isLoadingAddress = true;
+      });
+    }
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget addressValue = const CircularProgressIndicator();
+
+    if (!_isLoadingAddress) {
+      addressValue = Text(
+        _parsedAddress,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+          fontSize: 24,
+        ),
+      );
+    }
+
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Your current location is:',
+          style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+        ),
+        addressValue,
+        const SizedBox(
+          height: 16,
+        ),
+
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              width: 2,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+            ),
+          ),
+          alignment: Alignment.center,
+
+          child: const Text('Soon'),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.map),
+            label: const Text('Show Map'),
+            onPressed: _showInteractiveMap,
+          ),
+        ),
+      ],
+    );
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Google Maps Case'),
+      ),
+
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: content,
+      ),
+    );
+  }
+}
+```
+
+After updating the `home.dart` file, you should see a simple container with a border on the Home screen right above the `Show Map` button.
+
+import placeholderForStaticMap from '../../assets/images/flutter-google-maps/home-screen-placeholder-for-static-map.png';
+
+<ClickableImage
+    image={placeholderForStaticMap}
+    title="Placeholder for future Static Map image"
+/>
+
+## Add Static Map Image
+
+Now, let's add the static map image to the Home screen to replace our placeholder.
+
+```dart title='lib/screens/home.dart' collapse={1-128,139-161,166-172,196-223} showLineNumbers=false {"I added a helper method to compile correct url with parameters":129-135} {"I used center,zoom,size,maptype and markers parameters":133-134} {"We will update Container with Image.network and cosmetic change":162-163} {"Add clipBehavior to Container so Image will also have rounded corners":174-175} {"Replace Text with 'Image.network'":176-177} {"Use our helper method for Url":178-179} {"Optionally you can add loadingBuilder to show loading animation":183-184} {"I show circular animation while loading image, but it can be any Widget":189-192}
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_project/models/user_location.dart';
+import 'package:google_maps_project/screens/map.dart';
+import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _isLoading = false;
+  final String _apiKey = dotenv.get('GOOGLE_MAPS_API_KEY');
+  UserLocation _userLocation =
+      const UserLocation(latitude: 37.422, longitude: -122.084);
+  var _isLoadingAddress = false;
+  var _parsedAddress = 'Unknown Address';
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if (lat == null || lng == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (kDebugMode) {
+      print('Using Users current location');
+    }
+
+    _userLocation = UserLocation(latitude: lat, longitude: lng);
+    setState(() {
+      _isLoading = false;
+      _isLoadingAddress = true;
+    });
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+  Future<void> _fetchAddress(double latitude, double longitude) async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$_apiKey',
+    );
+
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    final address = resData['results'][0]['formatted_address'];
+
+    setState(() {
+      _parsedAddress = address;
+      _isLoadingAddress = false;
+    });
+  }
+
+  void _showInteractiveMap() async {
+    UserLocation? selectedLocation =
+        await Navigator.of(context).push<UserLocation>(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          location: _userLocation,
+        ),
+      ),
+    );
+
+    if (selectedLocation != null) {
+      setState(() {
+        _userLocation = selectedLocation;
+        _isLoadingAddress = true;
+      });
+    }
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+
+  String _createStaticMapUrl() {
+    double lat = _userLocation.latitude;
+    double lng = _userLocation.longitude;
+
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:1%7C$lat,$lng&key=$_apiKey';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget addressValue = const CircularProgressIndicator();
+
+    if (!_isLoadingAddress) {
+      addressValue = Text(
+        _parsedAddress,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+          fontSize: 24,
+        ),
+      );
+    }
+
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Your current location is:',
+          style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+        ),
+        addressValue,
+        const SizedBox(
+          height: 16,
+        ),
+
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              width: 2,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+            ),
+          ),
+          alignment: Alignment.center,
+
+          clipBehavior: Clip.antiAlias,
+
+          child: Image.network(
+
+            _createStaticMapUrl(),
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+
+            loadingBuilder: (ctx, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.map),
+            label: const Text('Show Map'),
+            onPressed: _showInteractiveMap,
+          ),
+        ),
+      ],
+    );
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Google Maps Case'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: content,
+      ),
+    );
+  }
+}
+```
+
+Save your changes and you will see two updates in action: the static map image and the loading animation while the image is loading.
+
+import loadingImageAnimation from '../../assets/images/flutter-google-maps/home-screen-loading-image-animation.png';
+import staticMapImageLoaded from '../../assets/images/flutter-google-maps/home-screen-static-map-image-loaded.png';
+
+<ImageSlider
+    images={[
+        [loadingImageAnimation, 'Animation while image is loading'],
+        [staticMapImageLoaded, 'Static Map image loaded'],
+    ]}
+/>
+
+## A different way - Journey
+
+If you don't want to use Google Maps API, you can use the alternative solution - [Journey](https://docs.journey.tech/introduction).
+
+Journey is a simple and easy-to-use Flutter widget that provides flexible configurable static maps.
+
+> Note: this package is `work in progress` and may have some limitations and can be changed in the future.
+
+First, you need to request API key from Journey here: [Journey - Request Access](https://docs.journey.tech/request-access).
+
+Follow the [instructions](https://docs.journey.tech/quickstart/flutter) to install the package and use it in your Flutter project.
+
+It's basic, install a package:
+
+```bash
+flutter pub add static_map
+```
+
+Add Journey's API key to your `.env` file: `JOURNEY_MAPS_API_KEY=YOUR_API_KEY`.
+
+Update `main.dart` file to load the API key from the `.env` file and initialize the Journey's `StaticMap` widget.
+
+```dart title='lib/main.dart' collapse={1-6,16-29} showLineNumbers=false {"Here we load JOURNEY_MAPS_API_KEY and initialize StaticMap from 'static_map'":11-12}
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_project/screens/home.dart';
+import 'package:google_maps_project/theme.dart';
+import 'package:static_map/static_map.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+
+  StaticMap.initialize(apiKey: dotenv.get('JOURNEY_MAPS_API_KEY'));
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: defaultTheme,
+      home: const HomeScreen(),
+    );
+  }
+}
+```
+
+And now let's move to update our `home.dart` file to use Journey's `StaticMapImage` widget.
+
+We will reuse `Container` we built for Google Maps example and replace `Image.network` with `StaticMapImage`.
+
+Check [Basic Usage documentation](https://docs.journey.tech/sdks/flutter/usage/basic) for more details.
+
+```dart title='lib/screens/home.dart' collapse={1-191,194-204,248-275} showLineNumbers=true {"Copy paste previous Container implementation":192-247} ins={"Let's setup StaticMapImage":205-245} {"Use ImageOptions to setup visual of resulting map image":207-210} {"loadingBuilder is exactly the same as for Google Maps example":211-220} {"Options is the main place to setup static map and it's visuals":221-245} {"Under overlays you can add many markers or paths to map image":232-243}
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_project/models/user_location.dart';
+import 'package:google_maps_project/screens/map.dart';
+import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
+import 'package:static_map/static_map.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() {
+    return _HomeScreenState();
+  }
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _isLoading = false;
+  final String _apiKey = dotenv.get('GOOGLE_MAPS_API_KEY');
+  UserLocation _userLocation =
+      const UserLocation(latitude: 37.422, longitude: -122.084);
+  var _isLoadingAddress = false;
+  var _parsedAddress = 'Unknown Address';
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    if (lat == null || lng == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (kDebugMode) {
+      print('Using Users current location');
+    }
+
+    _userLocation = UserLocation(latitude: lat, longitude: lng);
+    setState(() {
+      _isLoading = false;
+      _isLoadingAddress = true;
+    });
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+  Future<void> _fetchAddress(double latitude, double longitude) async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$_apiKey',
+    );
+
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    final address = resData['results'][0]['formatted_address'];
+
+    setState(() {
+      _parsedAddress = address;
+      _isLoadingAddress = false;
+    });
+  }
+
+  void _showInteractiveMap() async {
+    UserLocation? selectedLocation =
+        await Navigator.of(context).push<UserLocation>(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          location: _userLocation,
+        ),
+      ),
+    );
+
+    if (selectedLocation != null) {
+      setState(() {
+        _userLocation = selectedLocation;
+        _isLoadingAddress = true;
+      });
+    }
+
+    _fetchAddress(_userLocation.latitude, _userLocation.longitude);
+  }
+
+  String _createStaticMapUrl() {
+    double lat = _userLocation.latitude;
+    double lng = _userLocation.longitude;
+
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:1%7C$lat,$lng&key=$_apiKey';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget addressValue = const CircularProgressIndicator();
+
+    if (!_isLoadingAddress) {
+      addressValue = Text(
+        _parsedAddress,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+          fontSize: 24,
+        ),
+      );
+    }
+
+    Widget content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Your current location is:',
+          style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+        ),
+        addressValue,
+        const SizedBox(
+          height: 16,
+        ),
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              width: 2,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+            ),
+          ),
+          alignment: Alignment.center,
+          clipBehavior: Clip.antiAlias,
+          child: Image.network(
+            _createStaticMapUrl(),
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+            loadingBuilder: (ctx, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              width: 2,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+            ),
+          ),
+          alignment: Alignment.center,
+          clipBehavior: Clip.antiAlias,
+
+          child: StaticMapImage(
+
+            imageOptions: const ImageOptions(
+              fit: BoxFit.cover,
+            ),
+
+            loadingBuilder: (ctx, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+
+            options: StaticMapOptions(
+              center: StaticMapLatLng(
+                _userLocation.latitude,
+                _userLocation.longitude,
+              ),
+              zoom: 16,
+              width: 600,
+              height: 300,
+              scale: 2,
+              overlays: [
+
+                StaticMapMarker(
+                  point: StaticMapLatLng(
+                    _userLocation.latitude,
+                    _userLocation.longitude,
+                  ),
+                  color: Colors.red,
+                  size: 8,
+                  label: 'A',
+                  labelSize: 14,
+                  labelColor: Colors.black,
+                )
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.map),
+            label: const Text('Show Map'),
+            onPressed: _showInteractiveMap,
+          ),
+        ),
+      ],
+    );
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Google Maps Case'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: content,
+      ),
+    );
+  }
+}
+```
+
+Save, refresh app, and you should see another static map image added below Google Maps Static Map image, but this one is generated by Journey's `StaticMapImage` widget.
+
+import journeyLoadingImageAnimation from '../../assets/images/flutter-google-maps/home-screen-journey-loading-animation.png';
+import journeyStaticMapImageLoaded from '../../assets/images/flutter-google-maps/home-screen-journey-map-image-loaded.png';
+
+<ImageSlider
+    images={[
+        [
+            journeyLoadingImageAnimation,
+            'Animation while Journey image is loading',
+        ],
+        [journeyStaticMapImageLoaded, 'Journey Static Map image loaded'],
+    ]}
+/>
+
+## Conclusion
+
+In this post, we have learned how to show a static map in Flutter using Google Maps API.
+
+We have also introduced an alternative solution - Journey, which provides a simple and easy-to-use Flutter widget for static maps.
+
+I encourage you to play with different parameters and see how it affects the map image.
+
+Thank you from reading and treat yourself with a good piece of cake 🍰

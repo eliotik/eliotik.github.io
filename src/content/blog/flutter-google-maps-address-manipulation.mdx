@@ -11,7 +11,11 @@ tags:
     - flutter
     - google maps
     - address
-description: How to convert coordinates to address and vice versa in Flutter Google Maps
+description: How to convert coordinates to address and vice versa in Flutter using Google Maps
+relatedPosts:
+    - flutter-google-maps-setup
+    - flutter-google-maps-embedded-map
+    - flutter-google-maps-static-map
 ---
 
 import ImageSlider from '../../components/ImageSlider.astro';
@@ -32,6 +36,20 @@ We want to let user tap on the map and set a new location for the marker.
 
 When the user exits `Map` screen, we will convert the coordinates to an address and display it on the Home screen.
 
+## Prerequisites
+
+Google Maps API provides a way to convert coordinates to an address. You will need to send a network request to `geocode` endpoint with the coordinates.
+
+It requires an API key to access the Google Maps API.
+
+Before implementing your solution, spend time reading the [Google Maps Geocoding API documentation](https://developers.google.com/maps/documentation/geocoding/start).
+
+To summarize approach: you will send a network request to `https://maps.googleapis.com/maps/api/geocode/json` with various `parameters`.
+
+In this example we will use `reverse` geocoding, which means converting coordinates to an address.
+
+Once we are done with this example, I encourage you to try to convert human-readable address to coordinates.
+
 ## Coordinates retrival from Embedded Map screen
 
 In the previous part we added `MapScreen` under `screens` folder in `map.dart` file.
@@ -40,7 +58,7 @@ We will update this screen by letting user select a new location and showing a S
 
 Follow comments in the code snipped bellow to update the `MapScreen`:
 
-```dart title='src/screens/map.dart' collapse={1-16,68-75,81-84} showLineNumbers=false {"Add a local variable to preserve user selected coordinates":17-18} {"Add a helper to update selected location when user Tap on a map":20-28} {"Define default state for Actions and Marker":32-40} {"Override Actions/Marker if user selected a new location":42-60} {"Override Actions/Marker if user selected a new location":42-60} {"When User tap on Save icon, we will return to Home screen selected location":55-56} {"Add a new property 'actions' and use our variable as value":65-66} {"Update 'markers' to use our variable":77-80}
+```dart title='lib/screens/map.dart' collapse={1-16,68-75,81-84} showLineNumbers=false {"Add a local variable to preserve user selected coordinates":17-18} {"Add a helper to update selected location when user Tap on a map":20-28} {"Define default state for Actions and Marker":32-40} {"Override Actions/Marker if user selected a new location":42-60} {"Override Actions/Marker if user selected a new location":42-60} {"When User tap on Save icon, we will return to Home screen selected location":55-56} {"Add a new property 'actions' and use our variable as value":65-66} {"Update 'markers' to use our variable":77-80}
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_project/models/user_location.dart';
@@ -133,7 +151,7 @@ Now touch anywhere on the map, and you will see a Save button in the top right c
 
 Before trying out the Save button, let's update the Home screen to accept a correct object type when MapScreen is closed.
 
-```dart title='src/screens/home.dart' collapse={1-82,94-120} showLineNumbers=false {"Replace 'LatLng' with our UserLocation interface":85-86}
+```dart title='lib/screens/home.dart' collapse={1-82,94-120} showLineNumbers=false {"Replace 'LatLng' with our UserLocation interface":85-86}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_project/models/user_location.dart';
@@ -275,7 +293,7 @@ import showingSaveLocationButton from '../../assets/images/flutter-google-maps/m
 
 As a quick change we will add a new `Text` widget to show the selected location on the Home screen.
 
-```dart title='src/screens/home.dart' collapse={1-82,132-143} showLineNumbers=false {"Add store of returned location from Map screen to the optional local variable":85-87} {"Update current _userLocation with a new selectedLocation from Map screen":95-100} {"Save to local variable text of coordinates (we will update it later)":105-112} {"Add a label and addressValue to show above 'Show Map' button":117-122}
+```dart title='lib/screens/home.dart' collapse={1-82,132-143} showLineNumbers=false {"Add store of returned location from Map screen to the optional local variable":85-87} {"Update current _userLocation with a new selectedLocation from Map screen":95-100} {"Save to local variable text of coordinates (we will update it later)":105-112} {"Add a label and addressValue to show above 'Show Map' button":117-122}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_project/models/user_location.dart';
@@ -458,7 +476,7 @@ We will use `http` package introduced in the [First post](./flutter-google-maps-
 
 For this, we will also use `dotenv` package to read the API key from `GOOGLE_MAPS_API_KEY` environment variable.
 
-```dart title='src/screens/home.dart' collapse={3-5,8-9,12-22,32-38,40-89,118-126,154-183} showLineNumbers=true {"This package we need to parse JSON":1-2} {"dotenv package to read API key from environment variables":6-7} {"http package to send network requests":10-11} {"Here we read in advance API key from env variable":25-26} {"Kind of state variables: show loading animation or UNKNOWN value if adress fetch failed":29-31} {"Here we enable address loading animation":93-94} {"And here we use our new helper method to fetch address based on coordinates":97-98} {"Core change: helper method to send GET request to Google Maps API and parse response":101-115} {"When we close Map screen we also want to update address value":130-135} {"Now we will show loading animation when waiting on API response":140-141} {"If address fetching's done, we will replace animation":143-144} {"And as a value we will use fetched address from API":146-147}
+```dart title='lib/screens/home.dart' collapse={3-5,8-9,12-22,32-38,40-89,118-126,154-183} showLineNumbers=false {"This package we need to parse JSON":1-2} {"dotenv package to read API key from environment variables":6-7} {"http package to send network requests":10-11} {"Here we read in advance API key from env variable":25-26} {"Kind of state variables: show loading animation or UNKNOWN value if adress fetch failed":29-31} {"Here we enable address loading animation":93-94} {"And here we use our new helper method to fetch address based on coordinates":97-98} {"Core change: helper method to send GET request to Google Maps API and parse response":101-115} {"When we close Map screen we also want to update address value":130-135} {"Now we will show loading animation when waiting on API response":140-141} {"If address fetching's done, we will replace animation":143-144} {"And as a value we will use fetched address from API":146-147}
 //
 import 'dart:convert';
 
