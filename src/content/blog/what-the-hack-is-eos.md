@@ -1,7 +1,7 @@
 ---
 author: Alexander
 pubDatetime: 2024-11-24T15:09:52-05:00
-modDatetime: 2024-11-24T15:09:52-05:00
+modDatetime: 2024-11-24T16:52:49-05:00
 title: What the heck is EOS?
 slug: what-the-heck-is-eos
 featured: false
@@ -54,6 +54,22 @@ Yet, even with structure, I observed that leadership meetings often drifted towa
 
 This raises a crucial question: does EOS truly create inclusivity, or does it risk reinforcing existing silos?
 
+## How Bad Were Our Leadership Meetings?
+
+Our leadership meetings were falling short—by a wide margin.
+
+As our CEO observed after sitting in on a recent session, they lacked structure, outcomes, and the impact a critical meeting like this should deliver.
+
+These meetings felt more like going through the motions than tackling the real problems and opportunities facing the company.
+
+On positive side of things, we have the talent and the drive to do much better.
+
+At Stay22, COO implemented EOS through a Trello board, leading to measurable improvements in the leadership meeting format.
+
+However, these gains didn't come without challenges.
+
+Meetings still lacked decisions, accountability, and transparency. But I see small incremental improvements, and we can call it a win.
+
 ## Thoughts About the Book
 
 Let's be brutally honest: `What the Heck is EOS?` doesn't reinvent the wheel.
@@ -66,17 +82,13 @@ It could have been half the length without losing any substance.
 
 Tone of the book is prescriptive, examples felt fabricated, and plenty of overuse of testimonials.
 
+## Thoughts About the EOS
+
 While the concepts, like clarity of roles and incremental problem-solving, are sound, they're not groundbreaking.
 
 Many of these principles you learn through experience or borrow from better-executed frameworks.
 
-Yet, the book isn't without merit.
-
 It provides a structured approach to meetings and goal setting, which can be helpful for organizations struggling with chaos.
-
-At Stay22, COO implemented EOS through a Trello board, leading to measurable improvements in the leadership meeting. However, these gains didn't come without challenges.
-
-Meetings still lacked decisions, accountability, and transparency. But I see small incremental improvements, and we can call it a win.
 
 One critical takeaway: `EOS isn't a one-size-fits-all solution`; it's a suggestion, not a Bible.
 
