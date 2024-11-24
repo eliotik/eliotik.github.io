@@ -8,7 +8,7 @@ featured: false
 draft: false
 tags:
     - hiring
-description: How Brewer's theorem plays role in designing a distributed system
+description: The emotional highs, challenges, and growth in leadership through the journey of shaping hiring processes
 ---
 
 Recently my CTO shared [this](https://reactiverobot.com/writing/hiring.html) article with me and we had a nice chat about it, and this inspired me to write this post.
