@@ -106,6 +106,24 @@ const socialImageURL = new URL(
       )
     }
 
+    <!-- Google tag (gtag.js) -->
+    <script data-category="analytics" is:inline type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH"></script>
+
+    <script data-category="analytics" is:inline type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag("consent", "default", {
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+          analytics_storage: "denied",
+      });
+
+      gtag('config', 'G-QQMCTBW5TH');
+    </script>
+
     <ViewTransitions />
 
     <script is:inline src="/toggle-theme.js"></script>

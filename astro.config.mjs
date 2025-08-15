@@ -1,4 +1,4 @@
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwind from "@astrojs/tailwind";
@@ -9,6 +9,7 @@ import { SITE } from "./src/config";
 
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
+import partytown from '@astrojs/partytown';
 
 import expressiveCode from "astro-expressive-code";
 
@@ -16,6 +17,7 @@ import expressiveCode from "astro-expressive-code";
 export default defineConfig({
   site: SITE.website,
   integrations: [
+  partytown({ config: { forward: ['dataLayer.push'] } }),
   tailwind({
     applyBaseStyles: false
   }),
