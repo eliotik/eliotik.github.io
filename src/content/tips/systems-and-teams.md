@@ -3,6 +3,7 @@ author: Alexander
 pubDatetime: 2025-10-14T14:15:38-04:00
 modDatetime: 2025-10-14T14:15:38-04:00
 title: Prioritize systems over solo effort
+customSlug: systems-and-teams
 draft: false
 ---
 

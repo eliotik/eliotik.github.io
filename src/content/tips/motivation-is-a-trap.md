@@ -3,6 +3,7 @@ author: Alexander
 pubDatetime: 2025-10-18T11:34:38-04:00
 modDatetime: 2025-10-18T11:34:38-04:00
 title: Motivation is a Trap. Build a System Instead.
+customSlug: motivation-is-a-trap
 draft: false
 ---
 

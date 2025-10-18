@@ -34,6 +34,7 @@ const tips = defineCollection({
             pubDatetime: z.date(),
             modDatetime: z.date().optional().nullable(),
             title: z.string(),
+            customSlug: z.string(),
             draft: z.boolean().optional(),
         }),
 });

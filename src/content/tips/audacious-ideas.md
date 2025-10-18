@@ -3,6 +3,7 @@ author: Alexander
 pubDatetime: 2024-03-10T20:38:49-04:00
 modDatetime: 2024-03-10T20:38:49-04:00
 title: Embrace the audacious and dare to redefine the possible.
+customSlug: audacious-ideas
 draft: false
 ---
 

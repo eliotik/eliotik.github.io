@@ -3,6 +3,7 @@ author: Alexander
 pubDatetime: 2024-02-28T17:19:50-04:00
 modDatetime: 2024-02-28T17:19:50-04:00
 title: Prioritize speed in your tasks
+customSlug: speed
 draft: false
 ---
 

@@ -1,20 +1,20 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 import Tips from "@layouts/Tips.astro";
+import TipDetails from "@layouts/TipDetails.astro";
 import getSortedCollection from "@utils/getSortedCollection";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
-import { slugifyStr } from '@utils/slugify';
 
 export interface Props {
-  tip: CollectionEntry<"tips">;
+  tip?: CollectionEntry<"tips">;
 }
 
 export async function getStaticPaths() {
   const tips = await getCollection("tips", ({ data }) => !data.draft);
 
   const tipResult = tips.map(tip => ({
-    params: { slug: slugifyStr(tip.slug) },
+    params: { slug: tip.data.customSlug },
     props: { tip },
   }));
 
@@ -26,6 +26,7 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
+const { tip } = Astro.props;
 
 const tips = await getCollection("tips");
 
@@ -37,4 +38,4 @@ const pagination = getPagination<CollectionEntry<'tips'>>({
 });
 ---
 
-<Tips {...pagination} />
+{tip ? <TipDetails tip={tip} /> : <Tips {...pagination} />}

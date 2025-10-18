@@ -1,0 +1,97 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import type { CollectionEntry } from "astro:content";
+import { slugifyStr } from "@utils/slugify";
+import ShareLinks from "@components/ShareLinks.astro";
+import { SITE } from "@config";
+
+export interface Props {
+  tip: CollectionEntry<"tips">;
+}
+
+const { tip } = Astro.props;
+
+const {
+  title,
+  author,
+  pubDatetime,
+  modDatetime,
+} = tip.data;
+
+const { Content } = await tip.render();
+
+const layoutProps = {
+  title: `${title} | ${SITE.title}`,
+  author,
+  description: title,
+  pubDatetime,
+  modDatetime,
+  scrollSmooth: true,
+};
+---
+
+<Layout {...layoutProps}>
+  <Header />
+
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+    <button
+      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
+      onclick="history.back()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg"
+        ><path
+          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+        ></path>
+      </svg><span>Go back</span>
+    </button>
+  </div>
+  <main id="main-content">
+    <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
+    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+      <Content />
+    </article>
+
+    <div
+      class="mt-8 flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
+    >
+      <button
+        id="back-to-top"
+        class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
+          <path
+            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+          ></path>
+        </svg>
+        <span>Back to Top</span>
+      </button>
+
+      <ShareLinks />
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+  }
+  .tip-title {
+    @apply text-2xl font-semibold text-skin-accent;
+  }
+</style>
+
+<script is:inline>
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+  document.addEventListener("astro:after-swap", backToTop);
+</script>

@@ -47,7 +47,7 @@ const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
             <h2>Recent tip</h2>
             <ul>
                 <TipCard
-                  href={`/tips`}
+                  href={`/tips/${sortedTips[0]!.data.customSlug}`}
                   frontmatter={sortedTips[0]!.data}
                   secHeading={false}
                 />

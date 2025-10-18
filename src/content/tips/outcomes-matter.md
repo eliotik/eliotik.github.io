@@ -3,6 +3,7 @@ author: Alexander
 pubDatetime: 2024-08-13T09:23:44-04:00
 modDatetime: 2024-08-13T09:23:44-04:00
 title: Focus on results, a flawless process is meaningless without them
+customSlug: outcomes-matter
 draft: false
 ---
 

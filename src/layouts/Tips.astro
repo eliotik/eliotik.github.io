@@ -22,6 +22,7 @@ for (const entity of paginatedEntities) {
 
   tips.push({
     title: entity.data.title,
+    customSlug: entity.data.customSlug,
     content: Content,
     headerProps: {
       style: {
@@ -38,9 +39,11 @@ for (const entity of paginatedEntities) {
   <Main pageTitle="Tips & Thoughts" pageDesc="All the tips & thoughts I've posted.">
     <ul>
       {
-        tips.map(({ title, content: TipContent }) => (
+        tips.map(({ title, customSlug, content: TipContent }) => (
           <li class="my-6">
-            <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
+            <a href={`/tips/${customSlug}`}>
+              <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
+            </a>
             <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
               <TipContent />
             </article>
