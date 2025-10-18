@@ -41,10 +41,21 @@ for (const entity of paginatedEntities) {
       {
         tips.map(({ title, customSlug, content: TipContent }) => (
           <li class="my-6 tip-item">
-            <a href={`/tips/${customSlug}`}>
-              <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
-            </a>
-            <article class="tip-content prose mx-auto mt-8 max-w-3xl" style="display: none;">
+            <div class="flex items-center justify-between gap-4">
+              <a href={`/tips/${customSlug}`} class="flex-grow">
+                <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
+              </a>
+              <button
+                class="tip-toggle-btn focus-outline flex-shrink-0 p-2 hover:opacity-75"
+                aria-label="Toggle tip visibility"
+                data-tip-slug={customSlug}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 chevron-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                </svg>
+              </button>
+            </div>
+            <article class="tip-content prose mx-auto mt-8 max-w-3xl" style="display: none;" data-tip-slug={customSlug}>
               <TipContent />
             </article>
           </li>
@@ -85,6 +96,12 @@ for (const entity of paginatedEntities) {
   .tip-title {
     @apply text-2xl font-semibold text-skin-accent;
   }
+  .chevron-icon {
+    transition: transform 0.3s ease;
+  }
+  .chevron-icon.expanded {
+    transform: rotate(180deg);
+  }
 </style>
 
 <script is:inline>
@@ -104,6 +121,7 @@ for (const entity of paginatedEntities) {
     const toggleButton = document.querySelector("#toggle-tips");
     const toggleText = document.querySelector("#toggle-text");
     const tipContents = document.querySelectorAll(".tip-content");
+    const individualToggleBtns = document.querySelectorAll(".tip-toggle-btn");
 
     if (!toggleButton || !toggleText) return;
 
@@ -119,12 +137,24 @@ for (const entity of paginatedEntities) {
       content.style.display = isExpanded ? "block" : "none";
     });
 
+    // Update individual toggle icons based on initial state
+    individualToggleBtns.forEach(btn => {
+      const icon = btn.querySelector(".chevron-icon");
+      if (icon) {
+        if (isExpanded) {
+          icon.classList.add("expanded");
+        } else {
+          icon.classList.remove("expanded");
+        }
+      }
+    });
+
     const newToggleText = newToggleButton.querySelector("#toggle-text");
     if (newToggleText) {
       newToggleText.textContent = isExpanded ? "Collapse All" : "Expand All";
     }
 
-    // Toggle handler
+    // Toggle all handler
     newToggleButton.addEventListener("click", () => {
       const currentlyExpanded = localStorage.getItem("tipsExpanded") === "true";
       const newState = !currentlyExpanded;
@@ -134,11 +164,49 @@ for (const entity of paginatedEntities) {
         content.style.display = newState ? "block" : "none";
       });
 
+      const allToggleBtns = document.querySelectorAll(".tip-toggle-btn");
+      allToggleBtns.forEach(btn => {
+        const icon = btn.querySelector(".chevron-icon");
+        if (icon) {
+          if (newState) {
+            icon.classList.add("expanded");
+          } else {
+            icon.classList.remove("expanded");
+          }
+        }
+      });
+
       const textElement = document.querySelector("#toggle-text");
       if (textElement) {
         textElement.textContent = newState ? "Collapse All" : "Expand All";
       }
       localStorage.setItem("tipsExpanded", String(newState));
+    });
+
+    // Individual tip toggle handlers - clone buttons to remove old listeners
+    const freshToggleBtns = document.querySelectorAll(".tip-toggle-btn");
+    freshToggleBtns.forEach(btn => {
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const slug = newBtn.getAttribute("data-tip-slug");
+        const content = document.querySelector(`.tip-content[data-tip-slug="${slug}"]`);
+        const icon = newBtn.querySelector(".chevron-icon");
+
+        if (content && icon) {
+          const isCurrentlyVisible = content.style.display === "block";
+          content.style.display = isCurrentlyVisible ? "none" : "block";
+
+          if (isCurrentlyVisible) {
+            icon.classList.remove("expanded");
+          } else {
+            icon.classList.add("expanded");
+          }
+        }
+      });
     });
   }
 
