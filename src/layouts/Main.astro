@@ -15,23 +15,40 @@ interface ArrayTitleProp {
 export type Props = StringTitleProp | ArrayTitleProp;
 
 const { props } = Astro;
+const isTipsPage = Astro.url.pathname.startsWith('/tips');
 ---
 
 <Breadcrumbs />
 <main id="main-content">
-  {
-    "titleTransition" in props ? (
-      <h1>
-        {props.pageTitle[0]}
-        <span transition:name={props.titleTransition}>
-          {props.pageTitle[1]}
-        </span>
-      </h1>
-    ) : (
-      <h1>{props.pageTitle}</h1>
-    )
-  }
-  <p>{props.pageDesc}</p>
+  <div class={isTipsPage ? "flex items-start justify-between gap-4" : ""}>
+    <div>
+      {
+        "titleTransition" in props ? (
+          <h1>
+            {props.pageTitle[0]}
+            <span transition:name={props.titleTransition}>
+              {props.pageTitle[1]}
+            </span>
+          </h1>
+        ) : (
+          <h1>{props.pageTitle}</h1>
+        )
+      }
+      <p>{props.pageDesc}</p>
+    </div>
+    {isTipsPage && (
+      <button
+        id="toggle-tips"
+        class="focus-outline flex items-center gap-2 rounded-lg border border-skin-line px-4 py-2 hover:bg-skin-fill whitespace-nowrap flex-shrink-0"
+        aria-label="Toggle tips visibility"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 11h10v2H7zm0-4h10v2H7zm0 8h10v2H7z"/>
+        </svg>
+        <span id="toggle-text">Expand All</span>
+      </button>
+    )}
+  </div>
   <slot />
 </main>
 

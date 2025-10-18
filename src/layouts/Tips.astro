@@ -40,11 +40,11 @@ for (const entity of paginatedEntities) {
     <ul>
       {
         tips.map(({ title, customSlug, content: TipContent }) => (
-          <li class="my-6">
+          <li class="my-6 tip-item">
             <a href={`/tips/${customSlug}`}>
               <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
             </a>
-            <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+            <article class="tip-content prose mx-auto mt-8 max-w-3xl" style="display: none;">
               <TipContent />
             </article>
           </li>
@@ -98,4 +98,51 @@ for (const entity of paginatedEntities) {
   }
   backToTop();
   document.addEventListener("astro:after-swap", backToTop);
+
+  /** Toggle tips visibility */
+  function setupToggleTips() {
+    const toggleButton = document.querySelector("#toggle-tips");
+    const toggleText = document.querySelector("#toggle-text");
+    const tipContents = document.querySelectorAll(".tip-content");
+
+    if (!toggleButton || !toggleText) return;
+
+    // Remove any existing listeners by cloning the button
+    const newToggleButton = toggleButton.cloneNode(true);
+    toggleButton.parentNode.replaceChild(newToggleButton, toggleButton);
+
+    // Get saved state from localStorage, default to collapsed (false)
+    const isExpanded = localStorage.getItem("tipsExpanded") === "true";
+
+    // Apply initial state
+    tipContents.forEach(content => {
+      content.style.display = isExpanded ? "block" : "none";
+    });
+
+    const newToggleText = newToggleButton.querySelector("#toggle-text");
+    if (newToggleText) {
+      newToggleText.textContent = isExpanded ? "Collapse All" : "Expand All";
+    }
+
+    // Toggle handler
+    newToggleButton.addEventListener("click", () => {
+      const currentlyExpanded = localStorage.getItem("tipsExpanded") === "true";
+      const newState = !currentlyExpanded;
+
+      const allTipContents = document.querySelectorAll(".tip-content");
+      allTipContents.forEach(content => {
+        content.style.display = newState ? "block" : "none";
+      });
+
+      const textElement = document.querySelector("#toggle-text");
+      if (textElement) {
+        textElement.textContent = newState ? "Collapse All" : "Expand All";
+      }
+      localStorage.setItem("tipsExpanded", String(newState));
+    });
+  }
+
+  setupToggleTips();
+  document.addEventListener("astro:after-swap", setupToggleTips);
+  document.addEventListener("astro:page-load", setupToggleTips);
 </script>

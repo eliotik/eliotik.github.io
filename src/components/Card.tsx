@@ -33,7 +33,7 @@ export default function Card({
                     <h3 {...headerProps}>{title}</h3>
                 )}
             </a>
-            {showDescription ? <p>{description}</p> : null}
+            {showDescription ? <p className={'mt-8'}>{description}</p> : null}
         </li>
     );
 }
