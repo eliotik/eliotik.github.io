@@ -22,6 +22,11 @@ const {
 
 const { Content } = await tip.render();
 
+const canonicalURL = new URL(
+  `/tips/${tip.data.customSlug}/`,
+  Astro.site
+).href;
+
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
   author,
@@ -29,6 +34,7 @@ const layoutProps = {
   pubDatetime,
   modDatetime,
   scrollSmooth: true,
+  canonicalURL,
 };
 ---
 
@@ -84,6 +90,7 @@ const layoutProps = {
 </style>
 
 <script is:inline>
+(function() {
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */
   function backToTop() {
@@ -94,4 +101,5 @@ const layoutProps = {
   }
   backToTop();
   document.addEventListener("astro:after-swap", backToTop);
+})();
 </script>

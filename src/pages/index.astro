@@ -28,7 +28,7 @@ const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
             <ul>
               {featuredPosts.map(({ data, slug }) => (
                 <Card
-                  href={`/posts/${slug}`}
+                  href={`/posts/${slug}/`}
                   frontmatter={data}
                   secHeading={false}
                 />
@@ -47,7 +47,7 @@ const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
             <h2>Recent tip</h2>
             <ul>
                 <TipCard
-                  href={`/tips/${sortedTips[0]!.data.customSlug}`}
+                  href={`/tips/${sortedTips[0]!.data.customSlug}/`}
                   frontmatter={sortedTips[0]!.data}
                   secHeading={false}
                 />
@@ -71,7 +71,7 @@ const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
                     ({ data, slug }, index) =>
                       index < 4 && (
                         <Card
-                          href={`/posts/${slug}`}
+                          href={`/posts/${slug}/`}
                           frontmatter={data}
                           secHeading={false}
                         />

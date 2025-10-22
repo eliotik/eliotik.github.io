@@ -21,10 +21,12 @@ export async function getStaticPaths() {
     const tagPosts = getPostsByTag(posts, tag);
     const totalPages = getPageNumbers(tagPosts.length);
 
-    return totalPages.map(page => ({
-      params: { tag, page },
-      props: { tag, tagName },
-    }));
+    return totalPages
+      .filter(page => page !== 1) // Exclude page 1, it's served by /tags/[tag]/index.astro
+      .map(page => ({
+        params: { tag, page },
+        props: { tag, tagName },
+      }));
   });
 }
 

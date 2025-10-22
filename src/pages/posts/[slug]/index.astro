@@ -19,9 +19,11 @@ export async function getStaticPaths() {
     props: { post, relatedPosts: post.data.relatedPosts },
   }));
 
-  const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
-    params: { slug: String(pageNum) },
-  }));
+  const pagePaths = getPageNumbers(posts.length)
+    .filter(pageNum => pageNum !== 1) // Exclude page 1, it's served by /posts/index.astro
+    .map(pageNum => ({
+      params: { slug: String(pageNum) },
+    }));
 
   return [...postResult, ...pagePaths];
 }

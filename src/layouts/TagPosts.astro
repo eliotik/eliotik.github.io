@@ -17,9 +17,14 @@ export interface Props {
 }
 
 const { currentPage, totalPages, paginatedEntities, tag, tagName } = Astro.props;
+
+const canonicalURL = new URL(
+  `/tags/${tag}${currentPage > 1 ? `/${currentPage}` : ""}`,
+  Astro.site
+).href;
 ---
 
-<Layout title={`Tag: ${tagName} | ${SITE.title}`}>
+<Layout title={`Tag: ${tagName} | ${SITE.title}`} canonicalURL={canonicalURL}>
   <Header activeNav="tags" />
   <Main
     pageTitle={[`Tag:`, `${tagName}`]}
@@ -30,7 +35,7 @@ const { currentPage, totalPages, paginatedEntities, tag, tagName } = Astro.props
     <ul>
       {
         paginatedEntities.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}`} frontmatter={data} />
+          <Card href={`/posts/${slug}/`} frontmatter={data} />
         ))
       }
     </ul>

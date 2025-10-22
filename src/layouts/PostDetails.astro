@@ -31,7 +31,7 @@ const { Content } = await post.render();
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
-  ogImageUrl ?? `/posts/${slugifyStr(title)}.png`,
+  ogImageUrl ?? `/posts/${post.slug}.png`,
   Astro.url.origin
 ).href;
 
@@ -77,7 +77,7 @@ const layoutProps = {
                   <h2>You might like to read one of these posts next:</h2>
                     {relatedPosts.map((post) =>
                         <p>
-                          <LinkButton href={`/posts/${post.slug}`} title={post.data.title} ariaLabel={post.slug}>
+                          <LinkButton href={`/posts/${post.slug}/`} title={post.data.title} ariaLabel={post.slug}>
                           {post.data.description}
                           </LinkButton>
                         </p>
@@ -123,9 +123,22 @@ const layoutProps = {
 </style>
 
 <script is:inline>
+(function() {
   /** Create a progress indicator
    *  at the top */
   function createProgressBar() {
+    // Don't create if body doesn't exist yet
+    if (!document.body) return;
+
+    // Only create progress bar on post detail pages
+    if (!document.getElementById("article")) return;
+
+    // Remove existing progress bar if it exists (for View Transitions)
+    const existing = document.getElementById("myBar");
+    if (existing) {
+      existing.parentElement?.remove();
+    }
+
     // Create the main container div
     const progressContainer = document.createElement("div");
     progressContainer.className =
@@ -142,13 +155,12 @@ const layoutProps = {
     // Append the progress container to the document body or any other desired parent element
     document.body.appendChild(progressContainer);
   }
-  createProgressBar();
 
   /** Update the progress bar
    *  when user scrolls */
   function updateScrollProgress() {
     const winScroll =
-      document.body.scrollTop || document.documentElement.scrollTop;
+      document.body?.scrollTop || document.documentElement.scrollTop;
     const height =
       document.documentElement.scrollHeight -
       document.documentElement.clientHeight;
@@ -160,14 +172,30 @@ const layoutProps = {
       }
     }
   }
-  document.addEventListener("scroll", updateScrollProgress);
+
+  // Store listener so we can remove/re-add it
+  function attachScrollListener() {
+    // Use data attribute to track if listener is attached
+    if (!document.documentElement.hasAttribute('data-scroll-listener')) {
+      document.addEventListener("scroll", updateScrollProgress);
+      document.documentElement.setAttribute('data-scroll-listener', 'true');
+    }
+  }
 
 
   /** Attaches links to headings in the document,
    *  allowing sharing of sections easily */
   function addHeadingLinks() {
-    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    // Only add heading links if we're on a post detail page
+    const article = document.getElementById("article");
+    if (!article) return;
+
+    // Only select headings within the article content
+    let headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
     for (let heading of headings) {
+      // Skip if heading already has a link (prevents duplicates)
+      if (heading.querySelector('.heading-link')) continue;
+
       heading.classList.add("group")
       let link = document.createElement("a");
       link.innerText = "#";
@@ -182,10 +210,17 @@ const layoutProps = {
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
   function attachCopyButtons() {
+    // Only add copy buttons on post detail pages
+    const article = document.getElementById("article");
+    if (!article) return;
+
     let copyButtonLabel = "Copy";
-    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+    let codeBlocks = Array.from(article.querySelectorAll("pre"));
 
     for (let codeBlock of codeBlocks) {
+      // Skip if copy button already exists (prevents duplicates)
+      if (codeBlock.querySelector('.copy-code')) continue;
+
       let wrapper = document.createElement("div");
       wrapper.style.position = "relative";
 
@@ -219,8 +254,6 @@ const layoutProps = {
       }, 700);
     }
   }
-  attachCopyButtons();
-  // document.addEventListener("astro:after-swap", attachCopyButtons);
 
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */
@@ -230,6 +263,25 @@ const layoutProps = {
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     });
   }
-  backToTop();
-  // document.addEventListener("astro:after-swap", backToTop);
+
+  /** Initialize all post detail features */
+  function initPostDetails() {
+    createProgressBar();
+    attachScrollListener();
+    addHeadingLinks();
+    attachCopyButtons();
+    backToTop();
+  }
+
+  // Run on initial load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPostDetails);
+  } else {
+    // DOM already loaded
+    initPostDetails();
+  }
+
+  // Re-run on View Transitions navigation
+  document.addEventListener("astro:after-swap", initPostDetails);
+})();
 </script>

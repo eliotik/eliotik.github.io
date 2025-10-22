@@ -32,9 +32,14 @@ for (const entity of paginatedEntities) {
     }
   });
 }
+
+// Set canonical URL to /tips/ for page 1, otherwise use the page number
+const canonicalURL = currentPage === 1
+  ? new URL("/tips/", Astro.site).href
+  : new URL(`/tips/${currentPage}/`, Astro.site).href;
 ---
 
-<Layout title={`Tips & Thoughts | ${SITE.title}`}>
+<Layout title={`Tips & Thoughts | ${SITE.title}`} canonicalURL={canonicalURL}>
   <Header activeNav="tips" />
   <Main pageTitle="Tips & Thoughts" pageDesc="All the tips & thoughts I've posted.">
     <ul>
@@ -105,6 +110,7 @@ for (const entity of paginatedEntities) {
 </style>
 
 <script is:inline>
+(function() {
    /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */
   function backToTop() {
@@ -213,4 +219,5 @@ for (const entity of paginatedEntities) {
   setupToggleTips();
   document.addEventListener("astro:after-swap", setupToggleTips);
   document.addEventListener("astro:page-load", setupToggleTips);
+})();
 </script>

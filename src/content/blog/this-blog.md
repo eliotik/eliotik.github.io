@@ -7,14 +7,13 @@ slug: this-blog
 featured: false
 draft: false
 tags:
-  - astro
-  - sharp
-  - github pages
-  - hurdles
-  - godaddy
-  - cloudflare
-description:
-  My path of overcoming hurdles and challenges around bringing this blog to live
+    - astro
+    - sharp
+    - github pages
+    - hurdles
+    - godaddy
+    - cloudflare
+description: My path of overcoming hurdles and challenges around bringing this blog to live
 ---
 
 Overview of my hurdles while setting up things for this blog.
@@ -33,14 +32,14 @@ I checked it, and I thought: _- Why shouldn't I try it either?_
 
 My idea was to spin up blog as fast as possible as cheap as it can be. I didn't want to code my own solution or code anything at all to enable content posting.
 
-Harish used [Astro](https://astro.build/) framework to build his own blog. 
+Harish used [Astro](https://astro.build/) framework to build his own blog.
 
 After checking their site, it sounded pretty simple to use it for blogs:
 
-* run cli command
-* add template
-* focus on adding articles using md/mdx
-* publish
+-   run cli command
+-   add template
+-   focus on adding articles using md/mdx
+-   publish
 
 And I underestimated things...
 
@@ -78,6 +77,7 @@ When you set up custom domain for GitHub pages, GitHub will create `CNAME` file 
 I checked `novifyx.com` and it worked, showed content of `README.md` file from my repository.
 
 Ran `dig` to see if records for my domain are correct:
+
 ```bash
 ❯ dig novifyx.com +nostats +nocomments +nocmd
 
@@ -104,15 +104,16 @@ On Godaddy side, under DNS settings for my domain name I changed `CNAME` with `w
 
 On the GitHub side I changed custom domain name from `novifyx.com` to `www.novifyx.com`, file CNAME in repository was updated automatically.
 
-And somewhat pushed me to set up Forwarding on Godaddy for `http://novifyx.com` to `https://www.novifyx.com` under Forwarding tab at DNS settings.
+And somewhat pushed me to set up Forwarding on Godaddy for the non-www HTTP URL to the www HTTPS version under Forwarding tab at DNS settings.
 
-I checked site, tried to open `novifyx.com`, and saw in Networking permanent redirect to `https://www.novifyx.com`.
+I checked site, tried to open the site without www, and saw in Networking permanent redirect to the HTTPS www version.
 
 Looked good, until it wasn't.
 
 In a few hours my site stopped to work. Instead of GitHub pages content, it was showing Godaddy Parked static page.
 
 I checked `dig` again, and it didn't have GitHub ips:
+
 ```bash
 ❯ dig www.novifyx.com +nostats +nocomments +nocmd
 
@@ -142,9 +143,10 @@ Basically, Cloudflare will work as a `proxy` temporary, until I will be able to 
 
 The process of setting up site in Cloudflare is straightforward, you will follow wizard-like steps, and it will import DNS records for you, also it will have by default flatten structure.
 
-I didn't check output of `dig` this time, but site was available and I went sleeping ( -_-)旦~ only to find in the morning infinite redirect loop of network requests when you open site.
+I didn't check output of `dig` this time, but site was available and I went sleeping ( -\_-)旦~ only to find in the morning infinite redirect loop of network requests when you open site.
 
 This time I checked `dig`:
+
 ```bash
 ❯ dig www.novifyx.com +nostats +nocomments +nocmd
 
@@ -156,11 +158,12 @@ www.novifyx.com.	257	IN	A	172.64.80.1
 
 I checked this IP address for my `A` record, and it was pointing to Cloudflare. As you can see no other `A` records or `CNAME` present in the report. Which was, mmm, weird.
 
-_This was a frustrating moment, my goal was to do it within one evening and have something serving articles quickly, second day and I had issues with dns._ 
+_This was a frustrating moment, my goal was to do it within one evening and have something serving articles quickly, second day and I had issues with dns._
 
 Google time.
 
 Few StackOverflow and multiple other tech sites articles I found a lead to try out. Under DNS settings in Cloudflare, all my records had `Proxied` setting enabled. After disabling it and waiting an hour or so I checked `dig`:
+
 ```bash
 ❯ dig www.novifyx.com +noall +answer -t A
 
@@ -189,7 +192,7 @@ Some lessons learned.
 
 As mentioned in the beginning, I followed example and decided to use Astro. I picked `Astro-papper` template, you can find it [here](https://github.com/satnaing/astro-paper/blob/main/README.md).
 
-Installation was smooth for `no-template` option. I played with the default template a bit and then tried to create this project using the mentioned above template. 
+Installation was smooth for `no-template` option. I played with the default template a bit and then tried to create this project using the mentioned above template.
 
 The installation process failed at the very end of the attempt to install npm dependencies, so I installed them manually after.
 
@@ -214,6 +217,7 @@ And it didn't help. Deployment pipeline failed on `build` step.
 ### Generated types
 
 Under `build` step I saw Typescript errors, like 50+ errors. After running this step locally, I was still surprised to see them.
+
 ```bash
 src/layouts/PostDetails.astro:28:27 - error ts(18046): 'post' is of type 'unknown'.
 ```
@@ -221,13 +225,14 @@ src/layouts/PostDetails.astro:28:27 - error ts(18046): 'post' is of type 'unknow
 In this file, TS was complaining about `post` variable of type `CollectionEntry<'blog'>` being `unknown`.
 
 `CollectionEntry` was imported as a `type` from astro generated types.
+
 ```typescript
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry } from 'astro:content';
 ```
 
 Astro generates types under `root/.astro` folder when you run `astro sync` command.
 
-The problem was with missing blog files. Honestly, I didn't dig into astro types, but because I had no article files, `blog` enum property was pointing to `unknown` type. 
+The problem was with missing blog files. Honestly, I didn't dig into astro types, but because I had no article files, `blog` enum property was pointing to `unknown` type.
 
 I added `under construction` post, and this helped to resolve issue with types.
 
@@ -236,6 +241,7 @@ Commit, Push, `build` failed again.
 ### Image optimization with `sharp`
 
 This time I had the next error in the logs:
+
 ```bash
 Error: Could not load the "sharp" module using the linux runtime
 
@@ -250,6 +256,7 @@ By default, it installs `sharp@0.33.2`, on that day this version had incompatibi
 Google search led me to GitHub issue under Node.js repo where folks had the same problem. Recommended solution was to use `sharp@0.32.6` with `node@18.19.0`.
 
 Following this finding, I added under `resolutions` in `package.json`:
+
 ```json
 "resolutions": {
   "sharp": "0.32.6"
@@ -267,19 +274,3 @@ I cannot say this experience was a breath, but even taking issues from above, I 
 Hopefully future me or You can find these notes useful to resolve similar issues.
 
 Thank you for reading (人๑ʾ◡ʿ๑)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

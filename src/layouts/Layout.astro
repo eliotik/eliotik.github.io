@@ -107,15 +107,19 @@ const socialImageURL = new URL(
     }
 
     <!-- Google tag (gtag.js) -->
-    <script data-category="analytics" is:inline type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH"></script>
+    {import.meta.env.PROD && (
+      <>
+        <script data-category="analytics" is:inline type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH"></script>
 
-    <script data-category="analytics" is:inline type="text/partytown">
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        <script data-category="analytics" is:inline type="text/partytown">
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
 
-      gtag('config', 'G-QQMCTBW5TH');
-    </script>
+          gtag('config', 'G-QQMCTBW5TH');
+        </script>
+      </>
+    )}
 
     <ViewTransitions />
 

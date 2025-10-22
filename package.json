@@ -12,7 +12,9 @@
         "format:check": "prettier --plugin-search-dir=. --check .",
         "format": "prettier --plugin-search-dir=. --write .",
         "prepare": "husky install",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "clean": "./clean-cache.sh",
+        "fresh": "./clean-cache.sh && yarn dev"
     },
     "engines": {
         "node": "18.19.0"

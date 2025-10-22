@@ -18,9 +18,11 @@ export async function getStaticPaths() {
     props: { tip },
   }));
 
-  const pagePaths = getPageNumbers(tips.length).map(pageNum => ({
-    params: { slug: String(pageNum) },
-  }));
+  const pagePaths = getPageNumbers(tips.length)
+    .filter(pageNum => pageNum !== 1) // Exclude page 1, it's served by /tips/index.astro
+    .map(pageNum => ({
+      params: { slug: String(pageNum) },
+    }));
 
   return [...tipResult, ...pagePaths];
 }

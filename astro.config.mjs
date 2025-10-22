@@ -45,8 +45,20 @@ export default defineConfig({
   },
   vite: {
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"]
-    }
+      exclude: ["@resvg/resvg-js"],
+      // Force include commonly used deps to prevent re-optimization
+      include: ["flowbite-react", "fuse.js", "react", "react-dom"]
+    },
+    server: {
+      watch: {
+        // Ignore node_modules to avoid unnecessary reloads
+        ignored: ['**/node_modules/**', '**/.git/**']
+      },
+      // Prevent premature optimization
+      preTransformRequests: true
+    },
+    // Clear screen on dev server start
+    clearScreen: false
   },
   scopedStyleStrategy: "where"
 });
