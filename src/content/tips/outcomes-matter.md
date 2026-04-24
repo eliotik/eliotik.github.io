@@ -2,23 +2,17 @@
 author: Alexander
 pubDatetime: 2024-08-13T09:23:44-04:00
 modDatetime: 2024-08-13T09:23:44-04:00
-title: Focus on results, a flawless process is meaningless without them
+title: A flawless process without outcomes is theater
 customSlug: outcomes-matter
 draft: false
 ---
 
-Achieving results is what truly matters, and I learned it hard way.
+I've seen two kinds of teams.
 
-Imagine a team that follows every step of a project plan perfectly but delivers a product that fails to meet business or customer needs.
+The first has a perfect process. Every ritual runs on schedule. Every ticket moves through the board clean. Then they ship a product nobody uses.
 
-Despite their flawless process, the outcome is mediocre.
+The second has a messy process. They adapt on the fly. They skip ceremonies when the work demands it. They ship something customers actually want.
 
-In contrast, another team faced challenges, adapted on the fly, and delivered a product that makes customers happy and bumps company's metrics up.
+Process exists to produce outcomes. When it starts producing neater boards instead, it's failed - even when it looks its best.
 
-Their process wasn't perfect, but the result was a success.
-
-The takeaway?
-
-> Good process is important, but it should not overshadow the ultimate goal - deliver results!
-
-⛑️
+> A good process isn't a goal. It's a tool for reaching one.

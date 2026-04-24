@@ -2,21 +2,15 @@
 author: Alexander
 pubDatetime: 2024-03-10T20:38:49-04:00
 modDatetime: 2024-03-10T20:38:49-04:00
-title: Embrace the audacious and dare to redefine the possible.
+title: A big goal pulls a team together. A small one doesn't.
 customSlug: audacious-ideas
 draft: false
 ---
 
-Audacious ideas, like landing a human on the moon or creating the internet, inspire people by challenging norms and offering a vision of a better future.
+The moon landing wasn't just a technological achievement. It was an organizational one. Hundreds of scientists, engineers and astronauts had to coordinate around a goal none of them could carry alone. Same with the early internet - researchers on different continents quietly rewriting their local plans to fit a shared one.
 
-They foster collaboration and resilience, uniting individuals to overcome obstacles and achieve the seemingly impossible.
+That's the part that gets lost when we call these ideas "audacious". The motivation is a side effect. The real function of a big goal is coordination - it forces people to talk to each other because they can't ship it on their own.
 
-For instance, the Apollo program brought together hundreds of scientists, engineers, and astronauts to accomplish the monumental task of lunar exploration.
+A small, easy goal doesn't require that. And teams built around small, easy goals quietly stop talking to each other.
 
-Similarly, the development of the internet required cooperation among researchers, engineers worldwide, leading to a revolution in communication and technology.
-
-Audacious ideas motivate people!
-
-> Achieving a challenging yet significant goal is more manageable for a team than accomplishing an easy task with little significance.
-
-¬‿¬
+> A challenging, significant goal is easier to move a team through than an easy, unimportant one.

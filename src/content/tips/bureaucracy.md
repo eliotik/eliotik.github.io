@@ -2,17 +2,15 @@
 author: Alexander
 pubDatetime: 2024-02-14T19:49:20-05:00
 modDatetime: 2024-02-14T19:49:20-05:00
-title: Fight bureaucracy anytime you face it
+title: Bureaucracy builds one reasonable rule at a time
 customSlug: bureaucracy
 draft: false
 ---
 
-> Bureaucracy = lots of rules making simple things complex.
+Bureaucracy isn't a bad decision. It's an accumulation of reasonable ones.
 
-Make a habit of yours to challenge unnecessary complexity and red tape.
+The first rule made sense. The fifth made sense. The twentieth is still defensible on its own. Together they've built a wall between teams and the actual work.
 
-If you can encourage others to do the same, you will find things move faster around.
+I've watched a Platform team become the bottleneck for an entire org this way. Nobody made a bad call. The system drifted.
 
-Set collaboration as your main priority over organizational barriers.
-
-I'm sure you are going to see a lot of resistance, but it's worth it; people will work productively together.
+The habit worth building isn't "fight bureaucracy". It's smaller. When a rule is added, ask what it would cost to remove the one next to it. If nobody can answer, that's the rule that doesn't belong.
