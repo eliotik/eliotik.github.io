@@ -8,26 +8,34 @@ export interface Props {
 
 export default function ThreadCard({ href, frontmatter, id }: Props) {
     const { title, description } = frontmatter;
+    const num = String(id).padStart(2, '0');
 
     return (
-        <li className="rounded p-4 sm:min-w-[17rem]">
-            <div className="relative">
-                <p className="absolute bottom-0 right-0 z-10 text-5xl text-gray-300">
-                    {id}
-                </p>
-                <div className="relative z-20">
-                    <div className="mb-2">
-                        <a href={href} className="link inline-block">
-                            <h3 className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 hover:underline focus-visible:no-underline focus-visible:underline-offset-0">
-                                {title}
-                            </h3>
-                        </a>
-                    </div>
-                    <p className="w-60 overflow-hidden text-sm dark:text-gray-800">
+        <li>
+            <a
+                href={href}
+                className="group grid grid-cols-[40px_1fr_auto] items-start gap-3 py-3.5 pr-1 transition-colors hover:bg-skin-card/40 sm:grid-cols-[56px_1fr_auto] sm:gap-4"
+            >
+                <div className="flex items-start justify-end self-stretch border-r border-skin-line/40 pr-2.5 pt-0.5 transition-colors group-hover:border-skin-accent/70 sm:pr-3">
+                    <span className="text-xs font-medium tabular-nums tracking-wider text-skin-base/50 transition-colors group-hover:text-skin-accent">
+                        {num}
+                    </span>
+                </div>
+                <div className="min-w-0">
+                    <h3 className="mb-1 text-sm font-bold text-skin-accent">
+                        {title}
+                    </h3>
+                    <p className="text-xs leading-relaxed text-skin-base/70">
                         {description}
                     </p>
                 </div>
-            </div>
+                <span
+                    aria-hidden
+                    className="pr-1 pt-0.5 text-skin-base/40 transition-all group-hover:translate-x-0.5 group-hover:text-skin-accent"
+                >
+                    →
+                </span>
+            </a>
         </li>
     );
 }

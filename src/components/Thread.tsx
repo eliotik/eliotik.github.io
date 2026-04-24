@@ -11,13 +11,24 @@ export interface Props {
 export default function Thread({ thread, slug, posts }: Props) {
     const headerProps = {
         style: { viewTransitionName: slugifyStr(thread) },
-        className: 'text-lg font-medium decoration-dashed',
+        className: 'text-lg font-bold text-skin-base',
     };
 
     return (
-        <div key={slug}>
-            <h2 {...headerProps}>{thread}</h2>
-            <ul className="my-4 flex touch-auto snap-x space-x-4 overflow-x-auto overflow-y-hidden">
+        <section
+            key={slug}
+            className="py-6 [&:first-of-type]:pt-2 [&:not(:first-of-type)]:mt-10 [&:not(:first-of-type)]:pt-2"
+        >
+            <header className="flex items-baseline justify-between gap-4 border-b border-skin-line/40 pb-2">
+                <h2 {...headerProps}>{thread}</h2>
+                <span className="shrink-0 whitespace-nowrap text-xs tabular-nums text-skin-base/60">
+                    <strong className="text-sm font-semibold text-skin-base/80">
+                        {posts.length}
+                    </strong>{' '}
+                    articles
+                </span>
+            </header>
+            <ul className="flex flex-col divide-y divide-skin-line/40 border-b border-skin-line/60">
                 {posts.map((post: CollectionEntry<'blog'>, index) => (
                     <ThreadCard
                         href={`/posts/${post.slug}`}
@@ -27,6 +38,6 @@ export default function Thread({ thread, slug, posts }: Props) {
                     />
                 ))}
             </ul>
-        </div>
+        </section>
     );
 }
