@@ -1,11 +1,13 @@
 import { slugifyStr } from '@utils/slugify';
 import type { CollectionEntry } from 'astro:content';
+import type { ThreadPosition } from '@utils/getThreadPositions';
 
 export interface Props {
     href?: string;
     frontmatter: CollectionEntry<'blog'>['data'];
     secHeading?: boolean;
     showDescription?: boolean;
+    threadPosition?: ThreadPosition;
 }
 
 export default function Card({
@@ -13,6 +15,7 @@ export default function Card({
     frontmatter,
     secHeading = true,
     showDescription = true,
+    threadPosition,
 }: Props) {
     const { title, description } = frontmatter;
 
@@ -33,7 +36,25 @@ export default function Card({
                     <h3 {...headerProps}>{title}</h3>
                 )}
             </a>
-            {showDescription ? <p className={'mt-8'}>{description}</p> : null}
+            {threadPosition && (
+                <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-xs tabular-nums">
+                    <span className="font-semibold uppercase tracking-wider text-skin-base/50">
+                        Part of
+                    </span>
+                    <span className="font-medium text-skin-accent">
+                        {threadPosition.thread}
+                    </span>
+                    <span className="text-skin-base/40">·</span>
+                    <span className="text-skin-base/60">
+                        {threadPosition.position} of {threadPosition.total}
+                    </span>
+                </div>
+            )}
+            {showDescription ? (
+                <p className={threadPosition ? 'mt-3' : 'mt-8'}>
+                    {description}
+                </p>
+            ) : null}
         </li>
     );
 }

@@ -5,6 +5,7 @@ import PostDetails from "@layouts/PostDetails.astro";
 import getSortedCollection from "@utils/getSortedCollection";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
+import getThreadPositions from "@utils/getThreadPositions";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -34,6 +35,7 @@ const { post, relatedPosts} = Astro.props;
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedCollection(posts);
+const threadPositions = getThreadPositions(posts);
 
 const relatedPostsArray = relatedPosts
 ? await Promise.all(
@@ -49,4 +51,4 @@ const pagination = getPagination<CollectionEntry<'blog'>>({
 });
 ---
 
-{post ? <PostDetails post={post} relatedPosts={relatedPostsArray} /> : <Posts {...pagination} />}
+{post ? <PostDetails post={post} relatedPosts={relatedPostsArray} /> : <Posts {...pagination} threadPositions={threadPositions} />}

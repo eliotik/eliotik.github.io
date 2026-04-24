@@ -7,14 +7,16 @@ import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
 import Card from "@components/Card";
 import { SITE } from "@config";
+import type { ThreadPositions } from "@utils/getThreadPositions";
 
 export interface Props {
   currentPage: number;
   totalPages: number;
   paginatedEntities: CollectionEntry<"blog">[];
+  threadPositions?: ThreadPositions;
 }
 
-const { currentPage, totalPages, paginatedEntities } = Astro.props;
+const { currentPage, totalPages, paginatedEntities, threadPositions } = Astro.props;
 
 // Set canonical URL to /posts/ for page 1, otherwise use the page number
 const canonicalURL = currentPage === 1
@@ -28,7 +30,11 @@ const canonicalURL = currentPage === 1
     <ul>
       {
         paginatedEntities.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
+          <Card
+            href={`/posts/${slug}/`}
+            frontmatter={data}
+            threadPosition={threadPositions?.[slug]}
+          />
         ))
       }
     </ul>

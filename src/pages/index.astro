@@ -8,6 +8,7 @@ import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import TipCard from "@components/TipCard";
 import getSortedCollection from "@utils/getSortedCollection";
+import getThreadPositions from "@utils/getThreadPositions";
 
 const posts = await getCollection("blog");
 const tips = await getCollection("tips");
@@ -15,6 +16,7 @@ const tips = await getCollection("tips");
 const sortedPosts = getSortedCollection<CollectionEntry<'blog'>>(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
+const threadPositions = getThreadPositions(posts);
 ---
 
 <Layout>
@@ -31,6 +33,7 @@ const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
                   href={`/posts/${slug}/`}
                   frontmatter={data}
                   secHeading={false}
+                  threadPosition={threadPositions[slug]}
                 />
               ))}
             </ul>
@@ -74,6 +77,7 @@ const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
                           href={`/posts/${slug}/`}
                           frontmatter={data}
                           secHeading={false}
+                          threadPosition={threadPositions[slug]}
                         />
                       )
                   )
