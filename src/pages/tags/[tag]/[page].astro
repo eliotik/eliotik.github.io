@@ -5,6 +5,8 @@ import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
+import getThreadPositions from "@utils/getThreadPositions";
+import getRelatedTags from "@utils/getRelatedTags";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -36,6 +38,9 @@ const { tag, tagName } = Astro.props;
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 
 const postsByTag = getPostsByTag(posts, tag);
+const threadPositions = getThreadPositions(posts);
+const totalCount = postsByTag.length;
+const relatedTags = getRelatedTags(posts, tag);
 
 const pagination = getPagination<CollectionEntry<'blog'>>({
   entities: postsByTag,
@@ -43,4 +48,11 @@ const pagination = getPagination<CollectionEntry<'blog'>>({
 });
 ---
 
-<TagPosts {...pagination} {tag} {tagName} />
+<TagPosts
+  {...pagination}
+  {tag}
+  {tagName}
+  threadPositions={threadPositions}
+  totalCount={totalCount}
+  relatedTags={relatedTags}
+/>

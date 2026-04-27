@@ -16,11 +16,13 @@ export type Props = StringTitleProp | ArrayTitleProp;
 
 const { props } = Astro;
 const isTipsPage = Astro.url.pathname.startsWith('/tips');
+const hasHeaderMeta = Astro.slots.has('header-meta');
+const useFlexHeader = isTipsPage || hasHeaderMeta;
 ---
 
 <Breadcrumbs />
 <main id="main-content">
-  <div class={isTipsPage ? "flex items-start justify-between gap-4" : ""}>
+  <div class={useFlexHeader ? "flex items-start justify-between gap-4" : ""}>
     <div>
       {
         "titleTransition" in props ? (
@@ -47,6 +49,11 @@ const isTipsPage = Astro.url.pathname.startsWith('/tips');
         </svg>
         <span id="toggle-text">Expand All</span>
       </button>
+    )}
+    {hasHeaderMeta && (
+      <div class="shrink-0 whitespace-nowrap">
+        <slot name="header-meta" />
+      </div>
     )}
   </div>
   <slot />

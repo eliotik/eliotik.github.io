@@ -33,8 +33,10 @@ module.exports = {
           fill: withOpacity("--color-fill"),
           accent: withOpacity("--color-accent"),
           inverted: withOpacity("--color-text-base"),
+          base: withOpacity("--color-text-base"),
           card: withOpacity("--color-card"),
           "card-muted": withOpacity("--color-card-muted"),
+          line: withOpacity("--color-border"),
         },
       },
       outlineColor: {

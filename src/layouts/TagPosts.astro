@@ -7,6 +7,8 @@ import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import Pagination from "@components/Pagination.astro";
 import { SITE } from "@config";
+import type { ThreadPositions } from "@utils/getThreadPositions";
+import type { RelatedTag } from "@utils/getRelatedTags";
 
 export interface Props {
   currentPage: number;
@@ -14,9 +16,21 @@ export interface Props {
   paginatedEntities: CollectionEntry<"blog">[];
   tag: string;
   tagName: string;
+  threadPositions?: ThreadPositions;
+  totalCount?: number;
+  relatedTags?: RelatedTag[];
 }
 
-const { currentPage, totalPages, paginatedEntities, tag, tagName } = Astro.props;
+const {
+  currentPage,
+  totalPages,
+  paginatedEntities,
+  tag,
+  tagName,
+  threadPositions,
+  totalCount,
+  relatedTags = [],
+} = Astro.props;
 
 const canonicalURL = new URL(
   `/tags/${tag}${currentPage > 1 ? `/${currentPage}` : ""}`,
@@ -27,15 +41,46 @@ const canonicalURL = new URL(
 <Layout title={`Tag: ${tagName} | ${SITE.title}`} canonicalURL={canonicalURL}>
   <Header activeNav="tags" />
   <Main
-    pageTitle={[`Tag:`, `${tagName}`]}
+    pageTitle={["#", `${tagName}`]}
     titleTransition={tag}
-    pageDesc={`All the articles with the tag "${tagName}".`}
+    pageDesc={`All articles tagged with #${tagName}.`}
   >
-    <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
-    <ul>
+    {totalCount !== undefined && (
+      <span
+        slot="header-meta"
+        class="font-mono text-sm tabular-nums text-skin-base/70"
+      >
+        <strong class="font-semibold text-skin-base">{totalCount}</strong>
+        {" "}articles
+      </span>
+    )}
+
+    {relatedTags.length > 0 && (
+      <section class="my-6 border-y border-dashed border-skin-line/60 py-4">
+        <h2 class="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-skin-base/60">
+          Related tags
+        </h2>
+        <div class="flex flex-wrap gap-x-4 gap-y-2">
+          {relatedTags.map(({ tag: relTag, tagName: relName }) => (
+            <a
+              href={`/tags/${relTag}/`}
+              class="group inline-flex items-baseline whitespace-nowrap font-mono text-sm font-semibold text-skin-accent transition-colors hover:underline"
+            >
+              <span class="mr-0.5 text-skin-base/40 transition-colors group-hover:text-skin-accent">#</span>{relName}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <ul class="divide-y divide-dashed divide-skin-line/60">
       {
         paginatedEntities.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
+          <Card
+            href={`/posts/${slug}/`}
+            frontmatter={data}
+            threadPosition={threadPositions?.[slug]}
+          />
         ))
       }
     </ul>
