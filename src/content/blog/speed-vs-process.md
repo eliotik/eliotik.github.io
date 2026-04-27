@@ -16,76 +16,56 @@ tags:
 description: Urgency beats purity, communication keeps the team with you. Faced with an urgent integration and scarce capacity, we chose the least-damaging path. Simple learning is - decisions win the moment but communication sustains the team.
 ---
 
+Halfway through a planned sprint, our Head of Supply walked into my office with a time-sensitive opportunity.
+
+A partnership that had to happen now. Integrating with a new platform - not on our roadmap for the quarter, unclear ROI and zero spare engineers to throw at it. The market window was narrow. The pressure to act was intense.
+
+One of those startup moments where you're torn. Stick to the plan or grab the opportunity and scramble.
+
 ## Table of contents
 
-## The Urgent Ask
+## The trade-offs
 
-Imagine this: you're leading engineering at a startup and halfway through a planned sprint a colleague barges in with a time-sensitive opportunity.
+I was stuck at the intersection of urgency and reality.
 
-Our Head of Supply came to me with partnership that had to happen now. This work involved integrating with a new platform immediately - an effort not on our roadmap for this quarter, with unclear ROI, and zero spare engineers to throw at it.
+On one side, the team had commitments and was already at full capacity. On the other, a fleeting opportunity dangled by the Head of Supply.
 
-The market window was narrow, and the pressure to act quickly was intense.
+We talked through a few paths. None of them painless.
 
-It was one of those moments in startup life where you feel torn: stick to the plan, or grab the opportunity and scramble.
+-   Pull a developer off an ongoing project to tackle the integration. Accept that their original project slows down.
+-   Ask the CTO to roll up his sleeves and spearhead the integration, as if he wasn't busy enough.
+-   Defer the project and risk the partnership evaporating.
 
-## The Trade-offs
+Each had consequences. Reassigning a dev disrupts another team's progress. Leaning on the CTO stretches him thinner. Deferring means potentially missing the window.
 
-As Head of Engineering, I was stuck at the intersection of urgency and reality.
+In a larger organization we might debate this for weeks. Startup time is shorter. The call had to land by the next day.
 
-On one side, we had our commitments and a team already at full capacity.
+## The decision and the disruption
 
-On the other, a fleeting opportunity dangled by our Head of Supply.
-
-We brainstormed a few paths, none of them painless:
-
--   Pull a developer off an ongoing project to tackle the integration, accepting that their original project would slow down
-
--   Ask our CTO to roll up his sleeves and spearhead the integration (as if he wasn't busy enough)
-
--   Defer the project, risking that the partnership might evaporate if we waited.
-
-Each option had consequences. Reassigning a dev meant disrupting another team's progress. Leaning on the CTO could only stretch him thinner. And deferring? That meant possibly missing the boat entirely.
-
-In a larger organization we might debate this for weeks, but startup time moves faster.
-
-We had to make a call by the end of the week. Tomorrow.
-
-## Decision and Disruption
-
-In the end, I green-lit the integration by moving one developer from an unrelated product feature onto this project.
+I green-lit the integration by moving one developer from an unrelated product feature.
 
 To soften the blow, I realigned priorities across three other squads, effectively creating a temporary task force around the integration.
 
-Yes, it caused a bit of chaos - roadmaps were adjusted on the fly - but we avoided outright rebellion.
+It caused chaos - roadmaps adjusted on the fly - but we avoided open rebellion. The developer was excited - a fresh challenge helps. The other teams took it in stride with mild grumbling.
 
-The developer was excited (who doesn't like a fresh challenge?), and the other teams took the change in stride with only mild grumbling.
+Urgency without visible frustration.
 
-We managed to show urgency without (visibly) frustrating everyone.
+Then I learned one squad felt caught off guard. In the rush, I hadn't personally briefed that team's developers before the shuffle was announced. That feedback stung. The decision made sense. The communication didn't.
 
-However, I later learned one squad felt caught off guard. In the rush, I'd failed to personally brief that team's developers before the shuffle was announced.
+A well-intended move can still leave people feeling sidelined if it isn't handled openly.
 
-Hearing this feedback stung.
+## Closing thoughts
 
-As much as the decision made sense, my communication fell short. A well-intended move can still leave people feeling sidelined if not handled openly.
+This surfaced the tension at the heart of startup decision-making. We pride ourselves on planning and process. In practice, speed and adaptability often outweigh process purity.
 
-## Closing Thoughts
+Industry wisdom leans toward thoughtful, data-driven choices. Ray Dalio writes about an idea meritocracy where decisions are weighted by the credibility of those giving input. In theory, I'd gather the best minds, weigh their experience and come to a believability-weighted consensus.
 
-This experience highlighted the emotional and practical tension in startup decision-making. We pride ourselves on planning and process, but in a startup, speed and adaptability often outweigh process purity.
+When a narrow window opens, you sometimes have to act first and analyze later. Even a measured approach gives way to decisive action when things move fast.
 
-Industry wisdom often preaches thoughtful, data-driven choices - Ray Dalio, in Principles, emphasizes an idea meritocracy where decisions are weighted by the credibility of those giving input.
+Urgency doesn't excuse skipping communication. That's the lesson. We work with people, not just processes.
 
-In theory, I'd gather my team's best minds, weigh their experiences, and come to a believability-weighted consensus.
+Startup leadership often comes down to choosing the least terrible of several imperfect options. You make the best call you can, as fast as you can and you try to minimize collateral damage.
 
-But when a narrow window opens, you sometimes have to act first and analyze later.
+The integration gamble may pay off in results. It also reminded me that how we execute decisions matters as much as what we decide.
 
-At a certain point, even a measured approach must give way to decisive action when things are evolving fast.
-
-That urgency doesn't excuse skipping communication, though - a lesson I learned the hard way - we work with people, not just processes.
-
-In the end, startup leadership often comes down to choosing the least terrible of several imperfect options.
-
-You make the best call you can, as fast as you can, and you try to minimize collateral damage.
-
-Our integration gamble maybe will pay off in results, but it also reminded me that how we execute decisions matters as much as what we decide.
-
-Next time, I'll strive to keep the speed without leaving my team in the dark. While agility is key, trust and transparency are what truly carry a team through the chaos.
+Next time, I'll keep the speed without leaving my team in the dark. Agility is part of it. Trust and transparency are what actually carry a team through the chaos.
