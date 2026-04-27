@@ -8,59 +8,53 @@ featured: false
 draft: false
 tags:
     - hiring
-description: The emotional highs, challenges, and growth in leadership through the journey of shaping hiring processes
+description: The emotional highs, challenges and growth in leadership through the journey of shaping hiring processes
 ---
 
-Recently my CTO shared [this](https://reactiverobot.com/writing/hiring.html) article with me and we had a nice chat about it, and this inspired me to write this post.
+My CTO shared [this article](https://reactiverobot.com/writing/hiring.html) with me recently and we had a conversation about it. That's what prompted this post.
 
-Hiring is one of the most emotionally taxing aspects of leadership. Over the years, I’ve interviewed significant amount of people, and I’ve seen my approach evolve significantly.
+Hiring is one of the most emotionally taxing parts of leadership. Over the years I've interviewed many people and my approach has evolved significantly.
 
-Recently, I joined a company where I poured a considerable amount of effort into shaping the interview process, evaluating candidates, and ultimately making hiring decisions.
-
-This journey has been nothing short of a rollercoaster, filled with highs, lows, and moments of deep reflection.
+I recently joined a company where I invested real effort in shaping the interview process, evaluating candidates and making hiring decisions. It's been a roller coaster - highs, lows and stretches of deep reflection.
 
 ## Table of contents
 
-## The rollercoaster begins
+## The roller coaster begins
 
-Imagine this: you’re in the midst of an interview. It starts wonderfully. You and the candidate are chatting, laughing, and sharing stories about work and life.
+You're in the middle of an interview. It starts well. You and the candidate are talking, laughing, sharing stories about work and life. There's a genuine connection forming. You start thinking: _this might be the one_.
 
-There’s a genuine connection forming. You start thinking: `This might be the one`
+Then the technical exercise starts. The cracks begin to show. Despite the pleasant conversation, the candidate struggles with the technical side.
 
-But then, the technical exercise begins. Suddenly, the cracks start to show. Despite the pleasant conversation, the candidate struggles with the technical side.
+You find yourself encouraging them, supporting them - because you liked them in the first part. They manage to push through the first exercise and you feel a glimmer of hope.
 
-You find yourself supporting them, encouraging them, because you really liked them during that first part. They somehow manage to get through the first exercise, and you start feeling a glimmer of hope.
+Then comes the second part. That's when it takes a nosedive.
 
-Then comes the second part, and that’s when things take a nosedive.
+Performance falters more. I never let my emotions show. I kept encouraging, we kept smiling, we kept going. Underneath, the reality was setting in.
 
-The candidate’s performance falters even more.
+## The reality of hiring
 
-Yet, I never let my emotions show. I always encourage them, we smile, and we continue, but deep down, the reality is setting in.
+Hiring isn't like software development. In coding, you can iterate, explore dead ends, test your decisions.
 
-## The reality of Hiring
+Recruiting is binary: yes or no. 1 or 0.
 
-Hiring is not like software development. In coding, you can iterate, explore dead-ends, and test your decisions.
+I agree with [Matt](https://reactiverobot.com/writing/hiring.html): you spend weeks or months building a relationship with a candidate, only to make a final decision that will shape both their future and your team's.
 
-But in recruiting, the stakes are much higher. In fact, it’s a binary outcome: yes or no; 1 or 0.
+The emotional highs and lows, the pressure of making the right call, the doubts that lingers long after the decision - these are all part of the process.
 
-I agree with [Matt](https://reactiverobot.com/writing/hiring.html), you spend weeks or even months building a relationship with a candidate, only to have to make a final decision that will shape both their future and your team’s.
+## The principles of hiring
 
-I agree with everything in this essay. The emotional highs and lows, the pressure of making the right call, and the doubts that lingers long after the decision has been made - these are all part of the process.
+> You can't pause a conversation with a candidate to consider options of what to say. You need to show up and be on. It's crucial for both parties to have the best information to figure out if this is the right match. It's particularly brutal because you never get to find out the answer to "what if we'd chosen that candidate who we were uncertain about?". You can't A/B test people, you just have to do your best to get to know them and make the best decision.
 
-## The principles of Hiring
+I couldn't agree more. Your decision is final and life-altering. You don't get to go back and change it.
 
-> You can’t pause a conversation with a candidate to consider options of what to say. You need to show up and be on. It's crucial for both parties to have the best information to figure out if this is the right match. It’s particularly brutal because you never get to find out the answer to “what if we’d chosen that candidate who we were uncertain about?”. You can’t A/B test people, you just have to do your best to get to know them and make the best decision.
+Finding the balance between technical skills and cultural fit is more complicated than building a modern distributed system.
 
-It's so true, I cannot agree more. Your decision is final and life-altering, you cannot go back and change it.
+> If you feel sick or have a bad day, didn't sleep well, you better reschedule the interview. You need to be at your best after all you are a face of your company.
 
-Finding a good balance between technical skills and cultural fits is not only crucial, but it's way complicated than building a modern distributed system.
+## To summarize
 
-> If you feel sick, or have a bad day, didn't sleep well, you better reschedule the interview. You need to be at your best after all you are a face of your company
+Hiring is one of the most critical and emotionally charged responsibilities of a leader.
 
-## To Summarize
+It's a process full of uncertainty. It's also an opportunity to shape the future of a team and a company.
 
-In the end, hiring is one of the most critical and emotionally charged responsibilities of a leader.
-
-It’s a process filled with uncertainty, but it’s also an opportunity to shape the future of your team and your company.
-
-It’s a rollercoaster ride, but it’s also a journey of growth and learning.
+A roller coaster. And a journey of growth.
