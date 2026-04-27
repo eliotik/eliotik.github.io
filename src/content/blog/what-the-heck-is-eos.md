@@ -7,10 +7,10 @@ slug: what-the-heck-is-eos
 featured: false
 draft: false
 tags:
-    - management
-    - book
-    - career
+    - book review
     - eos
+    - management frameworks
+    - leadership
 description: A review of "What the Heck is EOS?", exploring its potential to improve collaboration and structure while addressing its limitations, repetitive writing, and reliance on people for true success
 ---
 

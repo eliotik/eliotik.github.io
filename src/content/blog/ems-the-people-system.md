@@ -9,14 +9,13 @@ draft: false
 thread: Five Systems of Engineering Management
 tags:
     - engineering management
+    - engineering leadership
+    - systems thinking
     - hiring
     - onboarding
     - retention
-    - career ladder
     - performance management
     - team building
-    - systems thinking
-    - engineering leadership
 description: Hiring, onboarding, growth and retention as one connected loop.
 relatedPosts:
     - ems-why-systems-not-processes

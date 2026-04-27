@@ -8,11 +8,10 @@ featured: false
 draft: false
 tags:
     - astro
-    - sharp
     - github pages
-    - hurdles
-    - godaddy
-    - cloudflare
+    - blogging
+    - web development
+    - tutorial
 description: My path of overcoming hurdles and challenges around bringing this blog to live
 ---
 

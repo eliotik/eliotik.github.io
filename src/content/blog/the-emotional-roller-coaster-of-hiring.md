@@ -8,6 +8,9 @@ featured: false
 draft: false
 tags:
     - hiring
+    - engineering management
+    - leadership
+    - recruiting
 description: The emotional highs, challenges and growth in leadership through the journey of shaping hiring processes
 ---
 

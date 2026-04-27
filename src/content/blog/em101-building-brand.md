@@ -8,8 +8,9 @@ featured: false
 draft: false
 tags:
     - engineering management
-    - em101
-    - career
+    - leadership
+    - personal branding
+    - career growth
 description: Whether you are a talented engineer or manager or "insert your role", you should make an additional effort to give your name recognition.
 ---
 

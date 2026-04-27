@@ -9,14 +9,11 @@ draft: false
 thread: Five Systems of Engineering Management
 tags:
     - engineering management
-    - technical debt
-    - software architecture
-    - code quality
-    - ADR
-    - monorepo
-    - technology strategy
-    - systems thinking
     - engineering leadership
+    - systems thinking
+    - software architecture
+    - technical debt
+    - code quality
 description: Tech debt as a system outcome. Quality as a loop. Architecture as a ripple.
 relatedPosts:
     - ems-why-systems-not-processes

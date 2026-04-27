@@ -7,11 +7,10 @@ slug: your-team-is-only-as-fast-as-its-slowest-engineer
 featured: false
 draft: false
 tags:
-    - management
-    - team building
     - engineering management
-    - career
-    - performance
+    - leadership
+    - team building
+    - performance management
     - change management
     - radical candor
 description: Can you care deeply about your team and still fire someone? "A-players hire A-players, B-players hire C-players", we've all heard it - but reality is messy. My story about building an "A-team" without becoming ruthless - and why sometimes the kindest thing a leader can do is also the hardest thing.

@@ -9,15 +9,12 @@ draft: false
 thread: Five Systems of Engineering Management
 tags:
     - engineering management
+    - engineering leadership
+    - systems thinking
     - agile
     - scrum
     - kanban
-    - retrospectives
     - incident response
-    - product engineering
-    - delivery
-    - systems thinking
-    - engineering leadership
 description: How work actually moves through a team - workflows, retros, incidents and the product-engineering handshake.
 relatedPosts:
     - ems-why-systems-not-processes

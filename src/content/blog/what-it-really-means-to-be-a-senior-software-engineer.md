@@ -7,10 +7,10 @@ slug: what-it-really-means-to-be-a-senior-software-engineer
 featured: false
 draft: false
 tags:
-    - high performance culture
-    - leadership and culture
-    - engineering roles
     - senior software engineer
+    - software engineering
+    - career growth
+    - engineering culture
     - developer productivity
 description: Your commit history doesn't make you a senior engineer. True seniors provide solutions that balance time, resources and maintenance. They organize the work and communicate with stakeholders.
 ---

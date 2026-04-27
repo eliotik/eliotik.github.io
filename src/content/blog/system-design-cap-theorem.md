@@ -8,6 +8,9 @@ featured: false
 draft: false
 tags:
     - system design
+    - distributed systems
+    - software architecture
+    - cap theorem
 description: How Brewer's theorem plays role in designing a distributed system
 ---
 

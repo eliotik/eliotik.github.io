@@ -10,6 +10,8 @@ thread: Flutter and Google Maps
 tags:
     - flutter
     - google maps
+    - mobile development
+    - tutorial
 description: Setup Google Maps and dependencies in Flutter project
 relatedPosts:
     - flutter-google-maps-embedded-map

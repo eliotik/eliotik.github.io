@@ -7,12 +7,11 @@ slug: speed-vs-process
 featured: false
 draft: false
 tags:
-    - management
-    - team building
     - engineering management
+    - leadership
+    - team building
     - change management
     - communication
-    - Principles
 description: Urgency beats purity, communication keeps the team with you. Faced with an urgent integration and scarce capacity, we chose the least-damaging path. Simple learning is - decisions win the moment but communication sustains the team.
 ---
 

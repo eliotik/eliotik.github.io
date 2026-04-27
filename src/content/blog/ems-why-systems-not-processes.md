@@ -9,12 +9,10 @@ draft: false
 thread: Five Systems of Engineering Management
 tags:
     - engineering management
-    - systems thinking
-    - leadership
-    - organizational design
-    - management philosophy
-    - ripple effects
     - engineering leadership
+    - leadership
+    - systems thinking
+    - organizational design
 description: Why engineering management is a systems problem, not a process problem. The opening article of a seven-part series.
 relatedPosts:
     - ems-the-people-system

@@ -8,7 +8,9 @@ featured: false
 draft: false
 tags:
     - personal
-    - books
+    - book review
+    - reading
+    - learning
 description: My experience so far with audio and paper books. Which one is better for me and why.
 ---
 
