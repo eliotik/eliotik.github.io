@@ -75,13 +75,27 @@ const layoutProps = {
               <aside class="related-posts">
                 <>
                   <h2>You might like to read one of these posts next:</h2>
-                    {relatedPosts.map((post) =>
+                    {relatedPosts.map((relatedPost) => {
+                      const isCurrent = relatedPost.slug === post.slug;
+                      return (
                         <p>
-                          <LinkButton href={`/posts/${post.slug}/`} title={post.data.title} ariaLabel={post.slug}>
-                          {post.data.description}
+                          <LinkButton
+                            href={`/posts/${relatedPost.slug}/`}
+                            title={relatedPost.data.title}
+                            ariaLabel={relatedPost.slug}
+                            disabled={isCurrent}
+                            className={isCurrent ? "italic text-skin-base/60 cursor-default" : ""}
+                          >
+                            {relatedPost.data.description}
+                            {isCurrent && (
+                              <span class="ml-2 whitespace-nowrap font-mono text-xs not-italic text-skin-accent">
+                                (you are here)
+                              </span>
+                            )}
                           </LinkButton>
                         </p>
-                    )}
+                      );
+                    })}
                 </>
               </aside>
  			) : null

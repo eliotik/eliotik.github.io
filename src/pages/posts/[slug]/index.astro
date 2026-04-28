@@ -37,13 +37,22 @@ const posts = await getCollection("blog");
 const sortedPosts = getSortedCollection(posts);
 const threadPositions = getThreadPositions(posts);
 
-const relatedPostsArray = relatedPosts
-? await Promise.all(
-        relatedPosts?.map(async ({ collection, slug }) => {
-            return await getEntry(collection, slug);
-        }),
-  )
-: [];
+const thread = post?.data?.thread;
+let relatedPostsArray: CollectionEntry<'blog'>[] = [];
+
+if (thread) {
+  // Build the list from all posts in the same thread, in reading order.
+  // The current post is included so it can be rendered (non-clickable)
+  // at its correct position inside its series.
+  const siblings = posts.filter(p => p.data.thread === thread);
+  relatedPostsArray = getSortedCollection<CollectionEntry<'blog'>>(siblings, 'asc');
+} else if (relatedPosts) {
+  relatedPostsArray = await Promise.all(
+    relatedPosts.map(async ({ collection, slug }) => {
+      return await getEntry(collection, slug);
+    }),
+  );
+}
 
 const pagination = getPagination<CollectionEntry<'blog'>>({
   entities: sortedPosts,
