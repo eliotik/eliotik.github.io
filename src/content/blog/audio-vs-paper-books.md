@@ -34,7 +34,7 @@ I will be honest with you, I didn't like reading books at first. I was more into
 
 I'm a slow reader, I don't rush to finish a book. I like to take my time and enjoy the book. I reread some books multiple times, and I always find something new.
 
-I read many books, many ahead of my age, and this is actually a problem. I have fun chats with my wife about books, time to time, she mentions some books, and I say, "I read it, but I don't remember all the details." She doubts it, and we start chatting about a book, once I get a bit more details, I start remembering the book, and then she believes me.
+I read many books, many ahead of my age, and this is actually a problem. I have fun chats with my wife about books, time to time, she mentions some books, and I say, "I read it, but I don't remember all the details". She doubts it, and we start chatting about a book, once I get a bit more details, I start remembering the book, and then she believes me.
 
 My grandmother recently gifted me a notebook where she recorded all the books I've read while staying at her place. My wife was surprised to see the list, and I was surprised to see how many books I've read too :)
 
@@ -47,7 +47,7 @@ Let me capture my thoughts on paper books first. I have been reading paper books
 -   I can highlight important parts — it helps me with learn new words, easy to find highlighted part later
 -   I can write notes in the margins and make drawings - to be frank, I mostly draw doodles on the margins
 -   I can easily go back and forth - it maybe my thing, but I do a lot of backs and forth while reading
--   I can see/feel the _progress_ - getting things done, feeling the progress; all this helps to release _dopamine_
+-   I can see/feel the _progress_ - getting things done, feeling the progress - all this helps to release _dopamine_
 
 ### Why I don't like paper books
 

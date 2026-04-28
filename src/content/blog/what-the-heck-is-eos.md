@@ -52,7 +52,7 @@ This is particularly true for organizations scaling rapidly, where clarity and c
 
 Yet, even with structure, I observed that leadership meetings often drifted toward a “Go-To-Market” format, sidelining certain teams.
 
-This raises a crucial question: does EOS truly create inclusivity, or does it risk reinforcing existing silos?
+This raises a crucial question: does EOS truly create inclusivity or does it risk reinforcing existing silos?
 
 ## How Bad Were Our Leadership Meetings?
 
@@ -90,7 +90,7 @@ Many of these principles you learn through experience or borrow from better-exec
 
 It provides a structured approach to meetings and goal setting, which can be helpful for organizations struggling with chaos.
 
-One critical takeaway: `EOS isn't a one-size-fits-all solution`; it's a suggestion, not a Bible.
+One critical takeaway: `EOS isn't a one-size-fits-all solution` - it's a suggestion, not a Bible.
 
 Coincidentally me and my wife read this book the same day and the following day we discussed this book and EOS.
 
