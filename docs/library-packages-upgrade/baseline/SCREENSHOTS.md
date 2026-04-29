@@ -1,9 +1,22 @@
 # Baseline Screenshots — T-00
 
+> **Re-captured to fix T-00-D1** — see `justifications/T-00.md` "Defect resolutions"
+> section. The previous round captured at the page's intrinsic content extent rather
+> than the documented viewport, producing PNGs of 156–1800 px width; the current
+> round below is uniformly 1280 px wide.
+
 Pre-upgrade visual baseline of the live site as of branch `upgrade/T-00-baseline`
 (parent commit `d8bf57e`). Captured with the `superpowers-chrome` MCP tool driving a
-Chromium instance via the Chrome DevTools Protocol; full-page screenshots captured at
-viewport **1280×800** with `deviceScaleFactor: 1`.
+Chromium instance via the Chrome DevTools Protocol. Each PNG is a **viewport-mode**
+screenshot (not `fullpage: true`) at viewport **1280 × 1800** with
+`deviceScaleFactor: 1` — the chrome MCP's `fullpage: true` mode disregards the
+configured viewport width on pages whose layout intrinsic-width differs from the
+viewport, so viewport mode at 1280 × 1800 is the only configuration that produces
+deterministic 1280-px-wide output. The 1800 px viewport height is the maximum that
+the MCP renders without applying max-output-pixel downscaling (longest side ≤ 1800);
+it covers the above-the-fold content plus enough below-the-fold material on every
+route to include the carousel on screenshot 4 (which sits at y=918 with height 382 on
+the carousel post).
 
 Subsequent upgrade tasks (notably T-10, T-11, T-20, T-21, T-22, T-30) use these PNGs
 as the visual diff baseline. Differences are evaluated **approximately** — minor
@@ -18,7 +31,8 @@ missing images, broken theming, or missing components are not.
 | `yarn --version` | `1.22.22` |
 | `npx astro --version` | `astro v4.4.9` |
 | OS | Darwin 25.3.0 (arm64) |
-| Viewport | 1280 × 800, scale 1, full page |
+| Viewport | 1280 × 1800 CSS px, `deviceScaleFactor: 1`, viewport-mode capture |
+| PNG output | uniform 1280 × 1800 across all 10 captures (verified with `file`) |
 
 ## Screenshots
 
