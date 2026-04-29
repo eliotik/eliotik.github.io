@@ -87,19 +87,19 @@ tasks:
     title: Migrate yarn 1 → pnpm via Corepack
     phase: 0
     lane: L2
-    status: backlog
+    status: qa-pending
     depends_on: [T-02]
     blocks: [T-10, T-11, T-12, T-13, T-14, T-20]
     visual_smoke_required: false
-    branch: null
+    branch: upgrade/T-03-pnpm
     commit_sha: null
-    worker: null
-    started_at: null
-    finished_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T00:00:00Z
+    finished_at: 2026-04-29T20:15:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-03.md
     defects: []
 
   - id: T-10

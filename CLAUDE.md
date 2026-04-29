@@ -8,13 +8,13 @@ This is a personal blog/website built with Astro, deployed to GitHub Pages. The 
 
 ## Development Commands
 
-- `yarn dev` - Start development server
-- `yarn build` - Build for production (runs Astro check, builds, and optimizes with jampack)
-- `yarn preview` - Preview production build
-- `yarn format` - Format code with Prettier
-- `yarn format:check` - Check code formatting
-- `yarn lint` - Run ESLint
-- `yarn sync` - Sync Astro content collections
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production (runs Astro check, builds, and optimizes with jampack)
+- `pnpm preview` - Preview production build
+- `pnpm format` - Format code with Prettier
+- `pnpm format:check` - Check code formatting
+- `pnpm lint` - Run ESLint
+- `pnpm sync` - Sync Astro content collections
 
 ## Architecture
 

@@ -2,6 +2,7 @@
     "name": "eliotik.github.io",
     "version": "0.0.1",
     "type": "module",
+    "packageManager": "pnpm@10.33.2",
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
@@ -14,7 +15,7 @@
         "prepare": "husky install",
         "lint": "eslint .",
         "clean": "./clean-cache.sh",
-        "fresh": "./clean-cache.sh && yarn dev"
+        "fresh": "./clean-cache.sh && pnpm dev"
     },
     "engines": {
         "node": "22.22.2"
@@ -70,5 +71,14 @@
     },
     "resolutions": {
         "sharp": "0.32.6"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@swc/core",
+            "contentlayer",
+            "esbuild",
+            "protobufjs",
+            "sharp"
+        ]
     }
 }
