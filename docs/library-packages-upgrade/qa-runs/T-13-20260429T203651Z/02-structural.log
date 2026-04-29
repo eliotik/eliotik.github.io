@@ -1,0 +1,12 @@
+  - package-ecosystem: npm
+      interval: weekly
+    labels:
+  - package-ecosystem: github-actions
+      interval: weekly
+    labels:
+      astro:
+      react:
+      eslint:
+      tailwind:
+      prod-minor:
+      dev-minor:

@@ -1,0 +1,30 @@
+
+> eliotik.github.io@0.0.1 lint /Users/ap/development/other/eliotik.github.io-T-13
+> eslint .
+
+
+/Users/ap/development/other/eliotik.github.io-T-13/src/env.d.ts
+  1:1  error  Do not use a triple slash reference for ../.astro/types.d.ts, use `import` style instead  @typescript-eslint/triple-slash-reference
+
+/Users/ap/development/other/eliotik.github.io-T-13/src/layouts/Layout.astro
+  132:27  error  'dataLayer' is not defined  no-undef
+
+/Users/ap/development/other/eliotik.github.io-T-13/src/layouts/PostDetails.astro
+   71:5  error  The element article has an implicit role of article. Defining this explicitly is redundant and should be avoided  astro/jsx-a11y/no-redundant-roles
+   73:1  error  Mixed spaces and tabs                                                                                             no-mixed-spaces-and-tabs
+   74:1  error  Mixed spaces and tabs                                                                                             no-mixed-spaces-and-tabs
+  101:1  error  Mixed spaces and tabs                                                                                             no-mixed-spaces-and-tabs
+  102:1  error  Mixed spaces and tabs                                                                                             no-mixed-spaces-and-tabs
+
+/Users/ap/development/other/eliotik.github.io-T-13/src/layouts/TipDetails.astro
+  58:5  error  The element article has an implicit role of article. Defining this explicitly is redundant and should be avoided  astro/jsx-a11y/no-redundant-roles
+
+/Users/ap/development/other/eliotik.github.io-T-13/src/utils/getThreadDetail.ts
+  36:28  error  Unnecessary escape character: \[  no-useless-escape
+  36:32  error  Unnecessary escape character: \(  no-useless-escape
+  36:34  error  Unnecessary escape character: \)  no-useless-escape
+
+✖ 11 problems (11 errors, 0 warnings)
+
+ ELIFECYCLE  Command failed with exit code 1.
+exit=0

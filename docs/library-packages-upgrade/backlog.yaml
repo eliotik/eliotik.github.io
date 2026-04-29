@@ -163,7 +163,7 @@ tasks:
     title: Add Dependabot configuration
     phase: 1
     lane: L1
-    status: qa-pending
+    status: done
     depends_on: [T-03]
     blocks: [T-20]
     visual_smoke_required: false
@@ -172,9 +172,9 @@ tasks:
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T21:45:00Z
     finished_at: 2026-04-29T22:10:00Z
-    qa_worker: null
-    qa_started_at: null
-    qa_finished_at: null
+    qa_worker: claude-sonnet-4-6-qa
+    qa_started_at: 2026-04-29T22:30:00Z
+    qa_finished_at: 2026-04-29T23:00:00Z
     justification_file: docs/library-packages-upgrade/justifications/T-13.md
     defects: []
 
