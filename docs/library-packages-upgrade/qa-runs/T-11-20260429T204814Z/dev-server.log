@@ -1,0 +1,30 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-11
+> astro dev
+
+
+ astro  v4.4.9 ready in 267 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+16:52:22 watching for file changes...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+16:52:24 [200] /posts/flutter-google-maps-embedded-map 971ms
+16:52:27 [200] / 4ms
+16:52:33 [200] / 3ms
+16:53:28 [200] / 6ms
+16:53:55 [200] / 3ms
+16:54:35 [200] /posts 4ms
+16:55:11 [200] /posts/ems-connecting-the-systems 79ms
+16:55:47 [200] /posts/flutter-google-maps-embedded-map 6ms
+16:56:24 [200] /tips 28ms
+16:57:01 [200] /tags 6ms
+16:57:36 [200] /tags/engineering-management/ 4ms
+16:58:12 [200] /threads 3ms
+16:58:48 [200] /about 1ms
+16:59:25 [404] /this-route-doesnt-exist 2ms
+17:00:33 [200] / 3ms
+17:01:35 [200] / 5ms

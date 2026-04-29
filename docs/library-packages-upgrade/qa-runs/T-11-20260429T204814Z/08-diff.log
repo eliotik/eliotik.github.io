@@ -1,0 +1,13 @@
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-11.md
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/01-home.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/02-posts-index.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/03-post-with-images.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/04-post-with-carousel.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/05-tips-index.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/06-tags-index.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/07-tag-detail.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/08-threads-index.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/09-about.png
+A	docs/library-packages-upgrade/qa-runs/T-11-20260429163219/10-404.png
+M	src/layouts/Layout.astro
