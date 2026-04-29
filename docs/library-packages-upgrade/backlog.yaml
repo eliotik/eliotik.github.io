@@ -30,14 +30,14 @@ tasks:
     title: Operational infrastructure & baseline capture
     phase: 0
     lane: preflight
-    status: backlog
+    status: in-progress
     depends_on: []
     blocks: [T-01, T-02]
     visual_smoke_required: false
-    branch: null
+    branch: upgrade/T-00-baseline
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-opus-4-7
+    started_at: 2026-04-29T15:34:34Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
