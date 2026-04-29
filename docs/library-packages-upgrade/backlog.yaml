@@ -49,19 +49,19 @@ tasks:
     title: PR validation workflow (CI gate)
     phase: 0
     lane: L1
-    status: in-progress
+    status: qa-pending
     depends_on: [T-00]
     blocks: [T-02]
     visual_smoke_required: false
     branch: upgrade/T-01-ci-gate
-    commit_sha: null
+    commit_sha: 93ba575d6233d1dd4f196c3139c6d80b116b4aa9
     worker: claude-opus-4-7
     started_at: 2026-04-29T16:29:26Z
-    finished_at: null
+    finished_at: 2026-04-29T16:31:08Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-01.md
     defects: []
 
   - id: T-02
