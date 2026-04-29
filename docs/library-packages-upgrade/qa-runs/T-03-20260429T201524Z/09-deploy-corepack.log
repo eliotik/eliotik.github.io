@@ -1,0 +1,4 @@
+      - name: Enable Corepack & pnpm
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site.

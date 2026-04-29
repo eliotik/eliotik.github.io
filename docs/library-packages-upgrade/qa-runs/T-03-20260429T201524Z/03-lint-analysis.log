@@ -1,0 +1,27 @@
+QA Lint Analysis — T-03
+========================
+
+pnpm lint exits 1 with 11 errors. All errors are pre-existing (not introduced by T-03).
+
+Files with lint errors:
+  src/env.d.ts                      (1 error)
+  src/layouts/Layout.astro          (1 error)
+  src/layouts/PostDetails.astro     (5 errors)
+  src/layouts/TipDetails.astro      (1 error)
+  src/utils/getThreadDetail.ts      (3 errors)
+
+T-03 diff (git diff main...HEAD --name-only) touches:
+  .github/workflows/deploy.yml
+  .husky/pre-commit
+  CLAUDE.md
+  docs/library-packages-upgrade/backlog.yaml
+  docs/library-packages-upgrade/baseline/audit-baseline.txt
+  docs/library-packages-upgrade/justifications/T-03.md
+  package.json
+  pnpm-lock.yaml
+  yarn.lock (deleted)
+
+Intersection of lint-error files and T-03 diff: EMPTY.
+
+Conclusion: ACCEPT — all 11 errors are in files NOT touched by T-03.
+Deferred to T-12/T-23 per plan.
