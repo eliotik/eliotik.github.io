@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
@@ -16,6 +15,13 @@ import expressiveCode from "astro-expressive-code";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  trailingSlash: 'ignore',
+  redirects: {
+    '/posts/1': '/posts',
+    '/posts/1/': '/posts',
+    '/tips/1': '/tips',
+    '/tips/1/': '/tips',
+  },
   integrations: [
   partytown({ config: { forward: ['dataLayer.push'] } }),
   tailwind({
@@ -28,7 +34,6 @@ export default defineConfig({
   react({
     experimentalReactChildren: true
   }),
-    sitemap(),
   ],
   // image: {
   //  // https://docs.astro.build/en/reference/errors/missing-sharp/

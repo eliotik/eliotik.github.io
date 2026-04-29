@@ -38,7 +38,11 @@ const canonicalURL = new URL(
 ).href;
 ---
 
-<Layout title={`Tag: ${tagName} | ${SITE.title}`} canonicalURL={canonicalURL}>
+<Layout
+  title={`Tag: ${tagName} | ${SITE.title}`}
+  canonicalURL={canonicalURL}
+  noindex={currentPage > 1}
+>
   <Header activeNav="tags" />
   <Main
     pageTitle={["#", `${tagName}`]}

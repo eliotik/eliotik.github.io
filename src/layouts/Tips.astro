@@ -39,7 +39,11 @@ const canonicalURL = currentPage === 1
   : new URL(`/tips/${currentPage}/`, Astro.site).href;
 ---
 
-<Layout title={`Tips & Thoughts | ${SITE.title}`} canonicalURL={canonicalURL}>
+<Layout
+  title={`Tips & Thoughts | ${SITE.title}`}
+  canonicalURL={canonicalURL}
+  noindex={currentPage > 1}
+>
   <Header activeNav="tips" />
   <Main pageTitle="Tips & Thoughts" pageDesc="All the tips & thoughts I've posted.">
     <ul>
