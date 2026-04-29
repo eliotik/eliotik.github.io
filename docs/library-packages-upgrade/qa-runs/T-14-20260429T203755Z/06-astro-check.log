@@ -1,0 +1,14 @@
+ WARN  Unsupported engine: wanted: {"node":"22.22.2"} (current: {"node":"v18.19.0","pnpm":"10.33.2"})
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io-T-14
+> astro check
+
+✘ [ERROR] The build was canceled
+
+16:38:20 Types generated 182ms
+16:38:20 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-14...
+Result (72 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
