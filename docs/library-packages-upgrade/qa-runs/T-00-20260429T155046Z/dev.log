@@ -1,0 +1,14 @@
+yarn run v1.22.22
+$ astro dev
+
+ astro  v4.4.9 ready in 303 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+11:52:03 watching for file changes...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+11:52:05 [404] /this-route-doesnt-exist 6ms
+11:52:10 [200] / 55ms
