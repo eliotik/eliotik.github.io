@@ -144,19 +144,19 @@ tasks:
     title: Draft eslint.config.js (flat config) alongside legacy
     phase: 1
     lane: L1
-    status: in-progress
+    status: qa-pending
     depends_on: [T-03]
     blocks: [T-20, T-23]
     visual_smoke_required: false
     branch: upgrade/T-12-eslint-flat
-    commit_sha: null
+    commit_sha: 0db2ac3abc18538d1803f63ea92d63ea0e9badca
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T21:45:00Z
-    finished_at: null
+    finished_at: 2026-04-29T22:15:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-12.md
     defects: []
 
   - id: T-13
