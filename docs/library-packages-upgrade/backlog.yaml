@@ -163,15 +163,15 @@ tasks:
     title: Add Dependabot configuration
     phase: 1
     lane: L1
-    status: in-progress
+    status: qa-pending
     depends_on: [T-03]
     blocks: [T-20]
     visual_smoke_required: false
     branch: upgrade/T-13-dependabot
-    commit_sha: null
+    commit_sha: 99fbd65faaaaa8f2b4dd7d28f9b5034e0a8018cc
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T21:45:00Z
-    finished_at: null
+    finished_at: 2026-04-29T22:10:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
