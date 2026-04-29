@@ -130,7 +130,7 @@ tasks:
     blocks: [T-20, T-24]
     visual_smoke_required: true
     branch: upgrade/T-11-inline-theme
-    commit_sha: null
+    commit_sha: f4b869775dec4d9deff70e4c0cd92ed953ccd4b0
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T21:35:00Z
     finished_at: 2026-04-29T22:45:00Z
