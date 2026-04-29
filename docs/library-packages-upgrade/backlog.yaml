@@ -68,19 +68,19 @@ tasks:
     title: Bump Node to 22 LTS
     phase: 0
     lane: L2
-    status: in-progress
+    status: qa-pending
     depends_on: [T-00, T-01]
     blocks: [T-03]
     visual_smoke_required: false
     branch: upgrade/T-02-node-22
-    commit_sha: null
+    commit_sha: b4ceedb888fe10b9f5b12eaf5ad24bc5f3970c0f
     worker: claude-opus-4-7
     started_at: 2026-04-29T17:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T17:45:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-02.md
     defects: []
 
   - id: T-03
