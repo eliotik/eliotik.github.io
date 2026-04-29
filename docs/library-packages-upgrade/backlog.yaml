@@ -68,14 +68,14 @@ tasks:
     title: Bump Node to 22 LTS
     phase: 0
     lane: L2
-    status: backlog
+    status: in-progress
     depends_on: [T-00, T-01]
     blocks: [T-03]
     visual_smoke_required: false
-    branch: null
+    branch: upgrade/T-02-node-22
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-opus-4-7
+    started_at: 2026-04-29T17:00:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
