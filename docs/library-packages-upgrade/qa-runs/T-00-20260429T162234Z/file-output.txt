@@ -1,0 +1,10 @@
+docs/library-packages-upgrade/baseline/01-home.png:               PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/02-posts-index.png:        PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/03-post-with-images.png:   PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/04-post-with-carousel.png: PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/05-tips-index.png:         PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/06-tags-index.png:         PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/07-tag-detail.png:         PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/08-threads-index.png:      PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/09-about.png:              PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced
+docs/library-packages-upgrade/baseline/10-404.png:                PNG image data, 1280 x 1800, 8-bit/color RGB, non-interlaced

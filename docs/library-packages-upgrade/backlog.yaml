@@ -30,7 +30,7 @@ tasks:
     title: Operational infrastructure & baseline capture
     phase: 0
     lane: preflight
-    status: qa-pending
+    status: done
     depends_on: []
     blocks: [T-01, T-02]
     visual_smoke_required: false
@@ -40,8 +40,8 @@ tasks:
     started_at: 2026-04-29T15:34:34Z
     finished_at: 2026-04-29T16:19:45Z
     qa_worker: claude-opus-4-7-qa
-    qa_started_at: 2026-04-29T15:50:16Z
-    qa_finished_at: 2026-04-29T15:55:12Z
+    qa_started_at: 2026-04-29T16:22:34Z
+    qa_finished_at: 2026-04-29T16:24:15Z
     justification_file: docs/library-packages-upgrade/justifications/T-00.md
     defects: [docs/library-packages-upgrade/defects/T-00-D1.md]
 
