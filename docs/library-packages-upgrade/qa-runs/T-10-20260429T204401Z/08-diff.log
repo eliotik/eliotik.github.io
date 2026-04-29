@@ -1,0 +1,5 @@
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-10.md
+A	docs/library-packages-upgrade/qa-runs/T-10-20260429/01-post-flutter-google-maps-embedded-map.png
+A	docs/library-packages-upgrade/qa-runs/T-10-20260429/02-post-flutter-google-maps-embedded-map-reload.png
+M	src/components/ImageSliderClient.tsx

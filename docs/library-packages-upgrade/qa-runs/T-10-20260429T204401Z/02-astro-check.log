@@ -1,0 +1,14 @@
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io-T-10
+> astro check
+
+16:44:13 [vite] Re-optimizing dependencies because vite config has changed
+✘ [ERROR] The build was canceled
+
+16:44:13 Types generated 193ms
+16:44:13 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-10...
+Result (72 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+

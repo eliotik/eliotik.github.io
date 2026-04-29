@@ -1,0 +1,27 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-10
+> astro dev
+
+16:44:55 [vite] Re-optimizing dependencies because vite config has changed
+
+ astro  v4.4.9 ready in 299 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+16:44:55 watching for file changes...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+16:44:57 [200] /posts/flutter-google-maps-embedded-map 967ms
+16:45:02 [200] /posts/flutter-google-maps-embedded-map 9ms
+16:45:07 [200] /posts/flutter-google-maps-embedded-map 8ms
+16:45:50 [200] / 4ms
+16:45:59 [200] /posts/flutter-google-maps-embedded-map 6ms
+16:46:54 [200] /posts/flutter-google-maps-embedded-map 4ms
+16:48:50 [200] /posts/flutter-google-maps-embedded-map 5ms
+16:49:59 [200] /posts/flutter-google-maps-embedded-map 6ms
+16:50:52 [200] / 4ms
+16:50:59 [200] /posts/flutter-google-maps-embedded-map 5ms
+16:51:33 [200] /posts/flutter-google-maps-embedded-map 5ms
+16:51:45 [200] / 3ms
