@@ -26,7 +26,7 @@ export async function getStaticPaths() {
     return totalPages
       .filter(page => page !== 1) // Exclude page 1, it's served by /tags/[tag]/index.astro
       .map(page => ({
-        params: { tag, page },
+        params: { tag, page: String(page) },
         props: { tag, tagName },
       }));
   });

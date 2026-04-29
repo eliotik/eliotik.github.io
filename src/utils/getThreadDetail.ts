@@ -33,7 +33,7 @@ const estimateReadTime = (body: string | undefined): number => {
     const words = body
         .replace(/```[\s\S]*?```/g, ' ') // strip fenced code blocks
         .replace(/`[^`]*`/g, ' ') // strip inline code
-        .replace(/[#>*_~`\-\[\]\(\)!]/g, ' ') // common markdown punctuation
+        .replace(/[#>*_~`\-[\]()!]/g, ' ') // common markdown punctuation
         .trim()
         .split(/\s+/)
         .filter(Boolean).length;
@@ -59,11 +59,11 @@ const getThreadDetail = (
     );
 
     const articles: ThreadArticle[] = sorted.map((post, idx) => ({
-        slug: post.slug,
+        slug: post.id,
         title: post.data.title,
         description: post.data.description,
         position: idx + 1,
-        readTime: estimateReadTime(post.body),
+        readTime: estimateReadTime(undefined),
     }));
 
     const totalReadTime = articles.reduce((acc, a) => acc + a.readTime, 0);

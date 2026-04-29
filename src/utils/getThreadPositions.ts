@@ -35,7 +35,7 @@ const getThreadPositions = (
             'asc'
         );
         ordered.forEach((post, index) => {
-            positions[post.slug] = {
+            positions[post.id] = {
                 thread,
                 position: index + 1,
                 total: ordered.length,

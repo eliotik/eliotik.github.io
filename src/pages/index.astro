@@ -28,12 +28,12 @@ const threadPositions = getThreadPositions(posts);
           <section id="featured">
             <h2>Featured</h2>
             <ul>
-              {featuredPosts.map(({ data, slug }) => (
+              {featuredPosts.map(({ data, id }) => (
                 <Card
-                  href={`/posts/${slug}/`}
+                  href={`/posts/${id}/`}
                   frontmatter={data}
                   secHeading={false}
-                  threadPosition={threadPositions[slug]}
+                  threadPosition={threadPositions[id]}
                 />
               ))}
             </ul>
@@ -71,13 +71,13 @@ const threadPositions = getThreadPositions(posts);
                 sortedPosts
                   .filter(({ data }) => !data.featured)
                   .map(
-                    ({ data, slug }, index) =>
+                    ({ data, id }, index) =>
                       index < 4 && (
                         <Card
-                          href={`/posts/${slug}/`}
+                          href={`/posts/${id}/`}
                           frontmatter={data}
                           secHeading={false}
-                          threadPosition={threadPositions[slug]}
+                          threadPosition={threadPositions[id]}
                         />
                       )
                   )

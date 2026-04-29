@@ -4,6 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
@@ -27,11 +28,11 @@ const {
   tags,
 } = post.data;
 
-const { Content } = await post.render();
+const { Content } = await render(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
-  ogImageUrl ?? `/posts/${post.slug}.png`,
+  ogImageUrl ?? `/posts/${post.id}.png`,
   Astro.url.origin
 ).href;
 
@@ -68,21 +69,21 @@ const layoutProps = {
   </div>
   <main id="main-content">
     <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
-    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+    <article id="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
- 		{
- 			relatedPosts?.length ? (
+      {
+        relatedPosts?.length ? (
               <aside class="related-posts">
                 <>
                   <h2>You might like to read one of these posts next:</h2>
                     {relatedPosts.map((relatedPost) => {
-                      const isCurrent = relatedPost.slug === post.slug;
+                      const isCurrent = relatedPost.id === post.id;
                       return (
                         <p>
                           <LinkButton
-                            href={`/posts/${relatedPost.slug}/`}
+                            href={`/posts/${relatedPost.id}/`}
                             title={relatedPost.data.title}
-                            ariaLabel={relatedPost.slug}
+                            ariaLabel={relatedPost.id}
                             disabled={isCurrent}
                             className={isCurrent ? "italic text-skin-base/60 cursor-default" : ""}
                           >
@@ -98,8 +99,8 @@ const layoutProps = {
                     })}
                 </>
               </aside>
- 			) : null
- 		}
+        ) : null
+      }
     </article>
 
     <ul class="my-8">

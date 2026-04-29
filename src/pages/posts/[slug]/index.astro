@@ -16,7 +16,7 @@ export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
 
   const postResult = posts.map(post => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post, relatedPosts: post.data.relatedPosts },
   }));
 
@@ -48,8 +48,8 @@ if (thread) {
   relatedPostsArray = getSortedCollection<CollectionEntry<'blog'>>(siblings, 'asc');
 } else if (relatedPosts) {
   relatedPostsArray = await Promise.all(
-    relatedPosts.map(async ({ collection, slug }) => {
-      return await getEntry(collection, slug);
+    relatedPosts.map(async ({ collection, id }) => {
+      return await getEntry(collection, id);
     }),
   );
 }

@@ -10,8 +10,8 @@ export async function GET() {
     const sortedPosts = getSortedCollection<CollectionEntry<'blog'>>(posts);
     const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
 
-    const postItems = sortedPosts.map(({ data, slug }) => ({
-        link: `posts/${slug}`,
+    const postItems = sortedPosts.map(({ data, id }) => ({
+        link: `posts/${id}`,
         title: data.title,
         description: data.description,
         pubDate: new Date(data.modDatetime ?? data.pubDatetime),

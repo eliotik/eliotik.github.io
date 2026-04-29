@@ -1,7 +1,7 @@
 ---
 import { LOCALE, SITE } from "@config";
 import "@styles/base.css";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -128,7 +128,7 @@ const socialImageURL = new URL(
 
         <script data-category="analytics" is:inline type="text/partytown">
           window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
+          function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
           gtag('config', 'G-QQMCTBW5TH');
@@ -156,7 +156,7 @@ const socialImageURL = new URL(
       })();
     </script>
 
-    <ViewTransitions />
+    <ClientRouter />
 
     <script is:inline src="/toggle-theme.js"></script>
   </head>

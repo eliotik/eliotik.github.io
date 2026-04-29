@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
@@ -18,7 +19,7 @@ const { currentPage, totalPages, paginatedEntities } = Astro.props;
 
 const tips = [];
 for (const entity of paginatedEntities) {
-  const { Content } = await entity.render();
+  const { Content } = await render(entity);
 
   tips.push({
     title: entity.data.title,

@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
@@ -20,7 +21,7 @@ const {
   modDatetime,
 } = tip.data;
 
-const { Content } = await tip.render();
+const { Content } = await render(tip);
 
 const canonicalURL = new URL(
   `/tips/${tip.data.customSlug}/`,
@@ -55,7 +56,7 @@ const layoutProps = {
   </div>
   <main id="main-content">
     <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
-    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+    <article id="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
     </article>
 

@@ -79,11 +79,11 @@ const canonicalURL = new URL(
 
     <ul class="divide-y divide-dashed divide-skin-line/60">
       {
-        paginatedEntities.map(({ data, slug }) => (
+        paginatedEntities.map(({ data, id }) => (
           <Card
-            href={`/posts/${slug}/`}
+            href={`/posts/${id}/`}
             frontmatter={data}
-            threadPosition={threadPositions?.[slug]}
+            threadPosition={threadPositions?.[id]}
           />
         ))
       }

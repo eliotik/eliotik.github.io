@@ -33,11 +33,11 @@ const canonicalURL = currentPage === 1
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
       {
-        paginatedEntities.map(({ data, slug }) => (
+        paginatedEntities.map(({ data, id }) => (
           <Card
-            href={`/posts/${slug}/`}
+            href={`/posts/${id}/`}
             frontmatter={data}
-            threadPosition={threadPositions?.[slug]}
+            threadPosition={threadPositions?.[id]}
           />
         ))
       }

@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
     const sorted = getSortedCollection<CollectionEntry<'blog'>>(posts);
 
     const entries: SitemapEntry[] = sorted.map(post => ({
-        loc: absUrl(`/posts/${post.slug}/`),
+        loc: absUrl(`/posts/${post.id}/`),
         lastmod: post.data.modDatetime ?? post.data.pubDatetime,
         changefreq: 'monthly',
         priority: 0.8,

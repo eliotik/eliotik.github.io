@@ -201,19 +201,19 @@ tasks:
     title: Astro 4 → 5 (content layer, ClientRouter, sharp unpin)
     phase: 2
     lane: L2
-    status: backlog
+    status: qa-pending
     depends_on: [T-03, T-10, T-11, T-12, T-13, T-14]
     blocks: [T-21]
     visual_smoke_required: true
-    branch: null
+    branch: upgrade/T-20-astro-5
     commit_sha: null
-    worker: null
-    started_at: null
-    finished_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T22:00:00Z
+    finished_at: 2026-04-29T23:30:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-20.md
     defects: []
 
   - id: T-21
