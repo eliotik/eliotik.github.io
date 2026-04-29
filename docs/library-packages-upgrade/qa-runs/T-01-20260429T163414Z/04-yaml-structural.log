@@ -1,0 +1,17 @@
+Top-level keys: ['name', True, 'permissions', 'jobs']
+name: CI
+'on' key (under boolean True): {'pull_request': {'branches': ['main']}, 'workflow_dispatch': None}
+permissions: {'contents': 'read'}
+jobs keys: ['validate']
+validate.runs-on: ubuntu-latest
+step count: 8
+  step 0: actions/checkout@v4
+  step 1: Set up Node
+    with: {'node-version-file': '.nvmrc'}
+  step 2: Enable Corepack & pnpm
+  step 3: Install
+  step 4: Astro check
+  step 5: Lint
+  step 6: Build
+  step 7: Audit (production)
+    continue-on-error: True
