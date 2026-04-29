@@ -1,0 +1,4 @@
+BASE=8a70b2b194d90925a1f41d5233528b1fbc198f39
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-12.md
+A	eslint.config.js
