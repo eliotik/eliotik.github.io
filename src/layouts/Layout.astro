@@ -2,7 +2,6 @@
 import { LOCALE, SITE } from "@config";
 import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
-import { ThemeModeScript } from "flowbite-react";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -137,10 +136,29 @@ const socialImageURL = new URL(
       </>
     )}
 
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored ? stored : (prefers ? 'dark' : 'light');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (_) {
+          // localStorage unavailable (private mode, etc.) — fall back to system preference
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+          }
+        }
+      })();
+    </script>
+
     <ViewTransitions />
 
     <script is:inline src="/toggle-theme.js"></script>
-    <ThemeModeScript />
   </head>
   <body>
     <slot />
