@@ -182,19 +182,19 @@ tasks:
     title: Modernize Husky pre-commit + add ESLint to lint-staged
     phase: 1
     lane: L1
-    status: in-progress
+    status: qa-pending
     depends_on: [T-03]
     blocks: [T-20]
     visual_smoke_required: false
     branch: upgrade/T-14-husky-modernize
-    commit_sha: null
+    commit_sha: 0f692e0
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T22:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T22:45:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-14.md
     defects: []
 
   - id: T-20
