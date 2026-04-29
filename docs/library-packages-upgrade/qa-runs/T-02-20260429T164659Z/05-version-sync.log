@@ -1,0 +1,13 @@
+=== .nvmrc ===
+22.22.2
+
+=== package.json engines ===
+    "engines": {
+        "node": "22.22.2"
+    },
+
+=== deploy.yml node-version ===
+          node-version: 22.22.2 # The specific version of Node that should be used to build your site. Defaults to 18. (optional)
+
+=== ci.yml node-version ===
+          node-version-file: '.nvmrc'

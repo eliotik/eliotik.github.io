@@ -68,7 +68,7 @@ tasks:
     title: Bump Node to 22 LTS
     phase: 0
     lane: L2
-    status: qa-pending
+    status: done
     depends_on: [T-00, T-01]
     blocks: [T-03]
     visual_smoke_required: false
@@ -77,9 +77,9 @@ tasks:
     worker: claude-opus-4-7
     started_at: 2026-04-29T17:00:00Z
     finished_at: 2026-04-29T17:45:00Z
-    qa_worker: null
-    qa_started_at: null
-    qa_finished_at: null
+    qa_worker: claude-opus-4-7-qa
+    qa_started_at: 2026-04-29T16:46:30Z
+    qa_finished_at: 2026-04-29T16:50:46Z
     justification_file: docs/library-packages-upgrade/justifications/T-02.md
     defects: []
 

@@ -1,0 +1,21 @@
+* Host localhost:4321 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:4321...
+* Connected to localhost (::1) port 4321
+> GET / HTTP/1.1
+> Host: localhost:4321
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Access-Control-Allow-Origin: *
+< content-type: text/html
+< Date: Wed, 29 Apr 2026 16:49:17 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Transfer-Encoding: chunked
+< 
+{ [2131 bytes data]
+* Connection #0 to host localhost left intact

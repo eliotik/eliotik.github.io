@@ -1,0 +1,16 @@
+yarn run v1.22.22
+$ astro dev
+12:49:10 [vite] Re-optimizing dependencies because vite config has changed
+
+ astro  v4.4.9 ready in 270 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+12:49:10 watching for file changes...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+12:49:11 [404] /this-route-doesnt-exist 5ms
+12:49:17 [200] / 55ms
+Done in 11.26s.
