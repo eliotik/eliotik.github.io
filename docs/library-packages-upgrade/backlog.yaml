@@ -49,14 +49,14 @@ tasks:
     title: PR validation workflow (CI gate)
     phase: 0
     lane: L1
-    status: backlog
+    status: in-progress
     depends_on: [T-00]
     blocks: [T-02]
     visual_smoke_required: false
-    branch: null
+    branch: upgrade/T-01-ci-gate
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-opus-4-7
+    started_at: 2026-04-29T16:29:26Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
