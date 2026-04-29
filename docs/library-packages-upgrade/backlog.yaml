@@ -163,19 +163,19 @@ tasks:
     title: Add Dependabot configuration
     phase: 1
     lane: L1
-    status: backlog
+    status: in-progress
     depends_on: [T-03]
     blocks: [T-20]
     visual_smoke_required: false
-    branch: null
+    branch: upgrade/T-13-dependabot
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T21:45:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-13.md
     defects: []
 
   - id: T-14
