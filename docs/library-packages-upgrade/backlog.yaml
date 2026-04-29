@@ -144,14 +144,14 @@ tasks:
     title: Draft eslint.config.js (flat config) alongside legacy
     phase: 1
     lane: L1
-    status: backlog
+    status: in-progress
     depends_on: [T-03]
     blocks: [T-20, T-23]
     visual_smoke_required: false
-    branch: null
+    branch: upgrade/T-12-eslint-flat
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T21:45:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
