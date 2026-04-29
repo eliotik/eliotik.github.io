@@ -106,14 +106,14 @@ tasks:
     title: Replace flowbite Carousel with CSS scroll-snap
     phase: 1
     lane: L1
-    status: backlog
+    status: in-progress
     depends_on: [T-03]
     blocks: [T-20, T-24]
     visual_smoke_required: true
-    branch: null
+    branch: upgrade/T-10-css-carousel
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T21:45:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
