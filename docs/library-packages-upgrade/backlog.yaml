@@ -30,19 +30,19 @@ tasks:
     title: Operational infrastructure & baseline capture
     phase: 0
     lane: preflight
-    status: in-progress
+    status: qa-pending
     depends_on: []
     blocks: [T-01, T-02]
     visual_smoke_required: false
     branch: upgrade/T-00-baseline
-    commit_sha: null
+    commit_sha: d57cadcf0e12127b9d0b8f973449a7faee923c9b
     worker: claude-opus-4-7
     started_at: 2026-04-29T15:34:34Z
-    finished_at: null
+    finished_at: 2026-04-29T15:46:09Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-00.md
     defects: []
 
   - id: T-01
