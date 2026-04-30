@@ -220,14 +220,14 @@ tasks:
     title: React 18 → 19 (audit refs, JSX runtime, @astrojs/react)
     phase: 2
     lane: L2
-    status: backlog
+    status: in-progress
     depends_on: [T-20]
     blocks: [T-22]
     visual_smoke_required: true
-    branch: null
+    branch: upgrade/T-21-react-19
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T10:00:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
