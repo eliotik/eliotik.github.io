@@ -1,0 +1,8 @@
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-36.md
+A	qa-runs/T-36-20260429T182900/visual/01-page-initial.png
+A	qa-runs/T-36-20260429T182900/visual/02-carousel-initial-state.png
+A	qa-runs/T-36-20260429T182900/visual/03-carousel-scrolled-into-view.png
+A	qa-runs/T-36-20260429T182900/visual/04-after-next-click.png
+A	qa-runs/T-36-20260429T182900/visual/05-carousel-second-slide-last.png
+M	src/components/ImageSliderClient.tsx

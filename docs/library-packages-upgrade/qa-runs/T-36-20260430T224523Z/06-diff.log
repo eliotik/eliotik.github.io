@@ -1,0 +1,9 @@
+ docs/library-packages-upgrade/backlog.yaml         |  14 +-
+ .../justifications/T-36.md                         | 244 +++++++++++++++++++++
+ .../visual/01-page-initial.png                     | Bin 0 -> 185640 bytes
+ .../visual/02-carousel-initial-state.png           | Bin 0 -> 174336 bytes
+ .../visual/03-carousel-scrolled-into-view.png      | Bin 0 -> 171159 bytes
+ .../visual/04-after-next-click.png                 | Bin 0 -> 171159 bytes
+ .../visual/05-carousel-second-slide-last.png       | Bin 0 -> 147246 bytes
+ src/components/ImageSliderClient.tsx               | 134 ++++++++---
+ 8 files changed, 360 insertions(+), 32 deletions(-)

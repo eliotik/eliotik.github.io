@@ -1,0 +1,855 @@
+
+> eliotik.github.io@0.0.1 build /Users/ap/development/other/eliotik.github.io-T-36
+> astro check && astro build && jampack ./dist
+
+18:45:48 [content] Syncing content
+18:45:48 [content] Synced content
+18:45:48 [types] Generated 184ms
+18:45:48 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-36...
+Result (76 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+18:45:52 [content] Syncing content
+18:45:52 [content] Synced content
+18:45:52 [types] Generated 186ms
+18:45:52 [build] output: "static"
+18:45:52 [build] mode: "static"
+18:45:52 [build] directory: /Users/ap/development/other/eliotik.github.io-T-36/dist/
+18:45:52 [build] Collecting build info...
+18:45:52 [build] ✓ Completed in 236ms.
+18:45:52 [build] Building static entrypoints...
+18:45:54 [vite] ✓ built in 2.02s
+18:45:54 [vite] ✓ built in 351ms
+18:45:54 [build] Rearranging server assets...
+
+ generating static routes 
+18:45:55   ├─ /404.html (+11ms) 
+18:45:55   ├─ /about/index.html (+3ms) 
+18:45:55   ├─ /og.png (+305ms) 
+18:45:55   ├─ /posts/1/index.html (+2ms) 
+18:45:55   ├─ /posts/audio-vs-paper-books/index.png (+239ms) 
+18:45:55   ├─ /posts/dad-ops-playbook/index.png (+239ms) 
+18:45:56   ├─ /posts/em101-building-brand/index.png (+248ms) 
+18:45:56   ├─ /posts/ems-connecting-the-systems/index.png (+249ms) 
+18:45:56   ├─ /posts/ems-the-decision-system/index.png (+247ms) 
+18:45:56   ├─ /posts/ems-the-delivery-system/index.png (+245ms) 
+18:45:57   ├─ /posts/ems-the-information-system/index.png (+248ms) 
+18:45:57   ├─ /posts/ems-the-people-system/index.png (+246ms) 
+18:45:57   ├─ /posts/ems-the-technology-system/index.png (+240ms) 
+18:45:57   ├─ /posts/ems-why-systems-not-processes/index.png (+240ms) 
+18:45:58   ├─ /posts/flutter-building-number-picker/index.png (+237ms) 
+18:45:58   ├─ /posts/flutter-google-maps-address-manipulation/index.png (+258ms) 
+18:45:58   ├─ /posts/flutter-google-maps-embedded-map/index.png (+248ms) 
+18:45:58   ├─ /posts/flutter-google-maps-setup/index.png (+241ms) 
+18:45:59   ├─ /posts/flutter-google-maps-static-map/index.png (+241ms) 
+18:45:59   ├─ /posts/from-skeptic-to-champion/index.png (+243ms) 
+18:45:59   ├─ /posts/local-coding-model-desktop-macbook/index.png (+247ms) 
+18:45:59   ├─ /posts/speed-vs-process/index.png (+247ms) 
+18:46:00   ├─ /posts/system-design-cap-theorem/index.png (+237ms) 
+18:46:00   ├─ /posts/the-emotional-roller-coaster-of-hiring/index.png (+240ms) 
+18:46:00   ├─ /posts/the-scaling-handbook/index.png (+243ms) 
+18:46:00   ├─ /posts/this-blog/index.png (+248ms) 
+18:46:01   ├─ /posts/two-horses-asses-is-it-that-bad/index.png (+245ms) 
+18:46:01   ├─ /posts/what-it-really-means-to-be-a-senior-software-engineer/index.png (+249ms) 
+18:46:01   ├─ /posts/what-the-heck-is-eos/index.png (+243ms) 
+18:46:01   ├─ /posts/your-team-is-only-as-fast-as-its-slowest-engineer/index.png (+250ms) 
+18:46:02   ├─ /posts/audio-vs-paper-books/index.html (+3ms) 
+18:46:02   ├─ /posts/dad-ops-playbook/index.html (+9ms) 
+18:46:02   ├─ /posts/em101-building-brand/index.html (+1ms) 
+18:46:02   ├─ /posts/ems-connecting-the-systems/index.html (+2ms) 
+18:46:02   ├─ /posts/ems-the-decision-system/index.html (+2ms) 
+18:46:02   ├─ /posts/ems-the-delivery-system/index.html (+1ms) 
+18:46:02   ├─ /posts/ems-the-information-system/index.html (+1ms) 
+18:46:02   ├─ /posts/ems-the-people-system/index.html (+6ms) 
+18:46:02   ├─ /posts/ems-the-technology-system/index.html (+2ms) 
+18:46:02   ├─ /posts/ems-why-systems-not-processes/index.html (+1ms) 
+18:46:02   ├─ /posts/flutter-building-number-picker/index.html (+33ms) 
+18:46:02   ├─ /posts/flutter-google-maps-address-manipulation/index.html (+19ms) 
+18:46:02   ├─ /posts/flutter-google-maps-embedded-map/index.html (+21ms) 
+18:46:02   ├─ /posts/flutter-google-maps-setup/index.html (+2ms) 
+18:46:02   ├─ /posts/flutter-google-maps-static-map/index.html (+21ms) 
+18:46:02   ├─ /posts/from-skeptic-to-champion/index.html (+3ms) 
+18:46:02   ├─ /posts/local-coding-model-desktop-macbook/index.html (+1ms) 
+18:46:02   ├─ /posts/speed-vs-process/index.html (+1ms) 
+18:46:02   ├─ /posts/system-design-cap-theorem/index.html (+2ms) 
+18:46:02   ├─ /posts/the-emotional-roller-coaster-of-hiring/index.html (+1ms) 
+18:46:02   ├─ /posts/the-scaling-handbook/index.html (+2ms) 
+18:46:02   ├─ /posts/this-blog/index.html (+1ms) 
+18:46:02   ├─ /posts/two-horses-asses-is-it-that-bad/index.html (+5ms) 
+18:46:02   ├─ /posts/what-it-really-means-to-be-a-senior-software-engineer/index.html (+2ms) 
+18:46:02   ├─ /posts/what-the-heck-is-eos/index.html (+1ms) 
+18:46:02   ├─ /posts/your-team-is-only-as-fast-as-its-slowest-engineer/index.html (+2ms) 
+18:46:02   ├─ /posts/2/index.html (+7ms) 
+18:46:02   ├─ /posts/3/index.html (+2ms) 
+18:46:02   ├─ /posts/4/index.html (+1ms) 
+18:46:02   ├─ /posts/5/index.html (+2ms) 
+18:46:02   ├─ /posts/6/index.html (+7ms) 
+18:46:02   ├─ /posts/index.html (+3ms) 
+18:46:02   ├─ /robots.txt (+3ms) 
+18:46:02   ├─ /rss.xml (+17ms) 
+18:46:02   ├─ /search/index.html (+7ms) 
+18:46:02   ├─ /sitemap-index.xml (+1ms) 
+18:46:02   ├─ /sitemap-pages.xml (+1ms) 
+18:46:02   ├─ /sitemap-posts.xml (+1ms) 
+18:46:02   ├─ /sitemap-tags.xml (+3ms) 
+18:46:02   ├─ /sitemap-threads.xml (+1ms) 
+18:46:02   ├─ /sitemap-tips.xml (+1ms) 
+18:46:02   ├─ /tags/engineering-leadership/2/index.html (+2ms) 
+18:46:02   ├─ /tags/engineering-management/2/index.html (+1ms) 
+18:46:02   ├─ /tags/engineering-management/3/index.html (+1ms) 
+18:46:02   ├─ /tags/leadership/2/index.html (+1ms) 
+18:46:02   ├─ /tags/systems-thinking/2/index.html (+1ms) 
+18:46:02   ├─ /tags/tutorial/2/index.html (+2ms) 
+18:46:02   ├─ /tags/agile/index.html (+1ms) 
+18:46:02   ├─ /tags/architecture-decision-records/index.html (+2ms) 
+18:46:02   ├─ /tags/astro/index.html (+1ms) 
+18:46:02   ├─ /tags/blogging/index.html (+2ms) 
+18:46:02   ├─ /tags/book-review/index.html (+1ms) 
+18:46:02   ├─ /tags/cap-theorem/index.html (+1ms) 
+18:46:02   ├─ /tags/career-growth/index.html (+1ms) 
+18:46:02   ├─ /tags/change-management/index.html (+1ms) 
+18:46:02   ├─ /tags/code-quality/index.html (+1ms) 
+18:46:02   ├─ /tags/communication/index.html (+1ms) 
+18:46:02   ├─ /tags/decision-making/index.html (+3ms) 
+18:46:02   ├─ /tags/developer-burnout/index.html (+1ms) 
+18:46:02   ├─ /tags/developer-productivity/index.html (+1ms) 
+18:46:02   ├─ /tags/distributed-systems/index.html (+1ms) 
+18:46:02   ├─ /tags/documentation/index.html (+6ms) 
+18:46:02   ├─ /tags/engineering-culture/index.html (+1ms) 
+18:46:02   ├─ /tags/engineering-leadership/index.html (+1ms) 
+18:46:02   ├─ /tags/engineering-management/index.html (+1ms) 
+18:46:02   ├─ /tags/eos/index.html (+1ms) 
+18:46:02   ├─ /tags/flutter/index.html (+1ms) 
+18:46:02   ├─ /tags/geocoding/index.html (+1ms) 
+18:46:02   ├─ /tags/github-pages/index.html (+1ms) 
+18:46:02   ├─ /tags/google-maps/index.html (+1ms) 
+18:46:02   ├─ /tags/high-performance-culture/index.html (+1ms) 
+18:46:02   ├─ /tags/hiring/index.html (+1ms) 
+18:46:02   ├─ /tags/incident-response/index.html (+1ms) 
+18:46:02   ├─ /tags/innovation/index.html (+1ms) 
+18:46:02   ├─ /tags/kanban/index.html (+2ms) 
+18:46:02   ├─ /tags/leadership/index.html (+1ms) 
+18:46:02   ├─ /tags/learning/index.html (+1ms) 
+18:46:02   ├─ /tags/local-llm/index.html (+1ms) 
+18:46:02   ├─ /tags/management-frameworks/index.html (+1ms) 
+18:46:02   ├─ /tags/metrics/index.html (+1ms) 
+18:46:02   ├─ /tags/mobile-development/index.html (+1ms) 
+18:46:02   ├─ /tags/onboarding/index.html (+1ms) 
+18:46:02   ├─ /tags/opencode/index.html (+3ms) 
+18:46:02   ├─ /tags/organizational-culture/index.html (+1ms) 
+18:46:02   ├─ /tags/organizational-design/index.html (+1ms) 
+18:46:02   ├─ /tags/performance-management/index.html (+1ms) 
+18:46:02   ├─ /tags/personal/index.html (+1ms) 
+18:46:02   ├─ /tags/personal-branding/index.html (+1ms) 
+18:46:02   ├─ /tags/qwen/index.html (+1ms) 
+18:46:02   ├─ /tags/radical-candor/index.html (+1ms) 
+18:46:02   ├─ /tags/reading/index.html (+1ms) 
+18:46:02   ├─ /tags/recruiting/index.html (+1ms) 
+18:46:02   ├─ /tags/retention/index.html (+1ms) 
+18:46:02   ├─ /tags/scaling-teams/index.html (+1ms) 
+18:46:02   ├─ /tags/scrum/index.html (+1ms) 
+18:46:02   ├─ /tags/senior-software-engineer/index.html (+1ms) 
+18:46:02   ├─ /tags/software-architecture/index.html (+1ms) 
+18:46:02   ├─ /tags/software-engineering/index.html (+1ms) 
+18:46:02   ├─ /tags/startup-growth/index.html (+1ms) 
+18:46:02   ├─ /tags/strategy/index.html (+1ms) 
+18:46:02   ├─ /tags/system-design/index.html (+2ms) 
+18:46:02   ├─ /tags/systems-thinking/index.html (+1ms) 
+18:46:02   ├─ /tags/team-alignment/index.html (+1ms) 
+18:46:02   ├─ /tags/team-building/index.html (+1ms) 
+18:46:02   ├─ /tags/technical-debt/index.html (+1ms) 
+18:46:02   ├─ /tags/tutorial/index.html (+1ms) 
+18:46:02   ├─ /tags/ui-components/index.html (+1ms) 
+18:46:02   ├─ /tags/vllm/index.html (+1ms) 
+18:46:02   ├─ /tags/web-development/index.html (+1ms) 
+18:46:02   ├─ /tags/wsl2/index.html (+1ms) 
+18:46:02   ├─ /tags/index.html (+6ms) 
+18:46:02   ├─ /threads/five-systems-of-engineering-management/index.html (+2ms) 
+18:46:02   ├─ /threads/flutter-and-google-maps/index.html (+1ms) 
+18:46:02   ├─ /threads/index.html (+6ms) 
+18:46:02   ├─ /tips/1/index.html (+1ms) 
+18:46:02   ├─ /tips/audacious-ideas/index.html (+1ms) 
+18:46:02   ├─ /tips/bureaucracy/index.html (+1ms) 
+18:46:02   ├─ /tips/motivation-is-a-trap/index.html (+1ms) 
+18:46:02   ├─ /tips/outcomes-matter/index.html (+1ms) 
+18:46:02   ├─ /tips/procrastination/index.html (+1ms) 
+18:46:02   ├─ /tips/speed/index.html (+1ms) 
+18:46:02   ├─ /tips/systems-and-teams/index.html (+1ms) 
+18:46:02   ├─ /tips/2/index.html (+1ms) 
+18:46:02   ├─ /tips/index.html (+1ms) 
+18:46:02   ├─ /index.html (+2ms) 
+18:46:02 ✓ Completed in 7.54s.
+
+ generating optimized images 
+18:46:02   ▶ /_astro/opening.CIL9Earz_Z1RJIoT.webp (reused cache entry) (+1ms) (1/33)
+18:46:02   ▶ /_astro/principle-three.9iIy6-aD_ZrwqGB.webp (reused cache entry) (+1ms) (2/33)
+18:46:02   ▶ /_astro/principle-one.DwBi5tCZ_1udL7U.webp (reused cache entry) (+1ms) (3/33)
+18:46:02   ▶ /_astro/principle-four.C2zXWgiC_ZMm2Kp.webp (reused cache entry) (+1ms) (4/33)
+18:46:02   ▶ /_astro/closing-words.DPmV5pwi_uJiXM.webp (reused cache entry) (+1ms) (5/33)
+18:46:02   ▶ /_astro/principle-two.P7SLPHBw_Z1wkr10.webp (reused cache entry) (+1ms) (6/33)
+18:46:02   ▶ /_astro/principle-five.BXXVPnFs_1t1Bg9.webp (reused cache entry) (+1ms) (7/33)
+18:46:02   ▶ /_astro/flutter-number-picker-horizontal-blue-range.jrqoz7y4_ZgOeDz.webp (reused cache entry) (+1ms) (8/33)
+18:46:02   ▶ /_astro/flutter-number-picker-select-number.DmL0EQS8_F9TUA.webp (reused cache entry) (+1ms) (9/33)
+18:46:02   ▶ /_astro/flutter-number-picker-show-even-numbers.W6Vm2wAF_dycjE.webp (reused cache entry) (+2ms) (10/33)
+18:46:02   ▶ /_astro/flutter-number-picker-inc-dec-selected-number.DFIZ46fv_1Yc9n6.webp (reused cache entry) (+2ms) (11/33)
+18:46:02   ▶ /_astro/initial-home-screen-render.DvlfsV7z_Z1aNdbD.webp (reused cache entry) (+2ms) (12/33)
+18:46:02   ▶ /_astro/final-project-structure.B6HNdG6j_1lBhuS.webp (reused cache entry) (+2ms) (13/33)
+18:46:02   ▶ /_astro/get-started-on-google-maps-platform.CjdsNzng_Z18n7gh.webp (reused cache entry) (+2ms) (14/33)
+18:46:02   ▶ /_astro/home-screen-placeholder-for-static-map.DP4nSrJv_2vlKSo.webp (reused cache entry) (+2ms) (15/33)
+18:46:02   ▶ /_astro/opening.CXbDwPw5_1JKBp9.webp (reused cache entry) (+2ms) (16/33)
+18:46:02   ▶ /_astro/the-why.CSSXFttI_1S8Kn1.webp (reused cache entry) (+2ms) (17/33)
+18:46:02   ▶ /_astro/flutter-number-picker-colored-numbers.CE5EQ1Gm_2o1sIj.webp (reused cache entry) (+3ms) (18/33)
+18:46:02   ▶ /_astro/flutter-number-picker-animate-on-select.4Bo_2HMi_2kcpUC.webp (reused cache entry) (+3ms) (19/33)
+18:46:02   ▶ /_astro/the-how.BnPzJUhf_Z1DURCj.webp (reused cache entry) (+2ms) (20/33)
+18:46:02   ▶ /_astro/why-post-it-2.5T0U4hId_rtKrJ.webp (reused cache entry) (+2ms) (21/33)
+18:46:02   ▶ /_astro/the-what.CBiu5UDA_1kaBNI.webp (reused cache entry) (+1ms) (22/33)
+18:46:02   ▶ /_astro/workshop-in-action.gnxJUyff_1SltR2.webp (reused cache entry) (+2ms) (23/33)
+18:46:02   ▶ /_astro/why-post-it-1.DUhx79C__FoIfV.webp (reused cache entry) (+3ms) (24/33)
+18:46:02   ▶ /_astro/chaos-to-clarity.DPmwiuQT_ZeLRH0.webp (reused cache entry) (+1ms) (25/33)
+18:46:02   ▶ /_astro/first-step.BQ0PrctY_Z1SDrEW.webp (reused cache entry) (+1ms) (26/33)
+18:46:02   ▶ /_astro/what-post-it-2.SySaVyoM_ZaKSAC.webp (reused cache entry) (+2ms) (27/33)
+18:46:02   ▶ /_astro/intro.guVjO9Jz_Zdosyk.webp (reused cache entry) (+1ms) (28/33)
+18:46:02   ▶ /_astro/what-post-it-1.D7RaLIL0_Z2bRQJQ.webp (reused cache entry) (+2ms) (29/33)
+18:46:02   ▶ /_astro/horseonatrain.BDpdLXnA_wsR4y.webp (reused cache entry) (+1ms) (30/33)
+18:46:02   ▶ /_astro/container.WPuK4qDt_uPFwE.webp (reused cache entry) (+1ms) (31/33)
+18:46:02   ▶ /_astro/hippodrome.DJjA9FyP_19IUve.webp (reused cache entry) (+1ms) (32/33)
+18:46:02   ▶ /_astro/freedomofchoice.BGy-y5nu_10FP5J.webp (reused cache entry) (+1ms) (33/33)
+18:46:02 ✓ Completed in 5ms.
+
+18:46:02 [build] ✓ Completed in 9.95s.
+18:46:02 [build] 118 page(s) built in 10.21s
+18:46:02 [build] Complete!
+     __                                    __    
+    |__|____    _____ ___________    ____ |  | __
+    |  \__  \  /     \\____ \__  \ _/ ___\|  |/ /
+    |  |/ __ \|  Y Y  \  |_> > __ \\  \___|    < 
+/\__|  (____  /__|_|  /   __(____  /\___  >__|_ \
+\______|    \/      \/|  |       \/     \/     \/
+ v0.34.1              |__| by ‹div›RIOTS
+
+Options:
+{}
+
+
+ PASS 1 - Optimizing 
+▶ 404.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ about/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ search/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ threads/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/1/index.html
+▶ posts/3/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/4/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/5/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/6/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/dad-ops-playbook/index.html
+  ✔ <img> [7/7]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/audio-vs-paper-books/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/em101-building-brand/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/ems-connecting-the-systems/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/ems-the-decision-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/ems-the-delivery-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/ems-the-information-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/ems-the-people-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/ems-the-technology-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/ems-why-systems-not-processes/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/flutter-building-number-picker/index.html
+  ✔ <img> [6/6]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/flutter-google-maps-address-manipulation/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/flutter-google-maps-embedded-map/index.html
+  ✔ <img> [2/2]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/flutter-google-maps-setup/index.html
+  ✔ <img> [1/1]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/flutter-google-maps-static-map/index.html
+  ✔ <img> [1/1]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/from-skeptic-to-champion/index.html
+  ✔ <img> [11/11]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/local-coding-model-desktop-macbook/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/speed-vs-process/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/system-design-cap-theorem/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/the-emotional-roller-coaster-of-hiring/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/the-scaling-handbook/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/this-blog/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/two-horses-asses-is-it-that-bad/index.html
+  ✔ <img> [5/5]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/what-it-really-means-to-be-a-senior-software-engineer/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/what-the-heck-is-eos/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ posts/your-team-is-only-as-fast-as-its-slowest-engineer/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/agile/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/architecture-decision-records/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/astro/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/blogging/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/book-review/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/cap-theorem/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/career-growth/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/change-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/code-quality/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/communication/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/decision-making/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/developer-burnout/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/developer-productivity/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/distributed-systems/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/documentation/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/engineering-culture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/engineering-leadership/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/engineering-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/eos/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/flutter/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/geocoding/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/github-pages/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/google-maps/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/high-performance-culture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/hiring/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/incident-response/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/innovation/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/kanban/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/leadership/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/learning/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/management-frameworks/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/metrics/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/local-llm/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/mobile-development/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/onboarding/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/opencode/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/organizational-culture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/organizational-design/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/performance-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/personal/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/personal-branding/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/qwen/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/radical-candor/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/reading/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/recruiting/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/retention/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/scaling-teams/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/scrum/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/senior-software-engineer/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/software-architecture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/software-engineering/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/startup-growth/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/strategy/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/system-design/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/systems-thinking/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/team-alignment/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/team-building/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/technical-debt/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/tutorial/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/ui-components/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/vllm/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/web-development/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/wsl2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ threads/five-systems-of-engineering-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ threads/flutter-and-google-maps/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/1/index.html
+▶ tips/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/audacious-ideas/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/bureaucracy/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/motivation-is-a-trap/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/outcomes-matter/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/procrastination/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/speed/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tips/systems-and-teams/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/engineering-leadership/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/engineering-management/3/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/leadership/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/engineering-management/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/systems-thinking/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+▶ tags/tutorial/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+  ✔ <video> [0/0]
+  ✔ <meta[property$=":image"], meta[name$=":image"]> [2/2]
+Done: 2.805s
+
+ PASS 2 - Compressing the rest 
+- 33 files | 9.18 MB → 8.81 MB | -375.37 KB 
+✔ 262 files | 46.39 MB → 43.90 MB | -2.48 MB 
+Done: 882.398ms
+
+ Summary 
+╔════════╤════════════╤═══════════╤════════════╤════════════╗
+║ Action │ Compressed │  Original │ Compressed │       Gain ║
+╟────────┼────────────┼───────────┼────────────┼────────────╢
+║ .webp  │    27 / 39 │  15.33 MB │   14.97 MB │ -375.37 KB ║
+║ .html  │  118 / 120 │   4.52 MB │    4.30 MB │ -218.88 KB ║
+║ .js    │     9 / 13 │ 344.77 KB │  342.89 KB │   -1.88 KB ║
+║ .svg   │      1 / 1 │  873.00 B │   787.00 B │   -86.00 B ║
+║ .png   │    45 / 65 │  15.81 MB │   13.93 MB │   -1.88 MB ║
+║ .jpg   │      1 / 7 │   3.19 MB │    3.17 MB │  -23.69 KB ║
+║ .txt   │      0 / 1 │  167.00 B │   167.00 B │            ║
+║ .xml   │      0 / 7 │  31.22 KB │   31.22 KB │            ║
+║ .gif   │      0 / 6 │   7.05 MB │    7.05 MB │            ║
+║ .css   │      0 / 2 │ 118.72 KB │  118.72 KB │            ║
+╟────────┼────────────┼───────────┼────────────┼────────────╢
+║ Total  │  201 / 262 │  46.39 MB │   43.90 MB │   -2.48 MB ║
+╚════════╧════════════╧═══════════╧════════════╧════════════╝
+
+
+ ✔ No issues 
