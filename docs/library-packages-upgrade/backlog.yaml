@@ -472,17 +472,17 @@ tasks:
     title: Carousel navigation arrow buttons (replace scrollbar UX)
     phase: 3
     lane: L1
-    status: in-progress
+    status: qa-pending
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: true
     branch: upgrade/T-36-carousel-arrows
-    commit_sha: null
+    commit_sha: 0d9944e
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T12:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T19:00:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-36.md
     defects: []
