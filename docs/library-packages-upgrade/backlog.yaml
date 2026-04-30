@@ -296,7 +296,7 @@ tasks:
     title: Bump TypeScript toolchain (TS, prettier, husky, lint-staged)
     phase: 2
     lane: L2
-    status: qa-pending
+    status: done
     depends_on: [T-24]
     blocks: [T-26]
     visual_smoke_required: false
@@ -307,7 +307,7 @@ tasks:
     finished_at: 2026-04-30T12:30:00Z
     qa_worker: claude-opus-4-7-qa
     qa_started_at: 2026-04-30T12:05:30Z
-    qa_finished_at: 2026-04-30T12:11:04Z
+    qa_finished_at: 2026-04-30T12:23:20Z
     justification_file: docs/library-packages-upgrade/justifications/T-25.md
     defects: [docs/library-packages-upgrade/defects/T-25-D1.md]
 

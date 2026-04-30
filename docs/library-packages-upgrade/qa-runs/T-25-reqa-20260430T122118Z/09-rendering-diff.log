@@ -1,0 +1,7 @@
+T-23 figcaption (decoded): C:\Users<me>.wslconfig
+T-25 figcaption (decoded): C:\Users<me>.wslconfig
+Match: True
+
+T-23 inline code (decoded): C:\Users\<me>\.wslconfig
+T-25 inline code (decoded): C:\Users\<me>\.wslconfig
+Match: True

@@ -1,0 +1,6 @@
+
+# Astro content collections — prettier strips escapes inside code-block info-strings
+# (e.g. ```ini title='C:\Users\<me>\.wslconfig' becomes C:\Users<me>.wslconfig).
+# Authors hand-format content; Expressive Code + remark plugins handle rendering.
+src/content/**/*.md
+src/content/**/*.mdx
