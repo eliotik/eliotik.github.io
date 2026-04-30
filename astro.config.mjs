@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from '@tailwindcss/vite';
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
@@ -24,9 +24,6 @@ export default defineConfig({
   },
   integrations: [
   partytown({ config: { forward: ['dataLayer.push'] } }),
-  tailwind({
-    applyBaseStyles: false
-  }),
   expressiveCode({
       plugins: [pluginLineNumbers(), pluginCollapsibleSections()],
     }),
@@ -49,6 +46,7 @@ export default defineConfig({
     }
   },
   vite: {
+    plugins: [tailwindcss()],
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
       // Force include commonly used deps to prevent re-optimization

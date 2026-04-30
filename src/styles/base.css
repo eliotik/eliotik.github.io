@@ -1,6 +1,70 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* ===== Tailwind 4 CSS-first configuration ===== */
+
+@theme {
+  /*
+    Screen breakpoints — the site only uses `sm:` (640px).
+    Tailwind 4's defaults include md/lg/xl/2xl; we reset all and define only
+    sm to match the Tailwind 3 `screens: { sm: "640px" }` that replaced defaults.
+  */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+
+  /*
+    Skin color tokens.
+    Raw CSS vars (e.g. --color-fill) are R,G,B triplets defined in @layer base
+    below. We wrap them in rgb() here so Tailwind 4 can use them as color values
+    with automatic opacity/alpha support via color-mix().
+
+    Class surface: bg-skin-fill, text-skin-base, border-skin-line, etc.
+  */
+
+  /* textColor: skin.base, skin.accent, skin.inverted */
+  --color-skin-base: rgb(var(--color-text-base));
+  --color-skin-accent: rgb(var(--color-accent));
+  --color-skin-inverted: rgb(var(--color-fill));
+
+  /* backgroundColor: skin.fill, skin.accent, skin.inverted, skin.base, skin.card, skin.card-muted, skin.line */
+  --color-skin-fill: rgb(var(--color-fill));
+  --color-skin-card: rgb(var(--color-card));
+  --color-skin-card-muted: rgb(var(--color-card-muted));
+  --color-skin-line: rgb(var(--color-border));
+
+  /* borderColor: skin.line, skin.fill, skin.accent */
+  /* (These share names with text/bg tokens above — the same CSS var serves all contexts) */
+
+  /* outlineColor: skin.fill → maps to accent in original config */
+  /* fill: skin.base, skin.accent → share tokens above */
+
+  /* Font */
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+/*
+  Dark mode variant: the site uses data-theme="dark" on <html>.
+  No Tailwind `dark:` utilities are used in this codebase (confirmed by grep),
+  but we define the variant defensively for future use.
+*/
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Typography plugin (Tailwind 4 CSS-side directive) */
+@plugin "@tailwindcss/typography";
+
+/*
+  Tailwind 4 border-color compatibility shim.
+  The default border color changed to `currentcolor`; this restores the v3
+  behavior using gray-200 as the fallback.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @layer base {
   :root,
@@ -29,48 +93,55 @@
     display: block;
   }
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-mono text-skin-base 
-    selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
+    @apply flex min-h-svh flex-col bg-skin-fill font-mono text-skin-base
+    selection:bg-skin-accent/70 selection:text-skin-inverted;
   }
   section,
   footer {
     @apply mx-auto max-w-3xl px-4;
   }
   a {
-    @apply outline-2 outline-offset-1 outline-skin-fill 
+    @apply outline-2 outline-offset-1 outline-skin-accent
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
     @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent 
-    stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
+    @apply inline-block h-6 w-6 scale-125 fill-transparent
+    stroke-current stroke-2 opacity-90 group-hover:fill-transparent
     sm:scale-110;
   }
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
-    prose-h3:italic prose-p:!text-skin-base 
-    prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
-    hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
-    prose-blockquote:border-opacity-50 prose-blockquote:opacity-80
+    @apply prose-headings:mb-3! prose-headings:!text-skin-base
+    prose-h3:italic prose-p:!text-skin-base
+    prose-a:!text-skin-base prose-a:decoration-dashed! prose-a:underline-offset-8
+    hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent/50
+    prose-blockquote:opacity-80
     prose-figcaption:!text-skin-base prose-figcaption:opacity-70
     prose-strong:!text-skin-base
 
-    
-    prose-code:rounded prose-code:bg-skin-card 
-    prose-code:bg-opacity-75 prose-code:p-1 
-    prose-code:before:!content-[''] prose-code:after:!content-['']
-    prose-ol:!text-skin-base 
+    prose-code:rounded-sm prose-code:bg-skin-card/75 prose-code:p-1
+    prose-code:before:content-['']! prose-code:after:content-['']!
+    prose-ol:!text-skin-base
     prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent
     prose-table:text-skin-base prose-th:border
-    prose-th:border-skin-line prose-td:border 
-    prose-td:border-skin-line prose-img:!my-2 
-    prose-img:mx-auto prose-img:border-2 
+    prose-th:border-skin-line prose-td:border
+    prose-td:border-skin-line prose-img:my-2!
+    prose-img:mx-auto prose-img:border-2
     prose-img:border-skin-line prose-hr:!border-skin-line;
   }
+  /*
+    typography.DEFAULT.css.{pre,code}.color: false — in Tailwind 3 this
+    cleared prose's code/pre color overrides so Expressive Code could style them.
+    In Tailwind 4 we do the same via explicit CSS rules.
+  */
+  .prose pre,
+  .prose code {
+    color: inherit;
+  }
   .prose a {
-    @apply break-words hover:!text-skin-accent;
+    @apply wrap-break-word hover:!text-skin-accent;
   }
   .prose thead th:first-child,
   tbody td:first-child,
@@ -125,11 +196,16 @@
   }
 }
 
-@layer components {
-  .display-none {
-    @apply hidden;
-  }
-  .focus-outline {
-    @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
+@utility display-none {
+  display: none;
+}
+
+@utility focus-outline {
+  outline-width: 2px;
+  outline-offset: 1px;
+  outline-color: var(--color-skin-accent);
+  &:focus-visible {
+    text-decoration: none;
+    outline-style: dashed;
   }
 }
