@@ -358,7 +358,7 @@ tasks:
     blocks: [T-31]
     visual_smoke_required: true
     branch: upgrade/T-30-final-verification
-    commit_sha: null
+    commit_sha: bfd99ed
     worker: claude-sonnet-4-6
     started_at: 2026-04-30T12:58:00Z
     finished_at: 2026-04-30T13:15:00Z
