@@ -486,3 +486,22 @@ tasks:
     qa_finished_at: 2026-04-30T22:52:46Z
     justification_file: docs/library-packages-upgrade/justifications/T-36.md
     defects: []
+
+  - id: T-37
+    title: Mobile layout regression on ClientRouter nav + console noise (transition + font preload)
+    phase: 3
+    lane: L1
+    status: backlog
+    depends_on: [T-30]
+    blocks: [T-31]
+    visual_smoke_required: true
+    branch: null
+    commit_sha: null
+    worker: null
+    started_at: null
+    finished_at: null
+    qa_worker: null
+    qa_started_at: null
+    qa_finished_at: null
+    justification_file: null
+    defects: []
