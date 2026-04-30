@@ -239,15 +239,15 @@ tasks:
     title: Tailwind 3 → 4 (CSS-first config, switch to @tailwindcss/vite)
     phase: 2
     lane: L2
-    status: defect
+    status: qa-pending
     depends_on: [T-21]
     blocks: [T-23]
     visual_smoke_required: true
     branch: upgrade/T-22-tailwind-4
-    commit_sha: f0a8303
-    worker: claude-sonnet-4-6
+    commit_sha: a51ab1f
+    worker: claude-opus-4-7
     started_at: 2026-04-29T10:00:00Z
-    finished_at: 2026-04-29T23:00:00Z
+    finished_at: 2026-04-30T23:55:00Z
     qa_worker: claude-opus-4-7-qa
     qa_started_at: 2026-04-30T03:00:00Z
     qa_finished_at: 2026-04-30T03:30:00Z
