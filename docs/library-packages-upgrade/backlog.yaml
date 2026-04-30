@@ -415,19 +415,19 @@ tasks:
     title: Build & runtime warnings cleanup (husky/z/FormEvent/router)
     phase: 3
     lane: L2
-    status: in-progress
+    status: qa-pending
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: false
     branch: upgrade/T-33-warnings-cleanup
-    commit_sha: null
+    commit_sha: 8f64702
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T10:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T10:45:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-33.md
     defects: []
 
   - id: T-34
