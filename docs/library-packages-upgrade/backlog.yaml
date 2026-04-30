@@ -373,8 +373,108 @@ tasks:
     phase: 3
     lane: validation
     status: backlog
-    depends_on: [T-30]
+    depends_on: [T-30, T-32, T-33, T-34, T-35, T-36]
     blocks: []
+    visual_smoke_required: true
+    branch: null
+    commit_sha: null
+    worker: null
+    started_at: null
+    finished_at: null
+    qa_worker: null
+    qa_started_at: null
+    qa_finished_at: null
+    justification_file: null
+    defects: []
+
+  # ---------------------------------------------------------------------------
+  # Post-T-30 follow-up fixes from manual local verification (2026-04-30).
+  # Must merge before T-31 (deploy) so production reflects the fixes.
+  # ---------------------------------------------------------------------------
+
+  - id: T-32
+    title: Update agent prompts with explicit model selection (chore)
+    phase: 3
+    lane: docs
+    status: backlog
+    depends_on: [T-30]
+    blocks: [T-31]
+    visual_smoke_required: false
+    branch: null
+    commit_sha: null
+    worker: null
+    started_at: null
+    finished_at: null
+    qa_worker: null
+    qa_started_at: null
+    qa_finished_at: null
+    justification_file: null
+    defects: []
+
+  - id: T-33
+    title: Build & runtime warnings cleanup (husky/z/FormEvent/router)
+    phase: 3
+    lane: L2
+    status: backlog
+    depends_on: [T-30]
+    blocks: [T-31]
+    visual_smoke_required: false
+    branch: null
+    commit_sha: null
+    worker: null
+    started_at: null
+    finished_at: null
+    qa_worker: null
+    qa_started_at: null
+    qa_finished_at: null
+    justification_file: null
+    defects: []
+
+  - id: T-34
+    title: Tailwind 4 reset visual regressions (cursor / search border / dark code)
+    phase: 3
+    lane: L1
+    status: backlog
+    depends_on: [T-30]
+    blocks: [T-31]
+    visual_smoke_required: true
+    branch: null
+    commit_sha: null
+    worker: null
+    started_at: null
+    finished_at: null
+    qa_worker: null
+    qa_started_at: null
+    qa_finished_at: null
+    justification_file: null
+    defects: []
+
+  - id: T-35
+    title: Expressive Code copy-button overflow at scroll-end
+    phase: 3
+    lane: L1
+    status: backlog
+    depends_on: [T-30]
+    blocks: [T-31]
+    visual_smoke_required: true
+    branch: null
+    commit_sha: null
+    worker: null
+    started_at: null
+    finished_at: null
+    qa_worker: null
+    qa_started_at: null
+    qa_finished_at: null
+    justification_file: null
+    defects: []
+
+  - id: T-36
+    title: Carousel navigation arrow buttons (replace scrollbar UX)
+    phase: 3
+    lane: L1
+    status: backlog
+    depends_on: [T-30]
+    blocks: [T-31]
     visual_smoke_required: true
     branch: null
     commit_sha: null
