@@ -453,19 +453,19 @@ tasks:
     title: Expressive Code copy-button overflow at scroll-end
     phase: 3
     lane: L1
-    status: in-progress
+    status: qa-pending
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: true
     branch: upgrade/T-35-copy-button
-    commit_sha: null
+    commit_sha: 01317c1040e89da8759fcca500565ceb88dc61ed
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T10:00:00Z
-    finished_at: null
+    finished_at: 2026-04-30T18:20:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-35.md
     defects: []
 
   - id: T-36
