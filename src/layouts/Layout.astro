@@ -128,6 +128,7 @@ const socialImageURL = new URL(
 
         <script data-category="analytics" is:inline type="text/partytown">
           window.dataLayer = window.dataLayer || [];
+          // eslint-disable-next-line prefer-rest-params
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
@@ -147,7 +148,7 @@ const socialImageURL = new URL(
           } else {
             document.documentElement.classList.remove('dark');
           }
-        } catch (_) {
+        } catch {
           // localStorage unavailable (private mode, etc.) — fall back to system preference
           if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');

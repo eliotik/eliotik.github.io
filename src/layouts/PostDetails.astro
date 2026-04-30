@@ -207,13 +207,13 @@ const layoutProps = {
     if (!article) return;
 
     // Only select headings within the article content
-    let headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
-    for (let heading of headings) {
+    const headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (const heading of headings) {
       // Skip if heading already has a link (prevents duplicates)
       if (heading.querySelector('.heading-link')) continue;
 
       heading.classList.add("group")
-      let link = document.createElement("a");
+      const link = document.createElement("a");
       link.innerText = "#";
       link.className = "heading-link hidden group-hover:inline-block ml-2";
       link.href = "#" + heading.id;
@@ -230,17 +230,17 @@ const layoutProps = {
     const article = document.getElementById("article");
     if (!article) return;
 
-    let copyButtonLabel = "Copy";
-    let codeBlocks = Array.from(article.querySelectorAll("pre"));
+    const copyButtonLabel = "Copy";
+    const codeBlocks = Array.from(article.querySelectorAll("pre"));
 
-    for (let codeBlock of codeBlocks) {
+    for (const codeBlock of codeBlocks) {
       // Skip if copy button already exists (prevents duplicates)
       if (codeBlock.querySelector('.copy-code')) continue;
 
-      let wrapper = document.createElement("div");
+      const wrapper = document.createElement("div");
       wrapper.style.position = "relative";
 
-      let copyButton = document.createElement("button");
+      const copyButton = document.createElement("button");
       copyButton.className =
         "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
       copyButton.innerHTML = copyButtonLabel;
@@ -257,8 +257,8 @@ const layoutProps = {
     }
 
     async function copyCode(block, button) {
-      let code = block.querySelector("code");
-      let text = code?.innerText;
+      const code = block.querySelector("code");
+      const text = code?.innerText;
 
       await navigator.clipboard.writeText(text ?? "");
 
