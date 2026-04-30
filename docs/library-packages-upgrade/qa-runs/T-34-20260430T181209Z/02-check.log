@@ -1,0 +1,13 @@
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io-T-34
+> astro check
+
+14:12:18 [content] Syncing content
+14:12:18 [content] Synced content
+14:12:18 [types] Generated 209ms
+14:12:18 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-34...
+Result (76 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+

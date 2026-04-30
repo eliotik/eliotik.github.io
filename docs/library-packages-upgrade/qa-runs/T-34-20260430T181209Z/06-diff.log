@@ -1,0 +1,23 @@
+ docs/library-packages-upgrade/backlog.yaml         |  14 +-
+ .../justifications/T-34.md                         | 198 +++++++++++++++++++++
+ qa-runs/T-34-20260430-135629/visual/404-dark.png   | Bin 0 -> 59565 bytes
+ qa-runs/T-34-20260430-135629/visual/404-light.png  | Bin 0 -> 58311 bytes
+ qa-runs/T-34-20260430-135629/visual/about-dark.png | Bin 0 -> 221147 bytes
+ .../T-34-20260430-135629/visual/about-light.png    | Bin 0 -> 204556 bytes
+ qa-runs/T-34-20260430-135629/visual/home-dark.png  | Bin 0 -> 112096 bytes
+ qa-runs/T-34-20260430-135629/visual/home-light.png | Bin 0 -> 108516 bytes
+ .../visual/post-detail-dark.png                    | Bin 0 -> 117086 bytes
+ .../visual/post-detail-light.png                   | Bin 0 -> 105455 bytes
+ qa-runs/T-34-20260430-135629/visual/posts-dark.png | Bin 0 -> 124697 bytes
+ .../T-34-20260430-135629/visual/posts-light.png    | Bin 0 -> 119928 bytes
+ .../T-34-20260430-135629/visual/search-dark.png    | Bin 0 -> 56194 bytes
+ .../T-34-20260430-135629/visual/search-light.png   | Bin 0 -> 55555 bytes
+ qa-runs/T-34-20260430-135629/visual/tags-dark.png  | Bin 0 -> 97864 bytes
+ qa-runs/T-34-20260430-135629/visual/tags-light.png | Bin 0 -> 91922 bytes
+ .../T-34-20260430-135629/visual/threads-dark.png   | Bin 0 -> 138338 bytes
+ .../T-34-20260430-135629/visual/threads-light.png  | Bin 0 -> 130710 bytes
+ qa-runs/T-34-20260430-135629/visual/tips-dark.png  | Bin 0 -> 95969 bytes
+ qa-runs/T-34-20260430-135629/visual/tips-light.png | Bin 0 -> 95160 bytes
+ src/components/Search.tsx                          |   2 +-
+ src/styles/base.css                                |  32 ++++
+ 22 files changed, 238 insertions(+), 8 deletions(-)
