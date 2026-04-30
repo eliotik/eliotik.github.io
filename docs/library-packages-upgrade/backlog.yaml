@@ -263,7 +263,7 @@ tasks:
     blocks: [T-24]
     visual_smoke_required: false
     branch: upgrade/T-23-eslint-9
-    commit_sha: null
+    commit_sha: 5d643e27bb3124e01608b13f42a20726ef2fac29
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T12:00:00Z
     finished_at: 2026-04-29T13:30:00Z
