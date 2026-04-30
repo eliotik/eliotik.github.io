@@ -396,14 +396,14 @@ tasks:
     title: Update agent prompts with explicit model selection (chore)
     phase: 3
     lane: docs
-    status: backlog
+    status: in-progress
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: false
     branch: null
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T10:00:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
