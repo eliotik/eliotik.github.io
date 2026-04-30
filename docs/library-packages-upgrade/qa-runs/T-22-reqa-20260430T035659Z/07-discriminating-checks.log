@@ -1,0 +1,63 @@
+=== Discriminating checks for D1 fix at /, viewport 1280x1800, theme=dark ===
+
+Check 1: outlineStyle on header nav anchor outside focus
+  EXPECTED: "none" (was "solid" pre-fix)
+  ACTUAL:   "none"  ✓ PASS
+  Full: {"text":"Posts","outlineWidth":"1.5px","outlineStyle":"none","outlineColor":"rgb(234, 237, 243)"}
+
+Check 2: display on #menu-items at 1280x1800
+  EXPECTED: "flex" with flexDirection "row" (was "grid" 2-column pre-fix)
+  ACTUAL:   "flex" with flexDirection "row"  ✓ PASS
+  Class: "display-none! sm:flex! astro-3ef6ksr2"
+  Note: gridTemplateColumns is still "repeat(2, minmax(0px, 1fr))" — that comes from
+  the unlayered scoped rule but is overridden by display:flex from the !sm:flex
+  utility, so layout is flex (row).
+
+Check 3: Tab focus shows visible dashed accent outline
+  Tab 1 → "Skip to content" (a)
+    outline: 2px dashed rgb(255, 107, 1)
+    outline-offset: 1px
+  Tab 2 → "Novi Fyx" (a)
+    outline: 2px dashed rgb(255, 107, 1)
+  ✓ PASS — focus visible outline matches spec.
+
+
+=== Mobile menu toggle test (D2 risk check) at viewport 600x800, theme=light ===
+
+Initial state at /:
+  display: "none"
+  className: "display-none! sm:flex! astro-3ef6ksr2"
+  → menu hidden ✓
+
+After click on button.hamburger-menu (1st):
+  display: "grid"
+  className: "sm:flex! astro-3ef6ksr2"
+  → display-none! removed; menu visible ✓
+
+After click on button.hamburger-menu (2nd):
+  display: "none"
+  className: "sm:flex! astro-3ef6ksr2 display-none!"
+  → display-none! re-added; menu hidden ✓
+
+PASS — JS toggle on display-none! class round-trips correctly.
+
+=== Carousel container at /posts/flutter-google-maps-embedded-map ===
+
+  height: 384px (h-96)
+  border: 1px solid oklch(0.928 0.006 264.531)
+  borderRadius: 8px (rounded-lg)
+  overflowX: auto
+  scrollSnapType: x mandatory
+  childCount: 2 slides
+
+PASS — CSS scroll-snap carousel from T-10 still has its border, radius, height.
+
+=== Theme toggle ===
+
+Click on #theme-btn:
+  before: data-theme="dark", localStorage=null
+  after:  data-theme="light", localStorage="light"
+  Theme persists across navigation (verified by visiting /posts/ and re-reading data-theme).
+
+PASS.
+

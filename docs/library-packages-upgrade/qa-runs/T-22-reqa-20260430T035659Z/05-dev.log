@@ -1,0 +1,50 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-22
+> astro dev
+
+00:01:29 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+00:01:29 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+00:01:29 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+00:01:29 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+[vite] connected.
+00:01:29 [types] Generated 0ms
+[vite] connected.
+00:01:30 [content] Syncing content
+00:01:30 [content] Astro config changed
+00:01:30 [content] Clearing content store
+00:01:30 [content] Synced content
+00:01:30 [vite] Re-optimizing dependencies because vite config has changed
+00:01:30 [vite] Port 4321 is in use, trying another one...
+00:01:30 [vite] Port 4322 is in use, trying another one...
+00:01:30 [vite] Port 4323 is in use, trying another one...
+00:01:30 [vite] Port 4324 is in use, trying another one...
+00:01:30 [vite] Port 4325 is in use, trying another one...
+ astro  v6.1.10 ready in 1182 ms
+┃ Local    http://localhost:4326/
+┃ Network  use --host to expose
+00:01:30 watching for file changes...
+00:01:41 [200] / 72ms
+00:01:50 [200] / 6ms
+00:01:50 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-types.js, astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-swap-functions.js
+00:01:50 [vite] ✨ optimized dependencies changed. reloading
+00:03:27 [200] /posts 22ms
+00:04:06 [200] /posts/ems-connecting-the-systems 23ms
+00:04:43 [200] /posts/flutter-google-maps-embedded-map 310ms
+00:05:26 [200] /tips 22ms
+00:06:03 [200] /tags 38ms
+00:06:39 [200] /tags/engineering-management 22ms
+00:07:16 [200] /threads 22ms
+00:07:52 [200] /about 27ms
+00:08:28 [404] /this-route-doesnt-exist 48ms
+00:09:06 [200] / 5ms
+00:09:59 [200] /posts 4ms
+00:10:39 [200] /posts/ems-connecting-the-systems 4ms
+00:11:19 [200] /posts/flutter-google-maps-embedded-map 30ms
+00:11:57 [200] /tips 5ms
+00:12:33 [200] /tags 16ms
+00:13:10 [200] /tags/engineering-management 6ms
+00:13:48 [200] /threads 4ms
+00:14:25 [200] /about 3ms
+00:15:02 [404] /this-route-doesnt-exist 3ms
+00:15:44 [200] / 4ms
+ ELIFECYCLE  Command failed with exit code 143.

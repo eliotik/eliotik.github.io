@@ -1,0 +1,8 @@
+--- @reference / @apply audit ---
+OK: every @apply user has @reference
+
+--- Old opacity utilities ---
+OK: no matches
+
+--- Outline-N utility usage outside :focus-visible ---
+src/styles/base.css:104:    @apply no-underline outline-2 outline-offset-1 outline-dashed outline-skin-accent;

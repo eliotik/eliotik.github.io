@@ -239,7 +239,7 @@ tasks:
     title: Tailwind 3 → 4 (CSS-first config, switch to @tailwindcss/vite)
     phase: 2
     lane: L2
-    status: qa-pending
+    status: done
     depends_on: [T-21]
     blocks: [T-23]
     visual_smoke_required: true
@@ -249,8 +249,8 @@ tasks:
     started_at: 2026-04-29T10:00:00Z
     finished_at: 2026-04-30T23:55:00Z
     qa_worker: claude-opus-4-7-qa
-    qa_started_at: 2026-04-30T03:00:00Z
-    qa_finished_at: 2026-04-30T03:30:00Z
+    qa_started_at: 2026-04-30T03:57:00Z
+    qa_finished_at: 2026-04-30T04:30:00Z
     justification_file: docs/library-packages-upgrade/justifications/T-22.md
     defects: [docs/library-packages-upgrade/defects/T-22-D1.md]
 
