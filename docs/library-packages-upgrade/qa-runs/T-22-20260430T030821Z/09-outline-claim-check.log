@@ -1,0 +1,8 @@
+--- Legacy config outlineColor mapping ---
+      outlineColor: {
+        skin: {
+          fill: withOpacity("--color-accent"),
+        },
+      },
+      borderColor: {
+        skin: {

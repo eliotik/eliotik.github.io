@@ -1,0 +1,17 @@
+--- Files using @apply but missing @reference (excluding base.css/globals.css) ---
+OK: every @apply user has @reference (or is base.css)
+
+--- All @reference users (should match list of scoped style users) ---
+src/components/Socials.astro
+src/components/Footer.astro
+src/components/ShareLinks.astro
+src/components/Breadcrumbs.astro
+src/components/Tag.astro
+src/components/Pagination.astro
+src/layouts/Tips.astro
+src/layouts/PostDetails.astro
+src/components/Header.astro
+src/layouts/Main.astro
+src/layouts/TipDetails.astro
+src/pages/404.astro
+src/pages/index.astro
