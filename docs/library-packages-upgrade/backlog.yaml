@@ -415,7 +415,7 @@ tasks:
     title: Build & runtime warnings cleanup (husky/z/FormEvent/router)
     phase: 3
     lane: L2
-    status: qa-pending
+    status: done
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: false
@@ -426,7 +426,7 @@ tasks:
     finished_at: 2026-04-30T17:36:00Z
     qa_worker: claude-opus-4-7-qa
     qa_started_at: 2026-04-30T17:23:40Z
-    qa_finished_at: 2026-04-30T17:30:19Z
+    qa_finished_at: 2026-04-30T17:40:54Z
     justification_file: docs/library-packages-upgrade/justifications/T-33.md
     defects: [docs/library-packages-upgrade/defects/T-33-D1.md]
 

@@ -1,0 +1,41 @@
+* Host localhost:4330 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:4330...
+* Connected to localhost (::1) port 4330
+> GET /posts/1/ HTTP/1.1
+> Host: localhost:4330
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 301 Moved Permanently
+< Vary: Origin
+< location: /posts
+< Date: Thu, 30 Apr 2026 17:40:37 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Transfer-Encoding: chunked
+< 
+* Ignoring the response-body
+* Connection #0 to host localhost left intact
+* Issue another request to this URL: 'http://localhost:4330/posts'
+* Found bundle for host: 0x10552b050 [serially]
+* Can not multiplex, even if we wanted to
+* Re-using existing connection with host localhost
+> GET /posts HTTP/1.1
+> Host: localhost:4330
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Vary: Origin
+< content-type: text/html
+< Date: Thu, 30 Apr 2026 17:40:38 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Transfer-Encoding: chunked
+< 
+{ [81390 bytes data]
+* Connection #0 to host localhost left intact
