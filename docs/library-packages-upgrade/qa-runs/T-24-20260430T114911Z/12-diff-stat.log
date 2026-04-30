@@ -1,0 +1,6 @@
+ astro.config.mjs                                   |    2 +-
+ docs/library-packages-upgrade/backlog.yaml         |   14 +-
+ .../justifications/T-24.md                         |  203 ++
+ package.json                                       |    2 -
+ pnpm-lock.yaml                                     | 2921 +-------------------
+ 5 files changed, 227 insertions(+), 2915 deletions(-)

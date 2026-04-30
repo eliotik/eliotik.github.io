@@ -1,0 +1,5 @@
+M	astro.config.mjs
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-24.md
+M	package.json
+M	pnpm-lock.yaml

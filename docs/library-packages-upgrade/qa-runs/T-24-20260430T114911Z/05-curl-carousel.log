@@ -1,0 +1,30 @@
+* Host localhost:4329 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:4329...
+* Connected to localhost (::1) port 4329
+> GET /posts/flutter-google-maps-embedded-map HTTP/1.1
+> Host: localhost:4329
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Vary: Origin
+< content-type: text/html
+< Date: Thu, 30 Apr 2026 11:50:22 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Transfer-Encoding: chunked
+< 
+{ [65078 bytes data]
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://www.novifyx.com/posts/flutter-google-maps-embedded-map"><meta name="generator" content="Astro v6.1.10"><!-- General Meta Tags --><title>Flutter Google Maps - Embedded Map | Novi Fyx</title><meta name="title" content="Flutter Google Maps - Embedded Map | Novi Fyx"><meta name="description" content="How to add and use Embedded Google Maps in Flutter project"><meta name="author" content="Alexander"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="Flutter Google Maps - Embedded Map | Novi Fyx"><meta property="og:description" content="How to add and use Embedded Google Maps in Flutter project"><meta property="og:url" content="https://www.novifyx.com/posts/flutter-google-maps-embedded-map"><meta property="og:image" content="http://localhost:4329/posts/flutter-google-maps-embedded-map.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2024-02-28T20:59:20.000Z"><meta property="article:modified_time" content="2024-02-28T20:59:20.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.novifyx.com/posts/flutter-google-maps-embedded-map"><meta property="twitter:title" content="Flutter Google Maps - Embedded Map | Novi Fyx"><meta property="twitter:description" content="How to add and use Embedded Google Maps in Flutter project"><meta property="twitter:image" content="http://localhost:4329/posts/flutter-google-maps-embedded-map.png"><!-- Google Font (non-blocking) --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" media="print" onload="this.media='all'"><style data-vite-dev-id="/Users/ap/development/other/eliotik.github.io-T-24/src/styles/base.css">/*! tailwindcss v4.2.4 | MIT License | https://tailwindcss.com */
+@layer properties;
+@layer theme, base, components, utilities;
+@layer theme {
+  :root, :host {
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: "IBM Plex Mono", monospace;
+    --color-red-50: oklch(97.1% 0.013 17.38);
+    --color-red-100: oklch(93.6% 0.032 17.717);

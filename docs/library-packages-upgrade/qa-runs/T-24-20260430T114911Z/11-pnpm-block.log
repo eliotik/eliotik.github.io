@@ -1,0 +1,6 @@
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@swc/core",
+            "contentlayer",
+            "esbuild",
+            "protobufjs",
