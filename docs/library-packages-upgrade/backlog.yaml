@@ -396,19 +396,19 @@ tasks:
     title: Update agent prompts with explicit model selection (chore)
     phase: 3
     lane: docs
-    status: in-progress
+    status: qa-pending
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: false
-    branch: null
-    commit_sha: null
+    branch: upgrade/T-32-agent-prompts
+    commit_sha: 2fe9d51
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T10:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T10:30:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-32.md
     defects: []
 
   - id: T-33
