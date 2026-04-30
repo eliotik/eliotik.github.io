@@ -1,0 +1,36 @@
+commit f66047924e78c63b6708a1a82c7ffca55b5b0d65
+Author: eliotik <4066101+eliotik@users.noreply.github.com>
+Date:   Thu Apr 30 08:02:37 2026 -0400
+
+    build(T-25): bump TypeScript toolchain (TS, prettier, husky, lint-staged)
+    
+    - typescript 5.3.3 → 6.0.3
+    - prettier-plugin-astro 0.13.0 → 0.14.1
+    - husky 9.0.11 → 9.1.7
+    - lint-staged 15.2.2 → 16.4.0
+    - prettier 3.8.3 and prettier-plugin-tailwindcss 0.8.0 already at latest
+    - Re-formats 77 source files with new prettier defaults (whitespace/indent only)
+    - Fixes 4 TS 6.0.3 type errors: Buffer→Uint8Array casts, getEntry undefined
+      filter, eslint.config.js JSDoc cast for tsPlugin.configs spread
+    - Excludes src/layouts/Layout.astro from prettier due to plugin@0.14.1
+      parser regression on function declarations in partytown script blocks
+    
+    Refs: docs/library-packages-upgrade/2026-04-29-upgrade-plan.md (Task T-25)
+    
+    Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+diff --git a/eslint.config.js b/eslint.config.js
+index 9f7ef99..a606c10 100644
+--- a/eslint.config.js
++++ b/eslint.config.js
+@@ -61,7 +61,9 @@ export default [
+   // We spread all entries from the array so parser, plugins, and rules are
+   // all applied in the correct order.
+   // -------------------------------------------------------------------------
+-  ...tsPlugin.configs['flat/recommended'],
++  // TS 6: tsPlugin.configs type says ClassicConfig.Config, but at runtime
++  // 'flat/recommended' is a FlatConfig.ConfigArray. Cast to avoid iterator error.
++  .../** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */ (tsPlugin.configs['flat/recommended']),
+ 
+   // -------------------------------------------------------------------------
+   // Block 3 — Astro flat/recommended + flat/jsx-a11y-recommended

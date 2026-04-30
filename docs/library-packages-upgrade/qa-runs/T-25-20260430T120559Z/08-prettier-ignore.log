@@ -1,0 +1,4 @@
+--- prettier ignore for Layout.astro ---
+# This file contains the Google Analytics gtag function declaration pattern.
+# Tracked upstream: https://github.com/withastro/prettier-plugin-astro/issues
+src/layouts/Layout.astro

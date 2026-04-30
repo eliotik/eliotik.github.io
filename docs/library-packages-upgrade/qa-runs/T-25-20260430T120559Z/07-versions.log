@@ -1,0 +1,12 @@
+--- toolchain versions ---
+        "format:check": "prettier --plugin-search-dir=. --check .",
+        "format": "prettier --plugin-search-dir=. --write .",
+        "prepare": "husky install",
+        "husky": "9.1.7",
+        "lint-staged": "16.4.0",
+        "prettier": "3.8.3",
+        "prettier-plugin-astro": "0.14.1",
+        "prettier-plugin-tailwindcss": "0.8.0",
+        "typescript": "6.0.3"
+    "lint-staged": {
+            "prettier --plugin-search-dir=. --write"

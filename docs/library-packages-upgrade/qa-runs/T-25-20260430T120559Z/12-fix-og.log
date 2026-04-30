@@ -1,0 +1,38 @@
+commit f66047924e78c63b6708a1a82c7ffca55b5b0d65
+Author: eliotik <4066101+eliotik@users.noreply.github.com>
+Date:   Thu Apr 30 08:02:37 2026 -0400
+
+    build(T-25): bump TypeScript toolchain (TS, prettier, husky, lint-staged)
+    
+    - typescript 5.3.3 → 6.0.3
+    - prettier-plugin-astro 0.13.0 → 0.14.1
+    - husky 9.0.11 → 9.1.7
+    - lint-staged 15.2.2 → 16.4.0
+    - prettier 3.8.3 and prettier-plugin-tailwindcss 0.8.0 already at latest
+    - Re-formats 77 source files with new prettier defaults (whitespace/indent only)
+    - Fixes 4 TS 6.0.3 type errors: Buffer→Uint8Array casts, getEntry undefined
+      filter, eslint.config.js JSDoc cast for tsPlugin.configs spread
+    - Excludes src/layouts/Layout.astro from prettier due to plugin@0.14.1
+      parser regression on function declarations in partytown script blocks
+    
+    Refs: docs/library-packages-upgrade/2026-04-29-upgrade-plan.md (Task T-25)
+    
+    Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+diff --git a/src/pages/og.png.ts b/src/pages/og.png.ts
+index d35baee..442dd4c 100644
+--- a/src/pages/og.png.ts
++++ b/src/pages/og.png.ts
+@@ -1,7 +1,7 @@
+-import type { APIRoute } from "astro";
+-import { generateOgImageForSite } from "@utils/generateOgImages";
++import type { APIRoute } from 'astro';
++import { generateOgImageForSite } from '@utils/generateOgImages';
+ 
+ export const GET: APIRoute = async () =>
+-  new Response(await generateOgImageForSite(), {
+-    headers: { "Content-Type": "image/png" },
+-  });
++    new Response(new Uint8Array(await generateOgImageForSite()), {
++        headers: { 'Content-Type': 'image/png' },
++    });
