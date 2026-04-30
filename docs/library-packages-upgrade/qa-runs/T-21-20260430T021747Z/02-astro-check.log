@@ -1,0 +1,18 @@
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io-T-21
+> astro check
+
+22:17:57 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+22:17:57 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+22:17:57 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+22:17:57 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+22:17:57 [vite] Re-optimizing dependencies because lockfile has changed
+22:17:57 [content] Syncing content
+22:17:57 [content] Synced content
+22:17:57 [types] Generated 271ms
+22:17:57 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-21...
+Result (0 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+

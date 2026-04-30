@@ -1,0 +1,17 @@
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-21.md
+M	package.json
+M	pnpm-lock.yaml
+A	qa-runs/T-21-20260429/visual/01-home.png
+A	qa-runs/T-21-20260429/visual/02-posts.png
+A	qa-runs/T-21-20260429/visual/03-post-with-images.png
+A	qa-runs/T-21-20260429/visual/04-post-with-carousel.png
+A	qa-runs/T-21-20260429/visual/05-tips.png
+A	qa-runs/T-21-20260429/visual/06-tags-filtered.png
+A	qa-runs/T-21-20260429/visual/06-tags.png
+A	qa-runs/T-21-20260429/visual/07-tag-flutter.png
+A	qa-runs/T-21-20260429/visual/08-threads.png
+A	qa-runs/T-21-20260429/visual/09-about.png
+A	qa-runs/T-21-20260429/visual/10-404.png
+A	qa-runs/T-21-20260429/visual/11-search-results.png
+A	qa-runs/T-21-20260429/visual/12-home-light.png

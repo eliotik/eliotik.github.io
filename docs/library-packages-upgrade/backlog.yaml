@@ -220,7 +220,7 @@ tasks:
     title: React 18 → 19 (audit refs, JSX runtime, @astrojs/react)
     phase: 2
     lane: L2
-    status: qa-pending
+    status: done
     depends_on: [T-20]
     blocks: [T-22]
     visual_smoke_required: true
@@ -229,9 +229,9 @@ tasks:
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T10:00:00Z
     finished_at: 2026-04-29T22:18:00Z
-    qa_worker: null
-    qa_started_at: null
-    qa_finished_at: null
+    qa_worker: claude-opus-4-7-qa
+    qa_started_at: 2026-04-30T02:17:25Z
+    qa_finished_at: 2026-04-30T02:31:54Z
     justification_file: docs/library-packages-upgrade/justifications/T-21.md
     defects: []
 

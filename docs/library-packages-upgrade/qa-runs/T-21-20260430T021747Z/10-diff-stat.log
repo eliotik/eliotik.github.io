@@ -1,0 +1,18 @@
+ docs/library-packages-upgrade/backlog.yaml         |  14 +-
+ .../justifications/T-21.md                         | 172 ++++++++++++++++++++
+ package.json                                       |   7 +-
+ pnpm-lock.yaml                                     | 180 +++++++++------------
+ qa-runs/T-21-20260429/visual/01-home.png           | Bin 0 -> 113591 bytes
+ qa-runs/T-21-20260429/visual/02-posts.png          | Bin 0 -> 133868 bytes
+ .../T-21-20260429/visual/03-post-with-images.png   | Bin 0 -> 240910 bytes
+ .../T-21-20260429/visual/04-post-with-carousel.png | Bin 0 -> 272799 bytes
+ qa-runs/T-21-20260429/visual/05-tips.png           | Bin 0 -> 87774 bytes
+ qa-runs/T-21-20260429/visual/06-tags-filtered.png  | Bin 0 -> 45533 bytes
+ qa-runs/T-21-20260429/visual/06-tags.png           | Bin 0 -> 128455 bytes
+ qa-runs/T-21-20260429/visual/07-tag-flutter.png    | Bin 0 -> 121772 bytes
+ qa-runs/T-21-20260429/visual/08-threads.png        | Bin 0 -> 156032 bytes
+ qa-runs/T-21-20260429/visual/09-about.png          | Bin 0 -> 251742 bytes
+ qa-runs/T-21-20260429/visual/10-404.png            | Bin 0 -> 41457 bytes
+ qa-runs/T-21-20260429/visual/11-search-results.png | Bin 0 -> 98368 bytes
+ qa-runs/T-21-20260429/visual/12-home-light.png     | Bin 0 -> 112628 bytes
+ 17 files changed, 262 insertions(+), 111 deletions(-)
