@@ -1,0 +1,15 @@
+=== EMS ===
+  ems-connecting-the-systems.md: 19 min
+  ems-the-decision-system.md: 11 min
+  ems-the-delivery-system.md: 10 min
+  ems-the-information-system.md: 10 min
+  ems-the-people-system.md: 9 min
+  ems-the-technology-system.md: 9 min
+  ems-why-systems-not-processes.md: 7 min
+  TOTAL EMS = 75 min
+=== Flutter ===
+  flutter-google-maps-setup.md: 5 min
+  flutter-google-maps-embedded-map.mdx: 4 min
+  flutter-google-maps-address-manipulation.mdx: 5 min
+  flutter-google-maps-static-map.mdx: 4 min
+  TOTAL Flutter = 18 min

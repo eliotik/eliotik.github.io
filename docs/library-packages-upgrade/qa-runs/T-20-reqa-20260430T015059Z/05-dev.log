@@ -1,0 +1,30 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-20
+> astro dev
+
+21:51:50 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+21:51:50 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:51:50 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+21:51:50 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+[vite] connected.
+21:51:51 [types] Generated 0ms
+[vite] connected.
+21:51:51 [content] Syncing content
+21:51:51 [content] Synced content
+21:51:51 [vite] Re-optimizing dependencies because vite config has changed
+21:51:51 [vite] Port 4321 is in use, trying another one...
+21:51:51 [vite] Port 4322 is in use, trying another one...
+21:51:51 [vite] Port 4323 is in use, trying another one...
+ astro  v6.1.10 ready in 791 ms
+┃ Local    http://localhost:4324/
+┃ Network  use --host to expose
+21:51:51 watching for file changes...
+21:52:09 [watch] docs/library-packages-upgrade/qa-runs/T-20-reqa-20260430T015059Z/07-thread-five-systems-of-engineering-management.html
+21:52:09 [200] /threads/five-systems-of-engineering-management/ 49ms
+21:52:09 [200] /threads/flutter-and-google-maps/ 2ms
+21:52:09 [watch] docs/library-packages-upgrade/qa-runs/T-20-reqa-20260430T015059Z/07-thread-flutter-and-google-maps.html
+21:52:09 [watch] docs/library-packages-upgrade/qa-runs/T-20-reqa-20260430T015059Z/07-thread-five-systems-of-engineering-management.html
+21:53:06 [200] /threads/five-systems-of-engineering-management/ 6ms
+21:53:06 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-types.js, astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-swap-functions.js
+21:53:06 [vite] ✨ optimized dependencies changed. reloading
+21:53:59 [200] /threads/five-systems-of-engineering-management/ 3ms
