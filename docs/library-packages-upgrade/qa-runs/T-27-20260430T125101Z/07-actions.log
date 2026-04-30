@@ -1,0 +1,5 @@
+.github/workflows/deploy.yml:              uses: actions/checkout@v6
+.github/workflows/deploy.yml:              uses: withastro/action@v6
+.github/workflows/deploy.yml:              uses: actions/deploy-pages@v5
+.github/workflows/ci.yml:            - uses: actions/checkout@v6
+.github/workflows/ci.yml:              uses: actions/setup-node@v6

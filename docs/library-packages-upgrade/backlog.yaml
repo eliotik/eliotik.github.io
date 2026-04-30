@@ -334,7 +334,7 @@ tasks:
     title: Bump GitHub Actions versions (withastro, checkout, deploy-pages)
     phase: 2
     lane: L2
-    status: qa-pending
+    status: done
     depends_on: [T-26]
     blocks: [T-30]
     visual_smoke_required: false
@@ -343,9 +343,9 @@ tasks:
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T15:00:00Z
     finished_at: 2026-04-29T15:30:00Z
-    qa_worker: null
-    qa_started_at: null
-    qa_finished_at: null
+    qa_worker: claude-opus-4-7-qa
+    qa_started_at: 2026-04-30T12:50:34Z
+    qa_finished_at: 2026-04-30T12:52:28Z
     justification_file: docs/library-packages-upgrade/justifications/T-27.md
     defects: []
 

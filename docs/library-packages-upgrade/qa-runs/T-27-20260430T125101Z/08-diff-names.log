@@ -1,0 +1,4 @@
+M	.github/workflows/ci.yml
+M	.github/workflows/deploy.yml
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-27.md

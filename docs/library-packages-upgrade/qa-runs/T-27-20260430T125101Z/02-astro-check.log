@@ -1,0 +1,112 @@
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io-T-27
+> astro check
+
+08:51:12 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+08:51:12 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+08:51:12 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+08:51:12 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+08:51:12 [vite] Re-optimizing dependencies because vite config has changed
+08:51:12 [content] Syncing content
+08:51:12 [content] Synced content
+08:51:12 [types] Generated 272ms
+08:51:12 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-27...
+[96msrc/content.config.ts[0m:[93m39[0m:[93m20[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m39[0m             draft: z.boolean().optional(),
+[7m  [0m [93m                   ~[0m
+[96msrc/content.config.ts[0m:[93m38[0m:[93m25[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m38[0m             customSlug: z.string(),
+[7m  [0m [93m                        ~[0m
+[96msrc/content.config.ts[0m:[93m37[0m:[93m20[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m37[0m             title: z.string(),
+[7m  [0m [93m                   ~[0m
+[96msrc/content.config.ts[0m:[93m36[0m:[93m26[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m36[0m             modDatetime: z.date().optional().nullable(),
+[7m  [0m [93m                         ~[0m
+[96msrc/content.config.ts[0m:[93m35[0m:[93m26[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m35[0m             pubDatetime: z.date(),
+[7m  [0m [93m                         ~[0m
+[96msrc/content.config.ts[0m:[93m34[0m:[93m21[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m34[0m             author: z.string().default(SITE.author),
+[7m  [0m [93m                    ~[0m
+[96msrc/content.config.ts[0m:[93m33[0m:[93m9[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m33[0m         z.object({
+[7m  [0m [93m        ~[0m
+[96msrc/content.config.ts[0m:[93m26[0m:[93m27[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m26[0m             relatedPosts: z.array(reference('blog')).optional(),
+[7m  [0m [93m                          ~[0m
+[96msrc/content.config.ts[0m:[93m25[0m:[93m27[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m25[0m             canonicalURL: z.string().optional(),
+[7m  [0m [93m                          ~[0m
+[96msrc/content.config.ts[0m:[93m24[0m:[93m21[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m24[0m             thread: z.string().optional(),
+[7m  [0m [93m                    ~[0m
+[96msrc/content.config.ts[0m:[93m23[0m:[93m26[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m23[0m             description: z.string(),
+[7m  [0m [93m                         ~[0m
+[96msrc/content.config.ts[0m:[93m21[0m:[93m21[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m21[0m                 .or(z.string())
+[7m  [0m [93m                    ~[0m
+[96msrc/content.config.ts[0m:[93m15[0m:[93m27[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m15[0m             tags: z.array(z.string()).default(['others']),
+[7m  [0m [93m                          ~[0m
+[96msrc/content.config.ts[0m:[93m15[0m:[93m19[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m15[0m             tags: z.array(z.string()).default(['others']),
+[7m  [0m [93m                  ~[0m
+[96msrc/content.config.ts[0m:[93m14[0m:[93m20[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m14[0m             draft: z.boolean().optional(),
+[7m  [0m [93m                   ~[0m
+[96msrc/content.config.ts[0m:[93m13[0m:[93m23[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m13[0m             featured: z.boolean().optional(),
+[7m  [0m [93m                      ~[0m
+[96msrc/content.config.ts[0m:[93m12[0m:[93m20[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m12[0m             title: z.string(),
+[7m  [0m [93m                   ~[0m
+[96msrc/content.config.ts[0m:[93m11[0m:[93m26[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m11[0m             modDatetime: z.date().optional().nullable(),
+[7m  [0m [93m                         ~[0m
+[96msrc/content.config.ts[0m:[93m10[0m:[93m26[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m10[0m             pubDatetime: z.date(),
+[7m  [0m [93m                         ~[0m
+[96msrc/content.config.ts[0m:[93m9[0m:[93m21[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m9[0m             author: z.string().default(SITE.author),
+[7m [0m [93m                    ~[0m
+[96msrc/content.config.ts[0m:[93m8[0m:[93m9[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m8[0m         z.object({
+[7m [0m [93m        ~[0m
+[96msrc/content.config.ts[0m:[93m2[0m:[93m39[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m2[0m import { defineCollection, reference, z } from 'astro:content';
+[7m [0m [93m                                      ~[0m
+
+[96msrc/components/Search.tsx[0m:[93m29[0m:[93m36[0m - [93mwarning[0m[90m ts(6385): [0m'FormEvent' is deprecated.
+
+[7m29[0m     const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+[7m  [0m [93m                                   ~~~~~~~~~[0m
+
+Result (76 files): 
+- 0 errors
+- 0 warnings
+- 23 hints
+
