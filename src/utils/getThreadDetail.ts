@@ -63,7 +63,7 @@ const getThreadDetail = (
         title: post.data.title,
         description: post.data.description,
         position: idx + 1,
-        readTime: estimateReadTime(undefined),
+        readTime: estimateReadTime(post.body),
     }));
 
     const totalReadTime = articles.reduce((acc, a) => acc + a.readTime, 0);

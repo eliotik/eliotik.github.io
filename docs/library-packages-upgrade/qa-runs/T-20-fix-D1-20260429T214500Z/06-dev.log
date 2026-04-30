@@ -1,0 +1,24 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-20
+> astro dev
+
+21:45:47 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+21:45:47 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:45:47 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+21:45:47 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+[vite] connected.
+21:45:48 [types] Generated 0ms
+[vite] connected.
+21:45:48 [content] Syncing content
+21:45:48 [content] Synced content
+21:45:48 [vite] Re-optimizing dependencies because vite config has changed
+21:45:48 [vite] Port 4321 is in use, trying another one...
+21:45:48 [vite] Port 4322 is in use, trying another one...
+ astro  v6.1.10 ready in 782 ms
+┃ Local    http://localhost:4323/
+┃ Network  use --host to expose
+21:45:48 watching for file changes...
+21:46:57 [200] HEAD / 69ms
+21:46:58 [200] HEAD /threads/five-systems-of-engineering-management/ 20ms
+21:47:04 [200] /threads/five-systems-of-engineering-management/ 5ms
+21:47:04 [200] /threads/flutter-and-google-maps/ 3ms

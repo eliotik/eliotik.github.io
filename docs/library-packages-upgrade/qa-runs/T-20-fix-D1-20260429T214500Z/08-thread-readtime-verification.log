@@ -1,0 +1,11 @@
+=== /threads/five-systems-of-engineering-management/ Read time ===
+Read time
+</dt> <dd class="font-mono text-sm font-semibold tabular-nums text-skin-base" data-astro-source-file="/Users/ap/development/other/eliotik.github.io-T-20/src/layouts/ThreadDetail.astro" data-astro-source-loc="40:81"> 75 min
+
+=== /threads/flutter-and-google-maps/ Read time ===
+Read time
+</dt> <dd class="font-mono text-sm font-semibold tabular-nums text-skin-base" data-astro-source-file="/Users/ap/development/other/eliotik.github.io-T-20/src/layouts/ThreadDetail.astro" data-astro-source-loc="40:81"> 18 min
+
+=== wc -w sanity check ===
+ems-* total words: 14850 — at 200 wpm: 74 min
+flutter-google-maps-* total words: 7537 — at 200 wpm: 37 min

@@ -1,0 +1,638 @@
+
+> eliotik.github.io@0.0.1 build /Users/ap/development/other/eliotik.github.io-T-20
+> astro check && astro build && jampack ./dist
+
+21:45:13 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+21:45:13 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:45:13 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+21:45:13 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:45:13 [content] Syncing content
+21:45:13 [content] Synced content
+21:45:13 [types] Generated 182ms
+21:45:13 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-20...
+Result (0 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+21:45:15 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+21:45:15 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:45:15 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+21:45:15 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:45:15 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+21:45:15 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:45:15 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+21:45:15 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+21:45:15 [content] Syncing content
+21:45:15 [content] Synced content
+21:45:15 [types] Generated 175ms
+21:45:15 [build] output: "static"
+21:45:15 [build] mode: "static"
+21:45:15 [build] directory: /Users/ap/development/other/eliotik.github.io-T-20/dist/
+21:45:15 [build] Collecting build info...
+21:45:15 [build] ✓ Completed in 237ms.
+21:45:15 [build] Building static entrypoints...
+21:45:17 [vite] ✓ built in 2.25s
+21:45:17 [vite] ✓ built in 238ms
+21:45:17 [build] Rearranging server assets...
+
+ generating static routes 
+21:45:18 [WARN] [build] Could not render `/posts/1` from route `/posts/1` as it conflicts with higher priority route `/posts/1`.
+21:45:18 [WARN] [build] Could not render `/tips/1` from route `/tips/1` as it conflicts with higher priority route `/tips/1`.
+21:45:18   ├─ /404.html (+11ms) 
+21:45:18   ├─ /about/index.html (+3ms) 
+21:45:18   ├─ /og.png (+904ms) 
+21:45:19   ├─ /posts/1/index.html (+1ms) 
+21:45:19   ├─ /posts/audio-vs-paper-books/index.png (+215ms) 
+21:45:19   ├─ /posts/dad-ops-playbook/index.png (+217ms) 
+21:45:19   ├─ /posts/em101-building-brand/index.png (+218ms) 
+21:45:19   ├─ /posts/ems-connecting-the-systems/index.png (+218ms) 
+21:45:20   ├─ /posts/ems-the-decision-system/index.png (+215ms) 
+21:45:20   ├─ /posts/ems-the-delivery-system/index.png (+215ms) 
+21:45:20   ├─ /posts/ems-the-information-system/index.png (+218ms) 
+21:45:20   ├─ /posts/ems-the-people-system/index.png (+214ms) 
+21:45:21   ├─ /posts/ems-the-technology-system/index.png (+218ms) 
+21:45:21   ├─ /posts/ems-why-systems-not-processes/index.png (+215ms) 
+21:45:21   ├─ /posts/flutter-building-number-picker/index.png (+216ms) 
+21:45:21   ├─ /posts/flutter-google-maps-address-manipulation/index.png (+219ms) 
+21:45:21   ├─ /posts/flutter-google-maps-embedded-map/index.png (+224ms) 
+21:45:22   ├─ /posts/flutter-google-maps-setup/index.png (+214ms) 
+21:45:22   ├─ /posts/flutter-google-maps-static-map/index.png (+216ms) 
+21:45:22   ├─ /posts/from-skeptic-to-champion/index.png (+215ms) 
+21:45:22   ├─ /posts/local-coding-model-desktop-macbook/index.png (+221ms) 
+21:45:22   ├─ /posts/speed-vs-process/index.png (+215ms) 
+21:45:23   ├─ /posts/system-design-cap-theorem/index.png (+212ms) 
+21:45:23   ├─ /posts/the-emotional-roller-coaster-of-hiring/index.png (+214ms) 
+21:45:23   ├─ /posts/the-scaling-handbook/index.png (+215ms) 
+21:45:23   ├─ /posts/this-blog/index.png (+215ms) 
+21:45:24   ├─ /posts/two-horses-asses-is-it-that-bad/index.png (+216ms) 
+21:45:24   ├─ /posts/what-it-really-means-to-be-a-senior-software-engineer/index.png (+217ms) 
+21:45:24   ├─ /posts/what-the-heck-is-eos/index.png (+214ms) 
+21:45:24   ├─ /posts/your-team-is-only-as-fast-as-its-slowest-engineer/index.png (+216ms) 
+21:45:24   ├─ /posts/audio-vs-paper-books/index.html (+3ms) 
+21:45:24   ├─ /posts/dad-ops-playbook/index.html (+7ms) 
+21:45:24   ├─ /posts/em101-building-brand/index.html (+1ms) 
+21:45:24   ├─ /posts/ems-connecting-the-systems/index.html (+1ms) 
+21:45:24   ├─ /posts/ems-the-decision-system/index.html (+1ms) 
+21:45:24   ├─ /posts/ems-the-delivery-system/index.html (+1ms) 
+21:45:24   ├─ /posts/ems-the-information-system/index.html (+1ms) 
+21:45:24   ├─ /posts/ems-the-people-system/index.html (+1ms) 
+21:45:24   ├─ /posts/ems-the-technology-system/index.html (+3ms) 
+21:45:24   ├─ /posts/ems-why-systems-not-processes/index.html (+1ms) 
+21:45:24   ├─ /posts/flutter-building-number-picker/index.html (+34ms) 
+21:45:24   ├─ /posts/flutter-google-maps-address-manipulation/index.html (+17ms) 
+21:45:24   ├─ /posts/flutter-google-maps-embedded-map/index.html (+15ms) 
+21:45:25   ├─ /posts/flutter-google-maps-setup/index.html (+2ms) 
+21:45:25   ├─ /posts/flutter-google-maps-static-map/index.html (+22ms) 
+21:45:25   ├─ /posts/from-skeptic-to-champion/index.html (+4ms) 
+21:45:25   ├─ /posts/local-coding-model-desktop-macbook/index.html (+1ms) 
+21:45:25   ├─ /posts/speed-vs-process/index.html (+1ms) 
+21:45:25   ├─ /posts/system-design-cap-theorem/index.html (+1ms) 
+21:45:25   ├─ /posts/the-emotional-roller-coaster-of-hiring/index.html (+1ms) 
+21:45:25   ├─ /posts/the-scaling-handbook/index.html (+2ms) 
+21:45:25   ├─ /posts/this-blog/index.html (+1ms) 
+21:45:25   ├─ /posts/two-horses-asses-is-it-that-bad/index.html (+2ms) 
+21:45:25   ├─ /posts/what-it-really-means-to-be-a-senior-software-engineer/index.html (+2ms) 
+21:45:25   ├─ /posts/what-the-heck-is-eos/index.html (+1ms) 
+21:45:25   ├─ /posts/your-team-is-only-as-fast-as-its-slowest-engineer/index.html (+1ms) 
+21:45:25   ├─ /posts/2/index.html (+4ms) 
+21:45:25   ├─ /posts/3/index.html (+1ms) 
+21:45:25   ├─ /posts/4/index.html (+1ms) 
+21:45:25   ├─ /posts/5/index.html (+1ms) 
+21:45:25   ├─ /posts/6/index.html (+1ms) 
+21:45:25   ├─ /posts/index.html (+1ms) 
+21:45:25   ├─ /robots.txt (+0ms) 
+21:45:25   ├─ /rss.xml (+13ms) 
+21:45:25   ├─ /search/index.html (+4ms) 
+21:45:25   ├─ /sitemap-index.xml (+1ms) 
+21:45:25   ├─ /sitemap-pages.xml (+1ms) 
+21:45:25   ├─ /sitemap-posts.xml (+1ms) 
+21:45:25   ├─ /sitemap-tags.xml (+1ms) 
+21:45:25   ├─ /sitemap-threads.xml (+1ms) 
+21:45:25   ├─ /sitemap-tips.xml (+0ms) 
+21:45:25   ├─ /tags/engineering-leadership/2/index.html (+2ms) 
+21:45:25   ├─ /tags/engineering-management/2/index.html (+2ms) 
+21:45:25   ├─ /tags/engineering-management/3/index.html (+1ms) 
+21:45:25   ├─ /tags/leadership/2/index.html (+1ms) 
+21:45:25   ├─ /tags/systems-thinking/2/index.html (+1ms) 
+21:45:25   ├─ /tags/tutorial/2/index.html (+1ms) 
+21:45:25   ├─ /tags/agile/index.html (+1ms) 
+21:45:25   ├─ /tags/architecture-decision-records/index.html (+1ms) 
+21:45:25   ├─ /tags/astro/index.html (+1ms) 
+21:45:25   ├─ /tags/blogging/index.html (+1ms) 
+21:45:25   ├─ /tags/book-review/index.html (+1ms) 
+21:45:25   ├─ /tags/cap-theorem/index.html (+1ms) 
+21:45:25   ├─ /tags/career-growth/index.html (+1ms) 
+21:45:25   ├─ /tags/change-management/index.html (+1ms) 
+21:45:25   ├─ /tags/code-quality/index.html (+1ms) 
+21:45:25   ├─ /tags/communication/index.html (+1ms) 
+21:45:25   ├─ /tags/decision-making/index.html (+1ms) 
+21:45:25   ├─ /tags/developer-burnout/index.html (+1ms) 
+21:45:25   ├─ /tags/developer-productivity/index.html (+1ms) 
+21:45:25   ├─ /tags/distributed-systems/index.html (+1ms) 
+21:45:25   ├─ /tags/documentation/index.html (+1ms) 
+21:45:25   ├─ /tags/engineering-culture/index.html (+1ms) 
+21:45:25   ├─ /tags/engineering-leadership/index.html (+2ms) 
+21:45:25   ├─ /tags/engineering-management/index.html (+1ms) 
+21:45:25   ├─ /tags/eos/index.html (+1ms) 
+21:45:25   ├─ /tags/flutter/index.html (+1ms) 
+21:45:25   ├─ /tags/geocoding/index.html (+1ms) 
+21:45:25   ├─ /tags/github-pages/index.html (+1ms) 
+21:45:25   ├─ /tags/google-maps/index.html (+1ms) 
+21:45:25   ├─ /tags/high-performance-culture/index.html (+1ms) 
+21:45:25   ├─ /tags/hiring/index.html (+1ms) 
+21:45:25   ├─ /tags/incident-response/index.html (+1ms) 
+21:45:25   ├─ /tags/innovation/index.html (+1ms) 
+21:45:25   ├─ /tags/kanban/index.html (+1ms) 
+21:45:25   ├─ /tags/leadership/index.html (+1ms) 
+21:45:25   ├─ /tags/learning/index.html (+1ms) 
+21:45:25   ├─ /tags/local-llm/index.html (+1ms) 
+21:45:25   ├─ /tags/management-frameworks/index.html (+1ms) 
+21:45:25   ├─ /tags/metrics/index.html (+1ms) 
+21:45:25   ├─ /tags/mobile-development/index.html (+1ms) 
+21:45:25   ├─ /tags/onboarding/index.html (+1ms) 
+21:45:25   ├─ /tags/opencode/index.html (+1ms) 
+21:45:25   ├─ /tags/organizational-culture/index.html (+1ms) 
+21:45:25   ├─ /tags/organizational-design/index.html (+1ms) 
+21:45:25   ├─ /tags/performance-management/index.html (+1ms) 
+21:45:25   ├─ /tags/personal/index.html (+1ms) 
+21:45:25   ├─ /tags/personal-branding/index.html (+1ms) 
+21:45:25   ├─ /tags/qwen/index.html (+1ms) 
+21:45:25   ├─ /tags/radical-candor/index.html (+1ms) 
+21:45:25   ├─ /tags/reading/index.html (+1ms) 
+21:45:25   ├─ /tags/recruiting/index.html (+1ms) 
+21:45:25   ├─ /tags/retention/index.html (+1ms) 
+21:45:25   ├─ /tags/scaling-teams/index.html (+1ms) 
+21:45:25   ├─ /tags/scrum/index.html (+1ms) 
+21:45:25   ├─ /tags/senior-software-engineer/index.html (+1ms) 
+21:45:25   ├─ /tags/software-architecture/index.html (+1ms) 
+21:45:25   ├─ /tags/software-engineering/index.html (+1ms) 
+21:45:25   ├─ /tags/startup-growth/index.html (+1ms) 
+21:45:25   ├─ /tags/strategy/index.html (+1ms) 
+21:45:25   ├─ /tags/system-design/index.html (+1ms) 
+21:45:25   ├─ /tags/systems-thinking/index.html (+1ms) 
+21:45:25   ├─ /tags/team-alignment/index.html (+1ms) 
+21:45:25   ├─ /tags/team-building/index.html (+1ms) 
+21:45:25   ├─ /tags/technical-debt/index.html (+1ms) 
+21:45:25   ├─ /tags/tutorial/index.html (+1ms) 
+21:45:25   ├─ /tags/ui-components/index.html (+1ms) 
+21:45:25   ├─ /tags/vllm/index.html (+1ms) 
+21:45:25   ├─ /tags/web-development/index.html (+1ms) 
+21:45:25   ├─ /tags/wsl2/index.html (+1ms) 
+21:45:25   ├─ /tags/index.html (+4ms) 
+21:45:25   ├─ /threads/five-systems-of-engineering-management/index.html (+3ms) 
+21:45:25   ├─ /threads/flutter-and-google-maps/index.html (+1ms) 
+21:45:25   ├─ /threads/index.html (+2ms) 
+21:45:25   ├─ /tips/1/index.html (+1ms) 
+21:45:25   ├─ /tips/audacious-ideas/index.html (+1ms) 
+21:45:25   ├─ /tips/bureaucracy/index.html (+1ms) 
+21:45:25   ├─ /tips/motivation-is-a-trap/index.html (+1ms) 
+21:45:25   ├─ /tips/outcomes-matter/index.html (+1ms) 
+21:45:25   ├─ /tips/procrastination/index.html (+1ms) 
+21:45:25   ├─ /tips/speed/index.html (+1ms) 
+21:45:25   ├─ /tips/systems-and-teams/index.html (+1ms) 
+21:45:25   ├─ /tips/2/index.html (+1ms) 
+21:45:25   ├─ /tips/index.html (+1ms) 
+21:45:25   ├─ /index.html (+2ms) 
+21:45:25 ✓ Completed in 7.27s.
+
+ generating optimized images 
+21:45:25   ▶ /_astro/principle-two.P7SLPHBw_Z1wkr10.webp (reused cache entry) (+1ms) (1/33)
+21:45:25   ▶ /_astro/principle-one.DwBi5tCZ_1udL7U.webp (reused cache entry) (+1ms) (2/33)
+21:45:25   ▶ /_astro/principle-four.C2zXWgiC_ZMm2Kp.webp (reused cache entry) (+1ms) (3/33)
+21:45:25   ▶ /_astro/opening.CIL9Earz_Z1RJIoT.webp (reused cache entry) (+1ms) (4/33)
+21:45:25   ▶ /_astro/closing-words.DPmV5pwi_uJiXM.webp (reused cache entry) (+1ms) (5/33)
+21:45:25   ▶ /_astro/principle-five.BXXVPnFs_1t1Bg9.webp (reused cache entry) (+1ms) (6/33)
+21:45:25   ▶ /_astro/principle-three.9iIy6-aD_ZrwqGB.webp (reused cache entry) (+1ms) (7/33)
+21:45:25   ▶ /_astro/flutter-number-picker-horizontal-blue-range.jrqoz7y4_ZgOeDz.webp (reused cache entry) (+1ms) (8/33)
+21:45:25   ▶ /_astro/flutter-number-picker-select-number.DmL0EQS8_F9TUA.webp (reused cache entry) (+2ms) (9/33)
+21:45:25   ▶ /_astro/flutter-number-picker-inc-dec-selected-number.DFIZ46fv_1Yc9n6.webp (reused cache entry) (+2ms) (10/33)
+21:45:25   ▶ /_astro/initial-home-screen-render.DvlfsV7z_Z1aNdbD.webp (reused cache entry) (+4ms) (11/33)
+21:45:25   ▶ /_astro/flutter-number-picker-show-even-numbers.W6Vm2wAF_dycjE.webp (reused cache entry) (+4ms) (12/33)
+21:45:25   ▶ /_astro/final-project-structure.B6HNdG6j_1lBhuS.webp (reused cache entry) (+7ms) (13/33)
+21:45:25   ▶ /_astro/flutter-number-picker-animate-on-select.4Bo_2HMi_2kcpUC.webp (reused cache entry) (+7ms) (14/33)
+21:45:25   ▶ /_astro/get-started-on-google-maps-platform.CjdsNzng_Z18n7gh.webp (reused cache entry) (+7ms) (15/33)
+21:45:25   ▶ /_astro/flutter-number-picker-colored-numbers.CE5EQ1Gm_2o1sIj.webp (reused cache entry) (+8ms) (16/33)
+21:45:25   ▶ /_astro/home-screen-placeholder-for-static-map.DP4nSrJv_2vlKSo.webp (reused cache entry) (+7ms) (17/33)
+21:45:25   ▶ /_astro/opening.CXbDwPw5_1JKBp9.webp (reused cache entry) (+7ms) (18/33)
+21:45:25   ▶ /_astro/the-why.CSSXFttI_1S8Kn1.webp (reused cache entry) (+7ms) (19/33)
+21:45:25   ▶ /_astro/the-how.BnPzJUhf_Z1DURCj.webp (reused cache entry) (+7ms) (20/33)
+21:45:25   ▶ /_astro/workshop-in-action.gnxJUyff_1SltR2.webp (reused cache entry) (+7ms) (21/33)
+21:45:25   ▶ /_astro/the-what.CBiu5UDA_1kaBNI.webp (reused cache entry) (+6ms) (22/33)
+21:45:25   ▶ /_astro/why-post-it-2.5T0U4hId_rtKrJ.webp (reused cache entry) (+7ms) (23/33)
+21:45:25   ▶ /_astro/why-post-it-1.DUhx79C__FoIfV.webp (reused cache entry) (+7ms) (24/33)
+21:45:25   ▶ /_astro/chaos-to-clarity.DPmwiuQT_ZeLRH0.webp (reused cache entry) (+3ms) (25/33)
+21:45:25   ▶ /_astro/what-post-it-2.SySaVyoM_ZaKSAC.webp (reused cache entry) (+7ms) (26/33)
+21:45:25   ▶ /_astro/intro.guVjO9Jz_Zdosyk.webp (reused cache entry) (+4ms) (27/33)
+21:45:25   ▶ /_astro/horseonatrain.BDpdLXnA_wsR4y.webp (reused cache entry) (+4ms) (28/33)
+21:45:25   ▶ /_astro/what-post-it-1.D7RaLIL0_Z2bRQJQ.webp (reused cache entry) (+7ms) (29/33)
+21:45:25   ▶ /_astro/first-step.BQ0PrctY_Z1SDrEW.webp (reused cache entry) (+4ms) (30/33)
+21:45:25   ▶ /_astro/freedomofchoice.BGy-y5nu_10FP5J.webp (reused cache entry) (+4ms) (31/33)
+21:45:25   ▶ /_astro/container.WPuK4qDt_uPFwE.webp (reused cache entry) (+4ms) (32/33)
+21:45:25   ▶ /_astro/hippodrome.DJjA9FyP_19IUve.webp (reused cache entry) (+4ms) (33/33)
+21:45:25 ✓ Completed in 13ms.
+
+21:45:25 [build] ✓ Completed in 9.81s.
+21:45:25 [build] 118 page(s) built in 10.11s
+21:45:25 [build] Complete!
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+     __                                    __    
+    |__|____    _____ ___________    ____ |  | __
+    |  \__  \  /     \\____ \__  \ _/ ___\|  |/ /
+    |  |/ __ \|  Y Y  \  |_> > __ \\  \___|    < 
+/\__|  (____  /__|_|  /   __(____  /\___  >__|_ \
+\______|    \/      \/|  |       \/     \/     \/
+ v0.23.3              |__| by ‹div›RIOTS
+
+Options:
+{}
+
+
+ PASS 1 - Optimizing 
+▶ 404.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ about/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ search/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ threads/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/1/index.html
+▶ posts/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/3/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/4/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/5/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/6/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/audio-vs-paper-books/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/dad-ops-playbook/index.html
+  ✔ <img> [7/7]
+  ✔ <iframe> [7/7]
+▶ posts/em101-building-brand/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/ems-connecting-the-systems/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/ems-the-decision-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/ems-the-delivery-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/ems-the-information-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/ems-the-people-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/ems-the-technology-system/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/ems-why-systems-not-processes/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/flutter-building-number-picker/index.html
+  ✔ <img> [6/6]
+  ✔ <iframe> [6/6]
+▶ posts/flutter-google-maps-address-manipulation/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/flutter-google-maps-embedded-map/index.html
+  ✔ <img> [2/2]
+  ✔ <iframe> [2/2]
+▶ posts/flutter-google-maps-setup/index.html
+  ✔ <img> [1/1]
+  ✔ <iframe> [1/1]
+▶ posts/flutter-google-maps-static-map/index.html
+  ✔ <img> [1/1]
+  ✔ <iframe> [1/1]
+▶ posts/from-skeptic-to-champion/index.html
+  ✔ <img> [11/11]
+  ✔ <iframe> [11/11]
+▶ posts/local-coding-model-desktop-macbook/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/speed-vs-process/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/system-design-cap-theorem/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/the-emotional-roller-coaster-of-hiring/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/the-scaling-handbook/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/this-blog/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/two-horses-asses-is-it-that-bad/index.html
+  ✔ <img> [5/5]
+  ✔ <iframe> [5/5]
+▶ posts/what-it-really-means-to-be-a-senior-software-engineer/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/what-the-heck-is-eos/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/agile/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ posts/your-team-is-only-as-fast-as-its-slowest-engineer/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/architecture-decision-records/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/astro/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/blogging/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/book-review/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/cap-theorem/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/career-growth/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/change-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/code-quality/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/communication/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/decision-making/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/developer-burnout/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/developer-productivity/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/distributed-systems/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/documentation/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/engineering-culture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/engineering-leadership/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/engineering-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/eos/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/flutter/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/geocoding/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/github-pages/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/google-maps/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/high-performance-culture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/hiring/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/innovation/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/incident-response/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/kanban/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/leadership/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/learning/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/local-llm/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/management-frameworks/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/metrics/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/mobile-development/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/onboarding/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/opencode/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/organizational-culture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/organizational-design/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/performance-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/qwen/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/personal/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/personal-branding/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/radical-candor/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/retention/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/recruiting/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/reading/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/scaling-teams/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/scrum/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/software-engineering/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/senior-software-engineer/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/software-architecture/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/startup-growth/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/strategy/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/systems-thinking/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/team-alignment/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/team-building/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/system-design/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/technical-debt/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/tutorial/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/ui-components/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/web-development/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/vllm/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/wsl2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ threads/five-systems-of-engineering-management/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ threads/flutter-and-google-maps/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/1/index.html
+▶ tips/audacious-ideas/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/bureaucracy/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/motivation-is-a-trap/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/procrastination/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/speed/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/outcomes-matter/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tips/systems-and-teams/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/engineering-leadership/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/engineering-management/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/engineering-management/3/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/leadership/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/systems-thinking/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+▶ tags/tutorial/2/index.html
+  ✔ <img> [0/0]
+  ✔ <iframe> [0/0]
+Done: 2.787s
+
+ PASS 2 - Compressing the rest 
+- 33 files | 9.18 MB → 9.04 MB | -138.39 KB 
+✔ 290 files | 49.28 MB → 46.68 MB | -2.60 MB 
+Done: 875.668ms
+
+ Summary 
+╔════════════╤════════════╤═══════════╤════════════╤════════════╗
+║ Action     │ Compressed │  Original │ Compressed │       Gain ║
+╟────────────┼────────────┼───────────┼────────────┼────────────╢
+║ webp->webp │    19 / 19 │   1.70 MB │    1.50 MB │ -209.22 KB ║
+║ .webp      │    27 / 39 │  15.33 MB │   14.97 MB │ -375.37 KB ║
+║ .css       │      1 / 2 │ 159.08 KB │  153.16 KB │   -5.92 KB ║
+║ .html      │  118 / 120 │   4.40 MB │    4.21 MB │ -195.67 KB ║
+║ .js        │     8 / 14 │ 285.36 KB │  283.67 KB │   -1.69 KB ║
+║ .svg       │      1 / 1 │  873.00 B │   787.00 B │   -86.00 B ║
+║ .png       │    45 / 65 │  15.81 MB │   13.93 MB │   -1.88 MB ║
+║ .jpg       │      1 / 7 │   3.19 MB │    3.17 MB │  -23.69 KB ║
+║ webp->jpg  │      1 / 8 │   1.32 MB │    1.39 MB │            ║
+║ .xml       │      0 / 7 │  31.22 KB │   31.22 KB │            ║
+║ .txt       │      0 / 1 │  167.00 B │   167.00 B │            ║
+║ .gif       │      0 / 6 │   7.05 MB │    7.05 MB │            ║
+╟────────────┼────────────┼───────────┼────────────┼────────────╢
+║ Total      │  221 / 290 │  49.28 MB │   46.68 MB │   -2.60 MB ║
+╚════════════╧════════════╧═══════════╧════════════╧════════════╝
+
+
+ ✔ No issues 
