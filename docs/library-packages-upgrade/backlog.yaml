@@ -353,19 +353,19 @@ tasks:
     title: End-to-end verification & visual diff against baseline
     phase: 3
     lane: validation
-    status: backlog
+    status: done
     depends_on: [T-27]
     blocks: [T-31]
     visual_smoke_required: true
-    branch: null
+    branch: upgrade/T-30-final-verification
     commit_sha: null
-    worker: null
-    started_at: null
-    finished_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-30T12:58:00Z
+    finished_at: 2026-04-30T13:15:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/verification-report.md
     defects: []
 
   - id: T-31
