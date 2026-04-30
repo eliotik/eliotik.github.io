@@ -16,12 +16,6 @@ import expressiveCode from "astro-expressive-code";
 export default defineConfig({
   site: SITE.website,
   trailingSlash: 'ignore',
-  redirects: {
-    '/posts/1': '/posts',
-    '/posts/1/': '/posts',
-    '/tips/1': '/tips',
-    '/tips/1/': '/tips',
-  },
   integrations: [
   partytown({ config: { forward: ['dataLayer.push'] } }),
   expressiveCode({
