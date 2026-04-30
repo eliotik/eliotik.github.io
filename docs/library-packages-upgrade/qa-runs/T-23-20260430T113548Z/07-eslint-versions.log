@@ -1,0 +1,11 @@
+        "astro-eslint-parser": "1.4.0",
+        "eslint": "9.39.4",
+16:        "lint": "eslint .",
+49:        "@eslint/js": "^9.39.4",
+55:        "@typescript-eslint/eslint-plugin": "8.59.1",
+56:        "@typescript-eslint/parser": "8.59.1",
+57:        "astro-eslint-parser": "1.4.0",
+58:        "eslint": "9.39.4",
+59:        "eslint-plugin-astro": "1.7.0",
+60:        "eslint-plugin-jsx-a11y": "^6.10.2",
+74:            "eslint --fix"

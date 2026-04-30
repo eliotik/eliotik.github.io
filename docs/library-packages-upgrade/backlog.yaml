@@ -258,7 +258,7 @@ tasks:
     title: ESLint 8 → 9 (activate flat config, delete .eslintrc.cjs)
     phase: 2
     lane: L2
-    status: qa-pending
+    status: done
     depends_on: [T-12, T-22]
     blocks: [T-24]
     visual_smoke_required: false
@@ -267,9 +267,9 @@ tasks:
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T12:00:00Z
     finished_at: 2026-04-29T13:30:00Z
-    qa_worker: null
-    qa_started_at: null
-    qa_finished_at: null
+    qa_worker: claude-opus-4-7-qa
+    qa_started_at: 2026-04-29T17:00:00Z
+    qa_finished_at: 2026-04-30T11:40:00Z
     justification_file: docs/library-packages-upgrade/justifications/T-23.md
     defects: []
 

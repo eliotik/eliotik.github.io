@@ -1,0 +1,10 @@
+D	.eslintignore
+D	.eslintrc.cjs
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-23.md
+M	eslint.config.js
+M	package.json
+M	pnpm-lock.yaml
+M	src/components/Breadcrumbs.astro
+M	src/layouts/Layout.astro
+M	src/layouts/PostDetails.astro

@@ -1,0 +1,112 @@
+diff --git a/src/components/Breadcrumbs.astro b/src/components/Breadcrumbs.astro
+index 1034e9a..6e932d7 100644
+--- a/src/components/Breadcrumbs.astro
++++ b/src/components/Breadcrumbs.astro
+@@ -8,18 +8,19 @@ const breadcrumbList = currentUrlPath.split("/").slice(1);
+ 
+ // if breadcrumb is Home > Posts > 1 <etc>
+ // replace Posts with Posts (page number)
+-breadcrumbList[0] === "posts" &&
++if (breadcrumbList[0] === "posts") {
+   breadcrumbList.splice(0, 2, `Posts (page ${breadcrumbList[1] || 1})`);
++}
+ 
+ // if breadcrumb is Home > Posts > 1 <etc>
+ // replace Posts with Posts (page number)
+-breadcrumbList[0] === "tips" &&
++if (breadcrumbList[0] === "tips") {
+   breadcrumbList.splice(0, 2, `Tips (page ${breadcrumbList[1] || 1})`);
++}
+ 
+ // if breadcrumb is Home > Tags > [tag] > [page] <etc>
+ // replace [tag] > [page] with [tag] (page number)
+-breadcrumbList[0] === "tags" &&
+-  !isNaN(Number(breadcrumbList[2])) &&
++if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
+   breadcrumbList.splice(
+     1,
+     3,
+@@ -27,6 +28,7 @@ breadcrumbList[0] === "tags" &&
+       Number(breadcrumbList[2]) === 1 ? "" : "(page " + breadcrumbList[2] + ")"
+     }`
+   );
++}
+ ---
+ 
+ <nav class="breadcrumb" aria-label="breadcrumb">
+diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
+index 4b7529e..ef83ca8 100644
+--- a/src/layouts/Layout.astro
++++ b/src/layouts/Layout.astro
+@@ -128,6 +128,7 @@ const socialImageURL = new URL(
+ 
+         <script data-category="analytics" is:inline type="text/partytown">
+           window.dataLayer = window.dataLayer || [];
++          // eslint-disable-next-line prefer-rest-params
+           function gtag(){window.dataLayer.push(arguments);}
+           gtag('js', new Date());
+ 
+@@ -147,7 +148,7 @@ const socialImageURL = new URL(
+           } else {
+             document.documentElement.classList.remove('dark');
+           }
+-        } catch (_) {
++        } catch {
+           // localStorage unavailable (private mode, etc.) — fall back to system preference
+           if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+             document.documentElement.classList.add('dark');
+diff --git a/src/layouts/PostDetails.astro b/src/layouts/PostDetails.astro
+index a1d8023..84d6e5c 100644
+--- a/src/layouts/PostDetails.astro
++++ b/src/layouts/PostDetails.astro
+@@ -207,13 +207,13 @@ const layoutProps = {
+     if (!article) return;
+ 
+     // Only select headings within the article content
+-    let headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
+-    for (let heading of headings) {
++    const headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
++    for (const heading of headings) {
+       // Skip if heading already has a link (prevents duplicates)
+       if (heading.querySelector('.heading-link')) continue;
+ 
+       heading.classList.add("group")
+-      let link = document.createElement("a");
++      const link = document.createElement("a");
+       link.innerText = "#";
+       link.className = "heading-link hidden group-hover:inline-block ml-2";
+       link.href = "#" + heading.id;
+@@ -230,17 +230,17 @@ const layoutProps = {
+     const article = document.getElementById("article");
+     if (!article) return;
+ 
+-    let copyButtonLabel = "Copy";
+-    let codeBlocks = Array.from(article.querySelectorAll("pre"));
++    const copyButtonLabel = "Copy";
++    const codeBlocks = Array.from(article.querySelectorAll("pre"));
+ 
+-    for (let codeBlock of codeBlocks) {
++    for (const codeBlock of codeBlocks) {
+       // Skip if copy button already exists (prevents duplicates)
+       if (codeBlock.querySelector('.copy-code')) continue;
+ 
+-      let wrapper = document.createElement("div");
++      const wrapper = document.createElement("div");
+       wrapper.style.position = "relative";
+ 
+-      let copyButton = document.createElement("button");
++      const copyButton = document.createElement("button");
+       copyButton.className =
+         "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+       copyButton.innerHTML = copyButtonLabel;
+@@ -257,8 +257,8 @@ const layoutProps = {
+     }
+ 
+     async function copyCode(block, button) {
+-      let code = block.querySelector("code");
+-      let text = code?.innerText;
++      const code = block.querySelector("code");
++      const text = code?.innerText;
+ 
+       await navigator.clipboard.writeText(text ?? "");
+ 

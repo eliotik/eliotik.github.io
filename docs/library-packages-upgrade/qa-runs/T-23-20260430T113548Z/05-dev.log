@@ -1,0 +1,29 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-23
+> astro dev
+
+07:36:35 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+07:36:35 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+07:36:35 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+07:36:35 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+[vite] connected.
+07:36:35 [types] Generated 0ms
+[vite] connected.
+07:36:36 [content] Syncing content
+07:36:36 [content] Synced content
+07:36:36 [vite] Re-optimizing dependencies because vite config has changed
+07:36:36 [vite] Port 4321 is in use, trying another one...
+07:36:36 [vite] Port 4322 is in use, trying another one...
+07:36:36 [vite] Port 4323 is in use, trying another one...
+07:36:36 [vite] Port 4324 is in use, trying another one...
+07:36:36 [vite] Port 4325 is in use, trying another one...
+07:36:36 [vite] Port 4326 is in use, trying another one...
+07:36:36 [vite] Port 4327 is in use, trying another one...
+ astro  v6.1.10 ready in 714 ms
+┃ Local    http://localhost:4328/
+┃ Network  use --host to expose
+07:36:36 watching for file changes...
+07:36:47 [200] / 72ms
+07:36:51 [200] /posts/ 19ms
+07:36:56 [200] /posts/local-coding-model-desktop-macbook/ 28ms
+ ELIFECYCLE  Command failed with exit code 143.

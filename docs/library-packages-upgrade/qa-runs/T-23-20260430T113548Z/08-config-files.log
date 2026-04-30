@@ -1,0 +1,3 @@
+ls: .eslintrc.cjs: No such file or directory
+ls: .eslintignore: No such file or directory
+eslint.config.js

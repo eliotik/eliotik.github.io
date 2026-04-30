@@ -1,0 +1,11 @@
+ .eslintignore                                      |    6 -
+ .eslintrc.cjs                                      |   40 -
+ docs/library-packages-upgrade/backlog.yaml         |   14 +-
+ .../justifications/T-23.md                         |  171 ++
+ eslint.config.js                                   |  305 +---
+ package.json                                       |   13 +-
+ pnpm-lock.yaml                                     | 1748 ++++++++++++++------
+ src/components/Breadcrumbs.astro                   |   10 +-
+ src/layouts/Layout.astro                           |    3 +-
+ src/layouts/PostDetails.astro                      |   20 +-
+ 10 files changed, 1478 insertions(+), 852 deletions(-)
