@@ -434,19 +434,19 @@ tasks:
     title: Tailwind 4 reset visual regressions (cursor / search border / dark code)
     phase: 3
     lane: L1
-    status: in-progress
+    status: qa-pending
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: true
     branch: upgrade/T-34-tailwind-resets
-    commit_sha: null
+    commit_sha: a93fc99fc75f534e448986b0ce79a6396f4b9f29
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T10:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T14:10:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-34.md
     defects: []
 
   - id: T-35
