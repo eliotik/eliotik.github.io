@@ -315,14 +315,14 @@ tasks:
     title: Bump content/build deps (satori, resvg, fuse.js, jampack, sharp)
     phase: 2
     lane: L2
-    status: backlog
+    status: in-progress
     depends_on: [T-25]
     blocks: [T-27]
     visual_smoke_required: false
-    branch: null
+    branch: upgrade/T-26-content-deps
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T13:00:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
