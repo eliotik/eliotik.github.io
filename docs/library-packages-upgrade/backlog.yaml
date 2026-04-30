@@ -220,19 +220,19 @@ tasks:
     title: React 18 → 19 (audit refs, JSX runtime, @astrojs/react)
     phase: 2
     lane: L2
-    status: in-progress
+    status: qa-pending
     depends_on: [T-20]
     blocks: [T-22]
     visual_smoke_required: true
     branch: upgrade/T-21-react-19
-    commit_sha: null
+    commit_sha: 69ea756989ea3fd15ef1ba0cdc1b659236e46c9c
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T10:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T22:18:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-21.md
     defects: []
 
   - id: T-22
