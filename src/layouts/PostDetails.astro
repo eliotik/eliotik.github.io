@@ -193,18 +193,12 @@ const layoutProps = {
             }
         }
 
-        // Store listener so we can remove/re-add it
         function attachScrollListener() {
-            // Use data attribute to track if listener is attached
-            if (
-                !document.documentElement.hasAttribute('data-scroll-listener')
-            ) {
-                document.addEventListener('scroll', updateScrollProgress);
-                document.documentElement.setAttribute(
-                    'data-scroll-listener',
-                    'true'
-                );
-            }
+            document.addEventListener('scroll', updateScrollProgress);
+        }
+
+        function detachScrollListener() {
+            document.removeEventListener('scroll', updateScrollProgress);
         }
 
         /** Attaches links to headings in the document,
@@ -232,17 +226,24 @@ const layoutProps = {
                 heading.appendChild(link);
             }
         }
-        addHeadingLinks();
 
         /** Scrolls the document to the top when
          * the "Back to Top" button is clicked. */
-        function backToTop() {
+        function backToTopHandler() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+
+        function attachBackToTop() {
             document
                 .querySelector('#back-to-top')
-                ?.addEventListener('click', () => {
-                    document.body.scrollTop = 0; // For Safari
-                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-                });
+                ?.addEventListener('click', backToTopHandler);
+        }
+
+        function detachBackToTop() {
+            document
+                .querySelector('#back-to-top')
+                ?.removeEventListener('click', backToTopHandler);
         }
 
         /** Initialize all post detail features */
@@ -250,7 +251,19 @@ const layoutProps = {
             createProgressBar();
             attachScrollListener();
             addHeadingLinks();
-            backToTop();
+            attachBackToTop();
+
+            // Clean up listeners before the next View Transition swap so they
+            // don't stack up across navigations. { once: true } ensures this
+            // cleanup handler itself is removed after firing once.
+            document.addEventListener(
+                'astro:before-swap',
+                function cleanup() {
+                    detachScrollListener();
+                    detachBackToTop();
+                },
+                { once: true }
+            );
         }
 
         // Run on initial load
@@ -261,7 +274,7 @@ const layoutProps = {
             initPostDetails();
         }
 
-        // Re-run on View Transitions navigation
+        // Re-run on View Transitions navigation (after DOM swap completes)
         document.addEventListener('astro:after-swap', initPostDetails);
     })();
 </script>
