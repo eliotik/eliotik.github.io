@@ -18,9 +18,9 @@ I read about the [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) yester
 
 It covers three things:
 
-- Consistency
-- Availability
-- Partition Tolerance
+-   Consistency
+-   Availability
+-   Partition Tolerance
 
 Here's my attempt to simplify it.
 

@@ -25,19 +25,19 @@ This is not a polished "in 10 easy steps" post. It's a story of what I actually 
 
 The desktop:
 
-- Windows 11
-- NVIDIA RTX 5090, 32 GB VRAM
-- Intel Core Ultra 9 285K
-- Wired to my home router
+-   Windows 11
+-   NVIDIA RTX 5090, 32 GB VRAM
+-   Intel Core Ultra 9 285K
+-   Wired to my home router
 
 The MacBook is on the same Wi-Fi. I planned to use **[Opencode](https://opencode.ai/)** on it - a terminal AI coding agent that talks to any OpenAI-compatible server.
 
 Before doing anything, I wrote down the constraints:
 
-- LAN only. No public exposure, no tunnels.
-- No money on cloud APIs.
-- Quality good enough for real coding tasks.
-- The kids use the same desktop for games (the setup must give the GPU back when I'm not using it).
+-   LAN only. No public exposure, no tunnels.
+-   No money on cloud APIs.
+-   Quality good enough for real coding tasks.
+-   The kids use the same desktop for games (the setup must give the GPU back when I'm not using it).
 
 ## Step 0: Ollama or vLLM
 
@@ -88,7 +88,7 @@ Mirrored networking is the cleaner WSL networking mode in newer versions, it mak
 
 I wrote `C:\Users\<me>\.wslconfig`:
 
-```ini title='C:\Users<me>.wslconfig' showLineNumbers=false
+```ini title='C:\Users\<me>\.wslconfig' showLineNumbers=false
 [wsl2]
 networkingMode=mirrored
 dnsTunneling=true
@@ -445,9 +445,9 @@ On MacBook laptop I created Opencode config at `~/.config/Opencode/Opencode.json
 
 Quick notes:
 
-- `baseURL` points at the Windows host, the portproxy forwards into WSL.
-- `{env:VLLM_API_KEY}` reads from my MacBook shell, so the key isn't in the file.
-- `limit.output: 8192` - this is **important**, see the next problem.
+-   `baseURL` points at the Windows host, the portproxy forwards into WSL.
+-   `{env:VLLM_API_KEY}` reads from my MacBook shell, so the key isn't in the file.
+-   `limit.output: 8192` - this is **important**, see the next problem.
 
 Added the API key to my shell:
 
@@ -486,9 +486,9 @@ curl: (56) Recv failure: Connection reset by peer
 
 After some digging:
 
-- The `WSL-MountModels` scheduled task had run, but `lsblk` showed nothing at `/mnt/models`.
-- The systemd `vllm` service was failing with `unavailable resources or another system error`.
-- `tail -f /var/log/vllm.log` showed vLLM was actually starting eventually, just slowly. The portproxy script had run too early - before WSL had a stable IP - and forwarded to nothing.
+-   The `WSL-MountModels` scheduled task had run, but `lsblk` showed nothing at `/mnt/models`.
+-   The systemd `vllm` service was failing with `unavailable resources or another system error`.
+-   `tail -f /var/log/vllm.log` showed vLLM was actually starting eventually, just slowly. The portproxy script had run too early - before WSL had a stable IP - and forwarded to nothing.
 
 I patched the auto-mount task, fixed the systemd unit, added retries to the portproxy script.
 
@@ -541,10 +541,10 @@ So Claude Code is back to talking to Anthropic API. Opencode is what I use again
 
 After all the iterations:
 
-- A coding model that runs on my home GPU, talks over my home network and costs nothing per request.
-- A 90-second start ritual when I want it, GPU is free for the kids the rest of the time.
-- My code doesn't leave the house.
-- First-hand knowledge of every layer between my MacBook and the model, when something breaks now, I know which corner to look in (or at least I assured myself that I know).
+-   A coding model that runs on my home GPU, talks over my home network and costs nothing per request.
+-   A 90-second start ritual when I want it, GPU is free for the kids the rest of the time.
+-   My code doesn't leave the house.
+-   First-hand knowledge of every layer between my MacBook and the model, when something breaks now, I know which corner to look in (or at least I assured myself that I know).
 
 The whole journey took longer than I expected, the model and the LLM server were the easy parts. Storage and networking ate most of the time. If you have similar hardware sitting at home, plan for it.
 
