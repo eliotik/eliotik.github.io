@@ -50,7 +50,7 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
       // Force include commonly used deps to prevent re-optimization
-      include: ["flowbite-react", "fuse.js", "react", "react-dom"]
+      include: ["fuse.js", "react", "react-dom"]
     },
     server: {
       watch: {
