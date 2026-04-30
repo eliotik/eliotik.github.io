@@ -1,0 +1,5 @@
+BASE=2e637e5eaf8f54ee31d538e51065e483a800e86c
+M	docs/library-packages-upgrade/agent-prompts/dev-agent.md
+M	docs/library-packages-upgrade/agent-prompts/qa-agent.md
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-32.md
