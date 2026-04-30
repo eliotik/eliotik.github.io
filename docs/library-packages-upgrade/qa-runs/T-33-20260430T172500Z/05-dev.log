@@ -1,0 +1,33 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-33
+> astro dev
+
+[vite] connected.
+13:26:15 [types] Generated 0ms
+[vite] connected.
+13:26:15 [content] Syncing content
+13:26:15 [content] Synced content
+13:26:15 [vite] Re-optimizing dependencies because vite config has changed
+13:26:15 [vite] Port 4321 is in use, trying another one...
+13:26:15 [vite] Port 4322 is in use, trying another one...
+13:26:15 [vite] Port 4323 is in use, trying another one...
+13:26:15 [vite] Port 4324 is in use, trying another one...
+13:26:15 [vite] Port 4325 is in use, trying another one...
+13:26:15 [vite] Port 4326 is in use, trying another one...
+13:26:15 [vite] Port 4327 is in use, trying another one...
+13:26:15 [vite] Port 4328 is in use, trying another one...
+13:26:15 [vite] Port 4329 is in use, trying another one...
+ astro  v6.1.10 ready in 726 ms
+┃ Local    http://localhost:4330/
+┃ Network  use --host to expose
+13:26:15 watching for file changes...
+13:26:30 [200] / 79ms
+13:26:31 [WARN] [router] A `getStaticPaths()` route pattern was matched, but no matching static path was found for requested path `/posts/1/`.
+
+Possible dynamic routes being matched: src/pages/posts/[slug]/index.astro.
+13:26:31 [404] /posts/1/ 34ms
+13:26:31 [WARN] [router] A `getStaticPaths()` route pattern was matched, but no matching static path was found for requested path `/tips/1/`.
+
+Possible dynamic routes being matched: src/pages/tips/[slug]/index.astro.
+13:26:31 [404] /tips/1/ 2ms
+ ELIFECYCLE  Command failed with exit code 143.

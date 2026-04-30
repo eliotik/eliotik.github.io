@@ -1,0 +1,21 @@
+* Host localhost:4330 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:4330...
+* Connected to localhost (::1) port 4330
+> GET /posts/1/ HTTP/1.1
+> Host: localhost:4330
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 404 Not Found
+< Vary: Origin
+< content-type: text/html
+< Date: Thu, 30 Apr 2026 17:26:31 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Transfer-Encoding: chunked
+< 
+* The requested URL returned error: 404
+* Closing connection

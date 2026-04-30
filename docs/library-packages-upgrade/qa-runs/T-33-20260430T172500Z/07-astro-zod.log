@@ -1,0 +1,5 @@
+astro/zod ERROR: require() of ES Module /Users/ap/development/other/eliotik.github.io-T-33/node_modules/.pnpm/astro@6.1.10_@types+node@24.12.2_jiti@2.6.1_lightningcss@1.32.0_rollup@4.60.2_terser@5.28.1_typescript@6.0.3_yaml@2.8.3/node_modules/astro/dist/zod.js from /Users/ap/development/other/eliotik.github.io-T-33/[eval] not supported.
+Instead change the require of zod.js in /Users/ap/development/other/eliotik.github.io-T-33/[eval] to a dynamic import() which is available in all CommonJS modules.
+astro/zod ESM exports: $brand,$input,$output,NEVER,TimePrecision,ZodAny,ZodArray,ZodBase64,ZodBase64URL,ZodBigInt
+zod.z is function? object
+zod.z.string defined? function

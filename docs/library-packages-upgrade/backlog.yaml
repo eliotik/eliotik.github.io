@@ -415,7 +415,7 @@ tasks:
     title: Build & runtime warnings cleanup (husky/z/FormEvent/router)
     phase: 3
     lane: L2
-    status: qa-pending
+    status: defect
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: false
@@ -424,11 +424,11 @@ tasks:
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T10:00:00Z
     finished_at: 2026-04-29T10:45:00Z
-    qa_worker: null
-    qa_started_at: null
-    qa_finished_at: null
+    qa_worker: claude-opus-4-7-qa
+    qa_started_at: 2026-04-30T17:23:40Z
+    qa_finished_at: 2026-04-30T17:30:19Z
     justification_file: docs/library-packages-upgrade/justifications/T-33.md
-    defects: []
+    defects: [docs/library-packages-upgrade/defects/T-33-D1.md]
 
   - id: T-34
     title: Tailwind 4 reset visual regressions (cursor / search border / dark code)

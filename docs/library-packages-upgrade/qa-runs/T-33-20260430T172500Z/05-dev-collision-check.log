@@ -1,0 +1,2 @@
+13:26:31 [WARN] [router] A `getStaticPaths()` route pattern was matched, but no matching static path was found for requested path `/posts/1/`.
+13:26:31 [WARN] [router] A `getStaticPaths()` route pattern was matched, but no matching static path was found for requested path `/tips/1/`.

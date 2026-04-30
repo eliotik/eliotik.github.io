@@ -1,0 +1,5 @@
+2:	import zod from 'astro/zod';
+15:	 * @deprecated
+16:	 * `import { z } from 'astro:content'` is deprecated and will be removed
+17:	 * in Astro 7. Use `import { z } from 'astro/zod'` instead.
+19:	export const z = zod.z;
