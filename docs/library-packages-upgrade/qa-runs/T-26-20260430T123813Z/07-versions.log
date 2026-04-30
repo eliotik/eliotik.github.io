@@ -1,0 +1,11 @@
+--- Bumped deps ---
+        "@resvg/resvg-js": "2.6.2",
+        "fuse.js": "7.3.0",
+        "github-slugger": "2.0.0",
+        "remark-collapse": "0.1.2",
+        "remark-toc": "9.0.0",
+        "satori": "0.26.0",
+        "sharp": "^0.34.5",
+        "@divriots/jampack": "0.34.1",
+        "@types/github-slugger": "2.0.0",
+            "sharp"

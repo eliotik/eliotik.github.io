@@ -1,0 +1,21 @@
+* Host localhost:4329 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:4329...
+* Connected to localhost (::1) port 4329
+> GET /posts/local-coding-model-desktop-macbook/index.png HTTP/1.1
+> Host: localhost:4329
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Vary: Origin
+< content-type: image/png
+< Date: Thu, 30 Apr 2026 12:39:22 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Transfer-Encoding: chunked
+< 
+{ [48237 bytes data]
+* Connection #0 to host localhost left intact

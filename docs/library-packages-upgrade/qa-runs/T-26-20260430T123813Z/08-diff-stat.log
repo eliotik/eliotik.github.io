@@ -1,0 +1,5 @@
+ docs/library-packages-upgrade/backlog.yaml         |   14 +-
+ .../justifications/T-26.md                         |  162 +++
+ package.json                                       |    8 +-
+ pnpm-lock.yaml                                     | 1122 ++++++++------------
+ 4 files changed, 617 insertions(+), 689 deletions(-)

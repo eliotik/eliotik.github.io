@@ -1,0 +1,33 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-26
+> astro dev
+
+08:38:59 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+08:38:59 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+08:38:59 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+08:38:59 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+[vite] connected.
+08:38:59 [types] Generated 0ms
+[vite] connected.
+08:38:59 [content] Syncing content
+08:38:59 [content] Synced content
+08:38:59 [vite] Re-optimizing dependencies because vite config has changed
+08:38:59 [vite] Port 4321 is in use, trying another one...
+08:38:59 [vite] Port 4322 is in use, trying another one...
+08:38:59 [vite] Port 4323 is in use, trying another one...
+08:38:59 [vite] Port 4324 is in use, trying another one...
+08:38:59 [vite] Port 4325 is in use, trying another one...
+08:38:59 [vite] Port 4326 is in use, trying another one...
+08:38:59 [vite] Port 4327 is in use, trying another one...
+08:38:59 [vite] Port 4328 is in use, trying another one...
+ astro  v6.1.10 ready in 723 ms
+┃ Local    http://localhost:4329/
+┃ Network  use --host to expose
+08:38:59 watching for file changes...
+08:39:15 [200] /og.png 300ms
+08:39:22 [200] /posts/local-coding-model-desktop-macbook/index.png 250ms
+08:39:28 [200] /posts/local-coding-model-desktop-macbook/ 50ms
+08:39:28 [watch] docs/library-packages-upgrade/qa-runs/T-26-20260430T123813Z/09-curl-post.html
+08:39:32 [200] /search/ 24ms
+08:39:32 [watch] docs/library-packages-upgrade/qa-runs/T-26-20260430T123813Z/11-search.html
+ ELIFECYCLE  Command failed with exit code 143.
