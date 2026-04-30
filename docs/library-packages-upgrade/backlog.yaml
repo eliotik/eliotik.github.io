@@ -315,19 +315,19 @@ tasks:
     title: Bump content/build deps (satori, resvg, fuse.js, jampack, sharp)
     phase: 2
     lane: L2
-    status: in-progress
+    status: qa-pending
     depends_on: [T-25]
     blocks: [T-27]
     visual_smoke_required: false
     branch: upgrade/T-26-content-deps
-    commit_sha: null
+    commit_sha: 9de14ff
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T13:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T14:00:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-26.md
     defects: []
 
   - id: T-27
