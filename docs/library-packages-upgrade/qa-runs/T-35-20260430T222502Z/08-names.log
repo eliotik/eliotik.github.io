@@ -1,0 +1,7 @@
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-35.md
+A	qa-runs/T-35-20260429/visual/01-default-state-fullpage.png
+A	qa-runs/T-35-20260429/visual/02-scrolled-right-fullpage.png
+A	qa-runs/T-35-20260429/visual/03-this-blog-default.png
+A	qa-runs/T-35-20260429/visual/04-this-blog-scrolled.png
+M	src/layouts/PostDetails.astro

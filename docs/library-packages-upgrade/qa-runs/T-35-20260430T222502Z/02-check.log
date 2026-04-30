@@ -1,0 +1,14 @@
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io-T-35
+> astro check
+
+18:25:14 [vite] Re-optimizing dependencies because vite config has changed
+18:25:14 [content] Syncing content
+18:25:14 [content] Synced content
+18:25:14 [types] Generated 253ms
+18:25:14 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io-T-35...
+Result (76 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+

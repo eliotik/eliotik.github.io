@@ -1,0 +1,10 @@
+{
+  "page": "/posts/local-coding-model-desktop-macbook/",
+  "ecFrames": 35,
+  "allPres": 35,
+  "ecButtonsCopy": 35,
+  "ecCopyContainers": 35,
+  "ecAnyCopyClass": 35,
+  "manualButtons": 0,
+  "verdict": "PASS - 0 manual buttons, 35 EC native (1:1 with frames)"
+}
