@@ -339,7 +339,7 @@ tasks:
     blocks: [T-30]
     visual_smoke_required: false
     branch: upgrade/T-27-actions
-    commit_sha: null
+    commit_sha: 32a40a0
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T15:00:00Z
     finished_at: 2026-04-29T15:30:00Z
