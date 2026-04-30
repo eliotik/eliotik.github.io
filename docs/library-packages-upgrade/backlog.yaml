@@ -296,15 +296,15 @@ tasks:
     title: Bump TypeScript toolchain (TS, prettier, husky, lint-staged)
     phase: 2
     lane: L2
-    status: defect
+    status: qa-pending
     depends_on: [T-24]
     blocks: [T-26]
     visual_smoke_required: false
     branch: upgrade/T-25-ts-toolchain
-    commit_sha: f660479
+    commit_sha: bbf13d4
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T12:00:00Z
-    finished_at: 2026-04-29T13:30:00Z
+    finished_at: 2026-04-30T12:30:00Z
     qa_worker: claude-opus-4-7-qa
     qa_started_at: 2026-04-30T12:05:30Z
     qa_finished_at: 2026-04-30T12:11:04Z
