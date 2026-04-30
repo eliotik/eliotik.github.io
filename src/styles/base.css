@@ -66,6 +66,20 @@
     }
 }
 
+/*
+  Tailwind 4 cursor regression fix.
+  In Tailwind 3, the preflight gave <button> elements cursor:pointer. In
+  Tailwind 4 this was removed; buttons default to the UA default (cursor:default
+  on macOS). Restore the Tailwind 3 behaviour globally.
+  See: https://tailwindcss.com/docs/upgrade-guide#default-button-cursor
+*/
+@layer base {
+    button:not(:disabled),
+    [role='button']:not(:disabled) {
+        cursor: pointer;
+    }
+}
+
 @layer base {
     :root,
     html[data-theme='light'] {
@@ -188,4 +202,22 @@
         text-decoration: none;
         outline-style: dashed;
     }
+}
+
+/*
+  Tailwind 4 dark-mode prose code color fix.
+
+  @tailwindcss/typography sets --tw-prose-code to a dark value (oklch(0.21...))
+  via a rule in @layer utilities. Our `color: inherit` in @layer base loses to
+  @layer utilities regardless of selector specificity, because layers override
+  specificity. As a result, inline <code> elements in dark mode render dark text
+  on a dark card background.
+
+  Fix: override --tw-prose-code in dark mode OUTSIDE any @layer so this rule is
+  unlayered and therefore wins over all @layer utilities rules.
+  In dark mode, --color-skin-base = rgb(234, 237, 243) (light text), which is
+  the correct readable colour on the card background.
+*/
+html[data-theme='dark'] .prose {
+    --tw-prose-code: var(--color-skin-base);
 }
