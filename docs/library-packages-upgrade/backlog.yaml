@@ -201,7 +201,7 @@ tasks:
     title: Astro 4 → 5 (content layer, ClientRouter, sharp unpin)
     phase: 2
     lane: L2
-    status: qa-pending
+    status: defect
     depends_on: [T-03, T-10, T-11, T-12, T-13, T-14]
     blocks: [T-21]
     visual_smoke_required: true
@@ -210,11 +210,11 @@ tasks:
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T22:00:00Z
     finished_at: 2026-04-29T23:30:00Z
-    qa_worker: null
-    qa_started_at: null
-    qa_finished_at: null
+    qa_worker: claude-opus-4-7-qa
+    qa_started_at: 2026-04-29T23:45:00Z
+    qa_finished_at: 2026-04-29T23:55:00Z
     justification_file: docs/library-packages-upgrade/justifications/T-20.md
-    defects: []
+    defects: [docs/library-packages-upgrade/defects/T-20-D1.md]
 
   - id: T-21
     title: React 18 → 19 (audit refs, JSX runtime, @astrojs/react)

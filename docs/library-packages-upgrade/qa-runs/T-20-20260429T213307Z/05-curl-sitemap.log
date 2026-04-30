@@ -1,0 +1,44 @@
+* Host localhost:4322 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:4322...
+* Connected to localhost (::1) port 4322
+> GET /sitemap-index.xml HTTP/1.1
+> Host: localhost:4322
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Vary: Origin
+< content-type: application/xml; charset=utf-8
+< Date: Wed, 29 Apr 2026 21:34:53 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Transfer-Encoding: chunked
+< 
+{ [784 bytes data]
+* Connection #0 to host localhost left intact
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://www.novifyx.com/sitemap-pages.xml</loc>
+    <lastmod>2026-04-29T21:34:53.933Z</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.novifyx.com/sitemap-posts.xml</loc>
+    <lastmod>2026-04-29T21:34:53.933Z</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.novifyx.com/sitemap-tips.xml</loc>
+    <lastmod>2026-04-29T21:34:53.933Z</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.novifyx.com/sitemap-threads.xml</loc>
+    <lastmod>2026-04-29T21:34:53.933Z</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.novifyx.com/sitemap-tags.xml</loc>
+    <lastmod>2026-04-29T21:34:53.933Z</lastmod>
+  </sitemap>
+</sitemapindex>

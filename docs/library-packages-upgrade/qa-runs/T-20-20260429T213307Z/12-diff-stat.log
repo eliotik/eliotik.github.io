@@ -1,0 +1,32 @@
+ docs/library-packages-upgrade/backlog.yaml         |   14 +-
+ .../justifications/T-20.md                         |  242 ++
+ .../qa-runs/T-20-20260429/01-home.png              |  Bin 0 -> 113591 bytes
+ .../qa-runs/T-20-20260429/02-posts-index.png       |  Bin 0 -> 133868 bytes
+ .../qa-runs/T-20-20260429/03-post-with-images.png  |  Bin 0 -> 315691 bytes
+ .../T-20-20260429/04-post-with-carousel.png        |  Bin 0 -> 187785 bytes
+ .../qa-runs/T-20-20260429/05-tips-index.png        |  Bin 0 -> 87774 bytes
+ .../qa-runs/T-20-20260429/06-tags-index.png        |  Bin 0 -> 128455 bytes
+ .../qa-runs/T-20-20260429/07-tag-detail.png        |  Bin 0 -> 150150 bytes
+ .../qa-runs/T-20-20260429/08-threads-index.png     |  Bin 0 -> 156032 bytes
+ .../qa-runs/T-20-20260429/09-about.png             |  Bin 0 -> 251742 bytes
+ .../qa-runs/T-20-20260429/10-404.png               |  Bin 0 -> 41457 bytes
+ package.json                                       |   29 +-
+ pnpm-lock.yaml                                     | 4162 ++++++++++++++------
+ src/components/Thread.tsx                          |    4 +-
+ src/{content/config.ts => content.config.ts}       |    5 +-
+ src/layouts/Layout.astro                           |    6 +-
+ src/layouts/PostDetails.astro                      |   21 +-
+ src/layouts/Posts.astro                            |    6 +-
+ src/layouts/TagPosts.astro                         |    6 +-
+ src/layouts/TipDetails.astro                       |    5 +-
+ src/layouts/Tips.astro                             |    3 +-
+ src/pages/index.astro                              |   12 +-
+ src/pages/posts/[slug]/index.astro                 |    6 +-
+ src/pages/posts/[slug]/index.png.ts                |    2 +-
+ src/pages/rss.xml.ts                               |    4 +-
+ src/pages/search.astro                             |    4 +-
+ src/pages/sitemap-posts.xml.ts                     |    2 +-
+ src/pages/tags/[tag]/[page].astro                  |    2 +-
+ src/utils/getThreadDetail.ts                       |    6 +-
+ src/utils/getThreadPositions.ts                    |    2 +-
+ 31 files changed, 3259 insertions(+), 1284 deletions(-)

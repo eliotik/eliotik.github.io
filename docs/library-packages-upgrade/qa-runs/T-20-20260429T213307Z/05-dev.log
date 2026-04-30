@@ -1,0 +1,40 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-20
+> astro dev
+
+17:34:38 [WARN] [router] The route "/posts/1" is defined in both "/posts/1" and "/posts/1/". A static route cannot be defined more than once.
+17:34:38 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+17:34:38 [WARN] [router] The route "/tips/1" is defined in both "/tips/1" and "/tips/1/". A static route cannot be defined more than once.
+17:34:38 [WARN] [router] A collision will result in a hard error in following versions of Astro.
+[vite] connected.
+17:34:38 [types] Generated 0ms
+[vite] connected.
+17:34:38 [content] Syncing content
+17:34:39 [content] Synced content
+17:34:39 [vite] Re-optimizing dependencies because vite config has changed
+17:34:39 [vite] Port 4321 is in use, trying another one...
+ astro  v6.1.10 ready in 787 ms
+┃ Local    http://localhost:4322/
+┃ Network  use --host to expose
+17:34:39 watching for file changes...
+17:34:53 [200] / 76ms
+17:34:53 [200] /rss.xml 3ms
+17:34:53 [200] /sitemap-index.xml 0ms
+17:35:07 [200] / 6ms
+17:35:08 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-types.js, astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-swap-functions.js
+17:35:08 [vite] ✨ optimized dependencies changed. reloading
+17:36:10 [200] / 4ms
+17:37:04 [200] /posts 38ms
+17:37:59 [200] /posts/ems-connecting-the-systems 30ms
+17:38:51 [200] /posts/flutter-google-maps-embedded-map 373ms
+17:40:27 [200] /tips 33ms
+17:41:19 [200] /tags 32ms
+19:23:30 [200] /tags/career-growth/ 26ms
+21:21:19 [200] /tags/change-management/ 6ms
+21:33:18 [200] /tags 5ms
+21:34:15 [200] /tags/engineering-management 4ms
+21:35:11 [200] /threads 27ms
+21:36:08 [200] /threads/five-systems-of-engineering-management 35ms
+21:37:00 [200] /about 27ms
+21:37:54 [404] /this-route-doesnt-exist 37ms
+21:39:18 [404] /this-route-doesnt-exist 2ms
