@@ -234,54 +234,6 @@ const layoutProps = {
         }
         addHeadingLinks();
 
-        /** Attaches copy buttons to code blocks in the document,
-         * allowing users to copy code easily. */
-        function attachCopyButtons() {
-            // Only add copy buttons on post detail pages
-            const article = document.getElementById('article');
-            if (!article) return;
-
-            const copyButtonLabel = 'Copy';
-            const codeBlocks = Array.from(article.querySelectorAll('pre'));
-
-            for (const codeBlock of codeBlocks) {
-                // Skip if copy button already exists (prevents duplicates)
-                if (codeBlock.querySelector('.copy-code')) continue;
-
-                const wrapper = document.createElement('div');
-                wrapper.style.position = 'relative';
-
-                const copyButton = document.createElement('button');
-                copyButton.className =
-                    'copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium';
-                copyButton.innerHTML = copyButtonLabel;
-                codeBlock.setAttribute('tabindex', '0');
-                codeBlock.appendChild(copyButton);
-
-                // wrap codebock with relative parent element
-                codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-                wrapper.appendChild(codeBlock);
-
-                copyButton.addEventListener('click', async () => {
-                    await copyCode(codeBlock, copyButton);
-                });
-            }
-
-            async function copyCode(block, button) {
-                const code = block.querySelector('code');
-                const text = code?.innerText;
-
-                await navigator.clipboard.writeText(text ?? '');
-
-                // visual feedback that task is completed
-                button.innerText = 'Copied';
-
-                setTimeout(() => {
-                    button.innerText = copyButtonLabel;
-                }, 700);
-            }
-        }
-
         /** Scrolls the document to the top when
          * the "Back to Top" button is clicked. */
         function backToTop() {
@@ -298,7 +250,6 @@ const layoutProps = {
             createProgressBar();
             attachScrollListener();
             addHeadingLinks();
-            attachCopyButtons();
             backToTop();
         }
 
