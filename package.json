@@ -39,8 +39,7 @@
         "remark-toc": "9.0.0",
         "satori": "0.10.13",
         "sharp": "^0.34.5",
-        "tailwindcss": "4.2.4",
-        "typescript": "5.3.3"
+        "tailwindcss": "4.2.4"
     },
     "devDependencies": {
         "@divriots/jampack": "0.23.3",
@@ -56,13 +55,14 @@
         "eslint": "9.39.4",
         "eslint-plugin-astro": "1.7.0",
         "eslint-plugin-jsx-a11y": "^6.10.2",
-        "husky": "9.0.11",
-        "lint-staged": "15.2.2",
+        "husky": "9.1.7",
+        "lint-staged": "16.4.0",
         "prettier": "3.8.3",
-        "prettier-plugin-astro": "0.13.0",
+        "prettier-plugin-astro": "0.14.1",
         "prettier-plugin-tailwindcss": "0.8.0",
         "react": "19.2.5",
-        "react-dom": "19.2.5"
+        "react-dom": "19.2.5",
+        "typescript": "6.0.3"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx,md,mdx,json}": [

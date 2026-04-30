@@ -14,24 +14,24 @@ export default function ThreadCard({ href, frontmatter, id }: Props) {
         <li>
             <a
                 href={href}
-                className="group grid grid-cols-[40px_1fr_auto] items-start gap-3 py-3.5 pr-1 transition-colors hover:bg-skin-card/40 sm:grid-cols-[56px_1fr_auto] sm:gap-4"
+                className="group hover:bg-skin-card/40 grid grid-cols-[40px_1fr_auto] items-start gap-3 py-3.5 pr-1 transition-colors sm:grid-cols-[56px_1fr_auto] sm:gap-4"
             >
-                <div className="flex items-start justify-end self-stretch border-r border-skin-line/40 pr-2.5 pt-0.5 transition-colors group-hover:border-skin-accent/70 sm:pr-3">
-                    <span className="text-xs font-medium tabular-nums tracking-wider text-skin-base/50 transition-colors group-hover:text-skin-accent">
+                <div className="border-skin-line/40 group-hover:border-skin-accent/70 flex items-start justify-end self-stretch border-r pt-0.5 pr-2.5 transition-colors sm:pr-3">
+                    <span className="text-skin-base/50 group-hover:text-skin-accent text-xs font-medium tracking-wider tabular-nums transition-colors">
                         {num}
                     </span>
                 </div>
                 <div className="min-w-0">
-                    <h3 className="mb-1 text-sm font-bold text-skin-accent">
+                    <h3 className="text-skin-accent mb-1 text-sm font-bold">
                         {title}
                     </h3>
-                    <p className="text-xs leading-relaxed text-skin-base/70">
+                    <p className="text-skin-base/70 text-xs leading-relaxed">
                         {description}
                     </p>
                 </div>
                 <span
                     aria-hidden
-                    className="pr-1 pt-0.5 text-skin-base/40 transition-all group-hover:translate-x-0.5 group-hover:text-skin-accent"
+                    className="text-skin-base/40 group-hover:text-skin-accent pt-0.5 pr-1 transition-all group-hover:translate-x-0.5"
                 >
                     →
                 </span>

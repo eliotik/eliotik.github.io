@@ -1,19 +1,19 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import Posts from "@layouts/Posts.astro";
-import getSortedCollection from "@utils/getSortedCollection";
-import getPagination from "@utils/getPagination";
-import getThreadPositions from "@utils/getThreadPositions";
+import { type CollectionEntry, getCollection } from 'astro:content';
+import Posts from '@layouts/Posts.astro';
+import getSortedCollection from '@utils/getSortedCollection';
+import getPagination from '@utils/getPagination';
+import getThreadPositions from '@utils/getThreadPositions';
 
-const posts = await getCollection("blog");
+const posts = await getCollection('blog');
 
 const sortedPosts = getSortedCollection<CollectionEntry<'blog'>>(posts);
 const threadPositions = getThreadPositions(posts);
 
 const pagination = getPagination<CollectionEntry<'blog'>>({
-  entities: sortedPosts,
-  page: 1,
-  isIndex: true,
+    entities: sortedPosts,
+    page: 1,
+    isIndex: true,
 });
 ---
 

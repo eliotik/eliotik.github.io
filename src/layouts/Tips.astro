@@ -1,229 +1,264 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { render } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Pagination from "@components/Pagination.astro";
-import { SITE } from "@config";
-import { slugifyStr } from "@utils/slugify";
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import Main from '@layouts/Main.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import Pagination from '@components/Pagination.astro';
+import { SITE } from '@config';
+import { slugifyStr } from '@utils/slugify';
 
 export interface Props {
-  currentPage: number;
-  totalPages: number;
-  paginatedEntities: CollectionEntry<"tips">[];
+    currentPage: number;
+    totalPages: number;
+    paginatedEntities: CollectionEntry<'tips'>[];
 }
 
 const { currentPage, totalPages, paginatedEntities } = Astro.props;
 
 const tips = [];
 for (const entity of paginatedEntities) {
-  const { Content } = await render(entity);
+    const { Content } = await render(entity);
 
-  tips.push({
-    title: entity.data.title,
-    customSlug: entity.data.customSlug,
-    content: Content,
-    headerProps: {
-      style: {
-        viewTransitionName: slugifyStr(entity.data.title),
-        className: "text-lg font-medium decoration-dashed hover:underline",
-      }
-    }
-  });
+    tips.push({
+        title: entity.data.title,
+        customSlug: entity.data.customSlug,
+        content: Content,
+        headerProps: {
+            style: {
+                viewTransitionName: slugifyStr(entity.data.title),
+                className:
+                    'text-lg font-medium decoration-dashed hover:underline',
+            },
+        },
+    });
 }
 
 // Set canonical URL to /tips/ for page 1, otherwise use the page number
-const canonicalURL = currentPage === 1
-  ? new URL("/tips/", Astro.site).href
-  : new URL(`/tips/${currentPage}/`, Astro.site).href;
+const canonicalURL =
+    currentPage === 1
+        ? new URL('/tips/', Astro.site).href
+        : new URL(`/tips/${currentPage}/`, Astro.site).href;
 ---
 
 <Layout
-  title={`Tips & Thoughts | ${SITE.title}`}
-  canonicalURL={canonicalURL}
-  noindex={currentPage > 1}
+    title={`Tips & Thoughts | ${SITE.title}`}
+    canonicalURL={canonicalURL}
+    noindex={currentPage > 1}
 >
-  <Header activeNav="tips" />
-  <Main pageTitle="Tips & Thoughts" pageDesc="All the tips & thoughts I've posted.">
-    <ul>
-      {
-        tips.map(({ title, customSlug, content: TipContent }) => (
-          <li class="my-6 tip-item">
-            <div class="flex items-center justify-between gap-4">
-              <a href={`/tips/${customSlug}`} class="flex-grow">
-                <h1 transition:name={slugifyStr(title)} class="tip-title">{title}</h1>
-              </a>
-              <button
-                class="tip-toggle-btn focus-outline flex-shrink-0 p-2 hover:opacity-75"
-                aria-label="Toggle tip visibility"
-                data-tip-slug={customSlug}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 chevron-icon" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-                </svg>
-              </button>
-            </div>
-            <article class="tip-content prose mx-auto mt-8 max-w-3xl" style="display: none;" data-tip-slug={customSlug}>
-              <TipContent />
-            </article>
-          </li>
-        ))
-      }
-    </ul>
-    <div
-      class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
+    <Header activeNav="tips" />
+    <Main
+        pageTitle="Tips & Thoughts"
+        pageDesc="All the tips & thoughts I've posted."
     >
-      <button
-        id="back-to-top"
-        class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
-          <path
-            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-          ></path>
-        </svg>
-        <span>Back to Top</span>
-      </button>
-    </div>
-  </Main>
+        <ul>
+            {
+                tips.map(({ title, customSlug, content: TipContent }) => (
+                    <li class="tip-item my-6">
+                        <div class="flex items-center justify-between gap-4">
+                            <a href={`/tips/${customSlug}`} class="flex-grow">
+                                <h1
+                                    transition:name={slugifyStr(title)}
+                                    class="tip-title"
+                                >
+                                    {title}
+                                </h1>
+                            </a>
+                            <button
+                                class="tip-toggle-btn focus-outline flex-shrink-0 p-2 hover:opacity-75"
+                                aria-label="Toggle tip visibility"
+                                data-tip-slug={customSlug}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="chevron-icon h-6 w-6"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <article
+                            class="tip-content prose mx-auto mt-8 max-w-3xl"
+                            style="display: none;"
+                            data-tip-slug={customSlug}
+                        >
+                            <TipContent />
+                        </article>
+                    </li>
+                ))
+            }
+        </ul>
+        <div
+            class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
+        >
+            <button
+                id="back-to-top"
+                class="focus-outline py-1 whitespace-nowrap hover:opacity-75"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
+                    <path
+                        d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+                    ></path>
+                </svg>
+                <span>Back to Top</span>
+            </button>
+        </div>
+    </Main>
 
-  <Pagination
-    {currentPage}
-    {totalPages}
-    prevUrl={`/tips${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}`}
-    nextUrl={`/tips/${currentPage + 1}`}
-  />
+    <Pagination
+        {currentPage}
+        {totalPages}
+        prevUrl={`/tips${currentPage - 1 !== 1 ? '/' + (currentPage - 1) : ''}`}
+        nextUrl={`/tips/${currentPage + 1}`}
+    />
 
-  <Footer noMarginTop={totalPages > 1} />
+    <Footer noMarginTop={totalPages > 1} />
 </Layout>
 
 <style>
-  @reference "../styles/base.css";
-  main {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
-  }
-  .tip-title {
-    @apply text-2xl font-semibold text-skin-accent;
-  }
-  .chevron-icon {
-    transition: transform 0.3s ease;
-  }
-  .chevron-icon.expanded {
-    transform: rotate(180deg);
-  }
+    @reference "../styles/base.css";
+    main {
+        @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    }
+    .tip-title {
+        @apply text-skin-accent text-2xl font-semibold;
+    }
+    .chevron-icon {
+        transition: transform 0.3s ease;
+    }
+    .chevron-icon.expanded {
+        transform: rotate(180deg);
+    }
 </style>
 
 <script is:inline>
-(function() {
-   /** Scrolls the document to the top when
-   * the "Back to Top" button is clicked. */
-  function backToTop() {
-    document.querySelector("#back-to-top")?.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    });
-  }
-  backToTop();
-  document.addEventListener("astro:after-swap", backToTop);
-
-  /** Toggle tips visibility */
-  function setupToggleTips() {
-    const toggleButton = document.querySelector("#toggle-tips");
-    const toggleText = document.querySelector("#toggle-text");
-    const tipContents = document.querySelectorAll(".tip-content");
-    const individualToggleBtns = document.querySelectorAll(".tip-toggle-btn");
-
-    if (!toggleButton || !toggleText) return;
-
-    // Remove any existing listeners by cloning the button
-    const newToggleButton = toggleButton.cloneNode(true);
-    toggleButton.parentNode.replaceChild(newToggleButton, toggleButton);
-
-    // Get saved state from localStorage, default to collapsed (false)
-    const isExpanded = localStorage.getItem("tipsExpanded") === "true";
-
-    // Apply initial state
-    tipContents.forEach(content => {
-      content.style.display = isExpanded ? "block" : "none";
-    });
-
-    // Update individual toggle icons based on initial state
-    individualToggleBtns.forEach(btn => {
-      const icon = btn.querySelector(".chevron-icon");
-      if (icon) {
-        if (isExpanded) {
-          icon.classList.add("expanded");
-        } else {
-          icon.classList.remove("expanded");
+    (function () {
+        /** Scrolls the document to the top when
+         * the "Back to Top" button is clicked. */
+        function backToTop() {
+            document
+                .querySelector('#back-to-top')
+                ?.addEventListener('click', () => {
+                    document.body.scrollTop = 0; // For Safari
+                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+                });
         }
-      }
-    });
+        backToTop();
+        document.addEventListener('astro:after-swap', backToTop);
 
-    const newToggleText = newToggleButton.querySelector("#toggle-text");
-    if (newToggleText) {
-      newToggleText.textContent = isExpanded ? "Collapse All" : "Expand All";
-    }
+        /** Toggle tips visibility */
+        function setupToggleTips() {
+            const toggleButton = document.querySelector('#toggle-tips');
+            const toggleText = document.querySelector('#toggle-text');
+            const tipContents = document.querySelectorAll('.tip-content');
+            const individualToggleBtns =
+                document.querySelectorAll('.tip-toggle-btn');
 
-    // Toggle all handler
-    newToggleButton.addEventListener("click", () => {
-      const currentlyExpanded = localStorage.getItem("tipsExpanded") === "true";
-      const newState = !currentlyExpanded;
+            if (!toggleButton || !toggleText) return;
 
-      const allTipContents = document.querySelectorAll(".tip-content");
-      allTipContents.forEach(content => {
-        content.style.display = newState ? "block" : "none";
-      });
+            // Remove any existing listeners by cloning the button
+            const newToggleButton = toggleButton.cloneNode(true);
+            toggleButton.parentNode.replaceChild(newToggleButton, toggleButton);
 
-      const allToggleBtns = document.querySelectorAll(".tip-toggle-btn");
-      allToggleBtns.forEach(btn => {
-        const icon = btn.querySelector(".chevron-icon");
-        if (icon) {
-          if (newState) {
-            icon.classList.add("expanded");
-          } else {
-            icon.classList.remove("expanded");
-          }
+            // Get saved state from localStorage, default to collapsed (false)
+            const isExpanded = localStorage.getItem('tipsExpanded') === 'true';
+
+            // Apply initial state
+            tipContents.forEach(content => {
+                content.style.display = isExpanded ? 'block' : 'none';
+            });
+
+            // Update individual toggle icons based on initial state
+            individualToggleBtns.forEach(btn => {
+                const icon = btn.querySelector('.chevron-icon');
+                if (icon) {
+                    if (isExpanded) {
+                        icon.classList.add('expanded');
+                    } else {
+                        icon.classList.remove('expanded');
+                    }
+                }
+            });
+
+            const newToggleText = newToggleButton.querySelector('#toggle-text');
+            if (newToggleText) {
+                newToggleText.textContent = isExpanded
+                    ? 'Collapse All'
+                    : 'Expand All';
+            }
+
+            // Toggle all handler
+            newToggleButton.addEventListener('click', () => {
+                const currentlyExpanded =
+                    localStorage.getItem('tipsExpanded') === 'true';
+                const newState = !currentlyExpanded;
+
+                const allTipContents =
+                    document.querySelectorAll('.tip-content');
+                allTipContents.forEach(content => {
+                    content.style.display = newState ? 'block' : 'none';
+                });
+
+                const allToggleBtns =
+                    document.querySelectorAll('.tip-toggle-btn');
+                allToggleBtns.forEach(btn => {
+                    const icon = btn.querySelector('.chevron-icon');
+                    if (icon) {
+                        if (newState) {
+                            icon.classList.add('expanded');
+                        } else {
+                            icon.classList.remove('expanded');
+                        }
+                    }
+                });
+
+                const textElement = document.querySelector('#toggle-text');
+                if (textElement) {
+                    textElement.textContent = newState
+                        ? 'Collapse All'
+                        : 'Expand All';
+                }
+                localStorage.setItem('tipsExpanded', String(newState));
+            });
+
+            // Individual tip toggle handlers - clone buttons to remove old listeners
+            const freshToggleBtns =
+                document.querySelectorAll('.tip-toggle-btn');
+            freshToggleBtns.forEach(btn => {
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+
+                newBtn.addEventListener('click', e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const slug = newBtn.getAttribute('data-tip-slug');
+                    const content = document.querySelector(
+                        `.tip-content[data-tip-slug="${slug}"]`
+                    );
+                    const icon = newBtn.querySelector('.chevron-icon');
+
+                    if (content && icon) {
+                        const isCurrentlyVisible =
+                            content.style.display === 'block';
+                        content.style.display = isCurrentlyVisible
+                            ? 'none'
+                            : 'block';
+
+                        if (isCurrentlyVisible) {
+                            icon.classList.remove('expanded');
+                        } else {
+                            icon.classList.add('expanded');
+                        }
+                    }
+                });
+            });
         }
-      });
 
-      const textElement = document.querySelector("#toggle-text");
-      if (textElement) {
-        textElement.textContent = newState ? "Collapse All" : "Expand All";
-      }
-      localStorage.setItem("tipsExpanded", String(newState));
-    });
-
-    // Individual tip toggle handlers - clone buttons to remove old listeners
-    const freshToggleBtns = document.querySelectorAll(".tip-toggle-btn");
-    freshToggleBtns.forEach(btn => {
-      const newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-
-      newBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const slug = newBtn.getAttribute("data-tip-slug");
-        const content = document.querySelector(`.tip-content[data-tip-slug="${slug}"]`);
-        const icon = newBtn.querySelector(".chevron-icon");
-
-        if (content && icon) {
-          const isCurrentlyVisible = content.style.display === "block";
-          content.style.display = isCurrentlyVisible ? "none" : "block";
-
-          if (isCurrentlyVisible) {
-            icon.classList.remove("expanded");
-          } else {
-            icon.classList.add("expanded");
-          }
-        }
-      });
-    });
-  }
-
-  setupToggleTips();
-  document.addEventListener("astro:after-swap", setupToggleTips);
-  document.addEventListener("astro:page-load", setupToggleTips);
-})();
+        setupToggleTips();
+        document.addEventListener('astro:after-swap', setupToggleTips);
+        document.addEventListener('astro:page-load', setupToggleTips);
+    })();
 </script>

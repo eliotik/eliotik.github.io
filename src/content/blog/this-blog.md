@@ -35,10 +35,10 @@ Harish used [Astro](https://astro.build/) framework to build his own blog.
 
 After checking their site, it sounded pretty simple to use it for blogs:
 
--   run cli command
--   add template
--   focus on adding articles using md/mdx
--   publish
+- run cli command
+- add template
+- focus on adding articles using md/mdx
+- publish
 
 And I underestimated things...
 

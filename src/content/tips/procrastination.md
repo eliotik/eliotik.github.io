@@ -11,10 +11,10 @@ Most productivity tools are solving the wrong problem. The time you're missing i
 
 A few things I check when I catch myself stuck:
 
--   What's the actual cause? Fear of failure, unclear goal, too much on my plate?
--   Is the goal concrete or vague enough to invite avoidance?
--   Do I have a schedule or am I pretending I'll find the time later?
--   What's distracting me? Even one unnecessary Slack notification can break the stream.
+- What's the actual cause? Fear of failure, unclear goal, too much on my plate?
+- Is the goal concrete or vague enough to invite avoidance?
+- Do I have a schedule or am I pretending I'll find the time later?
+- What's distracting me? Even one unnecessary Slack notification can break the stream.
 
 The habit I rely on is a morning brain dump. List every goal I'd like to move today. Pick three. Push the rest to a weekly bucket. Add notes on risks and who to reach out to. Five minutes. By the end, the day has a plan.
 

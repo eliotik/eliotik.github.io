@@ -154,11 +154,11 @@ Leadership isn't about being loved every day. It's about earning your team's res
 
 ## References
 
--   [Myth of a superstar employee](https://murmuria.in/2024/01/14/myth-of-a-superstar-employee)
--   [Radical Candor](https://www.radicalcandor.com/)
--   [Is it Better to Be the Fastest in a Slow Group or a Slow one in a Fast Group?](https://bemycareercoach.com/soft-skills/growth-mindset/is-it-better-to-be-the-fastest-in-a-slow-group-or-a-slow-one-in-a-fast-group.html)
--   [The Bregman Leadership Podcast](https://bregmanpartners.com/podcast/kim-scott-radical-candor)
--   [Let go of underperforming staff: You've got to be cruel to be kind](https://pravargroup.com/let-go-of-underperforming-staff-youve-got-be-cruel-to-be-kind)
--   [These Hires Will Kill Your Company](https://unicornprn.substack.com/p/these-hires-will-kill-your-company)
--   [How B players hire C players](https://news.ycombinator.com/item?id=19269163)
--   [11 Lessons on Life](https://conorneill.com/2020/09/26/tom-peters-11-lessons-for-life-right-now)
+- [Myth of a superstar employee](https://murmuria.in/2024/01/14/myth-of-a-superstar-employee)
+- [Radical Candor](https://www.radicalcandor.com/)
+- [Is it Better to Be the Fastest in a Slow Group or a Slow one in a Fast Group?](https://bemycareercoach.com/soft-skills/growth-mindset/is-it-better-to-be-the-fastest-in-a-slow-group-or-a-slow-one-in-a-fast-group.html)
+- [The Bregman Leadership Podcast](https://bregmanpartners.com/podcast/kim-scott-radical-candor)
+- [Let go of underperforming staff: You've got to be cruel to be kind](https://pravargroup.com/let-go-of-underperforming-staff-youve-got-be-cruel-to-be-kind)
+- [These Hires Will Kill Your Company](https://unicornprn.substack.com/p/these-hires-will-kill-your-company)
+- [How B players hire C players](https://news.ycombinator.com/item?id=19269163)
+- [11 Lessons on Life](https://conorneill.com/2020/09/26/tom-peters-11-lessons-for-life-right-now)

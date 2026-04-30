@@ -1,21 +1,21 @@
 ---
-import { getCollection } from "astro:content";
-import ThreadDetail from "@layouts/ThreadDetail.astro";
-import getThreadDetail from "@utils/getThreadDetail";
-import { slugifyStr } from "@utils/slugify";
+import { getCollection } from 'astro:content';
+import ThreadDetail from '@layouts/ThreadDetail.astro';
+import getThreadDetail from '@utils/getThreadDetail';
+import { slugifyStr } from '@utils/slugify';
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+    const posts = await getCollection('blog');
 
-  const threadNames = new Set<string>();
-  posts.forEach(p => {
-    if (p.data.thread) threadNames.add(p.data.thread);
-  });
+    const threadNames = new Set<string>();
+    posts.forEach(p => {
+        if (p.data.thread) threadNames.add(p.data.thread);
+    });
 
-  return Array.from(threadNames).map(thread => ({
-    params: { slug: slugifyStr(thread) },
-    props: { thread, posts },
-  }));
+    return Array.from(threadNames).map(thread => ({
+        params: { slug: slugifyStr(thread) },
+        props: { thread, posts },
+    }));
 }
 
 const { thread, posts } = Astro.props;

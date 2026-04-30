@@ -1,41 +1,41 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import TagPosts from "@layouts/TagPosts.astro";
-import getUniqueTags from "@utils/getUniqueTags";
-import getPostsByTag from "@utils/getPostsByTag";
-import getPageNumbers from "@utils/getPageNumbers";
-import getPagination from "@utils/getPagination";
-import getThreadPositions from "@utils/getThreadPositions";
-import getRelatedTags from "@utils/getRelatedTags";
+import { type CollectionEntry, getCollection } from 'astro:content';
+import TagPosts from '@layouts/TagPosts.astro';
+import getUniqueTags from '@utils/getUniqueTags';
+import getPostsByTag from '@utils/getPostsByTag';
+import getPageNumbers from '@utils/getPageNumbers';
+import getPagination from '@utils/getPagination';
+import getThreadPositions from '@utils/getThreadPositions';
+import getRelatedTags from '@utils/getRelatedTags';
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  tag: string;
-  tagName: string;
+    post: CollectionEntry<'blog'>;
+    tag: string;
+    tagName: string;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+    const posts = await getCollection('blog');
 
-  const tags = getUniqueTags(posts);
+    const tags = getUniqueTags(posts);
 
-  return tags.flatMap(({ tag, tagName }) => {
-    const tagPosts = getPostsByTag(posts, tag);
-    const totalPages = getPageNumbers(tagPosts.length);
+    return tags.flatMap(({ tag, tagName }) => {
+        const tagPosts = getPostsByTag(posts, tag);
+        const totalPages = getPageNumbers(tagPosts.length);
 
-    return totalPages
-      .filter(page => page !== 1) // Exclude page 1, it's served by /tags/[tag]/index.astro
-      .map(page => ({
-        params: { tag, page: String(page) },
-        props: { tag, tagName },
-      }));
-  });
+        return totalPages
+            .filter(page => page !== 1) // Exclude page 1, it's served by /tags/[tag]/index.astro
+            .map(page => ({
+                params: { tag, page: String(page) },
+                props: { tag, tagName },
+            }));
+    });
 }
 
 const { page } = Astro.params;
 const { tag, tagName } = Astro.props;
 
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const posts = await getCollection('blog', ({ data }) => !data.draft);
 
 const postsByTag = getPostsByTag(posts, tag);
 const threadPositions = getThreadPositions(posts);
@@ -43,16 +43,16 @@ const totalCount = postsByTag.length;
 const relatedTags = getRelatedTags(posts, tag);
 
 const pagination = getPagination<CollectionEntry<'blog'>>({
-  entities: postsByTag,
-  page,
+    entities: postsByTag,
+    page,
 });
 ---
 
 <TagPosts
-  {...pagination}
-  {tag}
-  {tagName}
-  threadPositions={threadPositions}
-  totalCount={totalCount}
-  relatedTags={relatedTags}
+    {...pagination}
+    {tag}
+    {tagName}
+    threadPositions={threadPositions}
+    totalCount={totalCount}
+    relatedTags={relatedTags}
 />

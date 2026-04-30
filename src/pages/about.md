@@ -1,7 +1,8 @@
 ---
 layout: ../layouts/AboutLayout.astro
-title: "About"
+title: 'About'
 ---
+
 `Novi Fyx` _is a constructed term or combination of words that doesn't currently exist in the English language. It's a unique and imaginative creation, often used in scenarios where individuals or businesses want to form a distinctive and memorable brand name, product name, or, in this case, a domain name for a website or blog._
 
 _The breakdown of `Novi Fyx` could be interpreted in different ways:_
@@ -13,10 +14,10 @@ _Or you can read it as `new f(y,x)`..._
 
 ---
 
-Hey there, I'm Alexander, the guy behind `Novi Fyx` content. By day, I'm an Engineering Manager hustling through the intricacies of leading a team. 
+Hey there, I'm Alexander, the guy behind `Novi Fyx` content. By day, I'm an Engineering Manager hustling through the intricacies of leading a team.
 By night, I'm a dad and a tinkerer, diving into DIY projects, coding experiments, and all things 3D.
 
-Ever wondered what it's like to juggle engineering responsibilities with the chaos of parenthood? Me too. 
+Ever wondered what it's like to juggle engineering responsibilities with the chaos of parenthood? Me too.
 
 On this blog, I spill the beans on the real-life challenges and victories of balancing a career in engineering with the joys of raising kids.
 
@@ -30,4 +31,4 @@ This blog isn't just about technical know-how. I share my thoughts and musings o
 
 You can get in touch directly with me by sending an email at my first name dot last name at gmail, or check send me `Hi!` in LinkedIn/GitHub.
 
-( ๑ ˃̵ᴗ˂̵)و 
+( ๑ ˃̵ᴗ˂̵)و

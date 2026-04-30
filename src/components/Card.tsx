@@ -28,7 +28,7 @@ export default function Card({
         <li className="my-6">
             <a
                 href={href}
-                className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+                className="text-skin-accent inline-block text-lg font-medium decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
             >
                 {secHeading ? (
                     <h2 {...headerProps}>{title}</h2>
@@ -38,10 +38,10 @@ export default function Card({
             </a>
             {threadPosition && (
                 <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-xs tabular-nums">
-                    <span className="font-semibold uppercase tracking-wider text-skin-base/50">
+                    <span className="text-skin-base/50 font-semibold tracking-wider uppercase">
                         Part of
                     </span>
-                    <span className="font-medium text-skin-accent">
+                    <span className="text-skin-accent font-medium">
                         {threadPosition.thread}
                     </span>
                     <span className="text-skin-base/40">·</span>

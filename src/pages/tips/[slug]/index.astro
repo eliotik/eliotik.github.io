@@ -1,42 +1,42 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import Tips from "@layouts/Tips.astro";
-import TipDetails from "@layouts/TipDetails.astro";
-import getSortedCollection from "@utils/getSortedCollection";
-import getPageNumbers from "@utils/getPageNumbers";
-import getPagination from "@utils/getPagination";
+import { type CollectionEntry, getCollection } from 'astro:content';
+import Tips from '@layouts/Tips.astro';
+import TipDetails from '@layouts/TipDetails.astro';
+import getSortedCollection from '@utils/getSortedCollection';
+import getPageNumbers from '@utils/getPageNumbers';
+import getPagination from '@utils/getPagination';
 
 export interface Props {
-  tip?: CollectionEntry<"tips">;
+    tip?: CollectionEntry<'tips'>;
 }
 
 export async function getStaticPaths() {
-  const tips = await getCollection("tips", ({ data }) => !data.draft);
+    const tips = await getCollection('tips', ({ data }) => !data.draft);
 
-  const tipResult = tips.map(tip => ({
-    params: { slug: tip.data.customSlug },
-    props: { tip },
-  }));
-
-  const pagePaths = getPageNumbers(tips.length)
-    .filter(pageNum => pageNum !== 1) // Exclude page 1, it's served by /tips/index.astro
-    .map(pageNum => ({
-      params: { slug: String(pageNum) },
+    const tipResult = tips.map(tip => ({
+        params: { slug: tip.data.customSlug },
+        props: { tip },
     }));
 
-  return [...tipResult, ...pagePaths];
+    const pagePaths = getPageNumbers(tips.length)
+        .filter(pageNum => pageNum !== 1) // Exclude page 1, it's served by /tips/index.astro
+        .map(pageNum => ({
+            params: { slug: String(pageNum) },
+        }));
+
+    return [...tipResult, ...pagePaths];
 }
 
 const { slug } = Astro.params;
 const { tip } = Astro.props;
 
-const tips = await getCollection("tips");
+const tips = await getCollection('tips');
 
-const sortedTips = getSortedCollection<CollectionEntry<"tips">>(tips);
+const sortedTips = getSortedCollection<CollectionEntry<'tips'>>(tips);
 
 const pagination = getPagination<CollectionEntry<'tips'>>({
-  entities: sortedTips,
-  page: slug,
+    entities: sortedTips,
+    page: slug,
 });
 ---
 

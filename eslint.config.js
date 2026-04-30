@@ -61,7 +61,9 @@ export default [
   // We spread all entries from the array so parser, plugins, and rules are
   // all applied in the correct order.
   // -------------------------------------------------------------------------
-  ...tsPlugin.configs['flat/recommended'],
+  // TS 6: tsPlugin.configs type says ClassicConfig.Config, but at runtime
+  // 'flat/recommended' is a FlatConfig.ConfigArray. Cast to avoid iterator error.
+  .../** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */ (tsPlugin.configs['flat/recommended']),
 
   // -------------------------------------------------------------------------
   // Block 3 — Astro flat/recommended + flat/jsx-a11y-recommended

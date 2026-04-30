@@ -91,8 +91,8 @@ Stop for a minute.
 
 Look at the last three problems you fixed. For each one, ask:
 
--   Did I solve it or did I move it?
--   And what system was the real source - people, technology, delivery, information or decisions?
+- Did I solve it or did I move it?
+- And what system was the real source - people, technology, delivery, information or decisions?
 
 If you read that list and feel something like "yeah, I've been there" - good. That feeling is the start of the shift. No title, no level, no company size matters for this. As soon as you start seeing your work as five connected systems, you start to see where you actually fit in the puzzle and where a small thing you change will really move the whole shape.
 

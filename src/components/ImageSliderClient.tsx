@@ -10,13 +10,7 @@ export interface Props {
 export default function ImageSliderClient({ images }: Props) {
     return (
         <div
-            className="
-                scrollbar-thin relative flex
-                h-96 w-full snap-x
-                snap-mandatory overflow-x-auto
-                overflow-y-hidden scroll-smooth rounded-lg
-                border
-            "
+            className="scrollbar-thin relative flex h-96 w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden scroll-smooth rounded-lg border"
             role="region"
             aria-roledescription="carousel"
             aria-label="Image slider"
@@ -28,10 +22,7 @@ export default function ImageSliderClient({ images }: Props) {
                     target="_blank"
                     href={image.src}
                     rel="noreferrer"
-                    className="
-                        flex w-full flex-none snap-center
-                        snap-always items-center justify-center
-                    "
+                    className="flex w-full flex-none snap-center snap-always items-center justify-center"
                     aria-roledescription="slide"
                     aria-label={`Slide ${index + 1} of ${images.length}`}
                 >

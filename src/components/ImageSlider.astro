@@ -3,15 +3,15 @@ import ImageSliderClient from './ImageSliderClient.tsx';
 import type { ImageMetadata } from 'astro';
 
 export interface Props {
-  images: [ImageMetadata, string][];
+    images: [ImageMetadata, string][];
 }
 
 const { images } = Astro.props;
 
 // Convert ImageMetadata to plain objects for client component
 const imageData = images.map(([img, alt]) => ({
-  src: img.src,
-  alt: alt
+    src: img.src,
+    alt: alt,
 }));
 ---
 

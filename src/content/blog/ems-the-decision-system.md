@@ -94,13 +94,13 @@ I've written strategies a few times. Two versions at my most recent company - fi
 
 If I wrote a short manifesto for an engineering department today, it'd have four lines on it.
 
--   No single-person dependencies.
+- No single-person dependencies.
 
--   We only use boring technology.
+- We only use boring technology.
 
--   We are a one-stack shop.
+- We are a one-stack shop.
 
--   Engineers own the "how". PMs own the "what".
+- Engineers own the "how". PMs own the "what".
 
 And for every domain, one more line that does more work than all the others combined: **we believe X is so important that we will deliberately slow down, spend money or ignore Y to achieve it.**
 

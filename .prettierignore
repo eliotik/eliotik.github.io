@@ -11,3 +11,9 @@
 !.prettierrc
 !.eslintrc.cjs
 !README.md
+
+# prettier-plugin-astro@0.14.1 parser regression: cannot parse function declarations
+# inside <script type="text/partytown"> blocks (SyntaxError: Unexpected token, expected "}").
+# This file contains the Google Analytics gtag function declaration pattern.
+# Tracked upstream: https://github.com/withastro/prettier-plugin-astro/issues
+src/layouts/Layout.astro

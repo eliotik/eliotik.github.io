@@ -1,38 +1,38 @@
 ---
-import { type CollectionEntry, getCollection, getEntry } from "astro:content";
-import Posts from "@layouts/Posts.astro";
-import PostDetails from "@layouts/PostDetails.astro";
-import getSortedCollection from "@utils/getSortedCollection";
-import getPageNumbers from "@utils/getPageNumbers";
-import getPagination from "@utils/getPagination";
-import getThreadPositions from "@utils/getThreadPositions";
+import { type CollectionEntry, getCollection, getEntry } from 'astro:content';
+import Posts from '@layouts/Posts.astro';
+import PostDetails from '@layouts/PostDetails.astro';
+import getSortedCollection from '@utils/getSortedCollection';
+import getPageNumbers from '@utils/getPageNumbers';
+import getPagination from '@utils/getPagination';
+import getThreadPositions from '@utils/getThreadPositions';
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  relatedPosts: CollectionEntry<"blog">[];
+    post: CollectionEntry<'blog'>;
+    relatedPosts: CollectionEntry<'blog'>[];
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+    const posts = await getCollection('blog', ({ data }) => !data.draft);
 
-  const postResult = posts.map(post => ({
-    params: { slug: post.id },
-    props: { post, relatedPosts: post.data.relatedPosts },
-  }));
-
-  const pagePaths = getPageNumbers(posts.length)
-    .filter(pageNum => pageNum !== 1) // Exclude page 1, it's served by /posts/index.astro
-    .map(pageNum => ({
-      params: { slug: String(pageNum) },
+    const postResult = posts.map(post => ({
+        params: { slug: post.id },
+        props: { post, relatedPosts: post.data.relatedPosts },
     }));
 
-  return [...postResult, ...pagePaths];
+    const pagePaths = getPageNumbers(posts.length)
+        .filter(pageNum => pageNum !== 1) // Exclude page 1, it's served by /posts/index.astro
+        .map(pageNum => ({
+            params: { slug: String(pageNum) },
+        }));
+
+    return [...postResult, ...pagePaths];
 }
 
 const { slug } = Astro.params;
-const { post, relatedPosts} = Astro.props;
+const { post, relatedPosts } = Astro.props;
 
-const posts = await getCollection("blog");
+const posts = await getCollection('blog');
 
 const sortedPosts = getSortedCollection(posts);
 const threadPositions = getThreadPositions(posts);
@@ -41,23 +41,35 @@ const thread = post?.data?.thread;
 let relatedPostsArray: CollectionEntry<'blog'>[] = [];
 
 if (thread) {
-  // Build the list from all posts in the same thread, in reading order.
-  // The current post is included so it can be rendered (non-clickable)
-  // at its correct position inside its series.
-  const siblings = posts.filter(p => p.data.thread === thread);
-  relatedPostsArray = getSortedCollection<CollectionEntry<'blog'>>(siblings, 'asc');
+    // Build the list from all posts in the same thread, in reading order.
+    // The current post is included so it can be rendered (non-clickable)
+    // at its correct position inside its series.
+    const siblings = posts.filter(p => p.data.thread === thread);
+    relatedPostsArray = getSortedCollection<CollectionEntry<'blog'>>(
+        siblings,
+        'asc'
+    );
 } else if (relatedPosts) {
-  relatedPostsArray = await Promise.all(
-    relatedPosts.map(async ({ collection, id }) => {
-      return await getEntry(collection, id);
-    }),
-  );
+    const entries = await Promise.all(
+        relatedPosts.map(async ({ collection, id }) => {
+            return await getEntry(collection, id);
+        })
+    );
+    relatedPostsArray = entries.filter(
+        (e): e is CollectionEntry<'blog'> => e !== undefined
+    );
 }
 
 const pagination = getPagination<CollectionEntry<'blog'>>({
-  entities: sortedPosts,
-  page: slug,
+    entities: sortedPosts,
+    page: slug,
 });
 ---
 
-{post ? <PostDetails post={post} relatedPosts={relatedPostsArray} /> : <Posts {...pagination} threadPositions={threadPositions} />}
+{
+    post ? (
+        <PostDetails post={post} relatedPosts={relatedPostsArray} />
+    ) : (
+        <Posts {...pagination} threadPositions={threadPositions} />
+    )
+}

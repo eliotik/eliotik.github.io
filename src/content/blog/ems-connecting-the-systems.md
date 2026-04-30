@@ -219,15 +219,15 @@ A composite example, drawn from patterns I've seen across multiple companies. Th
 
 ### Ripples observed across systems
 
--   **Decision → Technology.** The ADR dilution means architecture calls for the two unowned core services aren't being made or recorded. What looks like a Technology problem (tech debt) is partly a Decision problem (the failure to surface the calls that create it).
+- **Decision → Technology.** The ADR dilution means architecture calls for the two unowned core services aren't being made or recorded. What looks like a Technology problem (tech debt) is partly a Decision problem (the failure to surface the calls that create it).
 
--   **People → Delivery.** The ambiguous Staff Engineer role means tech leads aren't senior enough in the room to challenge product during grooming. The weak estimates (Delivery) are partly a symptom of the unclear Staff definition (People).
+- **People → Delivery.** The ambiguous Staff Engineer role means tech leads aren't senior enough in the room to challenge product during grooming. The weak estimates (Delivery) are partly a symptom of the unclear Staff definition (People).
 
--   **Information → Decision.** Substantive decisions are living in DMs. The Decision system's "we document our decisions" story is technically true - they're written down somewhere - but because the Information system has no shared visibility, those decisions vanish the moment the person leaves.
+- **Information → Decision.** Substantive decisions are living in DMs. The Decision system's "we document our decisions" story is technically true - they're written down somewhere - but because the Information system has no shared visibility, those decisions vanish the moment the person leaves.
 
--   **Technology → People.** The un-versioned Cloudflare worker created a single-person dependency. That person has quietly become a bottleneck and peers are starting to reroute around them. A Technology gap is producing a People gap.
+- **Technology → People.** The un-versioned Cloudflare worker created a single-person dependency. That person has quietly become a bottleneck and peers are starting to reroute around them. A Technology gap is producing a People gap.
 
--   **Delivery → Information.** 25-minute standups happen because the teams can't summarize. A tighter standup format doesn't just save time - it forces the Information system to produce clearer signal.
+- **Delivery → Information.** 25-minute standups happen because the teams can't summarize. A tighter standup format doesn't just save time - it forces the Information system to produce clearer signal.
 
 ### Where's the leverage?
 

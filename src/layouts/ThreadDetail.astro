@@ -1,13 +1,13 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Breadcrumbs from "@components/Breadcrumbs.astro";
-import { SITE } from "@config";
-import type { ThreadDetail } from "@utils/getThreadDetail";
+import Layout from '@layouts/Layout.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import { SITE } from '@config';
+import type { ThreadDetail } from '@utils/getThreadDetail';
 
 export interface Props {
-  detail: ThreadDetail;
+    detail: ThreadDetail;
 }
 
 const { detail } = Astro.props;
@@ -17,100 +17,124 @@ const firstArticle = detail.articles[0];
 ---
 
 <Layout title={`${detail.title} | ${SITE.title}`} canonicalURL={canonicalURL}>
-  <Header activeNav="threads" />
-  <Breadcrumbs />
-  <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-4">
-    <h1 class="text-2xl font-bold text-skin-base sm:text-3xl">
-      {detail.title}
-    </h1>
+    <Header activeNav="threads" />
+    <Breadcrumbs />
+    <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-4">
+        <h1 class="text-skin-base text-2xl font-bold sm:text-3xl">
+            {detail.title}
+        </h1>
 
-    <dl class="mt-6 mb-5 grid grid-cols-1 gap-y-3 border-y border-skin-line/40 py-3 sm:grid-cols-2 sm:gap-y-0 sm:py-3">
-      <div class="flex items-baseline gap-3 sm:flex-col sm:items-start sm:gap-1 sm:px-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-skin-line/40 sm:[&:not(:first-child)]:pl-4">
-        <dt class="font-mono text-[10px] uppercase tracking-wider text-skin-base/50 sm:w-auto">
-          Articles
-        </dt>
-        <dd class="font-mono text-sm font-semibold tabular-nums text-skin-base">
-          {detail.articleCount}
-        </dd>
-      </div>
-      <div class="flex items-baseline gap-3 sm:flex-col sm:items-start sm:gap-1 sm:px-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-skin-line/40 sm:[&:not(:first-child)]:pl-4">
-        <dt class="font-mono text-[10px] uppercase tracking-wider text-skin-base/50 sm:w-auto">
-          Read time
-        </dt>
-        <dd class="font-mono text-sm font-semibold tabular-nums text-skin-base">
-          {detail.totalReadTime} min
-        </dd>
-      </div>
-    </dl>
-
-    {detail.topTags.length > 0 && (
-      <div class="mb-6 flex flex-wrap gap-x-4 gap-y-2">
-        {detail.topTags.map(t => (
-          <a
-            href={`/tags/${t.tag}/`}
-            class="group inline-flex items-baseline whitespace-nowrap font-mono text-sm font-semibold text-skin-base/70 transition-colors hover:text-skin-accent"
-          >
-            <span class="mr-0.5 text-skin-base/40 transition-colors group-hover:text-skin-accent">
-              #
-            </span>
-            {t.tagName}
-          </a>
-        ))}
-      </div>
-    )}
-
-    <ul class="flex flex-col divide-y divide-skin-line/40 border-y border-skin-line/60">
-      {detail.articles.map(a => {
-        const num = String(a.position).padStart(2, "0");
-        return (
-          <li>
-            <a
-              href={`/posts/${a.slug}/`}
-              class="group grid grid-cols-[40px_1fr_auto] items-start gap-3 py-3.5 pr-1 transition-colors hover:bg-skin-card/40 sm:grid-cols-[56px_1fr_auto] sm:gap-4"
-            >
-              <div class="flex items-start justify-end self-stretch border-r border-skin-line/40 pr-2.5 pt-0.5 transition-colors group-hover:border-skin-accent/70 sm:pr-3">
-                <span class="text-xs font-medium tabular-nums tracking-wider text-skin-base/50 transition-colors group-hover:text-skin-accent">
-                  {num}
-                </span>
-              </div>
-              <div class="min-w-0">
-                <h3 class="mb-1 text-sm font-bold text-skin-accent">
-                  {a.title}
-                </h3>
-                <p class="text-xs leading-relaxed text-skin-base/70">
-                  {a.description}
-                </p>
-              </div>
-              <span
-                aria-hidden
-                class="pr-1 pt-0.5 text-skin-base/40 transition-transform group-hover:translate-x-0.5 group-hover:text-skin-accent"
-              >
-                →
-              </span>
-            </a>
-          </li>
-        );
-      })}
-    </ul>
-
-    <nav class="mt-9 flex flex-col gap-3 border-t border-skin-line/40 pt-4 sm:flex-row sm:items-center sm:justify-between">
-      <a
-        href="/threads/"
-        class="inline-flex items-center gap-2 font-mono text-sm font-bold text-skin-base/80 transition-colors hover:text-skin-accent"
-      >
-        <span class="text-base leading-none">←</span>
-        <span>All threads</span>
-      </a>
-      {firstArticle && (
-        <a
-          href={`/posts/${firstArticle.slug}/`}
-          class="inline-flex items-center justify-center gap-2 rounded-sm border border-skin-accent bg-skin-accent px-4 py-2.5 font-mono text-sm font-bold text-skin-fill transition-opacity hover:opacity-90"
+        <dl
+            class="border-skin-line/40 mt-6 mb-5 grid grid-cols-1 gap-y-3 border-y py-3 sm:grid-cols-2 sm:gap-y-0 sm:py-3"
         >
-          <span>Start reading</span>
-          <span class="text-base leading-none">→</span>
-        </a>
-      )}
-    </nav>
-  </main>
-  <Footer />
+            <div
+                class="sm:[&:not(:first-child)]:border-skin-line/40 flex items-baseline gap-3 sm:flex-col sm:items-start sm:gap-1 sm:px-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:pl-4"
+            >
+                <dt
+                    class="text-skin-base/50 font-mono text-[10px] tracking-wider uppercase sm:w-auto"
+                >
+                    Articles
+                </dt>
+                <dd
+                    class="text-skin-base font-mono text-sm font-semibold tabular-nums"
+                >
+                    {detail.articleCount}
+                </dd>
+            </div>
+            <div
+                class="sm:[&:not(:first-child)]:border-skin-line/40 flex items-baseline gap-3 sm:flex-col sm:items-start sm:gap-1 sm:px-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:pl-4"
+            >
+                <dt
+                    class="text-skin-base/50 font-mono text-[10px] tracking-wider uppercase sm:w-auto"
+                >
+                    Read time
+                </dt>
+                <dd
+                    class="text-skin-base font-mono text-sm font-semibold tabular-nums"
+                >
+                    {detail.totalReadTime} min
+                </dd>
+            </div>
+        </dl>
+
+        {
+            detail.topTags.length > 0 && (
+                <div class="mb-6 flex flex-wrap gap-x-4 gap-y-2">
+                    {detail.topTags.map(t => (
+                        <a
+                            href={`/tags/${t.tag}/`}
+                            class="group text-skin-base/70 hover:text-skin-accent inline-flex items-baseline font-mono text-sm font-semibold whitespace-nowrap transition-colors"
+                        >
+                            <span class="text-skin-base/40 group-hover:text-skin-accent mr-0.5 transition-colors">
+                                #
+                            </span>
+                            {t.tagName}
+                        </a>
+                    ))}
+                </div>
+            )
+        }
+
+        <ul
+            class="divide-skin-line/40 border-skin-line/60 flex flex-col divide-y border-y"
+        >
+            {
+                detail.articles.map(a => {
+                    const num = String(a.position).padStart(2, '0');
+                    return (
+                        <li>
+                            <a
+                                href={`/posts/${a.slug}/`}
+                                class="group hover:bg-skin-card/40 grid grid-cols-[40px_1fr_auto] items-start gap-3 py-3.5 pr-1 transition-colors sm:grid-cols-[56px_1fr_auto] sm:gap-4"
+                            >
+                                <div class="border-skin-line/40 group-hover:border-skin-accent/70 flex items-start justify-end self-stretch border-r pt-0.5 pr-2.5 transition-colors sm:pr-3">
+                                    <span class="text-skin-base/50 group-hover:text-skin-accent text-xs font-medium tracking-wider tabular-nums transition-colors">
+                                        {num}
+                                    </span>
+                                </div>
+                                <div class="min-w-0">
+                                    <h3 class="text-skin-accent mb-1 text-sm font-bold">
+                                        {a.title}
+                                    </h3>
+                                    <p class="text-skin-base/70 text-xs leading-relaxed">
+                                        {a.description}
+                                    </p>
+                                </div>
+                                <span
+                                    aria-hidden
+                                    class="text-skin-base/40 group-hover:text-skin-accent pt-0.5 pr-1 transition-transform group-hover:translate-x-0.5"
+                                >
+                                    →
+                                </span>
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </ul>
+
+        <nav
+            class="border-skin-line/40 mt-9 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between"
+        >
+            <a
+                href="/threads/"
+                class="text-skin-base/80 hover:text-skin-accent inline-flex items-center gap-2 font-mono text-sm font-bold transition-colors"
+            >
+                <span class="text-base leading-none">←</span>
+                <span>All threads</span>
+            </a>
+            {
+                firstArticle && (
+                    <a
+                        href={`/posts/${firstArticle.slug}/`}
+                        class="border-skin-accent bg-skin-accent text-skin-fill inline-flex items-center justify-center gap-2 rounded-sm border px-4 py-2.5 font-mono text-sm font-bold transition-opacity hover:opacity-90"
+                    >
+                        <span>Start reading</span>
+                        <span class="text-base leading-none">→</span>
+                    </a>
+                )
+            }
+        </nav>
+    </main>
+    <Footer />
 </Layout>

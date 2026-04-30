@@ -1,23 +1,23 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import TagPosts from "@layouts/TagPosts.astro";
-import getPostsByTag from "@utils/getPostsByTag";
-import getPagination from "@utils/getPagination";
-import getUniqueTags from "@utils/getUniqueTags";
-import getThreadPositions from "@utils/getThreadPositions";
-import getRelatedTags from "@utils/getRelatedTags";
+import { type CollectionEntry, getCollection } from 'astro:content';
+import TagPosts from '@layouts/TagPosts.astro';
+import getPostsByTag from '@utils/getPostsByTag';
+import getPagination from '@utils/getPagination';
+import getUniqueTags from '@utils/getUniqueTags';
+import getThreadPositions from '@utils/getThreadPositions';
+import getRelatedTags from '@utils/getRelatedTags';
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+    const posts = await getCollection('blog');
 
-  const tags = getUniqueTags(posts);
+    const tags = getUniqueTags(posts);
 
-  return tags.map(({ tag, tagName }) => {
-    return {
-      params: { tag },
-      props: { tag, tagName, posts },
-    };
-  });
+    return tags.map(({ tag, tagName }) => {
+        return {
+            params: { tag },
+            props: { tag, tagName, posts },
+        };
+    });
 }
 
 const { tag, tagName, posts } = Astro.props;
@@ -28,17 +28,17 @@ const totalCount = postsByTag.length;
 const relatedTags = getRelatedTags(posts, tag);
 
 const pagination = getPagination<CollectionEntry<'blog'>>({
-  entities: postsByTag,
-  page: 1,
-  isIndex: true,
+    entities: postsByTag,
+    page: 1,
+    isIndex: true,
 });
 ---
 
 <TagPosts
-  {...pagination}
-  {tag}
-  {tagName}
-  threadPositions={threadPositions}
-  totalCount={totalCount}
-  relatedTags={relatedTags}
+    {...pagination}
+    {tag}
+    {tagName}
+    threadPositions={threadPositions}
+    totalCount={totalCount}
+    relatedTags={relatedTags}
 />

@@ -1,55 +1,57 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Pagination from "@components/Pagination.astro";
-import Card from "@components/Card";
-import { SITE } from "@config";
-import type { ThreadPositions } from "@utils/getThreadPositions";
+import type { CollectionEntry } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import Main from '@layouts/Main.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import Pagination from '@components/Pagination.astro';
+import Card from '@components/Card';
+import { SITE } from '@config';
+import type { ThreadPositions } from '@utils/getThreadPositions';
 
 export interface Props {
-  currentPage: number;
-  totalPages: number;
-  paginatedEntities: CollectionEntry<"blog">[];
-  threadPositions?: ThreadPositions;
+    currentPage: number;
+    totalPages: number;
+    paginatedEntities: CollectionEntry<'blog'>[];
+    threadPositions?: ThreadPositions;
 }
 
-const { currentPage, totalPages, paginatedEntities, threadPositions } = Astro.props;
+const { currentPage, totalPages, paginatedEntities, threadPositions } =
+    Astro.props;
 
 // Set canonical URL to /posts/ for page 1, otherwise use the page number
-const canonicalURL = currentPage === 1
-  ? new URL("/posts/", Astro.site).href
-  : new URL(`/posts/${currentPage}/`, Astro.site).href;
+const canonicalURL =
+    currentPage === 1
+        ? new URL('/posts/', Astro.site).href
+        : new URL(`/posts/${currentPage}/`, Astro.site).href;
 ---
 
 <Layout
-  title={`Posts | ${SITE.title}`}
-  canonicalURL={canonicalURL}
-  noindex={currentPage > 1}
+    title={`Posts | ${SITE.title}`}
+    canonicalURL={canonicalURL}
+    noindex={currentPage > 1}
 >
-  <Header activeNav="posts" />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
-    <ul>
-      {
-        paginatedEntities.map(({ data, id }) => (
-          <Card
-            href={`/posts/${id}/`}
-            frontmatter={data}
-            threadPosition={threadPositions?.[id]}
-          />
-        ))
-      }
-    </ul>
-  </Main>
+    <Header activeNav="posts" />
+    <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+        <ul>
+            {
+                paginatedEntities.map(({ data, id }) => (
+                    <Card
+                        href={`/posts/${id}/`}
+                        frontmatter={data}
+                        threadPosition={threadPositions?.[id]}
+                    />
+                ))
+            }
+        </ul>
+    </Main>
 
-  <Pagination
-    {currentPage}
-    {totalPages}
-    prevUrl={`/posts${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}`}
-    nextUrl={`/posts/${currentPage + 1}`}
-  />
+    <Pagination
+        {currentPage}
+        {totalPages}
+        prevUrl={`/posts${currentPage - 1 !== 1 ? '/' + (currentPage - 1) : ''}`}
+        nextUrl={`/posts/${currentPage + 1}`}
+    />
 
-  <Footer noMarginTop={totalPages > 1} />
+    <Footer noMarginTop={totalPages > 1} />
 </Layout>

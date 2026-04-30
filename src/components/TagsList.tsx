@@ -44,7 +44,7 @@ export default function TagsList({ tags }: Props) {
 
     return (
         <div>
-            <div className="my-4 border-t border-dashed border-skin-line/60 pt-3 text-xs italic text-skin-base/60">
+            <div className="border-skin-line/60 text-skin-base/60 my-4 border-t border-dashed pt-3 text-xs italic">
                 {filtered.length} of {tags.length} tags
                 {trimmed ? <> matching &ldquo;{trimmed}&rdquo;</> : null}
             </div>
@@ -53,7 +53,7 @@ export default function TagsList({ tags }: Props) {
                 <div className="relative flex-1">
                     <span
                         aria-hidden
-                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-skin-base/50"
+                        className="text-skin-base/50 pointer-events-none absolute top-1/2 left-3 -translate-y-1/2"
                     >
                         <svg
                             width="14"
@@ -71,7 +71,7 @@ export default function TagsList({ tags }: Props) {
                     </span>
                     <input
                         type="search"
-                        className="w-full rounded-sm border border-skin-line bg-skin-card/30 py-2 pl-9 pr-8 font-mono text-sm text-skin-base outline-none transition-colors placeholder:text-skin-base/40 focus:border-skin-accent focus:bg-skin-card/60"
+                        className="border-skin-line bg-skin-card/30 text-skin-base placeholder:text-skin-base/40 focus:border-skin-accent focus:bg-skin-card/60 w-full rounded-sm border py-2 pr-8 pl-9 font-mono text-sm transition-colors outline-none"
                         placeholder="Filter tags…"
                         value={query}
                         onChange={e => setQuery(e.target.value)}
@@ -82,14 +82,14 @@ export default function TagsList({ tags }: Props) {
                             type="button"
                             onClick={() => setQuery('')}
                             aria-label="Clear filter"
-                            className="absolute right-1.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-base text-skin-base/60 transition-colors hover:bg-skin-card hover:text-skin-base"
+                            className="text-skin-base/60 hover:bg-skin-card hover:text-skin-base absolute top-1/2 right-1.5 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-base transition-colors"
                         >
                             ×
                         </button>
                     )}
                 </div>
 
-                <div className="flex items-baseline justify-end gap-1.5 font-mono text-xs text-skin-base/60">
+                <div className="text-skin-base/60 flex items-baseline justify-end gap-1.5 font-mono text-xs">
                     <span>by</span>
                     <button
                         type="button"
@@ -124,30 +124,30 @@ export default function TagsList({ tags }: Props) {
                     <li key={t.tag}>
                         <a
                             href={`/tags/${t.tag}/`}
-                            className="group grid grid-cols-[minmax(0,1fr)_56px_28px] items-center gap-3 border-t border-skin-line/40 px-1 py-2 transition-colors last:border-b last:border-skin-line/40 hover:bg-skin-card/30 sm:grid-cols-[minmax(0,1fr)_80px_32px] sm:gap-4"
+                            className="group border-skin-line/40 last:border-skin-line/40 hover:bg-skin-card/30 grid grid-cols-[minmax(0,1fr)_56px_28px] items-center gap-3 border-t px-1 py-2 transition-colors last:border-b sm:grid-cols-[minmax(0,1fr)_80px_32px] sm:gap-4"
                         >
-                            <span className="truncate font-mono text-sm font-semibold text-skin-accent transition-colors">
-                                <span className="mr-1.5 text-skin-base/40">
+                            <span className="text-skin-accent truncate font-mono text-sm font-semibold transition-colors">
+                                <span className="text-skin-base/40 mr-1.5">
                                     #
                                 </span>
                                 {t.tag}
                             </span>
-                            <span className="block h-1.5 overflow-hidden rounded-sm bg-skin-line">
+                            <span className="bg-skin-line block h-1.5 overflow-hidden rounded-sm">
                                 <span
-                                    className="block h-full bg-skin-base/40 transition-colors group-hover:bg-skin-accent"
+                                    className="bg-skin-base/40 group-hover:bg-skin-accent block h-full transition-colors"
                                     style={{
                                         width: `${Math.max(4, (t.count / max) * 100)}%`,
                                     }}
                                 />
                             </span>
-                            <span className="text-right font-mono text-xs font-semibold tabular-nums text-skin-base/80">
+                            <span className="text-skin-base/80 text-right font-mono text-xs font-semibold tabular-nums">
                                 {t.count}
                             </span>
                         </a>
                     </li>
                 ))}
                 {filtered.length === 0 && (
-                    <li className="px-1 py-6 text-sm italic text-skin-base/60">
+                    <li className="text-skin-base/60 px-1 py-6 text-sm italic">
                         No tags match.
                     </li>
                 )}

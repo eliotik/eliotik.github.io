@@ -3,15 +3,19 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 export interface Props {
-  image: ImageMetadata;
-  title: string;
+    image: ImageMetadata;
+    title: string;
 }
 
 const { image, title } = Astro.props;
 ---
 
-<div class="h-96 relative w-full">
+<div class="relative h-96 w-full">
     <a href={image.src} target="_blank">
-        <Image src={image} class="h-full object-contain !my-0 border-none" alt={title} />
+        <Image
+            src={image}
+            class="!my-0 h-full border-none object-contain"
+            alt={title}
+        />
     </a>
 </div>

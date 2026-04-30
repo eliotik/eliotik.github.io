@@ -44,17 +44,17 @@ Let me capture my thoughts on paper books first. I have been reading paper books
 
 ### Why I like paper books
 
--   I can highlight important parts — it helps me with learn new words, easy to find highlighted part later
--   I can write notes in the margins and make drawings - to be frank, I mostly draw doodles on the margins
--   I can easily go back and forth - it maybe my thing, but I do a lot of backs and forth while reading
--   I can see/feel the _progress_ - getting things done, feeling the progress - all this helps to release _dopamine_
+- I can highlight important parts — it helps me with learn new words, easy to find highlighted part later
+- I can write notes in the margins and make drawings - to be frank, I mostly draw doodles on the margins
+- I can easily go back and forth - it maybe my thing, but I do a lot of backs and forth while reading
+- I can see/feel the _progress_ - getting things done, feeling the progress - all this helps to release _dopamine_
 
 ### Why I don't like paper books
 
--   They are heavy - like any physical object, they have weight, I can't carry books around
--   Easy to lose - I have lost a few books in the past, and I have books which I found and brought with me from my travels too :)
--   You need to have a good light source
--   Smell - I use my local library, and some books have an "unique" smell
+- They are heavy - like any physical object, they have weight, I can't carry books around
+- Easy to lose - I have lost a few books in the past, and I have books which I found and brought with me from my travels too :)
+- You need to have a good light source
+- Smell - I use my local library, and some books have an "unique" smell
 
 Okay, let's move to the audiobooks now.
 
@@ -74,18 +74,18 @@ I listened to overall 2.5 hours of the audiobook, and I have mixed feelings abou
 
 ### Why I like audiobooks
 
--   I can listen to audiobooks while doing chores, driving, working out, etc.—I can't read a paper book while doing chores, but I can listen to an audiobook
--   I can have infinite number of audiobooks always available with me - I don't need to carry paper books around, no extra weight in backpack
--   I can listen at different speeds - I listened to a book at 1.5x speed for a while
+- I can listen to audiobooks while doing chores, driving, working out, etc.—I can't read a paper book while doing chores, but I can listen to an audiobook
+- I can have infinite number of audiobooks always available with me - I don't need to carry paper books around, no extra weight in backpack
+- I can listen at different speeds - I listened to a book at 1.5x speed for a while
 
 ### Why I don't like audiobooks
 
--   I can't highlight important parts - I can't easily find important parts later
--   I can't write notes in the margins - I can't make drawings (obviously)
--   I can't easily go back and forth - while listening this book, I had multiple times when I wanted to go back and listen to a part again, but it's not easy to do
--   You need to have either a good internet connection or download the book - either Audible doesn't pre-cache parts of a book or something didn't work for me, but I had a few times when the book stopped playing, and I had to wait for it to download the next part
--   You need to have access to references in the book - This book has multiple figures, charts, pictures, and "Reader" was referencing them, but I couldn't see them. I used my paper version to see them, but it was a bit annoying to switch between paper and audio versions
--   Price (vague point) - If books are long to listen, you will end up paying for multiple months of Audible subscription, which can result in a bigger cost of the book
+- I can't highlight important parts - I can't easily find important parts later
+- I can't write notes in the margins - I can't make drawings (obviously)
+- I can't easily go back and forth - while listening this book, I had multiple times when I wanted to go back and listen to a part again, but it's not easy to do
+- You need to have either a good internet connection or download the book - either Audible doesn't pre-cache parts of a book or something didn't work for me, but I had a few times when the book stopped playing, and I had to wait for it to download the next part
+- You need to have access to references in the book - This book has multiple figures, charts, pictures, and "Reader" was referencing them, but I couldn't see them. I used my paper version to see them, but it was a bit annoying to switch between paper and audio versions
+- Price (vague point) - If books are long to listen, you will end up paying for multiple months of Audible subscription, which can result in a bigger cost of the book
 
 ## Conclusion
 

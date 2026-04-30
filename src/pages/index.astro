@@ -1,17 +1,17 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
-import Card from "@components/Card";
-import TipCard from "@components/TipCard";
-import getSortedCollection from "@utils/getSortedCollection";
-import getThreadPositions from "@utils/getThreadPositions";
+import { type CollectionEntry, getCollection } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import LinkButton from '@components/LinkButton.astro';
+import Hr from '@components/Hr.astro';
+import Card from '@components/Card';
+import TipCard from '@components/TipCard';
+import getSortedCollection from '@utils/getSortedCollection';
+import getThreadPositions from '@utils/getThreadPositions';
 
-const posts = await getCollection("blog");
-const tips = await getCollection("tips");
+const posts = await getCollection('blog');
+const tips = await getCollection('tips');
 
 const sortedPosts = getSortedCollection<CollectionEntry<'blog'>>(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
@@ -20,125 +20,123 @@ const threadPositions = getThreadPositions(posts);
 ---
 
 <Layout>
-  <Header />
-  <main id="main-content">
-    {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured">
-            <h2>Featured</h2>
-            <ul>
-              {featuredPosts.map(({ data, id }) => (
-                <Card
-                  href={`/posts/${id}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                  threadPosition={threadPositions[id]}
-                />
-              ))}
-            </ul>
-          </section>
-          <Hr />
-        </>
-      )
-    }
+    <Header />
+    <main id="main-content">
+        {
+            featuredPosts.length > 0 && (
+                <>
+                    <section id="featured">
+                        <h2>Featured</h2>
+                        <ul>
+                            {featuredPosts.map(({ data, id }) => (
+                                <Card
+                                    href={`/posts/${id}/`}
+                                    frontmatter={data}
+                                    secHeading={false}
+                                    threadPosition={threadPositions[id]}
+                                />
+                            ))}
+                        </ul>
+                    </section>
+                    <Hr />
+                </>
+            )
+        }
 
-    {
-      sortedTips.length > 0 && (
-        <>
-          <section id="recent-tip">
-            <h2>Recent tip</h2>
-            <ul>
-                <TipCard
-                  href={`/tips/${sortedTips[0]!.data.customSlug}/`}
-                  frontmatter={sortedTips[0]!.data}
-                  secHeading={false}
-                />
-            </ul>
-          </section>
-          <Hr />
-        </>
-      )
-    }
+        {
+            sortedTips.length > 0 && (
+                <>
+                    <section id="recent-tip">
+                        <h2>Recent tip</h2>
+                        <ul>
+                            <TipCard
+                                href={`/tips/${sortedTips[0]!.data.customSlug}/`}
+                                frontmatter={sortedTips[0]!.data}
+                                secHeading={false}
+                            />
+                        </ul>
+                    </section>
+                    <Hr />
+                </>
+            )
+        }
 
-    {
-      sortedPosts.length > 0 && (
-        <>
-          <section id="recent-posts">
-            <h2>Recent Posts</h2>
-            <ul>
-              {
-                sortedPosts
-                  .filter(({ data }) => !data.featured)
-                  .map(
-                    ({ data, id }, index) =>
-                      index < 4 && (
-                        <Card
-                          href={`/posts/${id}/`}
-                          frontmatter={data}
-                          secHeading={false}
-                          threadPosition={threadPositions[id]}
-                        />
-                      )
-                  )
-              }
-            </ul>
-            <div class="all-posts-btn-wrapper">
-              <LinkButton href="/posts">
-                All Posts
-                <svg xmlns="http://www.w3.org/2000/svg"
-                  ><path
-                    d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                  ></path>
-                </svg>
-              </LinkButton>
-            </div>
-          </section>
-        </>
-      )
-    }
-  </main>
+        {
+            sortedPosts.length > 0 && (
+                <>
+                    <section id="recent-posts">
+                        <h2>Recent Posts</h2>
+                        <ul>
+                            {sortedPosts
+                                .filter(({ data }) => !data.featured)
+                                .map(
+                                    ({ data, id }, index) =>
+                                        index < 4 && (
+                                            <Card
+                                                href={`/posts/${id}/`}
+                                                frontmatter={data}
+                                                secHeading={false}
+                                                threadPosition={
+                                                    threadPositions[id]
+                                                }
+                                            />
+                                        )
+                                )}
+                        </ul>
+                        <div class="all-posts-btn-wrapper">
+                            <LinkButton href="/posts">
+                                All Posts
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+                                </svg>
+                            </LinkButton>
+                        </div>
+                    </section>
+                </>
+            )
+        }
+    </main>
 
-  <Footer />
+    <Footer />
 </Layout>
 
 <style>
-  @reference "../styles/base.css";
-  /* ===== Hero Section ===== */
-  #hero {
-    @apply pb-6 pt-8;
-  }
-  #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
-  }
-  #hero .rss-link {
-    @apply mb-6;
-  }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
-  }
-  #hero p {
-    @apply my-2;
-  }
-  .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-  }
-  .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
-  }
+    @reference "../styles/base.css";
+    /* ===== Hero Section ===== */
+    #hero {
+        @apply pt-8 pb-6;
+    }
+    #hero h1 {
+        @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+    }
+    #hero .rss-link {
+        @apply mb-6;
+    }
+    #hero .rss-icon {
+        @apply fill-skin-accent mb-2 h-6 w-6 scale-110 sm:mb-3 sm:scale-125;
+    }
+    #hero p {
+        @apply my-2;
+    }
+    .social-wrapper {
+        @apply mt-4 flex flex-col sm:flex-row sm:items-center;
+    }
+    .social-links {
+        @apply mr-2 mb-1 whitespace-nowrap sm:mb-0;
+    }
 
-  /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts,
-  #recent-tip {
-    @apply pb-6 pt-12;
-  }
-  #featured h2,
-  #recent-posts h2,
-  #recent-tip h2 {
-    @apply text-2xl font-semibold tracking-wide;
-  }
-  .all-posts-btn-wrapper {
-    @apply my-8 text-center;
-  }
+    /* ===== Featured & Recent Posts Sections ===== */
+    #featured,
+    #recent-posts,
+    #recent-tip {
+        @apply pt-12 pb-6;
+    }
+    #featured h2,
+    #recent-posts h2,
+    #recent-tip h2 {
+        @apply text-2xl font-semibold tracking-wide;
+    }
+    .all-posts-btn-wrapper {
+        @apply my-8 text-center;
+    }
 </style>

@@ -31,9 +31,9 @@ On one side, the team had commitments and was already at full capacity. On the o
 
 We talked through a few paths. None of them painless.
 
--   Pull a developer off an ongoing project to tackle the integration. Accept that their original project slows down.
--   Ask the CTO to roll up his sleeves and spearhead the integration, as if he wasn't busy enough.
--   Defer the project and risk the partnership evaporating.
+- Pull a developer off an ongoing project to tackle the integration. Accept that their original project slows down.
+- Ask the CTO to roll up his sleeves and spearhead the integration, as if he wasn't busy enough.
+- Defer the project and risk the partnership evaporating.
 
 Each had consequences. Reassigning a dev disrupts another team's progress. Leaning on the CTO stretches him thinner. Deferring means potentially missing the window.
 
