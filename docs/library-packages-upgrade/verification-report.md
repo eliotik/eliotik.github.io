@@ -321,3 +321,47 @@ All tests run against the dev server at `http://localhost:4330` (Astro 6.1.10, N
 **PASS** — All 7 success criteria (design §1) verified on commit `bdb9350b44e62e58344bd607030a38fcb23248a5`. Visual diffs are within tolerance across all 10 routes. Interactive smoke (theme toggle, search, tags filter, carousel, header nav) all pass. Security audit improved from 93 to 4 vulnerabilities.
 
 **→ Proceed to T-31 (GitHub Pages deploy & live smoke).**
+
+---
+
+## Production deploy attempt (T-31) — BLOCKED
+
+**Date:** 2026-04-29T00:00:00Z
+**Operator:** claude-sonnet-4-6 (T-31 agent)
+**Pushed commit:** 5cc9182 (main HEAD, 110 commits ahead of prior origin/main at cde32ad)
+**Workflow run:** https://github.com/eliotik/eliotik.github.io/actions/runs/25214297859
+**Workflow conclusion:** failure
+
+### Pre-deploy sanity (local) — all PASS
+
+- `pnpm install --frozen-lockfile` — exit 0, Done in 1s using pnpm v10.33.2
+- `pnpm astro check` — 0 errors, 0 warnings, 0 hints (76 files)
+- `pnpm build` — 118 pages built; jampack ✔ No issues, net -2.49 MB
+
+### Failure
+
+The GH Pages deploy workflow failed at the `build` job step "Install, build, and upload your site" (`withastro/action@v6`):
+
+```
+Error: Multiple versions of pnpm specified:
+  - version latest in the GitHub Action config with the key "version"
+  - version pnpm@10.33.2 in the package.json with the key "packageManager"
+Remove one of these versions to avoid version mismatch errors like ERR_PNPM_BAD_PM_VERSION
+build: .github#86
+```
+
+### Root cause
+
+`withastro/action@v6` (bumped from `@v3` by T-27) introduced strict validation that rejects a conflict between:
+- The `package-manager: pnpm@latest` input in `.github/workflows/deploy.yml`
+- The `"packageManager": "pnpm@10.33.2"` field in `package.json` (set by T-03)
+
+`withastro/action@v3` silently accepted `pnpm@latest`. `@v6` treats the conflict as a fatal error.
+
+### Status
+
+BLOCKED — defect filed at `docs/library-packages-upgrade/defects/T-31-D1.md`.
+
+T-31 `status: defect`. Awaiting fix task to pin `.github/workflows/deploy.yml` `package-manager` to `pnpm@10.33.2` (or remove the input to let the action auto-detect from `package.json`), then re-run T-31.
+
+Success criterion 8 (GH Pages deploy) is **not yet verified**.

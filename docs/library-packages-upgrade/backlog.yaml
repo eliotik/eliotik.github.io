@@ -372,20 +372,20 @@ tasks:
     title: Deploy to GitHub Pages & smoke-test live site
     phase: 3
     lane: validation
-    status: backlog
+    status: defect
     depends_on: [T-30, T-32, T-33, T-34, T-35, T-36]
     blocks: []
     visual_smoke_required: true
     branch: null
     commit_sha: null
-    worker: null
-    started_at: null
+    worker: claude-sonnet-4-6
+    started_at: 2026-04-29T00:00:00Z
     finished_at: null
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
     justification_file: null
-    defects: []
+    defects: [docs/library-packages-upgrade/defects/T-31-D1.md]
 
   # ---------------------------------------------------------------------------
   # Post-T-30 follow-up fixes from manual local verification (2026-04-30).
