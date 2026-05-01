@@ -372,7 +372,7 @@ tasks:
     title: Deploy to GitHub Pages & smoke-test live site
     phase: 3
     lane: validation
-    status: defect
+    status: in-progress
     depends_on: [T-30, T-32, T-33, T-34, T-35, T-36]
     blocks: []
     visual_smoke_required: true
