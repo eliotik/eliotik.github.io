@@ -372,19 +372,19 @@ tasks:
     title: Deploy to GitHub Pages & smoke-test live site
     phase: 3
     lane: validation
-    status: in-progress
+    status: done
     depends_on: [T-30, T-32, T-33, T-34, T-35, T-36]
     blocks: []
     visual_smoke_required: true
     branch: null
-    commit_sha: null
+    commit_sha: 6aebe02
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T00:00:00Z
-    finished_at: null
+    finished_at: 2026-05-01T12:42:18Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/verification-report.md
     defects: [docs/library-packages-upgrade/defects/T-31-D1.md]
 
   # ---------------------------------------------------------------------------

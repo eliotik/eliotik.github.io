@@ -365,3 +365,55 @@ BLOCKED — defect filed at `docs/library-packages-upgrade/defects/T-31-D1.md`.
 T-31 `status: defect`. Awaiting fix task to pin `.github/workflows/deploy.yml` `package-manager` to `pnpm@10.33.2` (or remove the input to let the action auto-detect from `package.json`), then re-run T-31.
 
 Success criterion 8 (GH Pages deploy) is **not yet verified**.
+
+---
+
+## Production deploy attempt 2 (T-31, post-D1 fix) — SUCCESS
+
+**Date:** 2026-05-01T12:35:08Z
+**Operator:** claude-sonnet-4-6 (T-31 agent)
+**Fix commit:** 6aebe02 (`fix(T-31): remove package-manager input from deploy.yml`)
+**Pushed commit:** 6aebe02 (main HEAD)
+**Workflow run:** https://github.com/eliotik/eliotik.github.io/actions/runs/25214446382
+**Workflow conclusion:** success (build 1m31s, deploy 8s)
+**T-31-D1 resolution:** resolved (`docs/library-packages-upgrade/defects/T-31-D1.md`)
+
+### Canonical-domain note
+
+`https://eliotik.github.io/` returns `301 Moved Permanently → https://www.novifyx.com/` — this is the GitHub Pages CNAME redirect feature. The canonical custom domain is configured in `public/CNAME` (`www.novifyx.com`) and `src/config.ts` (`website: 'https://www.novifyx.com'`). The smoke-test URLs in the original task prompt were authored before knowing about the rename; smoke was executed against the canonical domain `www.novifyx.com`.
+
+### Live smoke results
+
+| Route | Status |
+|---|---|
+| / | 200 |
+| /posts/ | 200 |
+| /tips/ | 200 |
+| /tags/ | 200 |
+| /threads/ | 200 |
+| /about/ | 200 |
+| /rss.xml | 200 |
+| /sitemap-index.xml | 200 |
+
+### Spot-checks (post detail pages)
+
+- /posts/ems-connecting-the-systems/ → 200 (T-37 mobile fix shipped: yes; page renders, title `Connecting the Systems | Novi Fyx`)
+- /posts/flutter-google-maps-embedded-map/ → 200 (T-36 carousel arrows: deployed as `ImageSliderClient` astro-island; arrow buttons render client-side, not visible to curl, but the island is present in the static HTML)
+- /posts/local-coding-model-desktop-macbook/ → 200 (T-25 D1 backslash content preserved: yes; `curl`/`VLLM`/`brew install` content present)
+- /threads/five-systems-of-engineering-management/ → 200 (T-20-D1 read-time: **75 min** — matches expected ~75)
+- /posts/flutter-google-maps-address-manipulation/ → 200 (the URL the user reported initially)
+
+### Stack on production
+- Astro 6.2.1 (verified via `<meta name="generator" content="Astro v6.2.1">` on production HTML)
+- React 19.2.5
+- Tailwind 4.2.4
+- ESLint 9.39.4 (flat)
+- TypeScript 6.0.3
+- Node 22.22.2 (CI runner)
+- pnpm 10.33.2 (auto-detected by `withastro/action@v6` from `package.json`'s `packageManager` field)
+- sharp ^0.34.5
+- satori 0.26.0
+
+### Status
+
+T-31 PASS. Campaign complete. All 8 success criteria from design §1 verified.
