@@ -1,0 +1,17 @@
+M	astro.config.mjs
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/defects/T-38-D1.md
+A	docs/library-packages-upgrade/justifications/T-38.md
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/01-install.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/02-check.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/03-lint.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/04-build.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/05-audit.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/06-astro-version.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/07-diff-names.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/07-diff-stat.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/08-dev.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/09-console-events.log
+A	docs/library-packages-upgrade/qa-runs/T-38-20260501T120105Z/10-dev-log-errors.log
+M	package.json
+M	pnpm-lock.yaml

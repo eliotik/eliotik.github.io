@@ -1,0 +1,7 @@
+# Route 2: /posts/flutter-google-maps-address-manipulation/ (the originally-reported URL)
+# Methodology: PerformanceObserver({type: 'resource', buffered: true}) + 3s observation window
+# Dev server: Astro v6.2.1 with devToolbar: { enabled: false } on http://localhost:4325
+
+{"route":"/posts/flutter-google-maps-address-manipulation/","count":0,"errors":[],"totalRequests":46,"toolbarRequestCount":0,"toolbarRequestSample":[],"failed4xx5xxAll":[]}
+
+# Result: 0 × 504 errors, 0 toolbar/dev-toolbar dependency requests, no 4xx/5xx whatsoever.

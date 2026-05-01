@@ -1,0 +1,18 @@
+ astro.config.mjs                                   |   4 +
+ docs/library-packages-upgrade/backlog.yaml         |  22 +-
+ docs/library-packages-upgrade/defects/T-38-D1.md   | 128 +++
+ .../justifications/T-38.md                         | 221 ++++++
+ .../qa-runs/T-38-20260501T120105Z/01-install.log   |   8 +
+ .../qa-runs/T-38-20260501T120105Z/02-check.log     |  13 +
+ .../qa-runs/T-38-20260501T120105Z/03-lint.log      |   5 +
+ .../qa-runs/T-38-20260501T120105Z/04-build.log     | 855 +++++++++++++++++++++
+ .../qa-runs/T-38-20260501T120105Z/05-audit.log     |  60 ++
+ .../T-38-20260501T120105Z/06-astro-version.log     |   2 +
+ .../T-38-20260501T120105Z/07-diff-names.log        |   4 +
+ .../qa-runs/T-38-20260501T120105Z/07-diff-stat.log |   5 +
+ .../qa-runs/T-38-20260501T120105Z/08-dev.log       |  25 +
+ .../T-38-20260501T120105Z/09-console-events.log    |  40 +
+ .../T-38-20260501T120105Z/10-dev-log-errors.log    |   0
+ package.json                                       |   2 +-
+ pnpm-lock.yaml                                     |  78 +-
+ 17 files changed, 1404 insertions(+), 68 deletions(-)

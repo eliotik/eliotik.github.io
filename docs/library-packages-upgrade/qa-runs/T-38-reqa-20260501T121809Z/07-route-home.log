@@ -1,0 +1,8 @@
+# Route 1: cold-start home (/)
+# Methodology: PerformanceObserver({type: 'resource', buffered: true}) + 3s observation window
+# Dev server: Astro v6.2.1 with devToolbar: { enabled: false } on http://localhost:4325
+# Vite cache: cleared (rm -rf node_modules/.vite) before dev start
+
+{"route":"/","count":0,"errors":[],"totalRequests":24,"toolbarRequestCount":0,"toolbarRequestSample":[],"failed4xx5xxAll":[]}
+
+# Result: 0 × 504 errors, 0 toolbar/dev-toolbar dependency requests, no 4xx/5xx whatsoever.
