@@ -505,3 +505,22 @@ tasks:
     qa_finished_at: 2026-04-29T20:30:00Z
     justification_file: docs/library-packages-upgrade/justifications/T-37.md
     defects: []
+
+  - id: T-38
+    title: Bump Astro 6.1.10 → 6.2.1 (fixes dev-toolbar 504 race)
+    phase: 3
+    lane: L2
+    status: backlog
+    depends_on: [T-30]
+    blocks: [T-31]
+    visual_smoke_required: false
+    branch: null
+    commit_sha: null
+    worker: null
+    started_at: null
+    finished_at: null
+    qa_worker: null
+    qa_started_at: null
+    qa_finished_at: null
+    justification_file: null
+    defects: []
