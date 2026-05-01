@@ -510,17 +510,17 @@ tasks:
     title: Bump Astro 6.1.10 → 6.2.1 (fixes dev-toolbar 504 race)
     phase: 3
     lane: L2
-    status: in-progress
+    status: qa-pending
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: false
     branch: upgrade/T-38-astro-6.2
-    commit_sha: null
+    commit_sha: f81b3da
     worker: claude-sonnet-4-6
     started_at: 2026-04-29T00:00:00Z
-    finished_at: null
+    finished_at: 2026-04-29T08:10:00Z
     qa_worker: null
     qa_started_at: null
     qa_finished_at: null
-    justification_file: null
+    justification_file: docs/library-packages-upgrade/justifications/T-38.md
     defects: []
