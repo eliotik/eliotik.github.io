@@ -510,7 +510,7 @@ tasks:
     title: Bump Astro 6.1.10 → 6.2.1 (fixes dev-toolbar 504 race)
     phase: 3
     lane: L2
-    status: defect
+    status: in-progress
     depends_on: [T-30]
     blocks: [T-31]
     visual_smoke_required: false

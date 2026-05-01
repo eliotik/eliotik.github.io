@@ -16,6 +16,10 @@ import expressiveCode from "astro-expressive-code";
 export default defineConfig({
   site: SITE.website,
   trailingSlash: 'ignore',
+  // T-38 D1: dev-toolbar dynamic imports race with Vite optimizer
+  // on cold start in 6.2.x. Disabling eliminates 504s entirely.
+  // Production unaffected (toolbar is dev-only).
+  devToolbar: { enabled: false },
   redirects: {
     '/posts/1/': '/posts',
     '/tips/1/': '/tips',
