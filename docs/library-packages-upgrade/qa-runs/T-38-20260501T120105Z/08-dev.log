@@ -1,0 +1,25 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-38
+> astro dev
+
+[vite] connected.
+08:02:15 [types] Generated 0ms
+[vite] connected.
+08:02:15 [content] Syncing content
+08:02:15 [content] Synced content
+08:02:15 [vite] Port 4321 is in use, trying another one...
+08:02:15 [vite] Port 4322 is in use, trying another one...
+ astro  v6.2.1 ready in 752 ms
+┃ Local    http://localhost:4323/
+┃ Network  use --host to expose
+08:02:15 watching for file changes...
+08:02:45 [200] / 81ms
+08:02:45 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-types.js, astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-swap-functions.js
+08:02:45 [vite] ✨ optimized dependencies changed. reloading
+08:04:04 [200] /posts/flutter-google-maps-address-manipulation/ 385ms
+[vite] program reload
+[vite] An error happened during full reload
+Failed to load url astro:server-app.js (resolved id: astro:server-app.js). Does the file exist?
+Error: Failed to load url astro:server-app.js (resolved id: astro:server-app.js). Does the file exist?
+    at loadAndTransform (file:///Users/ap/development/other/eliotik.github.io-T-38/node_modules/.pnpm/vite@7.3.2_@types+node@24.12.2_jiti@2.6.1_lightningcss@1.32.0_terser@5.28.1_yaml@2.8.3/node_modules/vite/dist/node/chunks/config.js:22663:33)
+08:07:18 [200] /posts/flutter-google-maps-address-manipulation/ 83ms

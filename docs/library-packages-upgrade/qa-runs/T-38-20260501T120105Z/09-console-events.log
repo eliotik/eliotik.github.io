@@ -1,0 +1,40 @@
+# Browser-side cold-start dev-toolbar 504 evidence (T-38 QA)
+# Method: PerformanceObserver({type:'resource', buffered:true}) + getEntriesByType('resource') filter status >= 400
+# Dev server: Astro v6.2.1 on http://localhost:4323
+# Vite cache: cleared (rm -rf node_modules/.vite) before dev start
+
+## Route 1: cold-start home (/)
+After loading http://localhost:4323/ (from cold Vite cache), the browser observed
+6 × 504 Outdated Optimize Dep responses on dev-toolbar dependency chunks:
+
+count504: 6
+504 URLs:
+  - http://localhost:4323/node_modules/.vite/deps/astro-WSMVDB2K.js?v=b8e4e581       status=504
+  - http://localhost:4323/node_modules/.vite/deps/settings-OL5HLS2A.js?v=b8e4e581    status=504
+  - http://localhost:4323/node_modules/.vite/deps/audit-374DWVPG.js?v=b8e4e581       status=504
+  - http://localhost:4323/node_modules/.vite/deps/xray-E4E22F25.js?v=b8e4e581        status=504
+  - http://localhost:4323/node_modules/.vite/deps/toolbar-6QJK67KN.js?v=b8e4e581     status=504
+  - http://localhost:4323/node_modules/.vite/deps/ui-library-OUTPQ35D.js?v=b8e4e581  status=504
+
+Dev server log corroborates the race:
+  08:02:45 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, ...
+  08:02:45 [vite] ✨ optimized dependencies changed. reloading
+
+The optimizer re-bundled mid-load, invalidating the ?v=b8e4e581 hash for in-flight
+dev-toolbar chunk requests. Same race the bump was supposed to eliminate.
+
+## Route 2: /posts/flutter-google-maps-address-manipulation/
+After navigating to the post URL (the URL the user originally reported), the
+browser observed an additional 504:
+
+count504: 1
+504 URL:
+  - http://localhost:4323/@id/astro/runtime/client/dev-toolbar/entrypoint.js  status=504
+
+## Conclusion
+The Astro 6.1.10 → 6.2.1 bump alone did NOT eliminate the dev-toolbar 504 race.
+Per the QA spec, this is a REJECT condition: "Cold-start still produces 504s
+(the bump alone wasn't sufficient — dev should have applied the toolbar fallback)".
+
+The dev's justification §5.5 reports "0 (zero)" 504s after the bump and "Fallback
+NOT applied". The empirical reproduction here contradicts that report.

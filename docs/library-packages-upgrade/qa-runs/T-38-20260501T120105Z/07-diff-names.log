@@ -1,0 +1,4 @@
+M	docs/library-packages-upgrade/backlog.yaml
+A	docs/library-packages-upgrade/justifications/T-38.md
+M	package.json
+M	pnpm-lock.yaml
