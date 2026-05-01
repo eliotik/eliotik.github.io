@@ -1,0 +1,6 @@
+ docs/library-packages-upgrade/backlog.yaml         |  14 +-
+ .../justifications/T-37.md                         | 193 +++++++++++++++++++++
+ src/layouts/Layout.astro                           |   5 -
+ src/layouts/PostDetails.astro                      |  51 ++++--
+ src/styles/base.css                                |  16 ++
+ 5 files changed, 248 insertions(+), 31 deletions(-)

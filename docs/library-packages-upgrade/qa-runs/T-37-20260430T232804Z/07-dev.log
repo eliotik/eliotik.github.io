@@ -1,0 +1,54 @@
+
+> eliotik.github.io@0.0.1 dev /Users/ap/development/other/eliotik.github.io-T-37
+> astro dev
+
+[vite] connected.
+19:29:00 [types] Generated 0ms
+[vite] connected.
+19:29:00 [content] Syncing content
+19:29:00 [content] Synced content
+19:29:00 [vite] Re-optimizing dependencies because vite config has changed
+19:29:00 [vite] Port 4321 is in use, trying another one...
+ astro  v6.1.10 ready in 733 ms
+┃ Local    http://localhost:4322/
+┃ Network  use --host to expose
+19:29:00 watching for file changes...
+19:29:21 [200] / 80ms
+19:29:21 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-types.js, astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-swap-functions.js
+19:29:21 [vite] ✨ optimized dependencies changed. reloading
+19:29:54 [200] /posts/ems-connecting-the-systems/ 22ms
+19:30:43 [200] /threads/five-systems-of-engineering-management/ 26ms
+20:57:01 [200] /threads/five-systems-of-engineering-management/ 11ms
+20:57:08 [200] /posts/ems-why-systems-not-processes/ 10ms
+20:57:10 [200] / 10ms
+20:57:11 [200] /posts/ems-connecting-the-systems/ 13ms
+20:57:15 [200] /tags/ 45ms
+20:57:15 [200] /tags/ 19ms
+20:57:16 [200] /tags/engineering-management/ 27ms
+20:57:16 [200] /tags/engineering-management/ 4ms
+20:57:18 [200] /posts/ems-connecting-the-systems/ 8ms
+20:57:20 [200] /tags/engineering-management/ 10ms
+20:57:21 [200] / 11ms
+20:57:22 [200] /tips/motivation-is-a-trap/ 22ms
+20:57:22 [200] /tips/motivation-is-a-trap/ 2ms
+20:57:23 [200] / 9ms
+20:57:30 [200] / 8ms
+20:57:32 [200] / 7ms
+23:01:48 [200] /posts/ems-connecting-the-systems/ 5ms
+23:02:00 [200] /tags/engineering-management/ 4ms
+23:02:32 [200] /posts/ems-connecting-the-systems/ 5ms
+23:02:49 [200] /posts/ems-connecting-the-systems/ 5ms
+23:03:32 [200] / 4ms
+23:04:19 [200] /posts/ 41ms
+23:04:26 [200] /posts/ems-connecting-the-systems/ 6ms
+23:04:31 [200] /threads/ 26ms
+23:04:37 [200] /threads/five-systems-of-engineering-management/ 8ms
+23:04:44 [200] /posts/ems-the-technology-system/ 3ms
+23:05:06 [200] / 4ms
+23:05:17 [200] /posts/ 6ms
+23:05:18 [200] / 4ms
+23:05:18 [200] /threads/ 8ms
+23:05:18 [200] /tips/ 33ms
+23:05:19 [200] /tags/ 26ms
+23:05:47 [200] / 4ms
+ ELIFECYCLE  Command failed with exit code 143.
