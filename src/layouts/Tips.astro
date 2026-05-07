@@ -5,7 +5,6 @@ import Layout from '@layouts/Layout.astro';
 import Main from '@layouts/Main.astro';
 import Header from '@components/Header.astro';
 import Footer from '@components/Footer.astro';
-import Pagination from '@components/Pagination.astro';
 import { SITE } from '@config';
 import { slugifyStr } from '@utils/slugify';
 
@@ -13,33 +12,41 @@ export interface Props {
     currentPage: number;
     totalPages: number;
     paginatedEntities: CollectionEntry<'tips'>[];
+    totalEntities: number;
 }
 
-const { currentPage, totalPages, paginatedEntities } = Astro.props;
+const { currentPage, totalPages, paginatedEntities, totalEntities } =
+    Astro.props;
+
+// Reversed note numbering — the latest tip carries the HIGHEST NOTE number,
+// the oldest tip is NOTE 01. Stable across pages: with 7 tips total,
+// page 1 shows NOTES 07..03, page 2 shows NOTES 02..01.
+const startIndex = (currentPage - 1) * SITE.entitiesPerPage;
+const pad2 = (n: number) => String(n).padStart(2, '0');
 
 const tips = [];
-for (const entity of paginatedEntities) {
+for (const [i, entity] of paginatedEntities.entries()) {
     const { Content } = await render(entity);
-
     tips.push({
         title: entity.data.title,
         customSlug: entity.data.customSlug,
-        content: Content,
-        headerProps: {
-            style: {
-                viewTransitionName: slugifyStr(entity.data.title),
-                className:
-                    'text-lg font-medium decoration-dashed hover:underline',
-            },
-        },
+        Content,
+        noteNum: pad2(totalEntities - startIndex - i),
     });
 }
+
+const noteCount = paginatedEntities.length;
 
 // Set canonical URL to /tips/ for page 1, otherwise use the page number
 const canonicalURL =
     currentPage === 1
         ? new URL('/tips/', Astro.site).href
         : new URL(`/tips/${currentPage}/`, Astro.site).href;
+
+const prevDisabled = currentPage <= 1;
+const nextDisabled = currentPage >= totalPages;
+const prevHref = currentPage - 1 === 1 ? '/tips/' : `/tips/${currentPage - 1}/`;
+const nextHref = `/tips/${currentPage + 1}/`;
 ---
 
 <Layout
@@ -52,213 +59,330 @@ const canonicalURL =
         pageTitle="Tips & Thoughts"
         pageDesc="All the tips & thoughts I've posted."
     >
-        <ul>
+        <div class="tips-divider" aria-hidden="true"></div>
+
+        <div class="tips-status">
+            <span class="tips-status__count"
+                ><b>{noteCount}</b> notes <span class="tips-sep">·</span> page <b
+                    >{currentPage}</b
+                > of <b>{totalPages}</b></span
+            >
+            <button
+                id="toggle-tips"
+                class="tips-status__toggle focus-outline"
+                aria-label="Toggle tips visibility"
+                type="button"
+            >
+                <span class="tips-status__toggle-icon" aria-hidden="true"
+                    >▾</span
+                >
+                <span id="toggle-text">Expand all</span>
+            </button>
+        </div>
+
+        <ol class="tips-list">
             {
-                tips.map(({ title, customSlug, content: TipContent }) => (
-                    <li class="tip-item my-6">
-                        <div class="flex items-center justify-between gap-4">
-                            <a href={`/tips/${customSlug}`} class="flex-grow">
-                                <h1
+                tips.map(({ title, customSlug, noteNum, Content }) => (
+                    <li class="tips-item" data-tip-slug={customSlug}>
+                        <div class="tips-item__head">
+                            <span class="tips-item__num" aria-hidden="true">
+                                <span class="tips-item__caret">›</span> NOTE{' '}
+                                {noteNum}
+                            </span>
+                            <h2 class="tips-item__title">
+                                <a
+                                    href={`/tips/${customSlug}/`}
                                     transition:name={slugifyStr(title)}
-                                    class="tip-title"
                                 >
                                     {title}
-                                </h1>
-                            </a>
+                                </a>
+                            </h2>
                             <button
-                                class="tip-toggle-btn focus-outline flex-shrink-0 p-2 hover:opacity-75"
-                                aria-label="Toggle tip visibility"
+                                class="tips-item__toggle focus-outline"
+                                aria-label={`Toggle "${title}"`}
+                                aria-expanded="false"
+                                type="button"
                                 data-tip-slug={customSlug}
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="chevron-icon h-6 w-6"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
+                                <span
+                                    class="tips-item__toggle-icon"
+                                    aria-hidden="true"
                                 >
-                                    <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
-                                </svg>
+                                    ›
+                                </span>
+                                <span class="tips-item__toggle-text">read</span>
                             </button>
                         </div>
                         <article
-                            class="tip-content prose mx-auto mt-8 max-w-3xl"
-                            style="display: none;"
+                            class="tip-content prose mt-4"
                             data-tip-slug={customSlug}
+                            hidden
                         >
-                            <TipContent />
+                            <Content />
                         </article>
                     </li>
                 ))
             }
-        </ul>
-        <div
-            class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
-        >
+        </ol>
+
+        <div class="tips-foot">
             <button
                 id="back-to-top"
-                class="focus-outline py-1 whitespace-nowrap hover:opacity-75"
+                class="tips-foot__back focus-outline"
+                type="button"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
-                    <path
-                        d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-                    ></path>
-                </svg>
-                <span>Back to Top</span>
+                <span class="tips-foot__back-icon" aria-hidden="true">↑</span>
+                Back to Top
             </button>
+            {
+                totalPages > 1 && (
+                    <nav class="tips-foot__pager" aria-label="Pagination">
+                        {
+                            prevDisabled ? (
+                                <span class="tips-foot__nav is-disabled" aria-hidden="true">
+                                    <span aria-hidden="true">‹</span> Prev
+                                </span>
+                            ) : (
+                                <a
+                                    class="tips-foot__nav"
+                                    href={prevHref}
+                                    aria-label="Previous page"
+                                >
+                                    <span aria-hidden="true">‹</span> Prev
+                                </a>
+                            )
+                        }
+                        <span class="tips-foot__count">
+                            <b>{currentPage}</b> / {totalPages}
+                        </span>
+                        {
+                            nextDisabled ? (
+                                <span class="tips-foot__nav is-disabled" aria-hidden="true">
+                                    Next <span aria-hidden="true">›</span>
+                                </span>
+                            ) : (
+                                <a
+                                    class="tips-foot__nav"
+                                    href={nextHref}
+                                    aria-label="Next page"
+                                >
+                                    Next <span aria-hidden="true">›</span>
+                                </a>
+                            )
+                        }
+                    </nav>
+                )
+            }
         </div>
     </Main>
-
-    <Pagination
-        {currentPage}
-        {totalPages}
-        prevUrl={`/tips${currentPage - 1 !== 1 ? '/' + (currentPage - 1) : ''}`}
-        nextUrl={`/tips/${currentPage + 1}`}
-    />
 
     <Footer noMarginTop={totalPages > 1} />
 </Layout>
 
 <style>
     @reference "../styles/base.css";
-    main {
-        @apply mx-auto w-full max-w-3xl px-4 pb-12;
+
+    /* ── divider above the status row ───────────────────────────── */
+    .tips-divider {
+        @apply border-skin-base/25 mt-2 mb-4 border-t border-dashed;
     }
-    .tip-title {
-        @apply text-skin-accent text-2xl font-semibold;
+
+    /* ── status row: "5 notes · page 1 of 2" + toggle ───────────── */
+    .tips-status {
+        @apply mb-8 flex flex-wrap items-center justify-between gap-3;
     }
-    .chevron-icon {
-        transition: transform 0.3s ease;
+    .tips-status__count {
+        @apply text-skin-base/70 text-sm;
+        font-variant-numeric: tabular-nums;
     }
-    .chevron-icon.expanded {
-        transform: rotate(180deg);
+    .tips-status__count b {
+        @apply text-skin-base font-semibold;
+    }
+    .tips-sep {
+        @apply text-skin-base/40 mx-1;
+    }
+    .tips-status__toggle {
+        @apply text-skin-base/85 hover:text-skin-base border-skin-line hover:bg-skin-card/40 inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-colors;
+    }
+    .tips-status__toggle-icon {
+        @apply text-skin-base/60 inline-block transition-transform;
+        font-size: 0.75rem;
+        line-height: 1;
+    }
+    #toggle-tips.is-expanded .tips-status__toggle-icon {
+        /* swap the chevron for a minus when expanded */
+        transform: rotate(0deg);
+    }
+
+    /* ── list ───────────────────────────────────────────────────── */
+    .tips-list {
+        @apply m-0 list-none p-0;
+    }
+    .tips-item {
+        @apply py-6;
+    }
+    .tips-item + .tips-item {
+        @apply border-skin-base/15 border-t;
+    }
+    .tips-item__head {
+        @apply flex flex-col gap-2;
+    }
+
+    /* note label — "› NOTE 01"; muted so it sits behind the title */
+    .tips-item__num {
+        @apply text-skin-base/55 text-xs font-bold tracking-wider uppercase;
+        font-variant-numeric: tabular-nums;
+    }
+    .tips-item__caret {
+        @apply text-skin-base/40 mr-1;
+    }
+
+    /* title row — matches the Card/TipCard convention used on the
+       home page (Recent tip, Recent Posts) and on /posts, /tags:
+       text-lg / font-medium / accent, dashed underline on hover. */
+    .tips-item__title {
+        @apply m-0 text-lg font-medium;
+    }
+    .tips-item__title a {
+        @apply text-skin-accent decoration-dashed underline-offset-4 hover:underline focus-visible:no-underline;
+    }
+
+    /* per-tip read/hide toggle — muted by default, accent on hover */
+    .tips-item__toggle {
+        @apply text-skin-base/65 hover:text-skin-accent mt-1 inline-flex w-fit items-center gap-1 text-sm transition-colors;
+    }
+    .tips-item__toggle-icon {
+        @apply text-skin-base/40 inline-block transition-transform;
+        line-height: 1;
+    }
+    .tips-item__toggle:hover .tips-item__toggle-icon {
+        @apply text-skin-accent;
+    }
+    .tips-item.is-expanded .tips-item__toggle-icon {
+        transform: rotate(90deg);
+    }
+
+    /* expanded body */
+    .tip-content {
+        @apply border-skin-base/20 border-t border-dashed pt-4;
+    }
+    .tip-content[hidden] {
+        display: none;
+    }
+
+    /* ── footer row: Back to Top + Prev N/N Next ────────────────── */
+    .tips-foot {
+        @apply border-skin-base/15 mt-4 flex flex-col-reverse items-stretch gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between;
+    }
+    .tips-foot__back {
+        @apply text-skin-base/80 hover:text-skin-accent inline-flex items-center gap-2 self-start text-sm transition-colors;
+    }
+    .tips-foot__back-icon {
+        @apply text-skin-base/60;
+    }
+    .tips-foot__back:hover .tips-foot__back-icon {
+        @apply text-skin-accent;
+    }
+    .tips-foot__pager {
+        @apply text-skin-base/80 inline-flex items-center gap-4 self-end text-sm;
+        font-variant-numeric: tabular-nums;
+    }
+    .tips-foot__nav {
+        @apply hover:text-skin-accent inline-flex items-center gap-1 transition-colors;
+    }
+    .tips-foot__nav.is-disabled {
+        @apply pointer-events-none opacity-40;
+    }
+    .tips-foot__count {
+        @apply text-skin-base/70;
+    }
+    .tips-foot__count b {
+        @apply text-skin-base font-semibold;
     }
 </style>
 
 <script is:inline>
     (function () {
-        /** Scrolls the document to the top when
-         * the "Back to Top" button is clicked. */
-        function backToTop() {
-            document
-                .querySelector('#back-to-top')
-                ?.addEventListener('click', () => {
-                    document.body.scrollTop = 0; // For Safari
-                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-                });
+        const STORAGE_KEY = 'tipsExpanded';
+
+        function setItemExpanded(item, expanded) {
+            const slug = item.getAttribute('data-tip-slug');
+            const content = document.querySelector(
+                `.tip-content[data-tip-slug="${slug}"]`
+            );
+            const toggleBtn = item.querySelector('.tips-item__toggle');
+            const toggleText = item.querySelector('.tips-item__toggle-text');
+            if (content) content.hidden = !expanded;
+            if (toggleBtn)
+                toggleBtn.setAttribute('aria-expanded', String(expanded));
+            if (toggleText) toggleText.textContent = expanded ? 'hide' : 'read';
+            item.classList.toggle('is-expanded', expanded);
         }
-        backToTop();
-        document.addEventListener('astro:after-swap', backToTop);
 
-        /** Toggle tips visibility */
-        function setupToggleTips() {
-            const toggleButton = document.querySelector('#toggle-tips');
-            const toggleText = document.querySelector('#toggle-text');
-            const tipContents = document.querySelectorAll('.tip-content');
-            const individualToggleBtns =
-                document.querySelectorAll('.tip-toggle-btn');
+        function setAllExpanded(expanded) {
+            document
+                .querySelectorAll('.tips-item')
+                .forEach(item => setItemExpanded(item, expanded));
+            const allBtn = document.getElementById('toggle-tips');
+            const allText = document.getElementById('toggle-text');
+            const allIcon = allBtn?.querySelector('.tips-status__toggle-icon');
+            if (allBtn) allBtn.classList.toggle('is-expanded', expanded);
+            if (allText)
+                allText.textContent = expanded ? 'Collapse all' : 'Expand all';
+            if (allIcon) allIcon.textContent = expanded ? '–' : '▾';
+            try {
+                localStorage.setItem(STORAGE_KEY, String(expanded));
+            } catch {
+                /* no-op */
+            }
+        }
 
-            if (!toggleButton || !toggleText) return;
+        function setupTips() {
+            // Apply persisted state on initial render
+            let initial = false;
+            try {
+                initial = localStorage.getItem(STORAGE_KEY) === 'true';
+            } catch {
+                /* no-op */
+            }
+            setAllExpanded(initial);
 
-            // Remove any existing listeners by cloning the button
-            const newToggleButton = toggleButton.cloneNode(true);
-            toggleButton.parentNode.replaceChild(newToggleButton, toggleButton);
-
-            // Get saved state from localStorage, default to collapsed (false)
-            const isExpanded = localStorage.getItem('tipsExpanded') === 'true';
-
-            // Apply initial state
-            tipContents.forEach(content => {
-                content.style.display = isExpanded ? 'block' : 'none';
-            });
-
-            // Update individual toggle icons based on initial state
-            individualToggleBtns.forEach(btn => {
-                const icon = btn.querySelector('.chevron-icon');
-                if (icon) {
-                    if (isExpanded) {
-                        icon.classList.add('expanded');
-                    } else {
-                        icon.classList.remove('expanded');
-                    }
-                }
-            });
-
-            const newToggleText = newToggleButton.querySelector('#toggle-text');
-            if (newToggleText) {
-                newToggleText.textContent = isExpanded
-                    ? 'Collapse All'
-                    : 'Expand All';
+            // Expand all / Collapse all
+            const allBtn = document.getElementById('toggle-tips');
+            if (allBtn && !allBtn.dataset.bound) {
+                allBtn.dataset.bound = '1';
+                allBtn.addEventListener('click', () => {
+                    const isExpanded = allBtn.classList.contains('is-expanded');
+                    setAllExpanded(!isExpanded);
+                });
             }
 
-            // Toggle all handler
-            newToggleButton.addEventListener('click', () => {
-                const currentlyExpanded =
-                    localStorage.getItem('tipsExpanded') === 'true';
-                const newState = !currentlyExpanded;
-
-                const allTipContents =
-                    document.querySelectorAll('.tip-content');
-                allTipContents.forEach(content => {
-                    content.style.display = newState ? 'block' : 'none';
-                });
-
-                const allToggleBtns =
-                    document.querySelectorAll('.tip-toggle-btn');
-                allToggleBtns.forEach(btn => {
-                    const icon = btn.querySelector('.chevron-icon');
-                    if (icon) {
-                        if (newState) {
-                            icon.classList.add('expanded');
-                        } else {
-                            icon.classList.remove('expanded');
-                        }
-                    }
-                });
-
-                const textElement = document.querySelector('#toggle-text');
-                if (textElement) {
-                    textElement.textContent = newState
-                        ? 'Collapse All'
-                        : 'Expand All';
-                }
-                localStorage.setItem('tipsExpanded', String(newState));
-            });
-
-            // Individual tip toggle handlers - clone buttons to remove old listeners
-            const freshToggleBtns =
-                document.querySelectorAll('.tip-toggle-btn');
-            freshToggleBtns.forEach(btn => {
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
-
-                newBtn.addEventListener('click', e => {
+            // Per-item toggle
+            document.querySelectorAll('.tips-item__toggle').forEach(btn => {
+                if (btn.dataset.bound) return;
+                btn.dataset.bound = '1';
+                btn.addEventListener('click', e => {
                     e.preventDefault();
                     e.stopPropagation();
-                    const slug = newBtn.getAttribute('data-tip-slug');
-                    const content = document.querySelector(
-                        `.tip-content[data-tip-slug="${slug}"]`
-                    );
-                    const icon = newBtn.querySelector('.chevron-icon');
-
-                    if (content && icon) {
-                        const isCurrentlyVisible =
-                            content.style.display === 'block';
-                        content.style.display = isCurrentlyVisible
-                            ? 'none'
-                            : 'block';
-
-                        if (isCurrentlyVisible) {
-                            icon.classList.remove('expanded');
-                        } else {
-                            icon.classList.add('expanded');
-                        }
-                    }
+                    const item = btn.closest('.tips-item');
+                    if (!item) return;
+                    const expanded = item.classList.contains('is-expanded');
+                    setItemExpanded(item, !expanded);
                 });
             });
+
+            // Back to top
+            const backBtn = document.getElementById('back-to-top');
+            if (backBtn && !backBtn.dataset.bound) {
+                backBtn.dataset.bound = '1';
+                backBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
         }
 
-        setupToggleTips();
-        document.addEventListener('astro:after-swap', setupToggleTips);
-        document.addEventListener('astro:page-load', setupToggleTips);
+        setupTips();
+        document.addEventListener('astro:after-swap', setupTips);
+        document.addEventListener('astro:page-load', setupTips);
     })();
 </script>

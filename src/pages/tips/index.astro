@@ -15,4 +15,4 @@ const pagination = getPagination<CollectionEntry<'tips'>>({
 });
 ---
 
-<Tips {...pagination} />
+<Tips {...pagination} totalEntities={sortedTips.length} />
