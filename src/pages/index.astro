@@ -7,6 +7,7 @@ import LinkButton from '@components/LinkButton.astro';
 import Hr from '@components/Hr.astro';
 import Card from '@components/Card';
 import TipCard from '@components/TipCard';
+import TopTags from '@components/TopTags.astro';
 import getSortedCollection from '@utils/getSortedCollection';
 import getThreadPositions from '@utils/getThreadPositions';
 
@@ -92,9 +93,12 @@ const threadPositions = getThreadPositions(posts);
                             </LinkButton>
                         </div>
                     </section>
+                    <Hr />
                 </>
             )
         }
+
+        <TopTags posts={posts} />
     </main>
 
     <Footer />

@@ -1,0 +1,120 @@
+---
+import { type CollectionEntry } from 'astro:content';
+import getUniqueTags from '@utils/getUniqueTags';
+
+export interface Props {
+    posts: CollectionEntry<'blog'>[];
+    limit?: number;
+}
+
+const { posts, limit = 7 } = Astro.props;
+
+const allTags = getUniqueTags(posts);
+const topTags = [...allTags]
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
+    .slice(0, limit);
+const totalTags = allTags.length;
+---
+
+{
+    topTags.length > 0 && (
+        <section id="top-tags">
+            <header class="top-tags__head">
+                <div class="top-tags__head-left">
+                    <h2>Top tags</h2>
+                    <span class="top-tags__sub">
+                        <span class="top-tags__prompt">$</span> tags --top --by
+                        count
+                    </span>
+                </div>
+                <a class="top-tags__more" href="/tags/">
+                    All {totalTags} tags
+                    <span class="top-tags__more-arrow">→</span>
+                </a>
+            </header>
+            <div class="top-tags__list">
+                {topTags.map(t => (
+                    <div class="top-tags__row">
+                        <a class="top-tags__name" href={`/tags/${t.tag}/`}>
+                            <span class="top-tags__hash">#</span>
+                            {t.tag}
+                        </a>
+                        <span class="top-tags__dots" aria-hidden="true" />
+                        <span class="top-tags__count">{t.count}</span>
+                        <span class="top-tags__unit">posts</span>
+                    </div>
+                ))}
+            </div>
+        </section>
+    )
+}
+
+<style>
+    @reference "../styles/base.css";
+
+    #top-tags {
+        @apply pt-12 pb-6;
+    }
+
+    .top-tags__head {
+        @apply mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2;
+    }
+    .top-tags__head-left {
+        @apply flex flex-wrap items-baseline gap-x-3 gap-y-1;
+    }
+    #top-tags h2 {
+        @apply text-2xl font-semibold tracking-wide;
+    }
+    .top-tags__sub {
+        @apply text-skin-base/55 text-xs italic;
+    }
+    .top-tags__prompt {
+        @apply text-skin-base/40 mr-0.5;
+    }
+    .top-tags__more {
+        @apply text-skin-base/60 hover:text-skin-accent text-xs whitespace-nowrap transition-colors;
+    }
+    .top-tags__more-arrow {
+        @apply text-skin-base/40 ml-1 transition-colors;
+    }
+    .top-tags__more:hover .top-tags__more-arrow {
+        @apply text-skin-accent;
+    }
+
+    .top-tags__list {
+        @apply text-sm leading-[1.9];
+    }
+    .top-tags__row {
+        @apply flex min-w-0 items-baseline whitespace-nowrap;
+    }
+    .top-tags__name {
+        @apply text-skin-accent overflow-hidden font-semibold text-ellipsis transition-opacity;
+    }
+    .top-tags__name:hover {
+        @apply underline opacity-80;
+        text-underline-offset: 3px;
+    }
+    .top-tags__hash {
+        @apply text-skin-base/35 mr-px;
+    }
+    .top-tags__dots {
+        @apply mx-2 flex-1 self-center opacity-40;
+        height: 1px;
+        background-image: linear-gradient(
+            to right,
+            var(--color-skin-base) 0,
+            var(--color-skin-base) 2px,
+            transparent 2px,
+            transparent 5px
+        );
+        background-size: 5px 1px;
+        background-repeat: repeat-x;
+    }
+    .top-tags__count {
+        @apply text-skin-base font-semibold;
+        font-variant-numeric: tabular-nums;
+    }
+    .top-tags__unit {
+        @apply text-skin-base/45 ml-1 text-xs;
+    }
+</style>
