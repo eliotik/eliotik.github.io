@@ -55,8 +55,8 @@ const layoutProps = {
 
     <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
         <button
+            id="go-back"
             class="focus-outline mt-8 mb-2 flex hover:opacity-75"
-            onclick="history.back()"
         >
             <svg xmlns="http://www.w3.org/2000/svg"
                 ><path
@@ -216,6 +216,12 @@ const layoutProps = {
                 // Skip if heading already has a link (prevents duplicates)
                 if (heading.querySelector('.heading-link')) continue;
 
+                // Headings authored in this layout (e.g. the related-posts
+                // heading) have no id, so '#' + heading.id would produce a
+                // bare href="#" — a permalink to nowhere that still pushes a
+                // history entry and swallows a "Go back" press.
+                if (!heading.id) continue;
+
                 heading.classList.add('group');
                 const link = document.createElement('a');
                 link.innerText = '#';
@@ -225,6 +231,89 @@ const layoutProps = {
                 link.ariaHidden = 'true';
                 heading.appendChild(link);
             }
+        }
+
+        /** In-article anchor clicks (the remark-toc table of contents and the
+         *  heading permalinks above) are same-document navigations, but the
+         *  browser — and Astro's ClientRouter — still push a history entry for
+         *  each one. "Go back" then pops that entry and the reader stays on the
+         *  same article, which reads as a dead button: three TOC clicks means
+         *  three presses before you leave the post.
+         *
+         *  Scroll to the target ourselves and update the URL with
+         *  replaceState, so deep links still work but the back stack stays
+         *  clean. Astro's ClientRouter listens for clicks on `document` in the
+         *  bubble phase and bails when defaultPrevented is set, so handling
+         *  this on #article (a descendant) runs first and takes precedence. */
+        function anchorClickHandler(event) {
+            if (event.defaultPrevented) return;
+            // Let the browser handle open-in-new-tab/window and non-left
+            // clicks. Same idiom as ClientRouter's own leavesWindow(): a
+            // keyboard activation has no button, so test for truthiness first
+            // rather than `!== 0`, which would drop Enter-on-link.
+            if (
+                (event.button && event.button !== 0) ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.altKey ||
+                event.shiftKey
+            )
+                return;
+
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const link = target.closest('a[href^="#"]');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            const id = decodeURIComponent(href.slice(1));
+            if (!id) return;
+            const destination = document.getElementById(id);
+            if (!destination) return;
+
+            event.preventDefault();
+            destination.scrollIntoView();
+            // Preserve the ClientRouter's {index, scrollX, scrollY} bookkeeping
+            history.replaceState(history.state, '', href);
+            // Native fragment navigation moves focus; keep that for a11y.
+            destination.setAttribute('tabindex', '-1');
+            destination.focus({ preventScroll: true });
+        }
+
+        function attachAnchorHandler() {
+            document
+                .getElementById('article')
+                ?.addEventListener('click', anchorClickHandler);
+        }
+
+        /** Astro's ClientRouter stamps every history entry it manages with an
+         *  incrementing history.state.index. An index of 0 means this page is
+         *  the first entry in the tab — arrived at from a search result, a
+         *  shared link, a bookmark or a new tab — so history.back() would
+         *  either do nothing at all or dump the reader off the site entirely.
+         *  Fall back to the post listing in that case. */
+        function goBackHandler() {
+            const index =
+                history.state && typeof history.state.index === 'number'
+                    ? history.state.index
+                    : 0;
+            if (index > 0) {
+                history.back();
+            } else {
+                window.location.href = '/posts/';
+            }
+        }
+
+        function attachGoBack() {
+            document
+                .querySelector('#go-back')
+                ?.addEventListener('click', goBackHandler);
+        }
+
+        function detachGoBack() {
+            document
+                .querySelector('#go-back')
+                ?.removeEventListener('click', goBackHandler);
         }
 
         /** Scrolls the document to the top when
@@ -251,7 +340,9 @@ const layoutProps = {
             createProgressBar();
             attachScrollListener();
             addHeadingLinks();
+            attachAnchorHandler();
             attachBackToTop();
+            attachGoBack();
 
             // Clean up listeners before the next View Transition swap so they
             // don't stack up across navigations. { once: true } ensures this
@@ -261,6 +352,7 @@ const layoutProps = {
                 function cleanup() {
                     detachScrollListener();
                     detachBackToTop();
+                    detachGoBack();
                 },
                 { once: true }
             );
