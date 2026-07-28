@@ -36,8 +36,8 @@ const layoutProps = {
 
     <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
         <button
+            id="go-back"
             class="focus-outline mt-8 mb-2 flex hover:opacity-75"
-            onclick="history.back()"
         >
             <svg xmlns="http://www.w3.org/2000/svg"
                 ><path
@@ -95,7 +95,36 @@ const layoutProps = {
                     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
                 });
         }
-        backToTop();
-        document.addEventListener('astro:after-swap', backToTop);
+        /** Astro's ClientRouter stamps every history entry it manages with an
+         *  incrementing history.state.index. An index of 0 means this page is
+         *  the first entry in the tab — arrived at from a search result, a
+         *  shared link, a bookmark or a new tab — so history.back() would
+         *  either do nothing at all or dump the reader off the site entirely.
+         *  Fall back to the tips listing in that case. */
+        function goBackHandler() {
+            const index =
+                history.state && typeof history.state.index === 'number'
+                    ? history.state.index
+                    : 0;
+            if (index > 0) {
+                history.back();
+            } else {
+                window.location.href = '/tips/';
+            }
+        }
+
+        function attachGoBack() {
+            document
+                .querySelector('#go-back')
+                ?.addEventListener('click', goBackHandler);
+        }
+
+        function init() {
+            backToTop();
+            attachGoBack();
+        }
+
+        init();
+        document.addEventListener('astro:after-swap', init);
     })();
 </script>
