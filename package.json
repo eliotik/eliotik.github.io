@@ -31,7 +31,7 @@
         "@expressive-code/plugin-collapsible-sections": "0.44.1",
         "@expressive-code/plugin-line-numbers": "0.44.1",
         "@resvg/resvg-js": "2.6.2",
-        "astro": "6.2.1",
+        "astro": "7.1.6",
         "astro-expressive-code": "0.44.1",
         "fuse.js": "7.5.0",
         "github-slugger": "2.0.0",
