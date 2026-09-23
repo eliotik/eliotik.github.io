@@ -137,39 +137,41 @@ const nextHref = `/tips/${currentPage + 1}/`;
             {
                 totalPages > 1 && (
                     <nav class="tips-foot__pager" aria-label="Pagination">
-                        {
-                            prevDisabled ? (
-                                <span class="tips-foot__nav is-disabled" aria-hidden="true">
-                                    <span aria-hidden="true">‹</span> Prev
-                                </span>
-                            ) : (
-                                <a
-                                    class="tips-foot__nav"
-                                    href={prevHref}
-                                    aria-label="Previous page"
-                                >
-                                    <span aria-hidden="true">‹</span> Prev
-                                </a>
-                            )
-                        }
+                        {prevDisabled ? (
+                            <span
+                                class="tips-foot__nav is-disabled"
+                                aria-hidden="true"
+                            >
+                                <span aria-hidden="true">‹</span> Prev
+                            </span>
+                        ) : (
+                            <a
+                                class="tips-foot__nav"
+                                href={prevHref}
+                                aria-label="Previous page"
+                            >
+                                <span aria-hidden="true">‹</span> Prev
+                            </a>
+                        )}
                         <span class="tips-foot__count">
                             <b>{currentPage}</b> / {totalPages}
                         </span>
-                        {
-                            nextDisabled ? (
-                                <span class="tips-foot__nav is-disabled" aria-hidden="true">
-                                    Next <span aria-hidden="true">›</span>
-                                </span>
-                            ) : (
-                                <a
-                                    class="tips-foot__nav"
-                                    href={nextHref}
-                                    aria-label="Next page"
-                                >
-                                    Next <span aria-hidden="true">›</span>
-                                </a>
-                            )
-                        }
+                        {nextDisabled ? (
+                            <span
+                                class="tips-foot__nav is-disabled"
+                                aria-hidden="true"
+                            >
+                                Next <span aria-hidden="true">›</span>
+                            </span>
+                        ) : (
+                            <a
+                                class="tips-foot__nav"
+                                href={nextHref}
+                                aria-label="Next page"
+                            >
+                                Next <span aria-hidden="true">›</span>
+                            </a>
+                        )}
                     </nav>
                 )
             }
