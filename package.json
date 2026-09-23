@@ -18,7 +18,7 @@
         "fresh": "./clean-cache.sh && pnpm dev"
     },
     "engines": {
-        "node": "22.22.2"
+        "node": "22.23.3"
     },
     "dependencies": {
         "@astrojs/check": "0.9.10",
