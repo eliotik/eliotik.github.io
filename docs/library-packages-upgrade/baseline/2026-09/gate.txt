@@ -1,0 +1,91 @@
+=== pnpm install (peer warnings)
+# Node v22.22.2, pnpm 10.33.2. `pnpm install --frozen-lockfile` (clean: node_modules/.astro/dist removed) exit=0.
+# It printed NO peer-dependency block: 'Lockfile is up to date, resolution step is skipped', so pnpm does not re-check peers.
+# The block below comes from `pnpm install --resolution-only` run on a scratch copy of package.json + pnpm-lock.yaml + .npmrc
+# (lockfile unchanged afterwards). It is the full peer warning block for the current lockfile:
+ WARN  Issues with peer dependencies found
+.
+├─┬ astro 6.2.1
+│ └─┬ tsconfck 3.1.6
+│   └── ✕ unmet peer typescript@^5.0.0: found 6.0.3
+├─┬ @divriots/jampack 0.34.1
+│ └─┬ quicklink 2.3.0
+│   ├── ✕ unmet peer react@^16.8.0: found 19.2.8
+│   └── ✕ unmet peer react-dom@^16.8.0: found 19.2.8
+├─┬ astro-eslint-parser 3.0.0
+│ └─┬ @astrojs/compiler-rs 0.3.1
+│   └─┬ @astrojs/compiler-binding 0.3.1
+│     └─┬ @astrojs/compiler-binding-wasm32-wasi 0.3.1
+│       └─┬ @napi-rs/wasm-runtime 1.2.0
+│         └── ✕ unmet peer @emnapi/runtime@^2.0.0-alpha.3: found 1.11.3
+└─┬ eslint-plugin-jsx-a11y 6.10.2
+  └── ✕ unmet peer eslint@"^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9": found 10.8.0
+# Other warnings from the same --resolution-only run: deprecated @types/github-slugger@2.0.0 (stub types); 3 deprecated subdependencies: @ungap/structured-clone@1.2.0, tsconfck@3.1.6, whatwg-encoding@2.0.0
+=== pnpm astro check
+exit=0
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io
+> astro check
+
+17:33:49 [content] Syncing content
+17:33:50 [content] Synced content
+17:33:50 [types] Generated 749ms
+17:33:50 [check] Getting diagnostics for Astro files in /Users/ap/development/other/eliotik.github.io...
+Result (77 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+=== pnpm lint
+exit=1
+  278:1   error  'log' is not defined       no-undef
+  284:1   error  'phase' is not defined     no-undef
+  287:5   error  'agent' is not defined     no-undef
+  289:32  error  'parallel' is not defined  no-undef
+  291:9   error  'agent' is not defined     no-undef
+  301:1   error  'log' is not defined       no-undef
+  306:3   error  'phase' is not defined     no-undef
+  308:21  error  'agent' is not defined     no-undef
+  321:25  error  'parallel' is not defined  no-undef
+  324:15  error  'agent' is not defined     no-undef
+  341:3   error  'log' is not defined       no-undef
+
+✖ 14 problems (14 errors, 0 warnings)
+
+ ELIFECYCLE  Command failed with exit code 1.
+=== pnpm format:check
+exit=1
+
+> eliotik.github.io@0.0.1 format:check /Users/ap/development/other/eliotik.github.io
+> prettier --plugin-search-dir=. --check .
+
+[warn] Ignored unknown option --plugin-search-dir=..
+Checking formatting...
+[warn] src/components/ImageSliderClient.tsx
+[warn] src/layouts/Tips.astro
+[warn] Code style issues found in 2 files. Run Prettier with --write to fix.
+ ELIFECYCLE  Command failed with exit code 1.
+=== pnpm build
+exit=0
+║ .html  │  127 / 129 │   5.06 MB │    4.73 MB │ -331.90 KB ║
+║ .css   │      1 / 4 │ 141.53 KB │  141.29 KB │  -237.00 B ║
+║ .svg   │      1 / 1 │  873.00 B │   787.00 B │   -86.00 B ║
+║ .png   │    47 / 67 │  15.89 MB │   13.98 MB │   -1.91 MB ║
+║ .jpg   │      1 / 7 │   3.19 MB │    3.17 MB │  -23.69 KB ║
+║ .js    │     9 / 13 │ 347.23 KB │  345.35 KB │   -1.88 KB ║
+║ .txt   │      0 / 1 │  167.00 B │   167.00 B │            ║
+║ .xml   │      0 / 7 │  33.31 KB │   33.31 KB │            ║
+║ .gif   │      0 / 6 │   7.05 MB │    7.05 MB │            ║
+╟────────┼────────────┼───────────┼────────────┼────────────╢
+║ Total  │  245 / 307 │  48.79 MB │   46.00 MB │   -2.79 MB ║
+╚════════╧════════════╧═══════════╧════════════╧════════════╝
+
+
+ ✔ No issues 
+=== notes (Task 0)
+# pnpm lint exit=1 is caused ONLY by .superpowers/sdd/2026-09-23-upgrade-plan/sdd-task.workflow.js (local, git-ignored orchestration script;
+#   14 no-undef errors: args/phase/agent/parallel/log). ESLint flat config does not read .gitignore, so it is linted.
+#   `pnpm exec eslint . --ignore-pattern '.superpowers/**'` exits 0 with no output: tracked sources lint clean on main despite the
+#   eslint-plugin-jsx-a11y vs eslint@10 peer mismatch.
+# pnpm format:check exit=1: src/components/ImageSliderClient.tsx and src/layouts/Tips.astro are not Prettier-formatted (tracked files).
+# OG images in og/ were copied from dist/ AFTER jampack (pnpm build optimises PNGs in place).
