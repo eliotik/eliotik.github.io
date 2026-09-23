@@ -1,14 +1,13 @@
 // @ts-check
-// ESLint flat config — activated in T-23 (ESLint 8 → 9).
-// Drafted in T-12 (hand-expansion of legacy rules under ESLint 8).
-// Rewritten in T-23 to use flat-config-native presets from upgraded plugins:
-//   eslint                                  9.39.4
-//   @eslint/js                              9.39.4
-//   @typescript-eslint/eslint-plugin        8.59.1  (flat/recommended)
-//   @typescript-eslint/parser               8.59.1
-//   eslint-plugin-astro                     1.7.0   (flat/recommended, flat/jsx-a11y-recommended)
-//   eslint-plugin-jsx-a11y                  6.10.2
-//   astro-eslint-parser                     1.4.0
+// ESLint flat config — activated in T-23 (ESLint 8 → 9), migrated in T-39 (ESLint 9 → 10).
+// Plugins:
+//   eslint                                  10.x
+//   @eslint/js                              10.x
+//   @typescript-eslint/eslint-plugin        8.x     (flat/recommended)
+//   @typescript-eslint/parser               8.x
+//   eslint-plugin-astro                     3.x     (recommended, jsx-a11y-recommended)
+//   eslint-plugin-jsx-a11y-x                0.x     (used internally by astro a11y rules)
+//   astro-eslint-parser                     3.x     (@astrojs/compiler-rs)
 
 import js from '@eslint/js';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
@@ -66,15 +65,14 @@ export default [
   .../** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */ (tsPlugin.configs['flat/recommended']),
 
   // -------------------------------------------------------------------------
-  // Block 3 — Astro flat/recommended + flat/jsx-a11y-recommended
+  // Block 3 — Astro recommended + jsx-a11y-recommended
   //
-  // eslint-plugin-astro v1 ships flat-config-native presets that include:
-  //   - plugin registration
-  //   - astro-eslint-parser + tsParser wiring (languageOptions)
-  //   - processor registration (for inline <script> blocks)
-  //   - astro/* rules
-  // Spreading both arrays handles everything that Block 3b manually did in T-12.
+  // eslint-plugin-astro v2+ is ESM-only and exposes unprefixed preset names.
+  // v3 dropped astro/no-omitted-end-tags and astro/valid-compile from
+  // recommended — the Rust compiler and `astro check` now cover both.
+  // jsx-a11y rules resolve eslint-plugin-jsx-a11y-x (eslint-plugin-jsx-a11y
+  // stops at ESLint 9).
   // -------------------------------------------------------------------------
-  ...astroPlugin.configs['flat/recommended'],
-  ...astroPlugin.configs['flat/jsx-a11y-recommended'],
+  ...astroPlugin.configs.recommended,
+  ...astroPlugin.configs['jsx-a11y-recommended'],
 ];
