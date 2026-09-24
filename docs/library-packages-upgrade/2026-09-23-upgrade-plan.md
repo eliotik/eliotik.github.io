@@ -521,7 +521,20 @@ Expected: every command exits 0; `200`.
 
 - [ ] **Step 2: Open the browser**
 
-Load the Chrome tools in one ToolSearch call (`tabs_context_mcp`, `tabs_create_mcp`, `navigate`, `computer`, `read_page`, `find`, `javascript_tool`, `read_console_messages`, `resize_window`, `gif_creator`). Create a new tab and resize the window to 1280×1800 to match the baseline.
+Load the Chrome tools in one ToolSearch call (`tabs_context_mcp`, `tabs_create_mcp`, `navigate`, `computer`, `read_page`, `find`, `javascript_tool`, `read_console_messages`, `resize_window`, `gif_creator`). Create a new tab and resize the window to 1280×1800 to match the baseline. Check `document.visibilityState` with `javascript_tool`: it must be `"visible"`. If it is `"hidden"`, switch to a visible Chrome window or headless Playwright before continuing — Task 4 found that real typing and real scroll-snap fail against a hidden window, and its native-setter/`scrollBy` fallback does not exercise the real input path. Any check in Steps 3–6 that would need that fallback here must be recorded **FAIL**, not silently substituted.
+
+- [ ] **Step 2a: Check the Partytown service worker (carried from Task 2)**
+
+`@astrojs/partytown` 2.1.8 pulled `@qwik.dev/partytown` 0.13.2 → 0.14.4 in Task 2. Task 4 saw `TypeError: Failed to register a ServiceWorker for scope '.../~partytown/'` on every page and called it pre-existing by comparing against `a9349f4`, but `a9349f4` already carries `@qwik.dev/partytown` 0.14.4 (bumped 3 commits earlier, in Task 2) — that comparison proves nothing about main.
+
+1. `curl` `/~partytown/partytown.js`, `/~partytown/partytown-sw.js` and `/~partytown/partytown-sandbox-sw.html` on the branch preview: all `200`.
+2. In headless Playwright Chromium (a clean profile, no extensions — the browser used for the rest of Step 8 runs an extension-loaded profile and is not a valid baseline here), load `/posts/octoprint-prusa-core-one-raspberry-pi/` on the branch build (4321). Check the console, `navigator.serviceWorker.getRegistrations()`, and whether the gtag request goes out through Partytown.
+3. **PASS** if there is no service-worker registration error on the branch in that clean profile: record Step 2a as PASS and skip to item 6 — main's state doesn't matter in this case.
+4. **Otherwise** (the error appears on the branch in the clean profile): in a scratch worktree, build main (`3df6160`) on Node 22.22.2, preview it on port 4322, and load the same post in the *same* clean Playwright profile.
+   - If the error is absent on main under that profile: it's a **regression** — Step 2a **FAIL**. Open `docs/library-packages-upgrade/defects/T-39-D1.md`, fix it on the branch (pin `@astrojs/partytown` back to `2.1.7`, or override `@qwik.dev/partytown` to `0.13.2`, with a written reason), then redo Task 8 from Step 1.
+   - If the error is present on main too, under the same profile: it's **pre-existing** — Step 2a **PASS**. Record the evidence. The §1.6/§5.2 "no console errors" criterion for Steps 3.8, 4.5 and 5.4 then excludes only this one documented, profile-independent error — not console errors generally.
+5. Stop main's preview process on port 4322 from inside the worktree (not a global `pnpm astro preview stop`, which would also stop the branch's own 4321 daemon), then remove the worktree. Confirm `curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/` still returns `200` before continuing to Step 3.
+6. Record the Step 2a result (PASS/FAIL) and its evidence for the report (Step 10).
 
 - [ ] **Step 3: Check the image slider on both posts**
 
@@ -565,7 +578,15 @@ for u in /rss.xml /sitemap-index.xml /og.png /posts/audio-vs-paper-books/index.p
 curl -s http://localhost:4321/rss.xml | xmllint --noout - && echo rss-ok
 curl -s http://localhost:4321/sitemap-index.xml | xmllint --noout - && echo sitemap-ok
 ```
-Expected: 200s with XML/PNG content types, `rss-ok`, `sitemap-ok`. In the browser, open `/posts/audio-vs-paper-books/` and confirm "Table of contents" is a collapsible `<details>` that expands on click.
+Expected: 200s with XML/PNG content types, `rss-ok`, `sitemap-ok`.
+
+TOC (spec §5.2 requires the collapse checked in at least one `.md` post and one `.mdx` post): for `audio-vs-paper-books` (.md), `ems-the-delivery-system` (.md) and `dad-ops-playbook` (.mdx), run `grep -o '<details' dist/posts/<slug>/index.html | wc -l` and compare with `docs/library-packages-upgrade/baseline/2026-09/toc-counts.txt` (expect 1/1/1). In the browser, open `/posts/audio-vs-paper-books/` (.md) and `/posts/dad-ops-playbook/` (.mdx) and confirm "Table of contents" is a collapsible `<details>` that expands on click in both.
+
+OG (spec §5.2 requires `/og.png` and one post OG image "compared with the baseline", which an HTTP status/content-type check cannot do):
+```bash
+shasum -a 256 dist/og.png dist/posts/audio-vs-paper-books/index.png
+```
+`audio-vs-paper-books/index.png` must match `docs/library-packages-upgrade/baseline/2026-09/og/sha256.txt`. `og.png` is expected to differ from the pre-satori baseline hash: Task 6 found `ae6c9aa406da0d27944d155e4e9ec5fe8a92116b2f78d9897fe14697749e8902`, a 0.184% pixel delta from satori 0.33.5 that was already visually accepted in Task 6. Confirm the hash still matches Task 6's value; if it doesn't, Read both PNGs and visually compare against `baseline/2026-09/og/og.png`, accepting only that same localized ~0.18% delta.
 
 - [ ] **Step 9: Decide whether the devToolbar workaround stays**
 
@@ -573,7 +594,7 @@ Temporarily set `devToolbar: { enabled: true }`, run `./clean-cache.sh`, and sta
 
 - [ ] **Step 10: Write the report and commit**
 
-Create `docs/library-packages-upgrade/verification-report-2026-09.md` using the April report's structure: the stack snapshot (`node -v`, `pnpm -v`, and versions from `pnpm list --depth 0`), the gate output tail, a table of island checks with pass/fail and evidence, a screenshot comparison table, RSS/sitemap/OG/TOC results, the devToolbar decision, and any defects. Stop the preview (`pkill -f "astro preview"`), then:
+Create `docs/library-packages-upgrade/verification-report-2026-09.md` using the April report's structure: the stack snapshot (`node -v`, `pnpm -v`, and versions from `pnpm list --depth 0`), the gate output tail, the Step 2 visibility-state result, the Step 2a Partytown characterisation with its main-vs-branch evidence, a table of island checks with pass/fail and evidence, a screenshot comparison table, RSS/sitemap/OG-comparison/TOC(.md + .mdx) results, the devToolbar decision, and any defects. Stop the preview (`pkill -f "astro preview"`), then:
 ```bash
 git add docs/library-packages-upgrade/verification-report-2026-09.md docs/library-packages-upgrade/qa-runs/T-39-2026-09
 git commit -m "docs(T-39): final local verification report
@@ -581,7 +602,7 @@ git commit -m "docs(T-39): final local verification report
 Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 ```
 
-**If any check in Steps 3–8 fails:** fix it on the branch (as a new commit), then redo Task 8 from Step 1. Don't go on to Task 9 with any open failure.
+**If any check in Steps 2a–8 fails:** fix it on the branch (as a new commit), then redo Task 8 from Step 1. Don't go on to Task 9 with any open failure.
 
 ---
 
