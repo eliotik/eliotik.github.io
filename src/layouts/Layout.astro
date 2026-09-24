@@ -18,12 +18,23 @@ export interface Props {
     notFound?: boolean;
 }
 
+// GitHub Pages serves every page as <path>/index.html and 301-redirects
+// <path> to <path>/. Default canonicals (no explicit canonicalURL prop) must
+// match the served URL, so append a trailing slash unless the last segment
+// looks like a file (has an extension).
+const { pathname } = Astro.url;
+const lastSegment = pathname.slice(pathname.lastIndexOf('/') + 1);
+const defaultPathname =
+    pathname.endsWith('/') || lastSegment.includes('.')
+        ? pathname
+        : `${pathname}/`;
+
 const {
     title = SITE.title,
     author = SITE.author,
     description = SITE.desc,
     ogImage = SITE.ogImage,
-    canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+    canonicalURL = new URL(defaultPathname, Astro.site).href,
     pubDatetime,
     modDatetime,
     scrollSmooth = false,

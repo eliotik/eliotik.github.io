@@ -33,7 +33,7 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(
-    `/tags/${tag}${currentPage > 1 ? `/${currentPage}` : ''}`,
+    currentPage > 1 ? `/tags/${tag}/${currentPage}/` : `/tags/${tag}/`,
     Astro.site
 ).href;
 ---
@@ -96,10 +96,12 @@ const canonicalURL = new URL(
     <Pagination
         {currentPage}
         {totalPages}
-        prevUrl={`/tags/${tag}${
-            currentPage - 1 !== 1 ? '/' + (currentPage - 1) : ''
-        }`}
-        nextUrl={`/tags/${tag}/${currentPage + 1}`}
+        prevUrl={
+            currentPage - 1 !== 1
+                ? `/tags/${tag}/${currentPage - 1}/`
+                : `/tags/${tag}/`
+        }
+        nextUrl={`/tags/${tag}/${currentPage + 1}/`}
     />
 
     <Footer noMarginTop={totalPages > 1} />

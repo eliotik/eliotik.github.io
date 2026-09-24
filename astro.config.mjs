@@ -18,8 +18,8 @@ export default defineConfig({
     site: SITE.website,
     trailingSlash: 'ignore',
     redirects: {
-        '/posts/1/': '/posts',
-        '/tips/1/': '/tips',
+        '/posts/1/': '/posts/',
+        '/tips/1/': '/tips/',
     },
     integrations: [
         // Keep Partytown's sandbox iframe on <html>, outside <body>. In <body>,

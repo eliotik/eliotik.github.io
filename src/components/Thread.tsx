@@ -38,7 +38,7 @@ export default function Thread({ thread, slug, posts }: Props) {
             <ul className="divide-skin-line/40 border-skin-line/60 flex flex-col divide-y border-b">
                 {posts.map((post: CollectionEntry<'blog'>, index) => (
                     <ThreadCard
-                        href={`/posts/${post.id}`}
+                        href={`/posts/${post.id}/`}
                         frontmatter={post.data}
                         key={post.id}
                         id={index + 1}
