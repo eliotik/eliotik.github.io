@@ -1,0 +1,24 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs, `npm i playwright`, `node <file>.mjs ...`.
+import { chromium } from 'playwright';
+const base = process.argv[2] || 'http://localhost:4321';
+const b = await chromium.launch({ channel: 'chrome', headless: true, args: ['--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP www.google.com ~NOTFOUND'] });
+const ctx = await b.newContext({ viewport: { width: 1280, height: 1800 }, colorScheme: 'light' });
+await ctx.addInitScript(() => {
+  const mq = matchMedia('(prefers-color-scheme: dark)');
+  const rec = e => { const a = JSON.parse(sessionStorage.getItem('__mq') || '[]'); a.push({ at: location.pathname + location.search, matches: e.matches, t: Date.now(), ls: localStorage.getItem('theme') }); sessionStorage.setItem('__mq', JSON.stringify(a)); };
+  mq.addEventListener('change', rec);
+  const orig = Storage.prototype.setItem;
+  Storage.prototype.setItem = function (k, v) { if (k === 'theme') { const a = JSON.parse(sessionStorage.getItem('__set') || '[]'); a.push({ k, v, at: location.pathname, t: Date.now(), stack: new Error().stack.split('\n').slice(2,4).join(' | ') }); orig.call(sessionStorage, '__set', JSON.stringify(a)); } return orig.call(this, k, v); };
+});
+const page = await ctx.newPage();
+const st = async tag => console.log(tag, JSON.stringify(await page.evaluate(() => ({ t: document.documentElement.getAttribute('data-theme'), ls: localStorage.getItem('theme'), mm: matchMedia('(prefers-color-scheme: dark)').matches, mq: JSON.parse(sessionStorage.getItem('__mq') || '[]'), set: JSON.parse(sessionStorage.getItem('__set') || '[]') }))));
+const target = process.argv[3] || '/search/';
+await page.goto(base + target, { waitUntil: 'load' }); await st('loaded');
+if (process.argv[4] === 'type') { await page.locator('input[name="search"]').click(); await page.keyboard.type('hiring', { delay: 60 }); await page.waitForTimeout(300); await st('typed'); }
+await page.reload({ waitUntil: 'load' }); await st('reload1');
+await page.evaluate(() => localStorage.removeItem('theme'));
+await page.goto(base + target, { waitUntil: 'load' }); await st('goto-again');
+await page.evaluate(() => location.reload()); await page.waitForLoadState('load'); await page.waitForTimeout(500); await st('js-reload');
+await b.close();

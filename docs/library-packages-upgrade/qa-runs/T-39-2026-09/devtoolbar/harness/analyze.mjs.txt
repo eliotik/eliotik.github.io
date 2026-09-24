@@ -1,0 +1,106 @@
+// Evaluate every run dir against the pre-registered criteria. Usage: node analyze.mjs <runsDir> <run ids...>
+import fs from 'node:fs';
+import path from 'node:path';
+const [dir, ...ids] = process.argv.slice(2);
+const read = (f) => (fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : null);
+const json = (f) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null);
+const BAD_LOG = /optimized dependencies changed|Outdated|error while updating dependencies|Processing Error|Mixed ESM and CJS/i;
+const DYN = /Failed to fetch dynamically imported module|Importing a module script failed|UNHANDLED_REJECTION/i;
+const out = [];
+for (const id of ids) {
+  const d = path.join(dir, id);
+  const meta = read(path.join(d, '00-meta.txt')) || '';
+  const devJson = json(path.join(d, 'dev.json'));
+  const log = (read(path.join(d, 'dev.log')) || '').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return { message: l }; } });
+  const closure = json(path.join(d, 'toolbar-closure.json'));
+  const closureFiles = closure ? closure.closure.map((c) => c.file) : [];
+  const curl = json(path.join(d, 'curl.json'));
+  const chrome = json(path.join(d, 'chrome-seq.json')) || json(path.join(d, 'chrome-par.json'));
+  const r = { id, config: /devToolbar: \{ enabled: (\w+)/.exec(meta)?.[1], port: devJson?.port, checks: {}, notes: [] };
+  // C3/C4 dev.log
+  const badLog = log.filter((l) => BAD_LOG.test(l.message));
+  const lateOpt = log.filter((l) => /^dependencies optimized:/.test(l.message));
+  const warnErr = log.filter((l) => l.level === 'warn' || l.level === 'error');
+  r.checks.C3_noBadLogLines = { pass: badLog.length === 0, badLog: badLog.map((l) => l.message), warnOrError: warnErr.map((l) => `${l.level}: ${l.message.slice(0, 200)}`) };
+  r.checks.C4_raceWindowOpen = { pass: lateOpt.some((l) => /transitions-router/.test(l.message)), lines: lateOpt.map((l) => l.message) };
+  r.pageHits = log.filter((l) => /^\[\d{3}\]/.test(l.message)).map((l) => l.message);
+  // C1/C6 curl
+  if (curl) {
+    const byPath = (f) => curl.requests.filter((q) => q.url.split('?')[0] === `/node_modules/.vite/deps/${f}`);
+    const chunkStatus = closureFiles.map((f) => ({ f, statuses: byPath(f).map((q) => q.status) }));
+    const entryId = curl.requests.find((q) => q.url === '/@id/astro/runtime/client/dev-toolbar/entrypoint.js');
+    const trans = curl.requests.filter((q) => /transitions-(router|events|types|swap-functions)__js\.js/.test(q.url));
+    const tb = curl.requests.filter((q) => closureFiles.some((f) => q.url.split('?')[0] === `/node_modules/.vite/deps/${f}`) || q.url.startsWith('/@id/astro/runtime/client/dev-toolbar/'));
+    r.curl = {
+      totalRequests: curl.totalRequests,
+      statusCounts: curl.statusCounts,
+      count504: curl.count504,
+      non200: curl.non200.map((q) => `${q.status} ${q.url}`),
+      pagesWithToolbarEntrypoint: curl.toolbarEntrypointInPages.filter((p) => p.hasToolbarEntrypoint).length + '/' + curl.toolbarEntrypointInPages.length,
+      entrypointIdStatus: entryId?.status,
+      closureAll200: chunkStatus.every((c) => c.statuses.length > 0 && c.statuses.every((s) => s === 200)),
+      closureMissing: chunkStatus.filter((c) => c.statuses.length === 0).map((c) => c.f),
+      timing: {
+        toolbarFirstStart: Math.min(...tb.map((q) => q.start)),
+        toolbarLastEnd: Math.max(...tb.map((q) => q.end)),
+        transitionsDepsStart: Math.min(...trans.map((q) => q.start)),
+        transitionsDepsEnd: Math.max(...trans.map((q) => q.end)),
+      },
+    };
+  }
+  if (chrome) {
+    const resp = chrome.allResponses || [];
+    const chunkStatus = closureFiles.map((f) => ({ f, statuses: resp.filter((q) => q.url.split('?')[0] === `/node_modules/.vite/deps/${f}`).map((q) => q.status) }));
+    const entryResp = resp.filter((q) => q.url === '/@id/astro/runtime/client/dev-toolbar/entrypoint.js').map((q) => q.status);
+    const tb = resp.filter((q) => closureFiles.some((f) => q.url.split('?')[0] === `/node_modules/.vite/deps/${f}`) || q.url.startsWith('/@id/astro/runtime/client/dev-toolbar/'));
+    const trans = resp.filter((q) => /transitions-(router|events|types|swap-functions)__js\.js/.test(q.url));
+    const fullReloads = (chrome.viteWs || []).filter((m) => /"type":"full-reload"/.test(m.text));
+    const dynText = [...(chrome.consoleAll || []).map((m) => m.text), ...(chrome.pageErrors || []).map((e) => e.msg)].filter((s) => DYN.test(s));
+    const pages = Object.entries(chrome.pages).map(([p, v]) => ({ p, status: v.status, gotoError: v.gotoError, toolbar: v.state.toolbarElement, apps: (v.state.toolbarApps || []).length, islands: v.state.islands, unhydrated: v.state.unhydratedIslands, perfBad: v.state.perfBad.length }));
+    r.chrome = {
+      mode: chrome.mode,
+      totalResponses: chrome.totalResponses,
+      statusCounts: chrome.statusCounts,
+      count504: (chrome.bad || []).filter((b) => b.status === 504).length,
+      bad: (chrome.bad || []).map((b) => `${b.status} ${b.statusText} ${b.url}`),
+      requestFailed: (chrome.failed || []).map((f) => `${f.t} ${f.err} ${f.url}`),
+      pageErrors: (chrome.pageErrors || []).map((e) => e.msg.slice(0, 200)),
+      consoleErrorsOrWarnings: (chrome.consoleErrors || []).map((m) => `${m.type}: ${m.text.slice(0, 200)}`),
+      dynImportOrUnhandled: dynText,
+      fullReloads: fullReloads.map((m) => `${m.t} ${m.page} ${m.text}`),
+      docLoads: chrome.docLoads,
+      pages,
+      appClicks: chrome.appClicks,
+      errorsDuringAppClicks: chrome.errorsDuringAppClicks,
+      entrypointStatuses: [...new Set(entryResp)],
+      closureAll2xx: chunkStatus.every((c) => c.statuses.length > 0 && c.statuses.every((s) => s === 200 || s === 304)),
+      closureMissing: chunkStatus.filter((c) => c.statuses.length === 0).map((c) => c.f),
+      timing: {
+        toolbarFirst: Math.min(...tb.map((q) => q.t)),
+        toolbarFirst10s: tb.filter((q) => q.t < 10000).map((q) => `${q.t}:${q.status}:${q.url.split('?')[0].split('/').pop()}`).join(' '),
+        transitionsFirst: Math.min(...trans.map((q) => q.t)),
+      },
+      positiveControl: chrome.positiveControl,
+    };
+  }
+  // verdict
+  const c = r.checks;
+  c.C1_no504 = { pass: (r.curl ? r.curl.count504 === 0 : true) && (r.chrome ? r.chrome.count504 === 0 : true) };
+  c.C2_noDynImportErrors = { pass: r.chrome ? r.chrome.dynImportOrUnhandled.length === 0 && r.chrome.pageErrors.length === 0 : true };
+  if (r.chrome) {
+    const par = r.chrome.mode === 'par';
+    c.C5_baseline = {
+      pass: r.chrome.fullReloads.length === 1 && r.chrome.fullReloads.every((m) => /"path":"\*"/.test(m)) && r.chrome.consoleErrorsOrWarnings.length === 0 && r.chrome.pages.every((p) => p.unhydrated === 0),
+      note: 'exactly one buffered full-reload (delivered to the first-connected client) expected in both seq and par modes',
+    };
+  }
+  const tbOn = r.config === 'true';
+  c.C6_toolbarRan = {
+    pass: !tbOn ? null : (r.curl ? r.curl.pagesWithToolbarEntrypoint === '5/5' && r.curl.entrypointIdStatus === 200 && r.curl.closureAll200 : true) &&
+      (r.chrome ? r.chrome.pages.every((p) => p.toolbar && p.apps === 4) && r.chrome.entrypointStatuses.every((s) => s === 200 || s === 304) && r.chrome.closureAll2xx && (r.chrome.mode === 'par' || (r.chrome.appClicks.length === 4 && r.chrome.appClicks.every((a) => a.activeClass && a.canvas) && r.chrome.errorsDuringAppClicks === 0)) : true),
+  };
+  c.port4322 = { pass: r.port === 4322 };
+  r.clean = Object.entries(c).every(([k, v]) => v.pass !== false);
+  out.push(r);
+}
+console.log(JSON.stringify(out, null, 1));

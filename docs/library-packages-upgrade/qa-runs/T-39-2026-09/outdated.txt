@@ -1,0 +1,81 @@
+# pnpm outdated — T-39 Task 8 build lane
+# HEAD 55a65300a2dce56e7c225232ca8c4abb2c7bd5b4, Node v22.23.3, pnpm 10.33.2, registry queried 2026-09-24T03:0xZ
+# NOTE: `pnpm outdated` exits 1 whenever it lists ANY package. exit=1 here is caused solely by typescript (capped, see below);
+#       the lane criterion for this step is "what it lists", not its exit code.
+
+$ pnpm outdated            # exit=1
+┌──────────────────┬─────────┬────────┐
+│ Package          │ Current │ Latest │
+├──────────────────┼─────────┼────────┤
+│ typescript (dev) │ 6.0.3   │ 7.0.2  │
+└──────────────────┴─────────┴────────┘
+
+$ pnpm outdated --format json            # exit=1
+{
+  "typescript": {
+    "current": "6.0.3",
+    "latest": "7.0.2",
+    "wanted": "6.0.3",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
+  }
+}
+
+# ---- TypeScript cap evidence (pnpm view, registry) ----
+# typescript dist-tags: latest=7.0.2, rc=7.0.1-rc, next=7.1.0-dev.20260923.1
+# typescript stable 6.x published: 6.0.2 6.0.3   -> installed 6.0.3 is the highest 6.0.x (no 6.0.4+, no 6.1.x)
+# typescript stable 7.x published: 7.0.2
+# @typescript-eslint/eslint-plugin@latest = 8.70.1  peerDependencies.typescript = ">=4.8.4 <6.1.0"   (installed 8.70.1)
+# @typescript-eslint/parser@latest        = 8.70.1  peerDependencies.typescript = ">=4.8.4 <6.1.0"   (installed 8.70.1)
+# typescript-eslint@latest                = 8.70.1  peerDependencies.typescript = ">=4.8.4 <6.1.0"   (not a direct dep; same range)
+# @astrojs/check@latest                   = 0.9.10  peerDependencies.typescript = "^5.0.0 || ^6.0.0" (installed 0.9.10)
+# => typescript 7.0.2 violates both peer ranges at their registry-latest versions; 6.0.3 is the max allowed. CAP VALID.
+
+# ---- Independent cross-check: every direct dependency, installed (node_modules/<pkg>/package.json) vs `pnpm view <pkg>@latest version`,
+#      plus `pnpm view <pkg>@<installed> deprecated` (empty = not deprecated) ----
+@astrojs/check                                   0.9.10     installed=0.9.10    latest=0.9.10    OK 
+@astrojs/markdown-remark                         7.3.1      installed=7.3.1     latest=7.3.1     OK 
+@astrojs/mdx                                     8.0.2      installed=8.0.2     latest=8.0.2     OK 
+@astrojs/partytown                               ^2.1.8     installed=2.1.8     latest=2.1.8     OK 
+@astrojs/react                                   7.0.0      installed=7.0.0     latest=7.0.0     OK 
+@astrojs/rss                                     4.0.19     installed=4.0.19    latest=4.0.19    OK 
+@astrojs/sitemap                                 3.7.4      installed=3.7.4     latest=3.7.4     OK 
+@astrojs/ts-plugin                               1.10.12    installed=1.10.12   latest=1.10.12   OK 
+@expressive-code/plugin-collapsible-sections     0.44.2     installed=0.44.2    latest=0.44.2    OK 
+@expressive-code/plugin-line-numbers             0.44.2     installed=0.44.2    latest=0.44.2    OK 
+@resvg/resvg-js                                  2.6.2      installed=2.6.2     latest=2.6.2     OK 
+astro                                            7.3.4      installed=7.3.4     latest=7.3.4     OK 
+astro-expressive-code                            0.44.2     installed=0.44.2    latest=0.44.2    OK 
+fuse.js                                          7.5.0      installed=7.5.0     latest=7.5.0     OK 
+github-slugger                                   2.0.0      installed=2.0.0     latest=2.0.0     OK 
+remark-collapse                                  0.1.2      installed=0.1.2     latest=0.1.2     OK 
+remark-toc                                       9.0.0      installed=9.0.0     latest=9.0.0     OK 
+satori                                           0.33.5     installed=0.33.5    latest=0.33.5    OK 
+sharp                                            ^0.35.4    installed=0.35.4    latest=0.35.4    OK 
+tailwindcss                                      4.3.3      installed=4.3.3     latest=4.3.3     OK 
+@divriots/jampack                                0.34.1     installed=0.34.1    latest=0.34.1    OK 
+@eslint/js                                       ^10.0.1    installed=10.0.1    latest=10.0.1    OK 
+@tailwindcss/typography                          0.5.20     installed=0.5.20    latest=0.5.20    OK 
+@tailwindcss/vite                                ^4.3.3     installed=4.3.3     latest=4.3.3     OK 
+@types/react                                     ^19.3.0    installed=19.3.0    latest=19.3.0    OK 
+@types/react-dom                                 ^19.3.0    installed=19.3.0    latest=19.3.0    OK 
+@typescript-eslint/eslint-plugin                 8.70.1     installed=8.70.1    latest=8.70.1    OK 
+@typescript-eslint/parser                        8.70.1     installed=8.70.1    latest=8.70.1    OK 
+astro-eslint-parser                              3.1.0      installed=3.1.0     latest=3.1.0     OK 
+eslint                                           10.11.0    installed=10.11.0   latest=10.11.0   OK 
+eslint-plugin-astro                              3.2.1      installed=3.2.1     latest=3.2.1     OK 
+eslint-plugin-jsx-a11y-x                         ^0.2.0     installed=0.2.0     latest=0.2.0     OK 
+husky                                            9.1.7      installed=9.1.7     latest=9.1.7     OK 
+lint-staged                                      17.5.1     installed=17.5.1    latest=17.5.1    OK 
+prettier                                         3.9.9      installed=3.9.9     latest=3.9.9     OK 
+prettier-plugin-astro                            1.0.1      installed=1.0.1     latest=1.0.1     OK 
+prettier-plugin-tailwindcss                      0.8.1      installed=0.8.1     latest=0.8.1     OK 
+react                                            19.3.0     installed=19.3.0    latest=19.3.0    OK 
+react-dom                                        19.3.0     installed=19.3.0    latest=19.3.0    OK 
+typescript                                       6.0.3      installed=6.0.3     latest=7.0.2     BEHIND 
+# => 39/40 at registry latest; 1 behind (typescript, capped above); 0 deprecated.
+# Verdict: PASS.
+
+# ---- Toolchain (observation, out of scope per ruling R19 "pnpm packageManager bump" = user follow-up) ----
+# node: v22.23.3 = latest v22 LTS (nvm ls-remote v22 -> "v22.23.3 (Latest LTS: Jod)")
+# pnpm: 10.33.2 (packageManager pnpm@10.33.2); registry latest-10 = 10.34.5, latest = 12.6.0

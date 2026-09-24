@@ -1,0 +1,148 @@
+{
+ "mode": "seq",
+ "elapsedMs": 42855,
+ "totalResponses": 421,
+ "statusCounts": {
+  "200": 361,
+  "304": 60
+ },
+ "count504": 0,
+ "bad": [],
+ "failed": [],
+ "pageErrors": [],
+ "consoleErrors": [],
+ "failedDynImport": [],
+ "docLoads": [
+  "1131 seq /",
+  "1258 seq /",
+  "11796 seq /posts/octoprint-prusa-core-one-raspberry-pi/",
+  "17149 seq /posts/flutter-google-maps-address-manipulation/",
+  "22501 seq /posts/flutter-google-maps-embedded-map/",
+  "27606 seq /search/",
+  "32660 seq /"
+ ],
+ "viteWs": [
+  "1132 seq VITE_WS {\"type\":\"full-reload\",\"path\":\"*\"}"
+ ],
+ "positiveControl": {
+  "fetchStatus": 504,
+  "fetchStatusText": "Outdated Optimize Dep",
+  "dynImportError": "Failed to fetch dynamically imported module: http://localhost:4322/node_modules/.vite/deps/react.js?v=deadbe01",
+  "recordedByResponseListener": [
+   "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbeef",
+   "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbe01"
+  ],
+  "consoleDuringControl": [
+   "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+   "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+  ]
+ },
+ "pages": {
+  "/": {
+   "status": 200,
+   "navType": "reload",
+   "toolbar": true,
+   "apps": [
+    "astro:home",
+    "astro:xray",
+    "astro:audit",
+    "astro:settings"
+   ],
+   "perfBad": 0,
+   "tbChunks": 15,
+   "islands": 0,
+   "unhydrated": 0
+  },
+  "/posts/octoprint-prusa-core-one-raspberry-pi/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": true,
+   "apps": [
+    "astro:home",
+    "astro:xray",
+    "astro:audit",
+    "astro:settings"
+   ],
+   "perfBad": 0,
+   "tbChunks": 15,
+   "islands": 7,
+   "unhydrated": 0
+  },
+  "/posts/flutter-google-maps-address-manipulation/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": true,
+   "apps": [
+    "astro:home",
+    "astro:xray",
+    "astro:audit",
+    "astro:settings"
+   ],
+   "perfBad": 0,
+   "tbChunks": 15,
+   "islands": 3,
+   "unhydrated": 0
+  },
+  "/posts/flutter-google-maps-embedded-map/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": true,
+   "apps": [
+    "astro:home",
+    "astro:xray",
+    "astro:audit",
+    "astro:settings"
+   ],
+   "perfBad": 0,
+   "tbChunks": 15,
+   "islands": 2,
+   "unhydrated": 0
+  },
+  "/search/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": true,
+   "apps": [
+    "astro:home",
+    "astro:xray",
+    "astro:audit",
+    "astro:settings"
+   ],
+   "perfBad": 0,
+   "tbChunks": 15,
+   "islands": 1,
+   "unhydrated": 0
+  }
+ },
+ "appClicks": [
+  {
+   "id": "astro:home",
+   "activeClass": true,
+   "canvas": true,
+   "canvasChildren": 2,
+   "canvasHidden": false
+  },
+  {
+   "id": "astro:xray",
+   "activeClass": true,
+   "canvas": true,
+   "canvasChildren": 2,
+   "canvasHidden": false
+  },
+  {
+   "id": "astro:audit",
+   "activeClass": true,
+   "canvas": true,
+   "canvasChildren": 3,
+   "canvasHidden": false
+  },
+  {
+   "id": "astro:settings",
+   "activeClass": true,
+   "canvas": true,
+   "canvasChildren": 2,
+   "canvasHidden": false
+  }
+ ],
+ "errorsDuringAppClicks": 0
+}

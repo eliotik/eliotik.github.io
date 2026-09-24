@@ -1,0 +1,8 @@
+run=on-curl-3 mode=curl
+config: 23:  devToolbar: { enabled: true },
+node=v22.23.3
+t_start=1790223053.975 t_listen=1790223055.822
+t_clients_done=1790223057.716
+positive_control wrong_hash(react.js?v=deadbeef)=504 1.1 served_hash(/node_modules/.vite/deps/react.js?v=494b253b)=200
+entryInOptimized=true entryFile=astro_runtime_client_dev-toolbar_entrypoint__js.js closure=14 dynamicFromEntry=astro-FHoXtXMg.js,audit-BhVuJR6h.js,xray-d1X_SF6n.js,settings-CwxpV2xH.js,toolbar-m3qV4lOF.js,ui-library-C6QDP-6v.js
+{"message":"Dev server running at http://localhost:4322 (pid 25051, uptime 5s, background)","label":"SKIP_FORMAT","level":"info"}

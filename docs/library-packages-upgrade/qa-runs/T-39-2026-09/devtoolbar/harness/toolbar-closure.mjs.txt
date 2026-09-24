@@ -1,0 +1,28 @@
+// Enumerate the dev-toolbar module closure inside node_modules/.vite/deps:
+// the optimized entrypoint file plus every chunk it reaches via static or dynamic imports.
+// Usage: node toolbar-closure.mjs <depsDir> <out.json>
+import fs from 'node:fs';
+import path from 'node:path';
+const [dir, out] = process.argv.slice(2);
+const meta = JSON.parse(fs.readFileSync(path.join(dir, '_metadata.json'), 'utf8'));
+const entryKey = 'astro/runtime/client/dev-toolbar/entrypoint.js';
+const entry = meta.optimized[entryKey];
+const res = { entryKey, entryInOptimized: !!entry, entryFile: entry?.file, closure: [], dynamicFromEntry: [], metaChunks: Object.keys(meta.chunks || {}) };
+if (entry) {
+  const seen = new Set();
+  const walk = (f, dyn) => {
+    if (seen.has(f)) return;
+    seen.add(f);
+    res.closure.push({ file: f, viaDynamic: dyn });
+    const code = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const m of code.matchAll(/\bimport\s*(?:[\w*${}\s,]+?\s*from\s*)?["'](\.\/[^"']+\.js)["']/g)) walk(m[1].slice(2), dyn);
+    for (const m of code.matchAll(/\bexport\s*(?:\*|\{[^}]*\})\s*from\s*["'](\.\/[^"']+\.js)["']/g)) walk(m[1].slice(2), dyn);
+    for (const m of code.matchAll(/\bimport\(\s*["'](\.\/[^"']+\.js)["']\s*\)/g)) {
+      if (f === entry.file) res.dynamicFromEntry.push(m[1].slice(2));
+      walk(m[1].slice(2), true);
+    }
+  };
+  walk(entry.file, false);
+}
+fs.writeFileSync(out, JSON.stringify(res, null, 2));
+console.log(`entryInOptimized=${res.entryInOptimized} entryFile=${res.entryFile} closure=${res.closure.length} dynamicFromEntry=${res.dynamicFromEntry.join(',')}`);

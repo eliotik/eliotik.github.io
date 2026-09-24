@@ -1,0 +1,283 @@
+{
+  "generatedAt": "2026-09-24T03:49:02.036Z",
+  "inputs": {
+    "branch": "http://localhost:4321",
+    "main": "http://localhost:4332",
+    "prod": "https://www.novifyx.com"
+  },
+  "branchConsoleTotals": {
+    "errors": 21,
+    "warnings": 0
+  },
+  "mainConsoleTotals": {
+    "errors": 21,
+    "warnings": 0
+  },
+  "prodConsoleTotals": {
+    "errors": 10,
+    "warnings": 0
+  },
+  "verdict": {
+    "errors": [
+      {
+        "signature": "page|NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'ORIGIN/~partytown/proxytown'.",
+        "branch": {
+          "count": 21,
+          "labels": [
+            "P3:tag-detail",
+            "P4:post",
+            "P4:search",
+            "P8:500:1:post",
+            "P8:500:1:search",
+            "P8:500:2:post",
+            "P8:500:2:search",
+            "P8:3000:1:post",
+            "P8:3000:1:search",
+            "P8:3000:2:post",
+            "P8:3000:2:search",
+            "P8:10000:1:post",
+            "P8:10000:1:search",
+            "P8:10000:2:post",
+            "P8:10000:2:search"
+          ]
+        },
+        "main": {
+          "count": 21,
+          "labels": [
+            "P2:click-result",
+            "P4:post",
+            "P4:search",
+            "P4b:posts",
+            "P8:500:1:post",
+            "P8:500:1:search",
+            "P8:500:2:post",
+            "P8:500:2:search",
+            "P8:3000:1:post",
+            "P8:3000:1:search",
+            "P8:3000:2:post",
+            "P8:3000:2:search",
+            "P8:10000:1:post",
+            "P8:10000:1:search",
+            "P8:10000:2:search"
+          ]
+        },
+        "prod": {
+          "count": 6,
+          "labels": [
+            "P8:500:1:post",
+            "P8:500:2:post",
+            "P8:3000:1:post",
+            "P8:3000:1:search",
+            "P8:10000:1:post",
+            "P8:10000:2:post"
+          ]
+        },
+        "preExisting": true,
+        "verdict": "pre-existing (present on pre-upgrade build)"
+      }
+    ],
+    "warnings": []
+  },
+  "signaturesOnlyInBaseline": {
+    "main": {
+      "errors": [],
+      "warnings": []
+    },
+    "prod": {
+      "errors": [
+        "page|Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "warnings": []
+    }
+  },
+  "branchOnlyCount": 0,
+  "pass": true,
+  "p8": {
+    "branch": [
+      {
+        "dwellMs": 500,
+        "rep": 1,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 3,
+        "pageErrors": 0,
+        "proxytownErrors": 3,
+        "otherErrors": [],
+        "abortedProxytownXHR": 3
+      },
+      {
+        "dwellMs": 500,
+        "rep": 2,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 3,
+        "pageErrors": 0,
+        "proxytownErrors": 3,
+        "otherErrors": [],
+        "abortedProxytownXHR": 3
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 1,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 2,
+        "pageErrors": 0,
+        "proxytownErrors": 2,
+        "otherErrors": [],
+        "abortedProxytownXHR": 2
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 2,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 4,
+        "pageErrors": 0,
+        "proxytownErrors": 4,
+        "otherErrors": [],
+        "abortedProxytownXHR": 4
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 1,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 3,
+        "pageErrors": 0,
+        "proxytownErrors": 3,
+        "otherErrors": [],
+        "abortedProxytownXHR": 3
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 2,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 2,
+        "pageErrors": 0,
+        "proxytownErrors": 2,
+        "otherErrors": [],
+        "abortedProxytownXHR": 2
+      }
+    ],
+    "main": [
+      {
+        "dwellMs": 500,
+        "rep": 1,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 3,
+        "pageErrors": 0,
+        "proxytownErrors": 3,
+        "otherErrors": [],
+        "abortedProxytownXHR": 3
+      },
+      {
+        "dwellMs": 500,
+        "rep": 2,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 2,
+        "pageErrors": 0,
+        "proxytownErrors": 2,
+        "otherErrors": [],
+        "abortedProxytownXHR": 2
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 1,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 2,
+        "pageErrors": 0,
+        "proxytownErrors": 2,
+        "otherErrors": [],
+        "abortedProxytownXHR": 2
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 2,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 4,
+        "pageErrors": 0,
+        "proxytownErrors": 4,
+        "otherErrors": [],
+        "abortedProxytownXHR": 4
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 1,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 3,
+        "pageErrors": 0,
+        "proxytownErrors": 3,
+        "otherErrors": [],
+        "abortedProxytownXHR": 3
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 2,
+        "postLink": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      }
+    ],
+    "prod": [
+      {
+        "dwellMs": 500,
+        "rep": 1,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      },
+      {
+        "dwellMs": 500,
+        "rep": 2,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 1,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 2,
+        "pageErrors": 0,
+        "proxytownErrors": 2,
+        "otherErrors": [],
+        "abortedProxytownXHR": 2
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 2,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 0,
+        "pageErrors": 0,
+        "proxytownErrors": 0,
+        "otherErrors": [],
+        "abortedProxytownXHR": 0
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 1,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 2,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      }
+    ]
+  }
+}

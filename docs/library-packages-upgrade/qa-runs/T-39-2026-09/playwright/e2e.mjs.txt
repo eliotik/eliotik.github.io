@@ -1,0 +1,1233 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs, `npm i playwright`, `node <file>.mjs ...`.
+// T-39 Task 8 QA lane "playwright-e2e": deterministic real-interaction e2e in headless Google Chrome.
+// Usage: node e2e.mjs <baseURL> <results.json> <screenshotDir>
+//   baseURL default http://localhost:4321 (branch preview). Run it against https://www.novifyx.com
+//   (the pre-upgrade production site, Astro 6.2.1 = main) to get the console baseline.
+// Analytics safety: every context EXCEPT the branch P0 runs in a browser launched with
+// --host-resolver-rules that NXDOMAIN google-analytics.com / doubleclick.net, so no GA hits
+// reach the real property. P0 on the branch runs in an unmodified clean profile (authoritative).
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const BASE = (process.argv[2] || 'http://localhost:4321').replace(/\/$/, '');
+const OUT = path.resolve(process.argv[3] || 'results.json');
+const SHOTS = path.resolve(process.argv[4] || 'shots');
+const IS_PROD = !/localhost|127\.0\.0\.1/.test(BASE);
+fs.mkdirSync(SHOTS, { recursive: true });
+
+const GA_BLOCK =
+    '--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND';
+
+const CAR = '[aria-roledescription="carousel"]';
+const ISLAND_SLIDER = 'astro-island[component-url*="ImageSliderClient"]';
+const DESKTOP = { width: 1280, height: 1800 };
+const MOBILE = { width: 375, height: 812 };
+
+const results = {
+    meta: {
+        base: BASE,
+        isProd: IS_PROD,
+        startedAt: new Date().toISOString(),
+        node: process.version,
+        gaBlockArg: GA_BLOCK,
+    },
+    checks: [],
+    visits: [],
+    console: [],
+    requestsFailed: [],
+    p0: {},
+    details: {},
+};
+
+let LABEL = 'init';
+let CTX = 'none';
+const setLabel = l => {
+    LABEL = l;
+};
+const log = (...a) => console.log(...a);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const slugId = s => s.replace(/[^a-zA-Z0-9_.-]+/g, '_').slice(0, 120);
+
+async function check(page, id, name, pass, evidence) {
+    const rec = { id, name, pass: !!pass, evidence };
+    if (!pass && page) {
+        const f = path.join(SHOTS, `fail-${slugId(id)}.png`);
+        try {
+            await page.screenshot({ path: f, fullPage: false });
+            rec.screenshot = f;
+        } catch (e) {
+            rec.screenshotError = String(e).slice(0, 200);
+        }
+    }
+    results.checks.push(rec);
+    log(`${pass ? 'PASS' : 'FAIL'} ${id} — ${name}`);
+    return !!pass;
+}
+
+function push(entry) {
+    results.console.push({ ctx: CTX, label: LABEL, t: Date.now(), ...entry });
+}
+
+function instrument(ctx, name) {
+    ctx.on('page', p => attachPage(p, name));
+    ctx.on('serviceworker', sw => {
+        push({ source: 'sw-created', type: 'info', text: sw.url() });
+        try {
+            sw.on('console', m =>
+                push({ source: 'serviceworker', type: m.type(), text: m.text(), sw: sw.url() })
+            );
+        } catch {
+            /* older API */
+        }
+    });
+    ctx.on('requestfailed', r =>
+        results.requestsFailed.push({
+            ctx: CTX,
+            label: LABEL,
+            url: r.url().slice(0, 200),
+            type: r.resourceType(),
+            err: r.failure()?.errorText,
+        })
+    );
+}
+
+function attachPage(p) {
+    p.on('console', m =>
+        push({
+            source: 'page',
+            type: m.type(),
+            text: m.text(),
+            loc: m.location()?.url,
+            url: p.url(),
+        })
+    );
+    p.on('pageerror', e =>
+        push({ source: 'pageerror', type: 'error', text: String(e?.stack || e).split('\n').slice(0, 3).join(' | '), url: p.url() })
+    );
+    p.on('crash', () => push({ source: 'crash', type: 'error', text: 'page crashed', url: p.url() }));
+    p.on('worker', w => {
+        push({ source: 'worker-created', type: 'info', text: w.url() });
+        w.on('console', m => push({ source: 'worker', type: m.type(), text: m.text(), worker: w.url() }));
+    });
+}
+
+async function newCtx(browser, name, opts = {}) {
+    CTX = name;
+    const ctx = await browser.newContext({ viewport: DESKTOP, colorScheme: 'light', ...opts });
+    instrument(ctx, name);
+    return ctx;
+}
+
+async function islandsState(page) {
+    return page.evaluate(() => ({
+        total: document.querySelectorAll('astro-island').length,
+        ssr: document.querySelectorAll('astro-island[ssr]').length,
+        ssrComponents: [...document.querySelectorAll('astro-island[ssr]')].map(i => i.getAttribute('component-url')),
+    }));
+}
+
+async function waitHydrated(page, timeout = 15000) {
+    await page
+        .waitForFunction(() => document.querySelectorAll('astro-island[ssr]').length === 0, null, { timeout })
+        .catch(() => {});
+    return islandsState(page);
+}
+
+async function visit(page, id, how) {
+    const hyd = await waitHydrated(page);
+    const extra = await page.evaluate(() => ({
+        visibility: document.visibilityState,
+        title: document.title,
+        theme: document.documentElement.getAttribute('data-theme'),
+    }));
+    const v = { id, ctx: CTX, label: LABEL, url: page.url(), how, islands: hyd.total, islandsSsrRemaining: hyd.ssr, ssrComponents: hyd.ssrComponents, ...extra };
+    results.visits.push(v);
+    return v;
+}
+
+async function go(page, p, id) {
+    const resp = await page.goto(BASE + p, { waitUntil: 'load', timeout: 60000 });
+    await sleep(300);
+    const v = await visit(page, id || p, 'goto');
+    v.status = resp?.status();
+    return { resp, v };
+}
+
+// ---------- carousel helpers ----------
+async function carState(page, i) {
+    return page.evaluate(
+        ({ i, CAR }) => {
+            const sc = document.querySelectorAll(CAR)[i];
+            if (!sc) return null;
+            const root = sc.parentElement;
+            const prev = root.querySelector('button[aria-label="Previous slide"]');
+            const next = root.querySelector('button[aria-label="Next slide"]');
+            const slides = [...sc.querySelectorAll('[aria-roledescription="slide"]')];
+            const r = sc.getBoundingClientRect();
+            const contentLeft = r.left + sc.clientLeft;
+            let best = null;
+            slides.forEach((s, k) => {
+                const d = s.getBoundingClientRect().left - contentLeft;
+                if (!best || Math.abs(d) < Math.abs(best.d)) best = { k: k + 1, d };
+            });
+            let expectedN = null;
+            try {
+                expectedN = JSON.parse(sc.closest('astro-island').getAttribute('props')).images[1].length;
+            } catch {
+                /* ignore */
+            }
+            const vis = el => {
+                if (!el) return false;
+                const cs = getComputedStyle(el);
+                const b = el.getBoundingClientRect();
+                return cs.visibility !== 'hidden' && cs.display !== 'none' && b.width > 0 && b.height > 0;
+            };
+            return {
+                scrollLeft: sc.scrollLeft,
+                clientWidth: sc.clientWidth,
+                scrollWidth: sc.scrollWidth,
+                maxScroll: sc.scrollWidth - sc.clientWidth,
+                rectWidth: r.width,
+                slideRectWidth: slides[0] ? slides[0].getBoundingClientRect().width : null,
+                prevDisabled: prev ? prev.disabled : null,
+                nextDisabled: next ? next.disabled : null,
+                prevVisible: vis(prev),
+                nextVisible: vis(next),
+                prevOpacity: prev ? getComputedStyle(prev).opacity : null,
+                nextOpacity: next ? getComputedStyle(next).opacity : null,
+                slideCount: slides.length,
+                expectedN,
+                labels: slides.map(s => s.getAttribute('aria-label')),
+                nearestSlide: best ? best.k : null,
+                nearestOffset: best ? Math.round(best.d * 1000) / 1000 : null,
+                imgs: slides.map(s => {
+                    const im = s.querySelector('img');
+                    return im ? { complete: im.complete, nw: im.naturalWidth, src: im.getAttribute('src') } : null;
+                }),
+                scrollY: window.scrollY,
+                activeIsNext: document.activeElement === next,
+            };
+        },
+        { i, CAR }
+    );
+}
+
+async function armTracker(page, i) {
+    await page.evaluate(
+        ({ i, CAR }) => {
+            const sc = document.querySelectorAll(CAR)[i];
+            if (window.__trkEl && window.__trkHandler) window.__trkEl.removeEventListener('scroll', window.__trkHandler);
+            const t = { start: sc.scrollLeft, min: sc.scrollLeft, max: sc.scrollLeft, events: 0 };
+            window.__trk = t;
+            window.__trkEl = sc;
+            window.__trkHandler = () => {
+                t.events++;
+                t.min = Math.min(t.min, sc.scrollLeft);
+                t.max = Math.max(t.max, sc.scrollLeft);
+            };
+            sc.addEventListener('scroll', window.__trkHandler, { passive: true });
+        },
+        { i, CAR }
+    );
+}
+
+async function settle(page, i, expectMove = true) {
+    return page.evaluate(
+        async ({ i, CAR, expectMove }) => {
+            const sc = document.querySelectorAll(CAR)[i];
+            const t0 = performance.now();
+            const start = window.__trk ? window.__trk.start : sc.scrollLeft;
+            if (expectMove) {
+                while (performance.now() - t0 < 2500 && Math.abs(sc.scrollLeft - start) < 0.5 && (window.__trk ? window.__trk.events : 0) === 0)
+                    await new Promise(r => setTimeout(r, 20));
+            }
+            let last = sc.scrollLeft;
+            let stable = 0;
+            while (performance.now() - t0 < 8000) {
+                await new Promise(r => setTimeout(r, 50));
+                if (Math.abs(sc.scrollLeft - last) < 0.01) {
+                    if (++stable >= 8) break;
+                } else {
+                    stable = 0;
+                    last = sc.scrollLeft;
+                }
+            }
+            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+            return { settledMs: Math.round(performance.now() - t0), trk: window.__trk ? { ...window.__trk } : null };
+        },
+        { i, CAR, expectMove }
+    );
+}
+
+const snapInfo = st => {
+    const cw = st.clientWidth;
+    const mod = ((st.scrollLeft % cw) + cw) % cw;
+    const modDist = Math.min(mod, cw - mod);
+    return {
+        mod: Math.round(mod * 1000) / 1000,
+        modDist: Math.round(modDist * 1000) / 1000,
+        modOk: modDist <= 2,
+        geomOffset: st.nearestOffset,
+        geomOk: Math.abs(st.nearestOffset) <= 2,
+        nearestSlide: st.nearestSlide,
+    };
+};
+
+async function press(page, locator, mobile) {
+    if (mobile) await locator.tap({ timeout: 5000 });
+    else await locator.click({ timeout: 5000 });
+}
+
+// swipe via CDP touch gesture (mobile) or horizontal wheel (desktop). dir: +1 = towards next slide.
+async function gesture(page, cdp, sc, frac, dir, mobile) {
+    const box = await sc.boundingBox();
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+    const st = await sc.evaluate(el => el.clientWidth);
+    const dist = Math.round(frac * st);
+    if (mobile) {
+        // synthesizeScrollGesture: positive xDistance scrolls content towards the left edge (scrollLeft decreases).
+        await cdp.send('Input.synthesizeScrollGesture', {
+            x: Math.round(cx),
+            y: Math.round(cy),
+            xDistance: -dir * dist,
+            yDistance: 0,
+            gestureSourceType: 'touch',
+            speed: 600,
+            preventFling: true,
+        });
+        return { kind: 'touch-synthesizeScrollGesture', xDistance: -dir * dist, at: [Math.round(cx), Math.round(cy)] };
+    }
+    await page.mouse.move(cx, cy);
+    await page.mouse.wheel(dir * dist, 0);
+    return { kind: 'mouse.wheel', deltaX: dir * dist, at: [Math.round(cx), Math.round(cy)] };
+}
+
+async function sliderSuite(page, slug, prefix, { mobile = false, cdp = null } = {}) {
+    setLabel(`${prefix}:${slug}`);
+    const { v } = await go(page, `/posts/${slug}/`, `${prefix}:${slug}`);
+    const nIslands = await page.locator(ISLAND_SLIDER).count();
+    const n = await page.locator(CAR).count();
+    await check(page, `${prefix}.${slug}.carousel-count`, `carousel count on ${slug}`, n > 0 && n === nIslands, { carousels: n, sliderIslands: nIslands, status: v.status });
+    const perCar = [];
+    for (let i = 0; i < n; i++) {
+        const id = `${prefix}.${slug}.c${i + 1}`;
+        const rec = { index: i + 1, steps: [] };
+        perCar.push(rec);
+        try {
+            const sc = page.locator(CAR).nth(i);
+            const root = sc.locator('xpath=..');
+            const next = root.locator('button[aria-label="Next slide"]');
+            const prev = root.locator('button[aria-label="Previous slide"]');
+            await sc.scrollIntoViewIfNeeded();
+            await sleep(150);
+            // wait post-mount state (useEffect -> updateScrollState)
+            await page
+                .waitForFunction(
+                    ({ i, CAR }) => {
+                        const s = document.querySelectorAll(CAR)[i];
+                        const nb = s.parentElement.querySelector('button[aria-label="Next slide"]');
+                        return s.querySelectorAll('[aria-roledescription="slide"]').length <= 1 || !nb.disabled;
+                    },
+                    { i, CAR },
+                    { timeout: 5000 }
+                )
+                .catch(() => {});
+            const st0 = await carState(page, i);
+            rec.start = st0;
+            const N = st0.slideCount;
+            const cw = st0.clientWidth;
+            const expLabels = Array.from({ length: N }, (_, k) => `Slide ${k + 1} of ${N}`);
+            await check(page, `${id}.slide-count`, `slide count matches island props (N)`, N > 0 && N === st0.expectedN, { N, expectedNFromProps: st0.expectedN });
+            await check(page, `${id}.labels`, `labels 'Slide k of N'`, JSON.stringify(st0.labels) === JSON.stringify(expLabels), { labels: st0.labels });
+            rec.imgsLoadedAtStart = st0.imgs.filter(x => x && x.complete && x.nw > 0).length;
+            if (N < 2) {
+                await check(page, `${id}.single`, 'single-slide carousel: both buttons disabled', st0.prevDisabled && st0.nextDisabled, st0);
+                continue;
+            }
+            await check(page, `${id}.start`, 'start: scrollLeft 0, Prev disabled, Next enabled', st0.scrollLeft <= 1 && st0.prevDisabled === true && st0.nextDisabled === false && st0.nextVisible, {
+                scrollLeft: st0.scrollLeft,
+                prevDisabled: st0.prevDisabled,
+                nextDisabled: st0.nextDisabled,
+                prevOpacity: st0.prevOpacity,
+                nextVisible: st0.nextVisible,
+                clientWidth: cw,
+                scrollWidth: st0.scrollWidth,
+                slideRectWidth: st0.slideRectWidth,
+            });
+            // --- Next click (real mouse click / tap) ---
+            const stepDeltas = [];
+            let cur = st0;
+            await armTracker(page, i);
+            await press(page, next, mobile);
+            let s = await settle(page, i);
+            let st = await carState(page, i);
+            const d1 = st.scrollLeft - cur.scrollLeft;
+            stepDeltas.push(d1);
+            rec.steps.push({ action: mobile ? 'tap Next' : 'click Next', from: cur.scrollLeft, to: st.scrollLeft, delta: d1, settledMs: s.settledMs, snap: snapInfo(st) });
+            await check(page, `${id}.next-click`, `${mobile ? 'tap' : 'mouse click'} Next advances scrollLeft by clientWidth ±2`, Math.abs(d1 - cw) <= 2 && st.nearestSlide === 2, {
+                from: cur.scrollLeft,
+                to: st.scrollLeft,
+                delta: d1,
+                clientWidth: cw,
+                nearestSlide: st.nearestSlide,
+                prevDisabledAfter: st.prevDisabled,
+            });
+            cur = st;
+            // --- walk to end ---
+            let guard = 0;
+            while (!cur.nextDisabled && guard++ < N + 2) {
+                await armTracker(page, i);
+                await press(page, next, mobile);
+                s = await settle(page, i);
+                st = await carState(page, i);
+                stepDeltas.push(st.scrollLeft - cur.scrollLeft);
+                rec.steps.push({ action: mobile ? 'tap Next' : 'click Next', from: cur.scrollLeft, to: st.scrollLeft, delta: st.scrollLeft - cur.scrollLeft, settledMs: s.settledMs, snap: snapInfo(st) });
+                cur = st;
+            }
+            await check(page, `${id}.walk-end`, `walk to end: ${N - 1} Next presses, every step = clientWidth ±2, Next disabled at end`, stepDeltas.length === N - 1 && stepDeltas.every(d => Math.abs(d - cw) <= 2) && cur.nextDisabled === true && cur.prevDisabled === false && Math.abs(cur.scrollLeft - cur.maxScroll) <= 2 && cur.nearestSlide === N, {
+                presses: stepDeltas.length,
+                stepDeltas,
+                endScrollLeft: cur.scrollLeft,
+                maxScroll: cur.maxScroll,
+                nextDisabled: cur.nextDisabled,
+                prevDisabled: cur.prevDisabled,
+                nearestSlide: cur.nearestSlide,
+            });
+            // --- Prev once ---
+            await armTracker(page, i);
+            await press(page, prev, mobile);
+            s = await settle(page, i);
+            st = await carState(page, i);
+            const dp = st.scrollLeft - cur.scrollLeft;
+            rec.steps.push({ action: mobile ? 'tap Prev' : 'click Prev', from: cur.scrollLeft, to: st.scrollLeft, delta: dp, snap: snapInfo(st) });
+            await check(page, `${id}.prev-click`, 'Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled', Math.abs(dp + cw) <= 2 && st.nearestSlide === N - 1 && st.nextDisabled === false, {
+                from: cur.scrollLeft,
+                to: st.scrollLeft,
+                delta: dp,
+                nearestSlide: st.nearestSlide,
+                nextDisabled: st.nextDisabled,
+            });
+            cur = st;
+            // --- keyboard: Enter on focused Next ---
+            await next.focus();
+            const fEnter = await carState(page, i);
+            await armTracker(page, i);
+            await page.keyboard.press('Enter');
+            s = await settle(page, i);
+            st = await carState(page, i);
+            const dk = st.scrollLeft - cur.scrollLeft;
+            rec.steps.push({ action: 'keyboard Enter on focused Next', from: cur.scrollLeft, to: st.scrollLeft, delta: dk, scrollYBefore: fEnter.scrollY, scrollYAfter: st.scrollY });
+            await check(page, `${id}.kbd-enter`, 'focus Next + Enter advances one slide', fEnter.activeIsNext && Math.abs(dk - cw) <= 2 && st.nearestSlide === N, {
+                focusedNextBeforePress: fEnter.activeIsNext,
+                delta: dk,
+                nearestSlide: st.nearestSlide,
+                scrollYBefore: fEnter.scrollY,
+                scrollYAfter: st.scrollY,
+            });
+            cur = st;
+            // back one with Prev, then Space
+            await armTracker(page, i);
+            await press(page, prev, mobile);
+            await settle(page, i);
+            cur = await carState(page, i);
+            await next.focus();
+            const fSpace = await carState(page, i);
+            await armTracker(page, i);
+            await page.keyboard.press('Space');
+            s = await settle(page, i);
+            st = await carState(page, i);
+            const ds = st.scrollLeft - cur.scrollLeft;
+            rec.steps.push({ action: 'keyboard Space on focused Next', from: cur.scrollLeft, to: st.scrollLeft, delta: ds, scrollYBefore: fSpace.scrollY, scrollYAfter: st.scrollY });
+            await check(page, `${id}.kbd-space`, 'focus Next + Space advances one slide, page does not scroll', fSpace.activeIsNext && Math.abs(ds - cw) <= 2 && st.nearestSlide === N && Math.abs(st.scrollY - fSpace.scrollY) < 1, {
+                focusedNextBeforePress: fSpace.activeIsNext,
+                prevBeforeSpace: cur.nearestSlide,
+                delta: ds,
+                nearestSlide: st.nearestSlide,
+                scrollYBefore: fSpace.scrollY,
+                scrollYAfter: st.scrollY,
+            });
+            cur = st;
+            // --- images all loaded (every slide visited) ---
+            await page
+                .waitForFunction(
+                    ({ i, CAR }) => [...document.querySelectorAll(CAR)[i].querySelectorAll('img')].every(im => im.complete && im.naturalWidth > 0),
+                    { i, CAR },
+                    { timeout: 10000 }
+                )
+                .catch(() => {});
+            const stImg = await carState(page, i);
+            await check(page, `${id}.images`, 'every slide <img> complete && naturalWidth > 0', stImg.imgs.every(x => x && x.complete && x.nw > 0), {
+                loadedAtStart: rec.imgsLoadedAtStart,
+                imgs: stImg.imgs.map(x => ({ src: x?.src, nw: x?.nw, complete: x?.complete })),
+            });
+            // --- gesture (wheel / touch) from the end, towards previous (partial slide) ---
+            await armTracker(page, i);
+            const g1 = await gesture(page, cdp, sc, 0.4, -1, mobile);
+            s = await settle(page, i);
+            st = await carState(page, i);
+            const sn1 = snapInfo(st);
+            const moved1 = s.trk ? Math.max(s.trk.start - s.trk.min, s.trk.max - s.trk.start) : 0;
+            rec.steps.push({ action: `${g1.kind} 40% back from end`, gesture: g1, from: cur.scrollLeft, to: st.scrollLeft, maxDisplacement: moved1, snap: sn1, trk: s.trk });
+            await check(page, `${id}.${mobile ? 'swipe' : 'wheel'}-back`, `${mobile ? 'touch swipe' : 'horizontal wheel'} of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)`, moved1 > 5 && (sn1.modOk || sn1.geomOk) && sn1.geomOk, {
+                gesture: g1,
+                from: cur.scrollLeft,
+                settledAt: st.scrollLeft,
+                maxDisplacementDuringGesture: moved1,
+                scrollEvents: s.trk?.events,
+                modDist: sn1.modDist,
+                geomOffset: sn1.geomOffset,
+                landedOnSlide: sn1.nearestSlide,
+            });
+            cur = st;
+            // --- walk back to start with Prev ---
+            guard = 0;
+            const backDeltas = [];
+            while (!cur.prevDisabled && guard++ < N + 2) {
+                await armTracker(page, i);
+                await press(page, prev, mobile);
+                await settle(page, i);
+                st = await carState(page, i);
+                backDeltas.push(st.scrollLeft - cur.scrollLeft);
+                cur = st;
+            }
+            await check(page, `${id}.walk-start`, 'Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled', backDeltas.every(d => Math.abs(d + cw) <= 2) && cur.scrollLeft <= 1 && cur.prevDisabled === true && cur.nextDisabled === false, {
+                backDeltas,
+                scrollLeft: cur.scrollLeft,
+                prevDisabled: cur.prevDisabled,
+                nextDisabled: cur.nextDisabled,
+            });
+            // --- gesture forward from start (partial slide) ---
+            await armTracker(page, i);
+            const g2 = await gesture(page, cdp, sc, 0.4, +1, mobile);
+            s = await settle(page, i);
+            st = await carState(page, i);
+            const sn2 = snapInfo(st);
+            const moved2 = s.trk ? Math.max(s.trk.start - s.trk.min, s.trk.max - s.trk.start) : 0;
+            rec.steps.push({ action: `${g2.kind} 40% forward from start`, gesture: g2, from: cur.scrollLeft, to: st.scrollLeft, maxDisplacement: moved2, snap: sn2, trk: s.trk });
+            await check(page, `${id}.${mobile ? 'swipe' : 'wheel'}-fwd`, `${mobile ? 'touch swipe' : 'horizontal wheel'} of 40% slide (forward from start): scroller moved and settled snapped`, moved2 > 5 && sn2.geomOk, {
+                gesture: g2,
+                from: cur.scrollLeft,
+                settledAt: st.scrollLeft,
+                maxDisplacementDuringGesture: moved2,
+                scrollEvents: s.trk?.events,
+                modDist: sn2.modDist,
+                geomOffset: sn2.geomOffset,
+                landedOnSlide: sn2.nearestSlide,
+                buttonsAfter: { prevDisabled: st.prevDisabled, nextDisabled: st.nextDisabled },
+            });
+            // button state consistent with the position after a gesture
+            const consistent = st.prevDisabled === st.scrollLeft <= 0 && st.nextDisabled === !(st.scrollLeft + st.clientWidth < st.scrollWidth - 1);
+            await check(page, `${id}.buttons-track-gesture`, 'Prev/Next disabled state tracks the position after a gesture', consistent, { scrollLeft: st.scrollLeft, prevDisabled: st.prevDisabled, nextDisabled: st.nextDisabled });
+            cur = st;
+            {
+                // a longer gesture (70% of a slide) must advance to the next slide and snap
+                await armTracker(page, i);
+                const g3 = await gesture(page, cdp, sc, 0.7, +1, mobile);
+                s = await settle(page, i);
+                st = await carState(page, i);
+                const sn3 = snapInfo(st);
+                rec.steps.push({ action: `${g3.kind} 70% forward`, gesture: g3, from: cur.scrollLeft, to: st.scrollLeft, snap: sn3, trk: s.trk });
+                await check(page, `${id}.${mobile ? 'swipe' : 'wheel'}-70`, `${mobile ? 'touch swipe' : 'horizontal wheel'} of 70% slide advances to the next slide and snaps`, sn3.geomOk && sn3.modOk && (st.nearestSlide === Math.min(cur.nearestSlide + 1, N)), {
+                    gesture: g3,
+                    maxDisplacementDuringGesture: s.trk ? Math.max(s.trk.start - s.trk.min, s.trk.max - s.trk.start) : null,
+                    from: cur.scrollLeft,
+                    fromSlide: cur.nearestSlide,
+                    settledAt: st.scrollLeft,
+                    landedOnSlide: st.nearestSlide,
+                    geomOffset: sn3.geomOffset,
+                    modDist: sn3.modDist,
+                });
+            }
+        } catch (e) {
+            await check(page, `${id}.exception`, 'carousel test threw', false, { error: String(e).slice(0, 500) });
+        }
+    }
+    return perCar;
+}
+
+// parse any CSS color via canvas -> [r,g,b,a]
+async function colorProbe(page, i) {
+    return page.evaluate(
+        ({ i, CAR }) => {
+            const cv = document.createElement('canvas');
+            cv.width = cv.height = 1;
+            const c2 = cv.getContext('2d', { willReadFrequently: true });
+            const toRGBA = col => {
+                c2.clearRect(0, 0, 1, 1);
+                c2.fillStyle = '#000';
+                c2.fillStyle = col;
+                c2.fillRect(0, 0, 1, 1);
+                const d = c2.getImageData(0, 0, 1, 1).data;
+                return [d[0], d[1], d[2], d[3] / 255];
+            };
+            const lum = ([r, g, b]) => {
+                const f = v => {
+                    v /= 255;
+                    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+                };
+                return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+            };
+            const over = (fg, bg) => [0, 1, 2].map(k => fg[k] * fg[3] + bg[k] * (1 - fg[3]));
+            const sc = document.querySelectorAll(CAR)[i];
+            const next = sc.parentElement.querySelector('button[aria-label="Next slide"]');
+            const bodyBg = toRGBA(getComputedStyle(document.body).backgroundColor);
+            const btnBg = toRGBA(getComputedStyle(next).backgroundColor);
+            const btnFg = toRGBA(getComputedStyle(next).color);
+            const btnBgComposite = over(btnBg, bodyBg);
+            const L1 = lum(btnFg);
+            const L2 = lum(btnBgComposite);
+            const ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+            return {
+                theme: document.documentElement.getAttribute('data-theme'),
+                bodyBg: getComputedStyle(document.body).backgroundColor,
+                bodyBgRGBA: bodyBg,
+                btnBg: getComputedStyle(next).backgroundColor,
+                btnFg: getComputedStyle(next).color,
+                btnFgRGBA: btnFg,
+                btnBgCompositeRGB: btnBgComposite.map(Math.round),
+                iconVsButtonContrast: Math.round(ratio * 100) / 100,
+                scrollerBorderColor: getComputedStyle(sc).borderTopColor,
+                bodyLuminance: Math.round(lum(bodyBg) * 1000) / 1000,
+            };
+        },
+        { i, CAR }
+    );
+}
+
+// ======================= MAIN =======================
+const blockedBrowser = await chromium.launch({ channel: 'chrome', headless: true, args: [GA_BLOCK] });
+results.meta.browserVersion = blockedBrowser.version();
+
+// ---------- P0 ----------
+async function runP0() {
+    setLabel('P0');
+    const p0 = results.p0;
+    // (1) asset status
+    p0.assets = {};
+    for (const a of ['/~partytown/partytown.js', '/~partytown/partytown-sw.js', '/~partytown/partytown-sandbox-sw.html']) {
+        try {
+            const r = await fetch(BASE + a);
+            const body = await r.arrayBuffer();
+            p0.assets[a] = { status: r.status, contentType: r.headers.get('content-type'), bytes: body.byteLength };
+        } catch (e) {
+            p0.assets[a] = { error: String(e) };
+        }
+    }
+    const allAssets200 = Object.values(p0.assets).every(x => x.status === 200);
+    if (!IS_PROD) await check(null, 'P0.1.assets', 'Partytown assets partytown.js / partytown-sw.js / partytown-sandbox-sw.html all 200', allAssets200, p0.assets);
+    // (2) clean profile (branch: unmodified; prod: GA-blocked so no real hits are sent)
+    const cleanBrowser = IS_PROD ? blockedBrowser : await chromium.launch({ channel: 'chrome', headless: true });
+    p0.browser = { version: cleanBrowser.version(), gaBlocked: IS_PROD, profile: 'fresh non-persistent BrowserContext (no extensions; Playwright default launch)' };
+    const ctx = await newCtx(cleanBrowser, 'p0-clean');
+    const page = await ctx.newPage();
+    const cdp = await ctx.newCDPSession(page);
+    const mainTargetNet = [];
+    await cdp.send('Network.enable');
+    cdp.on('Network.requestWillBeSent', ev => {
+        if (/google|gtag/.test(ev.request.url)) mainTargetNet.push({ url: ev.request.url.slice(0, 140), type: ev.type, initiator: ev.initiator?.type, frameId: ev.frameId });
+    });
+    const pwReqs = [];
+    ctx.on('request', r => {
+        if (!/google|gtag|partytown/.test(r.url())) return;
+        let frame = null;
+        try {
+            frame = r.frame()?.url() ?? null;
+        } catch (e) {
+            frame = 'n/a: ' + String(e.message).split('\n')[0];
+        }
+        let sw = null;
+        try {
+            sw = r.serviceWorker()?.url() ?? null;
+        } catch {
+            /* ignore */
+        }
+        pwReqs.push({ url: r.url().slice(0, 140), type: r.resourceType(), frame: frame && frame.slice(0, 120), serviceWorker: sw });
+    });
+    const resp = await page.goto(BASE + '/posts/octoprint-prusa-core-one-raspberry-pi/', { waitUntil: 'load', timeout: 60000 });
+    await sleep(7000);
+    p0.status = resp?.status();
+    await visit(page, 'P0:/posts/octoprint-prusa-core-one-raspberry-pi/', 'goto');
+    p0.visibility = await page.evaluate(() => document.visibilityState);
+    p0.registrations = await page.evaluate(async () =>
+        (await navigator.serviceWorker.getRegistrations()).map(r => ({ scope: r.scope, active: r.active?.scriptURL ?? null, state: r.active?.state ?? null, installing: !!r.installing, waiting: !!r.waiting }))
+    );
+    p0.mainWindowResources = await page.evaluate(() => performance.getEntriesByType('resource').map(e => e.name).filter(n => /google|gtag/.test(n)));
+    p0.mainWindowGA = await page.evaluate(() => ({
+        dataLayerIsArray: Array.isArray(window.dataLayer),
+        typeofGtag: typeof window.gtag,
+        scripts: [...document.querySelectorAll('script[data-category="analytics"]')].map(s => ({ type: s.type, src: s.getAttribute('src') })),
+    }));
+    p0.frames = [];
+    for (const f of page.frames()) {
+        let res = null;
+        try {
+            res = await f.evaluate(() => performance.getEntriesByType('resource').map(e => e.name).filter(n => /google|gtag/.test(n)));
+        } catch (e) {
+            res = 'eval error: ' + String(e).slice(0, 100);
+        }
+        p0.frames.push({ url: f.url().slice(0, 140), isMain: f === page.mainFrame(), googleResources: res });
+    }
+    p0.workers = [];
+    for (const w of page.workers()) {
+        let res = null;
+        try {
+            res = await w.evaluate(() => performance.getEntriesByType('resource').map(e => e.name).filter(n => /google|gtag/.test(n)));
+        } catch (e) {
+            res = 'eval error: ' + String(e).slice(0, 100);
+        }
+        p0.workers.push({ url: w.url(), googleResources: res });
+    }
+    p0.serviceWorkers = ctx.serviceWorkers().map(w => w.url());
+    p0.playwrightRequests = pwReqs;
+    p0.mainTargetCdpRequests = mainTargetNet;
+    p0.requestsFailed = results.requestsFailed.filter(r => r.ctx === 'p0-clean');
+    p0.console = results.console.filter(c => c.ctx === 'p0-clean');
+    const swErr = p0.console.filter(c => (c.type === 'error' || c.source === 'pageerror') && /serviceworker|service worker/i.test(c.text));
+    const anyErr = p0.console.filter(c => c.type === 'error' || c.source === 'pageerror');
+    const reg = p0.registrations.find(r => /~partytown\/$/.test(r.scope));
+    const gtagInWorker = p0.workers.some(w => Array.isArray(w.googleResources) && w.googleResources.some(n => /googletagmanager\.com\/gtag\/js/.test(n)));
+    const gtagInMainWindow = p0.mainWindowResources.some(n => /googletagmanager/.test(n));
+    const gtagInMainCdp = mainTargetNet.some(r => /googletagmanager/.test(r.url));
+    p0.summary = { swRegistrationErrors: swErr, allErrors: anyErr, registrationActive: reg?.state === 'activated', gtagFetchedInWorker: gtagInWorker, gtagInMainWindowResourceTiming: gtagInMainWindow, gtagInMainTargetCdpNetwork: gtagInMainCdp };
+    if (!IS_PROD) {
+        await check(page, 'P0.2.no-sw-error', 'clean profile: no ServiceWorker registration error on the branch', swErr.length === 0, { swErrors: swErr, allConsoleErrorsOnPage: anyErr });
+        await check(page, 'P0.2.registration', 'Partytown SW registered + activated for scope /~partytown/', reg?.state === 'activated', p0.registrations);
+        await check(page, 'P0.2.gtag-via-worker', 'gtag.js fetched from the Partytown web worker, not the main thread', gtagInWorker && !gtagInMainWindow, {
+            workerResources: p0.workers,
+            mainWindowGoogleResources: p0.mainWindowResources,
+            mainTargetCdpGoogleRequests: mainTargetNet,
+            playwrightGoogleRequests: pwReqs.filter(r => /google/.test(r.url)),
+        });
+    }
+    await ctx.close();
+    if (!IS_PROD) await cleanBrowser.close();
+}
+
+async function runP1() {
+    const ctx = await newCtx(blockedBrowser, 'p1-desktop');
+    const page = await ctx.newPage();
+    results.details.P1 = {};
+    for (const slug of ['octoprint-prusa-core-one-raspberry-pi', 'flutter-google-maps-embedded-map']) {
+        results.details.P1[slug] = await sliderSuite(page, slug, 'P1');
+    }
+    await ctx.close();
+
+    // dark theme start state (theme set via the site's toggle button)
+    const ctxD = await newCtx(blockedBrowser, 'p1-dark');
+    const pd = await ctxD.newPage();
+    results.details.P1dark = {};
+    for (const slug of ['octoprint-prusa-core-one-raspberry-pi', 'flutter-google-maps-embedded-map']) {
+        setLabel(`P1dark:${slug}`);
+        await pd.goto(BASE + `/posts/${slug}/`, { waitUntil: 'load' });
+        await visit(pd, `P1dark:${slug}`, 'goto');
+        if ((await pd.locator(CAR).count()) === 0) {
+            await check(pd, `P1dark.${slug}.present`, 'carousel present (content missing on this target)', false, { url: pd.url() });
+            continue;
+        }
+        const before = await pd.evaluate(() => ({ theme: document.documentElement.getAttribute('data-theme'), ls: localStorage.getItem('theme') }));
+        const lightColors = await colorProbe(pd, 0);
+        if (before.theme !== 'dark') {
+            await pd.locator('#theme-btn').click();
+            await pd.waitForFunction(() => document.documentElement.getAttribute('data-theme') === 'dark', null, { timeout: 5000 }).catch(() => {});
+        }
+        // let the 150ms color/background CSS transitions (Tailwind `transition`) finish before measuring colors
+        const animsAfterToggle = await pd.evaluate(async () => {
+            const a = document.getAnimations();
+            await Promise.all(a.map(x => x.finished.catch(() => {})));
+            await new Promise(r => setTimeout(r, 250));
+            return { count: a.length, remaining: document.getAnimations().length };
+        });
+        const after = await pd.evaluate(() => ({ theme: document.documentElement.getAttribute('data-theme'), ls: localStorage.getItem('theme'), btnLabel: document.querySelector('#theme-btn')?.getAttribute('aria-label') }));
+        after.animsAfterToggle = animsAfterToggle;
+        await check(pd, `P1dark.${slug}.toggle`, 'theme toggle button switched the page to dark', after.theme === 'dark', { before, after });
+        const n = await pd.locator(CAR).count();
+        const recs = [];
+        for (let i = 0; i < n; i++) {
+            const sc = pd.locator(CAR).nth(i);
+            await sc.scrollIntoViewIfNeeded();
+            await pd
+                .waitForFunction(
+                    ({ i, CAR }) => {
+                        const s = document.querySelectorAll(CAR)[i];
+                        return s.querySelectorAll('[aria-roledescription="slide"]').length <= 1 || !s.parentElement.querySelector('button[aria-label="Next slide"]').disabled;
+                    },
+                    { i, CAR },
+                    { timeout: 5000 }
+                )
+                .catch(() => {});
+            const st = await carState(pd, i);
+            const col = await colorProbe(pd, i);
+            recs.push({ st, col });
+            const N = st.slideCount;
+            await check(pd, `P1dark.${slug}.c${i + 1}.start`, 'dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1', N === st.expectedN && N > 0 && st.scrollLeft <= 1 && st.prevDisabled === true && (N < 2 ? st.nextDisabled === true : st.nextDisabled === false) && col.theme === 'dark' && col.iconVsButtonContrast >= 3, {
+                N,
+                expectedN: st.expectedN,
+                scrollLeft: st.scrollLeft,
+                prevDisabled: st.prevDisabled,
+                nextDisabled: st.nextDisabled,
+                colors: col,
+            });
+        }
+        const shot = path.join(SHOTS, `dark-carousel-${slug}.png`);
+        await pd.locator(CAR).first().scrollIntoViewIfNeeded();
+        await pd.locator(CAR).first().locator('xpath=..').screenshot({ path: shot });
+        results.details.P1dark[slug] = { lightColorsFirstCarousel: lightColors, carousels: recs, screenshot: shot };
+        // reset to light for next page via toggle, and verify
+        await pd.locator('#theme-btn').click();
+        await pd.waitForFunction(() => document.documentElement.getAttribute('data-theme') === 'light', null, { timeout: 5000 }).catch(() => {});
+    }
+    await ctxD.close();
+
+    // mobile 375x812 with touch
+    const ctxM = await newCtx(blockedBrowser, 'p1-mobile', { viewport: MOBILE, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
+    const pm = await ctxM.newPage();
+    const cdp = await ctxM.newCDPSession(pm);
+    results.details.P1mobile = await sliderSuite(pm, 'octoprint-prusa-core-one-raspberry-pi', 'P1m', { mobile: true, cdp });
+    await pm.locator(CAR).first().scrollIntoViewIfNeeded();
+    await pm.screenshot({ path: path.join(SHOTS, 'mobile-carousel-octoprint.png') });
+    await ctxM.close();
+}
+
+async function runP2() {
+    const ctx = await newCtx(blockedBrowser, 'p2-search');
+    const page = await ctx.newPage();
+    setLabel('P2:search');
+    await go(page, '/search/', 'P2:/search/');
+    const input = page.locator('input[name="search"]');
+    await input.click();
+    await page.keyboard.type('hiring', { delay: 60 });
+    await page.waitForFunction(() => document.querySelectorAll('astro-island ul li').length > 0, null, { timeout: 5000 }).catch(() => {});
+    await sleep(300);
+    const r1 = await page.evaluate(() => ({
+        value: document.querySelector('input[name="search"]').value,
+        items: [...document.querySelectorAll('astro-island ul li a')].map(a => ({ href: a.getAttribute('href'), title: a.textContent.trim() })),
+        found: [...document.querySelectorAll('astro-island div')].map(d => d.textContent.trim()).find(t => /^Found \d+/.test(t)) || null,
+        search: location.search,
+    }));
+    await check(page, 'P2.type', "real keyboard typing 'hiring' lists ≥1 result", r1.value === 'hiring' && r1.items.length >= 1, { value: r1.value, count: r1.items.length, found: r1.found, first3: r1.items.slice(0, 3) });
+    await check(page, 'P2.url', 'URL contains ?q=hiring', r1.search === '?q=hiring' && page.url().includes('?q=hiring'), { search: r1.search, url: page.url() });
+    setLabel('P2:reload');
+    await page.reload({ waitUntil: 'load' });
+    await visit(page, 'P2:reload', 'reload');
+    await page.waitForFunction(() => document.querySelectorAll('astro-island ul li').length > 0, null, { timeout: 5000 }).catch(() => {});
+    await sleep(300);
+    const r2 = await page.evaluate(() => ({
+        value: document.querySelector('input[name="search"]').value,
+        items: [...document.querySelectorAll('astro-island ul li a')].map(a => a.getAttribute('href')),
+        url: location.href,
+    }));
+    await check(page, 'P2.reload', "after reload: input value 'hiring' and the same results restored", r2.value === 'hiring' && r2.items.length === r1.items.length && JSON.stringify(r2.items) === JSON.stringify(r1.items.map(x => x.href)), { value: r2.value, count: r2.items.length, before: r1.items.length, url: r2.url });
+    // click the first result
+    setLabel('P2:click-result');
+    const firstHref = r2.items[0];
+    const chain = [];
+    const onResp = resp => {
+        const u = new URL(resp.url());
+        if (u.pathname.startsWith('/posts/')) chain.push({ url: resp.url(), status: resp.status(), type: resp.request().resourceType(), redirectedFrom: resp.request().redirectedFrom()?.url() ?? null });
+    };
+    page.on('response', onResp);
+    const marker = await page.evaluate(() => (window.__pwMarker = 'm' + Math.random()));
+    await page.locator('astro-island ul li a').first().click();
+    await page.waitForFunction(h => location.pathname.startsWith(h.replace(/\/$/, '')) && !!document.querySelector('main h1, article h1, h1'), firstHref, { timeout: 15000 }).catch(() => {});
+    await page.waitForLoadState('load');
+    await sleep(500);
+    page.off('response', onResp);
+    const v = await visit(page, 'P2:result', 'click');
+    const landed = await page.evaluate(() => ({ path: location.pathname, h1: document.querySelector('h1')?.textContent.trim(), markerSurvived: window.__pwMarker }));
+    const finalResp = chain.filter(c => !(c.status >= 300 && c.status < 400)).pop();
+    await check(page, 'P2.click-result', 'clicking first result navigates to /posts/<slug> with a 200 response', landed.path.startsWith('/posts/') && finalResp?.status === 200 && landed.path.replace(/\/$/, '') === firstHref.replace(/\/$/, ''), {
+        href: firstHref,
+        landedPath: landed.path,
+        h1: landed.h1,
+        responseChain: chain,
+        clientSideNav: landed.markerSurvived === marker,
+        islandsSsrRemaining: v.islandsSsrRemaining,
+    });
+    // no-match query
+    setLabel('P2:nomatch');
+    await go(page, '/search/', 'P2:/search/ (no-match)');
+    await page.locator('input[name="search"]').click();
+    await page.keyboard.type('zzzzqqq', { delay: 40 });
+    await sleep(600);
+    const r3 = await page.evaluate(() => ({
+        value: document.querySelector('input[name="search"]').value,
+        items: document.querySelectorAll('astro-island ul li').length,
+        found: [...document.querySelectorAll('astro-island div')].map(d => d.textContent.trim()).find(t => /^Found \d+/.test(t)) || null,
+        search: location.search,
+    }));
+    const errs = results.console.filter(c => c.label === 'P2:nomatch' && (c.type === 'error' || c.source === 'pageerror'));
+    await check(page, 'P2.nomatch', "no-match query 'zzzzqqq' shows 'Found 0 results' with no list items and no errors", r3.items === 0 && r3.found === "Found 0 results for 'zzzzqqq'" && errs.length === 0, { ...r3, errors: errs });
+    await ctx.close();
+}
+
+async function tagsState(page) {
+    return page.evaluate(() => {
+        const items = [...document.querySelectorAll('astro-island ul li a')].map(a => {
+            const spans = a.querySelectorAll(':scope > span');
+            return { tag: a.getAttribute('href').replace(/^\/tags\//, '').replace(/\/$/, ''), count: Number(spans[2]?.textContent.trim()) };
+        });
+        const btns = [...document.querySelectorAll('astro-island button[aria-pressed]')].map(b => ({ text: b.textContent.trim(), pressed: b.getAttribute('aria-pressed') }));
+        const summary = [...document.querySelectorAll('astro-island div')].map(d => d.textContent.trim()).find(t => /^\d+ of \d+ tags/.test(t)) || null;
+        return { items, btns, summary };
+    });
+}
+const isCountSorted = items => items.every((t, k) => k === 0 || items[k - 1].count > t.count || (items[k - 1].count === t.count && items[k - 1].tag.localeCompare(t.tag) <= 0));
+const isAlphaSorted = items => items.every((t, k) => k === 0 || items[k - 1].tag.localeCompare(t.tag) <= 0);
+
+async function runP3() {
+    const ctx = await newCtx(blockedBrowser, 'p3-tags');
+    const page = await ctx.newPage();
+    setLabel('P3:tags');
+    await go(page, '/tags/', 'P3:/tags/');
+    const s0 = await tagsState(page);
+    await check(page, 'P3.initial-count-sort', 'initial list sorted by count (desc, ties alphabetical), count button pressed', s0.items.length > 0 && isCountSorted(s0.items) && s0.btns.find(b => b.text === 'count')?.pressed === 'true', { total: s0.items.length, first5: s0.items.slice(0, 5), summary: s0.summary, btns: s0.btns });
+    await page.locator('input[aria-label="Filter tags"]').click();
+    await page.keyboard.type('engin', { delay: 60 });
+    await sleep(400);
+    const s1 = await tagsState(page);
+    await check(page, 'P3.filter', "typing 'engin' narrows the list, contains engineering-management, every item matches", s1.items.length > 0 && s1.items.length < s0.items.length && s1.items.some(t => t.tag === 'engineering-management') && s1.items.every(t => t.tag.toLowerCase().includes('engin')), {
+        before: s0.items.length,
+        after: s1.items.length,
+        items: s1.items,
+        summary: s1.summary,
+    });
+    await page.locator('astro-island button[aria-pressed]', { hasText: 'a→z' }).click();
+    await sleep(300);
+    const s2 = await tagsState(page);
+    await check(page, 'P3.sort-alpha-filtered', 'a→z sort (filtered list) is alphabetical', isAlphaSorted(s2.items) && s2.items.length === s1.items.length && s2.btns.find(b => b.text === 'a→z')?.pressed === 'true', { items: s2.items.map(t => t.tag), btns: s2.btns });
+    // clear filter with the × button -> full list alphabetical
+    await page.locator('button[aria-label="Clear filter"]').click();
+    await sleep(300);
+    const s3 = await tagsState(page);
+    const inputVal = await page.locator('input[aria-label="Filter tags"]').inputValue();
+    await check(page, 'P3.sort-alpha-full', 'after Clear filter: full list, alphabetical order', s3.items.length === s0.items.length && isAlphaSorted(s3.items) && inputVal === '' && !isCountSorted(s3.items), { total: s3.items.length, first5: s3.items.slice(0, 5).map(t => t.tag), last3: s3.items.slice(-3).map(t => t.tag), inputVal });
+    await page.locator('astro-island button[aria-pressed]', { hasText: 'count' }).click();
+    await sleep(300);
+    const s4 = await tagsState(page);
+    await check(page, 'P3.sort-count', 'count sort: counts non-increasing (ties alphabetical)', s4.items.length === s0.items.length && isCountSorted(s4.items) && s4.btns.find(b => b.text === 'count')?.pressed === 'true', { first8: s4.items.slice(0, 8), last3: s4.items.slice(-3) });
+    // click a tag
+    setLabel('P3:tag-detail');
+    const chain = [];
+    const onResp = resp => {
+        if (new URL(resp.url()).pathname.startsWith('/tags/engineering-management')) chain.push({ url: resp.url(), status: resp.status(), type: resp.request().resourceType() });
+    };
+    page.on('response', onResp);
+    await page.locator('astro-island ul li a[href="/tags/engineering-management/"]').click();
+    await page.waitForFunction(() => location.pathname === '/tags/engineering-management/', null, { timeout: 15000 }).catch(() => {});
+    await page.waitForLoadState('load');
+    await sleep(500);
+    page.off('response', onResp);
+    await visit(page, 'P3:/tags/engineering-management/', 'click');
+    const d = await page.evaluate(() => ({ path: location.pathname, h1: document.querySelector('h1')?.textContent.trim(), posts: document.querySelectorAll('main li a[href^="/posts/"]').length }));
+    await check(page, 'P3.tag-click', 'clicking a tag opens /tags/<tag>/ (200)', d.path === '/tags/engineering-management/' && chain.some(c => c.status === 200) && d.posts > 0, { ...d, responses: chain });
+    await ctx.close();
+}
+
+// the carousel post is linked from home on the branch/main; the older production deploy may not have it
+async function postLink(page) {
+    const pref = 'main a[href="/posts/octoprint-prusa-core-one-raspberry-pi/"]';
+    const sel = (await page.locator(pref).count()) > 0 ? pref : 'main a[href^="/posts/"]:not([href="/posts/"])';
+    const href = await page.locator(sel).first().getAttribute('href');
+    return { loc: page.locator(sel).first(), href, fallback: sel !== pref };
+}
+
+async function runP4() {
+    const ctx = await newCtx(blockedBrowser, 'p4-router');
+    const page = await ctx.newPage();
+    setLabel('P4:home');
+    await go(page, '/', 'P4:/');
+    let fullLoads = 0;
+    let dcls = 0;
+    page.on('load', () => fullLoads++);
+    page.on('domcontentloaded', () => dcls++);
+    await page.evaluate(() => {
+        window.__pwMarker = 'P4-' + Math.random();
+        window.__pwPageLoads = 0;
+        document.addEventListener('astro:page-load', () => window.__pwPageLoads++);
+    });
+    const marker = await page.evaluate(() => window.__pwMarker);
+    const nav = async (locator, expectPath, label) => {
+        setLabel(label);
+        const before = await page.evaluate(() => window.__pwPageLoads);
+        await locator.click();
+        await page.waitForFunction(({ p, b }) => location.pathname === p && window.__pwPageLoads > b, { p: expectPath, b: before }, { timeout: 15000 }).catch(() => {});
+        await sleep(400);
+        const v = await visit(page, label, 'client-nav');
+        const st = await page.evaluate(() => ({ path: location.pathname, marker: window.__pwMarker, pageLoads: window.__pwPageLoads }));
+        return { ...st, fullLoads, dcls, islandsSsrRemaining: v.islandsSsrRemaining, islands: v.islands };
+    };
+    // home -> carousel post
+    const pl = await postLink(page);
+    const n1 = await nav(pl.loc, pl.href, 'P4:post');
+    n1.linkUsed = pl.href;
+    n1.fallbackLink = pl.fallback;
+    await check(page, 'P4.nav-post', 'home → carousel post is client-side (marker survives, no load event), islands hydrated', n1.path === '/posts/octoprint-prusa-core-one-raspberry-pi/' && n1.marker === marker && n1.fullLoads === 0 && n1.islandsSsrRemaining === 0 && n1.islands > 0, n1);
+    // island interaction: Next click on first carousel
+    const sc = page.locator(CAR).first();
+    if ((await sc.count()) === 0) throw new Error('no carousel on ' + page.url() + ' (fallback link used: ' + pl.fallback + ')');
+    await sc.scrollIntoViewIfNeeded();
+    await page.waitForFunction(CAR => !document.querySelector(CAR).parentElement.querySelector('button[aria-label="Next slide"]').disabled, CAR, { timeout: 5000 }).catch(() => {});
+    const a = await carState(page, 0);
+    await armTracker(page, 0);
+    await sc.locator('xpath=..').locator('button[aria-label="Next slide"]').click();
+    await settle(page, 0);
+    const b = await carState(page, 0);
+    await check(page, 'P4.post-island', 'after client nav: carousel Next click advances by clientWidth ±2', Math.abs(b.scrollLeft - a.scrollLeft - a.clientWidth) <= 2 && a.prevDisabled === true, { from: a.scrollLeft, to: b.scrollLeft, clientWidth: a.clientWidth, prevDisabledBefore: a.prevDisabled, prevDisabledAfter: b.prevDisabled });
+    // header -> /search/
+    const n2 = await nav(page.locator('header a[href="/search/"]'), '/search/', 'P4:search');
+    await check(page, 'P4.nav-search', 'header search link → /search/ is client-side, island hydrated', n2.path === '/search/' && n2.marker === marker && n2.fullLoads === 0 && n2.islandsSsrRemaining === 0 && n2.islands === 1, n2);
+    await page.locator('input[name="search"]').click();
+    await page.keyboard.type('hiring', { delay: 60 });
+    await page.waitForFunction(() => document.querySelectorAll('astro-island ul li').length > 0, null, { timeout: 5000 }).catch(() => {});
+    const sr = await page.evaluate(() => ({ items: document.querySelectorAll('astro-island ul li').length, search: location.search }));
+    await check(page, 'P4.search-island', "after client nav: typing 'hiring' lists results and sets ?q=hiring", sr.items >= 1 && sr.search === '?q=hiring', sr);
+    // header -> /tags/
+    const n3 = await nav(page.locator('header a[href="/tags/"]'), '/tags/', 'P4:tags');
+    await check(page, 'P4.nav-tags', 'header Tags link → /tags/ is client-side, island hydrated', n3.path === '/tags/' && n3.marker === marker && n3.fullLoads === 0 && n3.islandsSsrRemaining === 0 && n3.islands === 1, n3);
+    const t0 = await tagsState(page);
+    await page.locator('input[aria-label="Filter tags"]').click();
+    await page.keyboard.type('engin', { delay: 60 });
+    await sleep(400);
+    const t1 = await tagsState(page);
+    await check(page, 'P4.tags-island', "after client nav: filter 'engin' narrows list and includes engineering-management", t1.items.length > 0 && t1.items.length < t0.items.length && t1.items.some(t => t.tag === 'engineering-management'), { before: t0.items.length, after: t1.items.length });
+    results.details.P4 = { n1, n2, n3, fullLoadsTotal: fullLoads, domcontentloadedTotal: dcls };
+    await ctx.close();
+
+    // P4b: dark theme across two client-side navigations, sampled every animation frame
+    const ctxB = await newCtx(blockedBrowser, 'p4b-theme-nav');
+    const pb = await ctxB.newPage();
+    setLabel('P4b:home');
+    await go(pb, '/', 'P4b:/');
+    await pb.locator('#theme-btn').click();
+    await pb.waitForFunction(() => document.documentElement.getAttribute('data-theme') === 'dark', null, { timeout: 5000 }).catch(() => {});
+    const darkBg = await pb.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    await pb.evaluate(() => {
+        window.__pwMarker = 'P4b';
+        window.__frames = [];
+        window.__mut = [];
+        window.__pwPageLoads = 0;
+        document.addEventListener('astro:page-load', () => window.__pwPageLoads++);
+        new MutationObserver(ms => ms.forEach(m => window.__mut.push({ t: Math.round(performance.now()), attr: m.attributeName, old: m.oldValue, now: document.documentElement.getAttribute('data-theme') }))).observe(document.documentElement, { attributes: true, attributeOldValue: true, attributeFilter: ['data-theme'] });
+        const loop = () => {
+            window.__frames.push([document.documentElement.getAttribute('data-theme'), document.body ? getComputedStyle(document.body).backgroundColor : null, location.pathname]);
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+    });
+    const navB = async (loc, p, label) => {
+        setLabel(label);
+        const before = await pb.evaluate(() => window.__pwPageLoads);
+        await loc.click();
+        await pb.waitForFunction(({ p, b }) => location.pathname === p && window.__pwPageLoads > b, { p, b: before }, { timeout: 15000 }).catch(() => {});
+        await sleep(600);
+        await visit(pb, label, 'client-nav');
+    };
+    await navB(pb.locator('header a[href="/posts/"]'), '/posts/', 'P4b:posts');
+    await navB(pb.locator('header a[href="/tags/"]'), '/tags/', 'P4b:tags');
+    const fr = await pb.evaluate(() => ({ frames: window.__frames, mut: window.__mut, marker: window.__pwMarker, path: location.pathname, theme: document.documentElement.getAttribute('data-theme'), btn: document.querySelector('#theme-btn')?.getAttribute('aria-label') }));
+    const badFrames = fr.frames.filter(f => f[0] !== 'dark' || f[1] !== darkBg);
+    await check(pb, 'P4b.theme-persist-client-nav', 'dark theme persists across 2 client-side navigations with no non-dark animation frame', fr.marker === 'P4b' && fr.path === '/tags/' && fr.theme === 'dark' && badFrames.length === 0 && fr.frames.length > 10, {
+        framesSampled: fr.frames.length,
+        pathsSeen: [...new Set(fr.frames.map(f => f[2]))],
+        nonDarkFrames: badFrames.slice(0, 10),
+        darkBg,
+        dataThemeMutations: fr.mut,
+        themeBtnAriaLabel: fr.btn,
+    });
+    // toggle still works after client-side nav (listener rebound on astro:after-swap)
+    await pb.locator('#theme-btn').click();
+    const t1b = await pb.evaluate(() => document.documentElement.getAttribute('data-theme'));
+    await pb.locator('#theme-btn').click();
+    const t2b = await pb.evaluate(() => document.documentElement.getAttribute('data-theme'));
+    await check(pb, 'P4b.toggle-after-nav', 'theme toggle still works after client-side navigation (dark→light→dark)', t1b === 'light' && t2b === 'dark', { afterFirstClick: t1b, afterSecondClick: t2b });
+    results.details.P4b = { framesSampled: fr.frames.length, mutations: fr.mut };
+    await ctxB.close();
+}
+
+async function runP5() {
+    const ctx = await newCtx(blockedBrowser, 'p5-fouc');
+    await ctx.addInitScript(() => {
+        window.__fouc = { firstRafWithBody: null, dcl: null };
+        document.addEventListener('DOMContentLoaded', () => {
+            window.__fouc.dcl = { theme: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.body).backgroundColor, t: Math.round(performance.now()) };
+        });
+        const loop = () => {
+            if (document.body && !window.__fouc.firstRafWithBody) {
+                window.__fouc.firstRafWithBody = { theme: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.body).backgroundColor, t: Math.round(performance.now()) };
+                return;
+            }
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+    });
+    const page = await ctx.newPage();
+    setLabel('P5:home');
+    await go(page, '/', 'P5:/');
+    const light = await page.evaluate(() => ({ theme: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.body).backgroundColor, ls: localStorage.getItem('theme'), fouc: window.__fouc }));
+    await page.locator('#theme-btn').click();
+    await page.waitForFunction(() => document.documentElement.getAttribute('data-theme') === 'dark', null, { timeout: 5000 }).catch(() => {});
+    const dark = await page.evaluate(() => ({ theme: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.body).backgroundColor, ls: localStorage.getItem('theme'), btn: document.querySelector('#theme-btn')?.getAttribute('aria-label'), metaThemeColor: document.querySelector("meta[name='theme-color']")?.getAttribute('content') }));
+    await check(page, 'P5.toggle', 'toggle on / sets data-theme=dark and localStorage.theme=dark; body bg changes', dark.theme === 'dark' && dark.ls === 'dark' && dark.bg !== light.bg && light.theme === 'light', { light, dark });
+    const pages = ['/posts/', '/tags/', '/about/', '/posts/audio-vs-paper-books/'];
+    const rows = [];
+    for (const p of pages) {
+        setLabel(`P5:${p}`);
+        await go(page, p, `P5:${p}`);
+        const r = await page.evaluate(() => ({ fouc: window.__fouc, theme: document.documentElement.getAttribute('data-theme'), ls: localStorage.getItem('theme'), bgNow: getComputedStyle(document.body).backgroundColor, btn: document.querySelector('#theme-btn')?.getAttribute('aria-label') }));
+        rows.push({ page: p, ...r });
+        const ok = r.fouc.dcl?.theme === 'dark' && r.fouc.dcl?.bg === dark.bg && r.fouc.firstRafWithBody?.theme === 'dark' && r.fouc.firstRafWithBody?.bg === dark.bg && r.theme === 'dark' && r.ls === 'dark';
+        await check(page, `P5.fouc.${p}`, `full load ${p}: dark already at DOMContentLoaded and first rAF (bg == measured dark ${dark.bg})`, ok, r);
+    }
+    // persistence: reload + a brand-new tab in the same context
+    setLabel('P5:reload');
+    await page.reload({ waitUntil: 'load' });
+    const rl = await page.evaluate(() => ({ theme: document.documentElement.getAttribute('data-theme'), ls: localStorage.getItem('theme'), dcl: window.__fouc.dcl }));
+    const p2 = await ctx.newPage();
+    setLabel('P5:newtab');
+    await p2.goto(BASE + '/tips/', { waitUntil: 'load' });
+    await visit(p2, 'P5:/tips/ (new tab)', 'goto');
+    const nt = await p2.evaluate(() => ({ theme: document.documentElement.getAttribute('data-theme'), ls: localStorage.getItem('theme'), dcl: window.__fouc.dcl }));
+    await check(page, 'P5.persist', 'localStorage persistence: reload and a new tab both render dark from first paint', rl.theme === 'dark' && rl.ls === 'dark' && rl.dcl?.theme === 'dark' && nt.theme === 'dark' && nt.dcl?.theme === 'dark' && nt.dcl?.bg === dark.bg, { reload: rl, newTab: nt });
+    results.details.P5 = { light, dark, rows };
+    await ctx.close();
+}
+
+async function runP6() {
+    const ctx = await newCtx(blockedBrowser, 'p6-toc');
+    const page = await ctx.newPage();
+    results.details.P6 = {};
+    for (const slug of ['audio-vs-paper-books', 'dad-ops-playbook']) {
+        setLabel(`P6:${slug}`);
+        await go(page, `/posts/${slug}/`, `P6:${slug}`);
+        const det = page.locator('details', { has: page.locator('summary', { hasText: 'Table of contents' }) });
+        const cnt = await det.count();
+        const s0 = await det.first().evaluate(d => ({ open: d.open, summary: d.querySelector('summary').textContent.trim(), links: [...d.querySelectorAll('a')].map(a => a.getAttribute('href')) }));
+        const firstLinkVisibleClosed = await det.first().locator('a').first().isVisible();
+        await det.first().locator('summary').click();
+        await sleep(200);
+        const openAfter = await det.first().evaluate(d => d.open);
+        const firstLinkVisibleOpen = await det.first().locator('a').first().isVisible();
+        const anchors = await page.evaluate(links => links.map(h => ({ href: h, exists: h.startsWith('#') && !!document.getElementById(decodeURIComponent(h.slice(1))) })), s0.links);
+        await check(page, `P6.${slug}.collapse`, `TOC <details> closed initially, opens on summary click`, cnt === 1 && s0.open === false && !firstLinkVisibleClosed && openAfter === true && firstLinkVisibleOpen, { detailsCount: cnt, summary: s0.summary, openInitially: s0.open, linkVisibleWhenClosed: firstLinkVisibleClosed, openAfterClick: openAfter, linkVisibleWhenOpen: firstLinkVisibleOpen });
+        await check(page, `P6.${slug}.anchors`, 'every TOC link targets an existing in-page id', anchors.length > 0 && anchors.every(a => a.exists), { links: anchors.length, missing: anchors.filter(a => !a.exists) });
+        // click two links for real
+        const clicked = [];
+        for (const idx of [1, anchors.length - 1]) {
+            const href = s0.links[idx];
+            await det.first().locator('a').nth(idx).click();
+            await page.waitForFunction(h => location.hash === h, href, { timeout: 5000 }).catch(() => {});
+            // wait for (smooth) window scroll to settle
+            await page.evaluate(async () => {
+                let last = scrollY;
+                let stable = 0;
+                const t0 = performance.now();
+                while (performance.now() - t0 < 5000) {
+                    await new Promise(r => setTimeout(r, 50));
+                    if (scrollY === last) {
+                        if (++stable >= 8) break;
+                    } else {
+                        stable = 0;
+                        last = scrollY;
+                    }
+                }
+            });
+            const r = await page.evaluate(h => {
+                const el = document.getElementById(decodeURIComponent(h.slice(1)));
+                const top = el.getBoundingClientRect().top;
+                return { hash: location.hash, path: location.pathname, targetTop: Math.round(top), scrollY: Math.round(scrollY), atBottom: Math.ceil(scrollY + innerHeight) >= document.documentElement.scrollHeight - 2 };
+            }, href);
+            clicked.push({ href, ...r });
+        }
+        await check(page, `P6.${slug}.navigate`, 'clicking TOC links scrolls to the in-page anchor (hash set, target in viewport)', clicked.every(c => c.hash === c.href && c.path === `/posts/${slug}/` && c.targetTop >= -2 && (c.targetTop < 300 || c.atBottom)), { clicked });
+        results.details.P6[slug] = { s0, anchors, clicked };
+    }
+    await ctx.close();
+}
+
+// P8: characterise console errors raised by the Partytown worker during ClientRouter navigation,
+// as a function of how long the page lived before navigating away (same flow on branch and prod).
+async function runP8() {
+    results.details.P8 = [];
+    for (const dwell of [500, 3000, 10000]) {
+        for (let rep = 1; rep <= 2; rep++) {
+            const name = `p8-dwell${dwell}-r${rep}`;
+            let pl = null;
+            const ctx = await newCtx(blockedBrowser, name);
+            const page = await ctx.newPage();
+            setLabel(`P8:${dwell}:${rep}:home`);
+            await page.goto(BASE + '/', { waitUntil: 'load' });
+            await sleep(dwell);
+            setLabel(`P8:${dwell}:${rep}:post`);
+            pl = await postLink(page);
+            await pl.loc.click();
+            await page.waitForFunction(h => location.pathname === h, pl.href, { timeout: 15000 }).catch(() => {});
+            await sleep(dwell);
+            setLabel(`P8:${dwell}:${rep}:search`);
+            await page.locator('header a[href="/search/"]').click();
+            await page.waitForFunction(() => location.pathname === '/search/', null, { timeout: 15000 }).catch(() => {});
+            await sleep(3000);
+            const errs = results.console.filter(c => c.ctx === name && c.source === 'page' && c.type === 'error');
+            const pageErrors = results.console.filter(c => c.ctx === name && c.source === 'pageerror');
+            results.details.P8.push({
+                dwellMs: dwell,
+                rep,
+                postLink: pl.href,
+                pageConsoleErrors: errs.length,
+                pageErrors: pageErrors.length,
+                proxytownErrors: errs.filter(e => /proxytown/.test(e.text)).length,
+                otherErrors: errs.filter(e => !/proxytown/.test(e.text)).map(e => e.text.split('\n')[0]),
+                abortedProxytownXHR: results.requestsFailed.filter(r => r.ctx === name && /proxytown/.test(r.url)).length,
+            });
+            await ctx.close();
+        }
+    }
+}
+
+const runners = { P0: runP0, P1: runP1, P2: runP2, P3: runP3, P4: runP4, P5: runP5, P6: runP6, P8: runP8 };
+const only = (process.env.ONLY || 'P0,P1,P2,P3,P4,P5,P6,P8').split(',');
+for (const k of only) {
+    try {
+        await runners[k]();
+    } catch (e) {
+        await check(null, `${k}.exception`, `${k} runner threw`, false, { error: String(e?.stack || e).slice(0, 800) });
+    }
+}
+
+// ---------- P7 hydration sanity ----------
+const hydrationMsgs = results.console.filter(c => /hydrat|Minified React error #(418|419|422|423|425)|did not match|server rendered HTML/i.test(c.text || ''));
+const badVisits = results.visits.filter(v => v.islandsSsrRemaining !== 0);
+results.details.P7 = { visits: results.visits.length, islandsTotalAcrossVisits: results.visits.reduce((a, v) => a + v.islands, 0), badVisits, hydrationMsgs };
+await check(null, 'P7.islands-hydrated', `no astro-island[ssr] remains after load/navigation on any visited page (${results.visits.length} visits)`, badVisits.length === 0 && results.visits.length > 0, { visits: results.visits.length, badVisits });
+await check(null, 'P7.no-hydration-warnings', 'no React hydration warnings/errors in console (page + workers)', hydrationMsgs.length === 0, { hydrationMsgs });
+
+// ---------- console summary ----------
+// page.on('console') already includes messages from the page's dedicated workers, so count
+// source 'page' + 'pageerror' + 'crash' + 'serviceworker' (worker-sourced duplicates are kept in the raw log only).
+const counted = c => c.source === 'page' || c.source === 'pageerror' || c.source === 'crash' || c.source === 'serviceworker';
+const errs = results.console.filter(c => counted(c) && (c.type === 'error' || c.source === 'pageerror' || c.source === 'crash'));
+const warns = results.console.filter(c => counted(c) && c.type === 'warning');
+const origin = new URL(BASE).origin;
+const normSig = t => String(t).split('\n')[0].split(origin).join('ORIGIN').replace(/blob:ORIGIN\/[0-9a-f-]+/g, 'blob:ORIGIN/UUID').replace(/\/_astro\/([A-Za-z0-9_-]+)\.[A-Za-z0-9_-]{6,}\.js/g, '/_astro/$1.js').replace(/:\d+:\d+/g, '').replace(/\?\d{10,}/g, '?TS');
+results.consoleSignatures = { errors: {}, warnings: {} };
+for (const e of errs) {
+    const k = `${e.source}|${normSig(e.text)}`;
+    (results.consoleSignatures.errors[k] ||= { count: 0, labels: [] }).count++;
+    if (!results.consoleSignatures.errors[k].labels.includes(e.label)) results.consoleSignatures.errors[k].labels.push(e.label);
+}
+for (const e of warns) {
+    const k = `${e.source}|${normSig(e.text)}`;
+    (results.consoleSignatures.warnings[k] ||= { count: 0, labels: [] }).count++;
+    if (!results.consoleSignatures.warnings[k].labels.includes(e.label)) results.consoleSignatures.warnings[k].labels.push(e.label);
+}
+results.consoleSummary = { total: results.console.length, errors: errs.length, warnings: warns.length, errorTexts: [...new Set(errs.map(e => `${e.source}:${e.text}`))], warningTexts: [...new Set(warns.map(e => `${e.source}:${e.text}`))] };
+results.visibilityStates = [...new Set(results.visits.map(v => v.visibility))];
+results.meta.finishedAt = new Date().toISOString();
+results.meta.pass = results.checks.filter(c => !c.pass).length === 0;
+results.meta.checks = { total: results.checks.length, failed: results.checks.filter(c => !c.pass).map(c => c.id) };
+fs.writeFileSync(OUT, JSON.stringify(results, null, 2));
+log(`\nDONE ${results.checks.length} checks, ${results.meta.checks.failed.length} failed -> ${OUT}`);
+await blockedBrowser.close();

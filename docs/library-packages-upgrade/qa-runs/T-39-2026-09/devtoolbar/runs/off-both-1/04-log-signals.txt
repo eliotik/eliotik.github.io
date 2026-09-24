@@ -1,0 +1,13 @@
+--- dev.log signals:
+8:{"message":"[200] /search/ 140ms","label":null,"level":"info"}
+9:{"message":"[200] /search/ 77ms","label":null,"level":"info"}
+10:{"message":"[200] / 155ms","label":null,"level":"info"}
+11:{"message":"[200] / 94ms","label":null,"level":"info"}
+12:{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 1087ms","label":null,"level":"info"}
+13:{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 1062ms","label":null,"level":"info"}
+14:{"message":"dependencies optimized: astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-swap-functions.js, astro/virtual-modules/transitions-types.js","label":"vite","level":"info"}
+15:{"message":"[200] /search/ 4ms","label":null,"level":"info"}
+16:{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1331ms","label":null,"level":"info"}
+17:{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1305ms","label":null,"level":"info"}
+18:{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1372ms","label":null,"level":"info"}
+19:{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1348ms","label":null,"level":"info"}

@@ -1,0 +1,4027 @@
+{
+  "meta": {
+    "base": "https://www.novifyx.com",
+    "isProd": true,
+    "startedAt": "2026-09-24T03:41:29.076Z",
+    "node": "v22.23.3",
+    "gaBlockArg": "--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND",
+    "browserVersion": "153.0.8010.53",
+    "finishedAt": "2026-09-24T03:44:02.054Z",
+    "pass": false,
+    "checks": {
+      "total": 63,
+      "failed": [
+        "P1.octoprint-prusa-core-one-raspberry-pi.carousel-count",
+        "P1dark.octoprint-prusa-core-one-raspberry-pi.present",
+        "P1m.octoprint-prusa-core-one-raspberry-pi.carousel-count",
+        "P1.exception",
+        "P4.nav-post",
+        "P4.exception"
+      ]
+    }
+  },
+  "checks": [
+    {
+      "id": "P1.octoprint-prusa-core-one-raspberry-pi.carousel-count",
+      "name": "carousel count on octoprint-prusa-core-one-raspberry-pi",
+      "pass": false,
+      "evidence": {
+        "carousels": 0,
+        "sliderIslands": 0,
+        "status": 404
+      },
+      "screenshot": "/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09/playwright/screenshots-prod/fail-P1.octoprint-prusa-core-one-raspberry-pi.carousel-count.png"
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.carousel-count",
+      "name": "carousel count on flutter-google-maps-embedded-map",
+      "pass": true,
+      "evidence": {
+        "carousels": 2,
+        "sliderIslands": 2,
+        "status": 200
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.slide-count",
+      "name": "slide count matches island props (N)",
+      "pass": true,
+      "evidence": {
+        "N": 2,
+        "expectedNFromProps": 2
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.labels",
+      "name": "labels 'Slide k of N'",
+      "pass": true,
+      "evidence": {
+        "labels": [
+          "Slide 1 of 2",
+          "Slide 2 of 2"
+        ]
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.start",
+      "name": "start: scrollLeft 0, Prev disabled, Next enabled",
+      "pass": true,
+      "evidence": {
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false,
+        "prevOpacity": "0.3",
+        "nextVisible": true,
+        "clientWidth": 734,
+        "scrollWidth": 1468,
+        "slideRectWidth": 734
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.next-click",
+      "name": "mouse click Next advances scrollLeft by clientWidth ±2",
+      "pass": true,
+      "evidence": {
+        "from": 0,
+        "to": 734,
+        "delta": 734,
+        "clientWidth": 734,
+        "nearestSlide": 2,
+        "prevDisabledAfter": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.walk-end",
+      "name": "walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end",
+      "pass": true,
+      "evidence": {
+        "presses": 1,
+        "stepDeltas": [
+          734
+        ],
+        "endScrollLeft": 734,
+        "maxScroll": 734,
+        "nextDisabled": true,
+        "prevDisabled": false,
+        "nearestSlide": 2
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.prev-click",
+      "name": "Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled",
+      "pass": true,
+      "evidence": {
+        "from": 734,
+        "to": 0,
+        "delta": -734,
+        "nearestSlide": 1,
+        "nextDisabled": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.kbd-enter",
+      "name": "focus Next + Enter advances one slide",
+      "pass": true,
+      "evidence": {
+        "focusedNextBeforePress": true,
+        "delta": 734,
+        "nearestSlide": 2,
+        "scrollYBefore": 0,
+        "scrollYAfter": 0
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.kbd-space",
+      "name": "focus Next + Space advances one slide, page does not scroll",
+      "pass": true,
+      "evidence": {
+        "focusedNextBeforePress": true,
+        "prevBeforeSpace": 1,
+        "delta": 734,
+        "nearestSlide": 2,
+        "scrollYBefore": 0,
+        "scrollYAfter": 0
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.images",
+      "name": "every slide <img> complete && naturalWidth > 0",
+      "pass": true,
+      "evidence": {
+        "loadedAtStart": 2,
+        "imgs": [
+          {
+            "src": "/_astro/project-structure.kYKNyqNg.png",
+            "nw": 502,
+            "complete": true
+          },
+          {
+            "src": "/_astro/initial-app-render.R1G38-sp.png",
+            "nw": 762,
+            "complete": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.wheel-back",
+      "name": "horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)",
+      "pass": true,
+      "evidence": {
+        "gesture": {
+          "kind": "mouse.wheel",
+          "deltaX": -294,
+          "at": [
+            640,
+            1109
+          ]
+        },
+        "from": 734,
+        "settledAt": 734,
+        "maxDisplacementDuringGesture": 287,
+        "scrollEvents": 8,
+        "modDist": 0,
+        "geomOffset": 0,
+        "landedOnSlide": 2
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.walk-start",
+      "name": "Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled",
+      "pass": true,
+      "evidence": {
+        "backDeltas": [
+          -734
+        ],
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.wheel-fwd",
+      "name": "horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped",
+      "pass": true,
+      "evidence": {
+        "gesture": {
+          "kind": "mouse.wheel",
+          "deltaX": 294,
+          "at": [
+            640,
+            1109
+          ]
+        },
+        "from": 0,
+        "settledAt": 0,
+        "maxDisplacementDuringGesture": 287,
+        "scrollEvents": 8,
+        "modDist": 0,
+        "geomOffset": 0,
+        "landedOnSlide": 1,
+        "buttonsAfter": {
+          "prevDisabled": true,
+          "nextDisabled": false
+        }
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.buttons-track-gesture",
+      "name": "Prev/Next disabled state tracks the position after a gesture",
+      "pass": true,
+      "evidence": {
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c1.wheel-70",
+      "name": "horizontal wheel of 70% slide advances to the next slide and snaps",
+      "pass": true,
+      "evidence": {
+        "gesture": {
+          "kind": "mouse.wheel",
+          "deltaX": 514,
+          "at": [
+            640,
+            1109
+          ]
+        },
+        "maxDisplacementDuringGesture": 734,
+        "from": 0,
+        "fromSlide": 1,
+        "settledAt": 734,
+        "landedOnSlide": 2,
+        "geomOffset": 0,
+        "modDist": 0
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.slide-count",
+      "name": "slide count matches island props (N)",
+      "pass": true,
+      "evidence": {
+        "N": 3,
+        "expectedNFromProps": 3
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.labels",
+      "name": "labels 'Slide k of N'",
+      "pass": true,
+      "evidence": {
+        "labels": [
+          "Slide 1 of 3",
+          "Slide 2 of 3",
+          "Slide 3 of 3"
+        ]
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.start",
+      "name": "start: scrollLeft 0, Prev disabled, Next enabled",
+      "pass": true,
+      "evidence": {
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false,
+        "prevOpacity": "0.3",
+        "nextVisible": true,
+        "clientWidth": 734,
+        "scrollWidth": 2202,
+        "slideRectWidth": 734
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.next-click",
+      "name": "mouse click Next advances scrollLeft by clientWidth ±2",
+      "pass": true,
+      "evidence": {
+        "from": 0,
+        "to": 734,
+        "delta": 734,
+        "clientWidth": 734,
+        "nearestSlide": 2,
+        "prevDisabledAfter": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.walk-end",
+      "name": "walk to end: 2 Next presses, every step = clientWidth ±2, Next disabled at end",
+      "pass": true,
+      "evidence": {
+        "presses": 2,
+        "stepDeltas": [
+          734,
+          734
+        ],
+        "endScrollLeft": 1468,
+        "maxScroll": 1468,
+        "nextDisabled": true,
+        "prevDisabled": false,
+        "nearestSlide": 3
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.prev-click",
+      "name": "Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled",
+      "pass": true,
+      "evidence": {
+        "from": 1468,
+        "to": 734,
+        "delta": -734,
+        "nearestSlide": 2,
+        "nextDisabled": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.kbd-enter",
+      "name": "focus Next + Enter advances one slide",
+      "pass": true,
+      "evidence": {
+        "focusedNextBeforePress": true,
+        "delta": 734,
+        "nearestSlide": 3,
+        "scrollYBefore": 11630,
+        "scrollYAfter": 11630
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.kbd-space",
+      "name": "focus Next + Space advances one slide, page does not scroll",
+      "pass": true,
+      "evidence": {
+        "focusedNextBeforePress": true,
+        "prevBeforeSpace": 2,
+        "delta": 734,
+        "nearestSlide": 3,
+        "scrollYBefore": 11630,
+        "scrollYAfter": 11630
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.images",
+      "name": "every slide <img> complete && naturalWidth > 0",
+      "pass": true,
+      "evidence": {
+        "loadedAtStart": 2,
+        "imgs": [
+          {
+            "src": "/_astro/device-location-request.Bf-YNUhY.png",
+            "nw": 570,
+            "complete": true
+          },
+          {
+            "src": "/_astro/loading-circle-animation.1pEckRD5.png",
+            "nw": 570,
+            "complete": true
+          },
+          {
+            "src": "/_astro/map-screen-with-marker.D1Ov7Ltm.png",
+            "nw": 570,
+            "complete": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.wheel-back",
+      "name": "horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)",
+      "pass": true,
+      "evidence": {
+        "gesture": {
+          "kind": "mouse.wheel",
+          "deltaX": -294,
+          "at": [
+            640,
+            900
+          ]
+        },
+        "from": 1468,
+        "settledAt": 1468,
+        "maxDisplacementDuringGesture": 287,
+        "scrollEvents": 8,
+        "modDist": 0,
+        "geomOffset": 0,
+        "landedOnSlide": 3
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.walk-start",
+      "name": "Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled",
+      "pass": true,
+      "evidence": {
+        "backDeltas": [
+          -734,
+          -734
+        ],
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.wheel-fwd",
+      "name": "horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped",
+      "pass": true,
+      "evidence": {
+        "gesture": {
+          "kind": "mouse.wheel",
+          "deltaX": 294,
+          "at": [
+            640,
+            900
+          ]
+        },
+        "from": 0,
+        "settledAt": 0,
+        "maxDisplacementDuringGesture": 287,
+        "scrollEvents": 8,
+        "modDist": 0,
+        "geomOffset": 0,
+        "landedOnSlide": 1,
+        "buttonsAfter": {
+          "prevDisabled": true,
+          "nextDisabled": false
+        }
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.buttons-track-gesture",
+      "name": "Prev/Next disabled state tracks the position after a gesture",
+      "pass": true,
+      "evidence": {
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false
+      }
+    },
+    {
+      "id": "P1.flutter-google-maps-embedded-map.c2.wheel-70",
+      "name": "horizontal wheel of 70% slide advances to the next slide and snaps",
+      "pass": true,
+      "evidence": {
+        "gesture": {
+          "kind": "mouse.wheel",
+          "deltaX": 514,
+          "at": [
+            640,
+            900
+          ]
+        },
+        "maxDisplacementDuringGesture": 734,
+        "from": 0,
+        "fromSlide": 1,
+        "settledAt": 734,
+        "landedOnSlide": 2,
+        "geomOffset": 0,
+        "modDist": 0
+      }
+    },
+    {
+      "id": "P1dark.octoprint-prusa-core-one-raspberry-pi.present",
+      "name": "carousel present (content missing on this target)",
+      "pass": false,
+      "evidence": {
+        "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/"
+      },
+      "screenshot": "/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09/playwright/screenshots-prod/fail-P1dark.octoprint-prusa-core-one-raspberry-pi.present.png"
+    },
+    {
+      "id": "P1dark.flutter-google-maps-embedded-map.toggle",
+      "name": "theme toggle button switched the page to dark",
+      "pass": true,
+      "evidence": {
+        "before": {
+          "theme": "light",
+          "ls": null
+        },
+        "after": {
+          "theme": "dark",
+          "ls": "dark",
+          "btnLabel": "dark",
+          "animsAfterToggle": {
+            "count": 16,
+            "remaining": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "P1dark.flutter-google-maps-embedded-map.c1.start",
+      "name": "dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1",
+      "pass": true,
+      "evidence": {
+        "N": 2,
+        "expectedN": 2,
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false,
+        "colors": {
+          "theme": "dark",
+          "bodyBg": "rgb(33, 39, 55)",
+          "bodyBgRGBA": [
+            33,
+            39,
+            55,
+            1
+          ],
+          "btnBg": "oklab(0.373388 -0.000638455 -0.0587515 / 0.8)",
+          "btnFg": "rgb(234, 237, 243)",
+          "btnFgRGBA": [
+            234,
+            237,
+            243,
+            1
+          ],
+          "btnBgCompositeRGB": [
+            48,
+            57,
+            88
+          ],
+          "iconVsButtonContrast": 9.63,
+          "scrollerBorderColor": "oklch(0.928 0.006 264.531)",
+          "bodyLuminance": 0.021
+        }
+      }
+    },
+    {
+      "id": "P1dark.flutter-google-maps-embedded-map.c2.start",
+      "name": "dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1",
+      "pass": true,
+      "evidence": {
+        "N": 3,
+        "expectedN": 3,
+        "scrollLeft": 0,
+        "prevDisabled": true,
+        "nextDisabled": false,
+        "colors": {
+          "theme": "dark",
+          "bodyBg": "rgb(33, 39, 55)",
+          "bodyBgRGBA": [
+            33,
+            39,
+            55,
+            1
+          ],
+          "btnBg": "oklab(0.373388 -0.000638455 -0.0587515 / 0.8)",
+          "btnFg": "rgb(234, 237, 243)",
+          "btnFgRGBA": [
+            234,
+            237,
+            243,
+            1
+          ],
+          "btnBgCompositeRGB": [
+            48,
+            57,
+            88
+          ],
+          "iconVsButtonContrast": 9.63,
+          "scrollerBorderColor": "oklch(0.928 0.006 264.531)",
+          "bodyLuminance": 0.021
+        }
+      }
+    },
+    {
+      "id": "P1m.octoprint-prusa-core-one-raspberry-pi.carousel-count",
+      "name": "carousel count on octoprint-prusa-core-one-raspberry-pi",
+      "pass": false,
+      "evidence": {
+        "carousels": 0,
+        "sliderIslands": 0,
+        "status": 404
+      },
+      "screenshot": "/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09/playwright/screenshots-prod/fail-P1m.octoprint-prusa-core-one-raspberry-pi.carousel-count.png"
+    },
+    {
+      "id": "P1.exception",
+      "name": "P1 runner threw",
+      "pass": false,
+      "evidence": {
+        "error": "locator.scrollIntoViewIfNeeded: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[aria-roledescription=\"carousel\"]').first()\u001b[22m\n\n    at Object.runP1 (/private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8/playwright-e2e/e2e.mjs:787:35)\n    at async file:///private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8/playwright-e2e/e2e.mjs:1191:9"
+      }
+    },
+    {
+      "id": "P2.type",
+      "name": "real keyboard typing 'hiring' lists ≥1 result",
+      "pass": true,
+      "evidence": {
+        "value": "hiring",
+        "count": 5,
+        "found": "Found 5 results for 'hiring'",
+        "first3": [
+          {
+            "href": "/posts/ems-the-people-system",
+            "title": "The People System"
+          },
+          {
+            "href": "/posts/the-emotional-roller-coaster-of-hiring",
+            "title": "The emotional roller coaster of Hiring"
+          },
+          {
+            "href": "/posts/two-books-which-influenced-my-hiring-pipeline",
+            "title": "Two books which influenced my hiring pipeline"
+          }
+        ]
+      }
+    },
+    {
+      "id": "P2.url",
+      "name": "URL contains ?q=hiring",
+      "pass": true,
+      "evidence": {
+        "search": "?q=hiring",
+        "url": "https://www.novifyx.com/search/?q=hiring"
+      }
+    },
+    {
+      "id": "P2.reload",
+      "name": "after reload: input value 'hiring' and the same results restored",
+      "pass": true,
+      "evidence": {
+        "value": "hiring",
+        "count": 5,
+        "before": 5,
+        "url": "https://www.novifyx.com/search/?q=hiring"
+      }
+    },
+    {
+      "id": "P2.click-result",
+      "name": "clicking first result navigates to /posts/<slug> with a 200 response",
+      "pass": true,
+      "evidence": {
+        "href": "/posts/ems-the-people-system",
+        "landedPath": "/posts/ems-the-people-system/",
+        "h1": "The People System",
+        "responseChain": [
+          {
+            "url": "https://www.novifyx.com/posts/ems-the-people-system",
+            "status": 301,
+            "type": "fetch",
+            "redirectedFrom": null
+          },
+          {
+            "url": "https://www.novifyx.com/posts/ems-the-people-system",
+            "status": 301,
+            "type": "other",
+            "redirectedFrom": null
+          },
+          {
+            "url": "https://www.novifyx.com/posts/ems-the-people-system/",
+            "status": 200,
+            "type": "fetch",
+            "redirectedFrom": "https://www.novifyx.com/posts/ems-the-people-system"
+          },
+          {
+            "url": "https://www.novifyx.com/posts/ems-the-people-system/",
+            "status": 200,
+            "type": "other",
+            "redirectedFrom": "https://www.novifyx.com/posts/ems-the-people-system"
+          }
+        ],
+        "clientSideNav": true,
+        "islandsSsrRemaining": 0
+      }
+    },
+    {
+      "id": "P2.nomatch",
+      "name": "no-match query 'zzzzqqq' shows 'Found 0 results' with no list items and no errors",
+      "pass": true,
+      "evidence": {
+        "value": "zzzzqqq",
+        "items": 0,
+        "found": "Found 0 results for 'zzzzqqq'",
+        "search": "?q=zzzzqqq",
+        "errors": []
+      }
+    },
+    {
+      "id": "P3.initial-count-sort",
+      "name": "initial list sorted by count (desc, ties alphabetical), count button pressed",
+      "pass": true,
+      "evidence": {
+        "total": 63,
+        "first5": [
+          {
+            "tag": "engineering-management",
+            "count": 15
+          },
+          {
+            "tag": "engineering-leadership",
+            "count": 11
+          },
+          {
+            "tag": "leadership",
+            "count": 11
+          },
+          {
+            "tag": "systems-thinking",
+            "count": 8
+          },
+          {
+            "tag": "tutorial",
+            "count": 6
+          }
+        ],
+        "summary": "63 of 63 tagsbycount/a→z#engineering-management15#engineering-leadership11#leadership11#systems-thinking8#tutorial6#flutter5#mobile-development5#google-maps4#team-building4#book-review3#hiring3#scaling-teams3#career-growth2#change-management2#communication2#engineering-culture2#management-frameworks2#organizational-design2#performance-management2#recruiting2#software-architecture2#agile1#architecture-decision-records1#astro1#blogging1#cap-theorem1#code-quality1#decision-making1#developer-burnout1#developer-productivity1#distributed-systems1#documentation1#eos1#geocoding1#github-pages1#high-performance-culture1#incident-response1#innovation1#kanban1#learning1#local-llm1#metrics1#onboarding1#opencode1#organizational-culture1#personal1#personal-branding1#qwen1#radical-candor1#reading1#retention1#scrum1#senior-software-engineer1#software-engineering1#startup-growth1#strategy1#system-design1#team-alignment1#technical-debt1#ui-components1#vllm1#web-development1#wsl21",
+        "btns": [
+          {
+            "text": "count",
+            "pressed": "true"
+          },
+          {
+            "text": "a→z",
+            "pressed": "false"
+          }
+        ]
+      }
+    },
+    {
+      "id": "P3.filter",
+      "name": "typing 'engin' narrows the list, contains engineering-management, every item matches",
+      "pass": true,
+      "evidence": {
+        "before": 63,
+        "after": 5,
+        "items": [
+          {
+            "tag": "engineering-management",
+            "count": 15
+          },
+          {
+            "tag": "engineering-leadership",
+            "count": 11
+          },
+          {
+            "tag": "engineering-culture",
+            "count": 2
+          },
+          {
+            "tag": "senior-software-engineer",
+            "count": 1
+          },
+          {
+            "tag": "software-engineering",
+            "count": 1
+          }
+        ],
+        "summary": "5 of 63 tags matching “engin”×bycount/a→z#engineering-management15#engineering-leadership11#engineering-culture2#senior-software-engineer1#software-engineering1"
+      }
+    },
+    {
+      "id": "P3.sort-alpha-filtered",
+      "name": "a→z sort (filtered list) is alphabetical",
+      "pass": true,
+      "evidence": {
+        "items": [
+          "engineering-culture",
+          "engineering-leadership",
+          "engineering-management",
+          "senior-software-engineer",
+          "software-engineering"
+        ],
+        "btns": [
+          {
+            "text": "count",
+            "pressed": "false"
+          },
+          {
+            "text": "a→z",
+            "pressed": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "P3.sort-alpha-full",
+      "name": "after Clear filter: full list, alphabetical order",
+      "pass": true,
+      "evidence": {
+        "total": 63,
+        "first5": [
+          "agile",
+          "architecture-decision-records",
+          "astro",
+          "blogging",
+          "book-review"
+        ],
+        "last3": [
+          "vllm",
+          "web-development",
+          "wsl2"
+        ],
+        "inputVal": ""
+      }
+    },
+    {
+      "id": "P3.sort-count",
+      "name": "count sort: counts non-increasing (ties alphabetical)",
+      "pass": true,
+      "evidence": {
+        "first8": [
+          {
+            "tag": "engineering-management",
+            "count": 15
+          },
+          {
+            "tag": "engineering-leadership",
+            "count": 11
+          },
+          {
+            "tag": "leadership",
+            "count": 11
+          },
+          {
+            "tag": "systems-thinking",
+            "count": 8
+          },
+          {
+            "tag": "tutorial",
+            "count": 6
+          },
+          {
+            "tag": "flutter",
+            "count": 5
+          },
+          {
+            "tag": "mobile-development",
+            "count": 5
+          },
+          {
+            "tag": "google-maps",
+            "count": 4
+          }
+        ],
+        "last3": [
+          {
+            "tag": "vllm",
+            "count": 1
+          },
+          {
+            "tag": "web-development",
+            "count": 1
+          },
+          {
+            "tag": "wsl2",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "P3.tag-click",
+      "name": "clicking a tag opens /tags/<tag>/ (200)",
+      "pass": true,
+      "evidence": {
+        "path": "/tags/engineering-management/",
+        "h1": "#  engineering management",
+        "posts": 5,
+        "responses": [
+          {
+            "url": "https://www.novifyx.com/tags/engineering-management/",
+            "status": 200,
+            "type": "fetch"
+          }
+        ]
+      }
+    },
+    {
+      "id": "P4.nav-post",
+      "name": "home → carousel post is client-side (marker survives, no load event), islands hydrated",
+      "pass": false,
+      "evidence": {
+        "path": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "marker": "P4-0.9648382200352723",
+        "pageLoads": 1,
+        "fullLoads": 0,
+        "dcls": 0,
+        "islandsSsrRemaining": 0,
+        "islands": 0,
+        "linkUsed": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "fallbackLink": true
+      },
+      "screenshot": "/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09/playwright/screenshots-prod/fail-P4.nav-post.png"
+    },
+    {
+      "id": "P4.exception",
+      "name": "P4 runner threw",
+      "pass": false,
+      "evidence": {
+        "error": "Error: no carousel on https://www.novifyx.com/posts/two-books-which-influenced-my-hiring-pipeline/ (fallback link used: true)\n    at Object.runP4 [as P4] (file:///private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8/playwright-e2e/e2e.mjs:968:41)\n    at async file:///private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8/playwright-e2e/e2e.mjs:1191:9"
+      }
+    },
+    {
+      "id": "P5.toggle",
+      "name": "toggle on / sets data-theme=dark and localStorage.theme=dark; body bg changes",
+      "pass": true,
+      "evidence": {
+        "light": {
+          "theme": "light",
+          "bg": "rgb(251, 254, 251)",
+          "ls": null,
+          "fouc": {
+            "firstRafWithBody": {
+              "theme": "light",
+              "bg": "rgb(251, 254, 251)",
+              "t": 121
+            },
+            "dcl": {
+              "theme": "light",
+              "bg": "rgb(251, 254, 251)",
+              "t": 120
+            }
+          }
+        },
+        "dark": {
+          "theme": "dark",
+          "bg": "rgb(33, 39, 55)",
+          "ls": "dark",
+          "btn": "dark",
+          "metaThemeColor": "rgb(33, 39, 55)"
+        }
+      }
+    },
+    {
+      "id": "P5.fouc./posts/",
+      "name": "full load /posts/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))",
+      "pass": true,
+      "evidence": {
+        "fouc": {
+          "firstRafWithBody": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 65
+          },
+          "dcl": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 61
+          }
+        },
+        "theme": "dark",
+        "ls": "dark",
+        "bgNow": "rgb(33, 39, 55)",
+        "btn": "dark"
+      }
+    },
+    {
+      "id": "P5.fouc./tags/",
+      "name": "full load /tags/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))",
+      "pass": true,
+      "evidence": {
+        "fouc": {
+          "firstRafWithBody": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 38
+          },
+          "dcl": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 37
+          }
+        },
+        "theme": "dark",
+        "ls": "dark",
+        "bgNow": "rgb(33, 39, 55)",
+        "btn": "dark"
+      }
+    },
+    {
+      "id": "P5.fouc./about/",
+      "name": "full load /about/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))",
+      "pass": true,
+      "evidence": {
+        "fouc": {
+          "firstRafWithBody": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 166
+          },
+          "dcl": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 164
+          }
+        },
+        "theme": "dark",
+        "ls": "dark",
+        "bgNow": "rgb(33, 39, 55)",
+        "btn": "dark"
+      }
+    },
+    {
+      "id": "P5.fouc./posts/audio-vs-paper-books/",
+      "name": "full load /posts/audio-vs-paper-books/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))",
+      "pass": true,
+      "evidence": {
+        "fouc": {
+          "firstRafWithBody": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 56
+          },
+          "dcl": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 55
+          }
+        },
+        "theme": "dark",
+        "ls": "dark",
+        "bgNow": "rgb(33, 39, 55)",
+        "btn": "dark"
+      }
+    },
+    {
+      "id": "P5.persist",
+      "name": "localStorage persistence: reload and a new tab both render dark from first paint",
+      "pass": true,
+      "evidence": {
+        "reload": {
+          "theme": "dark",
+          "ls": "dark",
+          "dcl": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 33
+          }
+        },
+        "newTab": {
+          "theme": "dark",
+          "ls": "dark",
+          "dcl": {
+            "theme": "dark",
+            "bg": "rgb(33, 39, 55)",
+            "t": 150
+          }
+        }
+      }
+    },
+    {
+      "id": "P6.audio-vs-paper-books.collapse",
+      "name": "TOC <details> closed initially, opens on summary click",
+      "pass": true,
+      "evidence": {
+        "detailsCount": 1,
+        "summary": "Open Table of contents",
+        "openInitially": false,
+        "linkVisibleWhenClosed": false,
+        "openAfterClick": true,
+        "linkVisibleWhenOpen": true
+      }
+    },
+    {
+      "id": "P6.audio-vs-paper-books.anchors",
+      "name": "every TOC link targets an existing in-page id",
+      "pass": true,
+      "evidence": {
+        "links": 8,
+        "missing": []
+      }
+    },
+    {
+      "id": "P6.audio-vs-paper-books.navigate",
+      "name": "clicking TOC links scrolls to the in-page anchor (hash set, target in viewport)",
+      "pass": true,
+      "evidence": {
+        "clicked": [
+          {
+            "href": "#my-thoughts-on-paper-books",
+            "hash": "#my-thoughts-on-paper-books",
+            "path": "/posts/audio-vs-paper-books/",
+            "targetTop": 0,
+            "scrollY": 1753,
+            "atBottom": false
+          },
+          {
+            "href": "#conclusion",
+            "hash": "#conclusion",
+            "path": "/posts/audio-vs-paper-books/",
+            "targetTop": 1011,
+            "scrollY": 3078,
+            "atBottom": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "P6.dad-ops-playbook.collapse",
+      "name": "TOC <details> closed initially, opens on summary click",
+      "pass": true,
+      "evidence": {
+        "detailsCount": 1,
+        "summary": "Open Table of contents",
+        "openInitially": false,
+        "linkVisibleWhenClosed": false,
+        "openAfterClick": true,
+        "linkVisibleWhenOpen": true
+      }
+    },
+    {
+      "id": "P6.dad-ops-playbook.anchors",
+      "name": "every TOC link targets an existing in-page id",
+      "pass": true,
+      "evidence": {
+        "links": 7,
+        "missing": []
+      }
+    },
+    {
+      "id": "P6.dad-ops-playbook.navigate",
+      "name": "clicking TOC links scrolls to the in-page anchor (hash set, target in viewport)",
+      "pass": true,
+      "evidence": {
+        "clicked": [
+          {
+            "href": "#principle-2-the-art-of-patient-observation",
+            "hash": "#principle-2-the-art-of-patient-observation",
+            "path": "/posts/dad-ops-playbook/",
+            "targetTop": 0,
+            "scrollY": 3967,
+            "atBottom": false
+          },
+          {
+            "href": "#appendix-1",
+            "hash": "#appendix-1",
+            "path": "/posts/dad-ops-playbook/",
+            "targetTop": 953,
+            "scrollY": 11444,
+            "atBottom": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "P7.islands-hydrated",
+      "name": "no astro-island[ssr] remains after load/navigation on any visited page (22 visits)",
+      "pass": true,
+      "evidence": {
+        "visits": 22,
+        "badVisits": []
+      }
+    },
+    {
+      "id": "P7.no-hydration-warnings",
+      "name": "no React hydration warnings/errors in console (page + workers)",
+      "pass": true,
+      "evidence": {
+        "hydrationMsgs": []
+      }
+    }
+  ],
+  "visits": [
+    {
+      "id": "P0:/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "404 Not Found | Novi Fyx",
+      "theme": "light"
+    },
+    {
+      "id": "P1:octoprint-prusa-core-one-raspberry-pi",
+      "ctx": "p1-desktop",
+      "label": "P1:octoprint-prusa-core-one-raspberry-pi",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "404 Not Found | Novi Fyx",
+      "theme": "light",
+      "status": 404
+    },
+    {
+      "id": "P1:flutter-google-maps-embedded-map",
+      "ctx": "p1-desktop",
+      "label": "P1:flutter-google-maps-embedded-map",
+      "url": "https://www.novifyx.com/posts/flutter-google-maps-embedded-map/",
+      "how": "goto",
+      "islands": 2,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Flutter Google Maps - Embedded Map | Novi Fyx",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "id": "P1dark:octoprint-prusa-core-one-raspberry-pi",
+      "ctx": "p1-dark",
+      "label": "P1dark:octoprint-prusa-core-one-raspberry-pi",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "404 Not Found | Novi Fyx",
+      "theme": "light"
+    },
+    {
+      "id": "P1dark:flutter-google-maps-embedded-map",
+      "ctx": "p1-dark",
+      "label": "P1dark:flutter-google-maps-embedded-map",
+      "url": "https://www.novifyx.com/posts/flutter-google-maps-embedded-map/",
+      "how": "goto",
+      "islands": 2,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Flutter Google Maps - Embedded Map | Novi Fyx",
+      "theme": "light"
+    },
+    {
+      "id": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "404 Not Found | Novi Fyx",
+      "theme": "light",
+      "status": 404
+    },
+    {
+      "id": "P2:/search/",
+      "ctx": "p2-search",
+      "label": "P2:search",
+      "url": "https://www.novifyx.com/search/",
+      "how": "goto",
+      "islands": 1,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Search | Novi Fyx",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "id": "P2:reload",
+      "ctx": "p2-search",
+      "label": "P2:reload",
+      "url": "https://www.novifyx.com/search/?q=hiring",
+      "how": "reload",
+      "islands": 1,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Search | Novi Fyx",
+      "theme": "dark"
+    },
+    {
+      "id": "P2:result",
+      "ctx": "p2-search",
+      "label": "P2:click-result",
+      "url": "https://www.novifyx.com/posts/ems-the-people-system/",
+      "how": "click",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "The People System | Novi Fyx",
+      "theme": "dark"
+    },
+    {
+      "id": "P2:/search/ (no-match)",
+      "ctx": "p2-search",
+      "label": "P2:nomatch",
+      "url": "https://www.novifyx.com/search/",
+      "how": "goto",
+      "islands": 1,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Search | Novi Fyx",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "id": "P3:/tags/",
+      "ctx": "p3-tags",
+      "label": "P3:tags",
+      "url": "https://www.novifyx.com/tags/",
+      "how": "goto",
+      "islands": 1,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Tags | Novi Fyx",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "id": "P3:/tags/engineering-management/",
+      "ctx": "p3-tags",
+      "label": "P3:tag-detail",
+      "url": "https://www.novifyx.com/tags/engineering-management/",
+      "how": "click",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Tag: engineering management | Novi Fyx",
+      "theme": "light"
+    },
+    {
+      "id": "P4:/",
+      "ctx": "p4-router",
+      "label": "P4:home",
+      "url": "https://www.novifyx.com/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Novi Fyx",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "id": "P4:post",
+      "ctx": "p4-router",
+      "label": "P4:post",
+      "url": "https://www.novifyx.com/posts/two-books-which-influenced-my-hiring-pipeline/",
+      "how": "client-nav",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Two books which influenced my hiring pipeline | Novi Fyx",
+      "theme": "light"
+    },
+    {
+      "id": "P5:/",
+      "ctx": "p5-fouc",
+      "label": "P5:home",
+      "url": "https://www.novifyx.com/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Novi Fyx",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "id": "P5:/posts/",
+      "ctx": "p5-fouc",
+      "label": "P5:/posts/",
+      "url": "https://www.novifyx.com/posts/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Posts | Novi Fyx",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "id": "P5:/tags/",
+      "ctx": "p5-fouc",
+      "label": "P5:/tags/",
+      "url": "https://www.novifyx.com/tags/",
+      "how": "goto",
+      "islands": 1,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Tags | Novi Fyx",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "id": "P5:/about/",
+      "ctx": "p5-fouc",
+      "label": "P5:/about/",
+      "url": "https://www.novifyx.com/about/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "About | Novi Fyx",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "id": "P5:/posts/audio-vs-paper-books/",
+      "ctx": "p5-fouc",
+      "label": "P5:/posts/audio-vs-paper-books/",
+      "url": "https://www.novifyx.com/posts/audio-vs-paper-books/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Audio vs Paper Books | Novi Fyx",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "id": "P5:/tips/ (new tab)",
+      "ctx": "p5-fouc",
+      "label": "P5:newtab",
+      "url": "https://www.novifyx.com/tips/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Tips & Thoughts | Novi Fyx",
+      "theme": "dark"
+    },
+    {
+      "id": "P6:audio-vs-paper-books",
+      "ctx": "p6-toc",
+      "label": "P6:audio-vs-paper-books",
+      "url": "https://www.novifyx.com/posts/audio-vs-paper-books/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Audio vs Paper Books | Novi Fyx",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "id": "P6:dad-ops-playbook",
+      "ctx": "p6-toc",
+      "label": "P6:dad-ops-playbook",
+      "url": "https://www.novifyx.com/posts/dad-ops-playbook/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Dad-Ops Playbook | Novi Fyx",
+      "theme": "light",
+      "status": 200
+    }
+  ],
+  "console": [
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "t": 1790221289813,
+      "source": "page",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 ()",
+      "loc": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "t": 1790221289850,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "t": 1790221289891,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/e6a12899-0b1a-4d97-8937-9d11680cadec"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221297303,
+      "source": "page",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 ()",
+      "loc": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221297337,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221297370,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/7231847e-bda6-4a5c-957c-ef5afa8306ba"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:flutter-google-maps-embedded-map",
+      "t": 1790221297991,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/44618a92-73a3-43da-ac2f-b43f1975c9e8"
+    },
+    {
+      "ctx": "p1-dark",
+      "label": "P1dark:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221315652,
+      "source": "page",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 ()",
+      "loc": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+      "ctx": "p1-dark",
+      "label": "P1dark:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221315694,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p1-dark",
+      "label": "P1dark:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221315728,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/bb90b14b-b2a0-4df7-9c53-4139ab64b02e"
+    },
+    {
+      "ctx": "p1-dark",
+      "label": "P1dark:flutter-google-maps-embedded-map",
+      "t": 1790221316088,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/e81dfa41-3839-4b02-8e46-2bba710583e5"
+    },
+    {
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221317122,
+      "source": "page",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 ()",
+      "loc": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221317161,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "t": 1790221317194,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/8f41fb0d-2b89-4fa8-b284-8e33ed149c2f"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:search",
+      "t": 1790221348002,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:search",
+      "t": 1790221348050,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/7e96606d-7b9c-4860-a6e6-49217e16c1c1"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:reload",
+      "t": 1790221349227,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/57c09e54-def4-4e3b-ac40-630f5a380bd1"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:click-result",
+      "t": 1790221349732,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/cd290508-b329-4fe4-a7b9-1f9d4787b0fa"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:nomatch",
+      "t": 1790221350278,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/350c6fa0-f32c-4d5e-8b9a-8d2fc859a5f4"
+    },
+    {
+      "ctx": "p3-tags",
+      "label": "P3:tags",
+      "t": 1790221351827,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p3-tags",
+      "label": "P3:tags",
+      "t": 1790221351867,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/74cfd8e0-6c63-4c8e-b34c-85dce3325d7a"
+    },
+    {
+      "ctx": "p3-tags",
+      "label": "P3:tag-detail",
+      "t": 1790221354145,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/cef21931-aad3-401b-b4b6-1ee2bb22f735"
+    },
+    {
+      "ctx": "p4-router",
+      "label": "P4:home",
+      "t": 1790221354981,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p4-router",
+      "label": "P4:home",
+      "t": 1790221355011,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/1d7e601d-eec5-48ab-b66b-2b9114f3beb1"
+    },
+    {
+      "ctx": "p4-router",
+      "label": "P4:post",
+      "t": 1790221355528,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/f7f24654-0f21-4bcc-890e-69ef5bf343b4"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:home",
+      "t": 1790221356251,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:home",
+      "t": 1790221356278,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/e1c7f259-e05a-409f-b389-7c205adadf98"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/posts/",
+      "t": 1790221356788,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/08161e71-c6db-4eeb-9b21-eb4bebe26767"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/tags/",
+      "t": 1790221357157,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/d3b9e220-3a0b-4043-8fc1-571428f79e9a"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/about/",
+      "t": 1790221357643,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/562450ca-22af-481e-a427-099471e0aa59"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/posts/audio-vs-paper-books/",
+      "t": 1790221358052,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/dc9b6b34-ba8b-4a69-94a2-f487e3abf6bc"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:newtab",
+      "t": 1790221358436,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/a2528d87-9689-4d5d-bb2b-5d759bc6ae5c"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:newtab",
+      "t": 1790221358600,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/64672457-96d7-42a4-97f4-6c8322494ea5"
+    },
+    {
+      "ctx": "p6-toc",
+      "label": "P6:audio-vs-paper-books",
+      "t": 1790221358883,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p6-toc",
+      "label": "P6:audio-vs-paper-books",
+      "t": 1790221358919,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/e110c6e0-c0a7-43e3-bb60-ff48cf10a053"
+    },
+    {
+      "ctx": "p6-toc",
+      "label": "P6:dad-ops-playbook",
+      "t": 1790221362241,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/72d1d60c-6a77-4f42-8aaf-da1ee68ece31"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:home",
+      "t": 1790221366616,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:home",
+      "t": 1790221366646,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:post",
+      "t": 1790221367332,
+      "source": "worker",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8456\n    at ye (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8508)\n    at fe (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8228)\n    at we (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8717)\n    at N.get (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:26965\n    at ut (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:27026)",
+      "worker": "blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:post",
+      "t": 1790221367332,
+      "source": "page",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8456\n    at ye (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8508)\n    at fe (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8228)\n    at we (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8717)\n    at N.get (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:26965\n    at ut (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:27026)",
+      "loc": "blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc",
+      "url": "https://www.novifyx.com/"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:post",
+      "t": 1790221367351,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/2a821589-1d92-4e6b-bc87-1d9a77954e96"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:search",
+      "t": 1790221367913,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/183f3e56-9211-44f1-a88e-642709607bc1"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:home",
+      "t": 1790221371229,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:home",
+      "t": 1790221371265,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:post",
+      "t": 1790221371906,
+      "source": "worker",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8456\n    at ye (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8508)\n    at fe (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8228)\n    at we (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8717)\n    at N.get (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:26965\n    at ut (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:27026)",
+      "worker": "blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:post",
+      "t": 1790221371906,
+      "source": "page",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8456\n    at ye (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8508)\n    at fe (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8228)\n    at we (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8717)\n    at N.get (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:26965\n    at ut (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:27026)",
+      "loc": "blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a",
+      "url": "https://www.novifyx.com/"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:post",
+      "t": 1790221371924,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/f9078cb2-a678-4e84-bdf2-68a266c4525d"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:search",
+      "t": 1790221372506,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/a66503c6-3959-48c6-9cb6-a91a3460c250"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:home",
+      "t": 1790221375828,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:home",
+      "t": 1790221375860,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:post",
+      "t": 1790221379003,
+      "source": "worker",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8456\n    at ye (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8508)\n    at fe (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8228)\n    at we (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8717)\n    at N.get (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:26965\n    at ut (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:27026)",
+      "worker": "blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:post",
+      "t": 1790221379003,
+      "source": "page",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8456\n    at ye (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8508)\n    at fe (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8228)\n    at we (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8717)\n    at N.get (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:26965\n    at ut (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:27026)",
+      "loc": "blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391",
+      "url": "https://www.novifyx.com/"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:post",
+      "t": 1790221379032,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:search",
+      "t": 1790221382086,
+      "source": "worker",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8456\n    at ye (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8508)\n    at fe (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8228)\n    at we (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8717)\n    at N.get (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:26965\n    at ut (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:27026)",
+      "worker": "blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:search",
+      "t": 1790221382086,
+      "source": "page",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8456\n    at ye (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8508)\n    at fe (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8228)\n    at we (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8717)\n    at N.get (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:26965\n    at ut (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:27026)",
+      "loc": "blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421",
+      "url": "https://www.novifyx.com/posts/two-books-which-influenced-my-hiring-pipeline/"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:search",
+      "t": 1790221382098,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/c6f8f5e6-83bf-4bd3-875b-38505c222b66"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:home",
+      "t": 1790221385433,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:home",
+      "t": 1790221385463,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/2d5e99db-1e8a-40fd-8de1-2192059bdeb0"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:post",
+      "t": 1790221388691,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/e0f9e805-7859-42ec-9e19-891fe5cc7fdb"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:search",
+      "t": 1790221391792,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/06e25cf9-cd3f-48e1-abe9-2b140646c68c"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:home",
+      "t": 1790221395109,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:home",
+      "t": 1790221395139,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:post",
+      "t": 1790221405295,
+      "source": "worker",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8456\n    at ye (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8508)\n    at fe (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8228)\n    at we (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8717)\n    at N.get (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:26965\n    at ut (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:27026)",
+      "worker": "blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:post",
+      "t": 1790221405295,
+      "source": "page",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8456\n    at ye (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8508)\n    at fe (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8228)\n    at we (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8717)\n    at N.get (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:26965\n    at ut (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:27026)",
+      "loc": "blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8",
+      "url": "https://www.novifyx.com/"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:post",
+      "t": 1790221405315,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/fed1227b-511b-442f-a3b7-9aeaa71c11e6"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:search",
+      "t": 1790221415415,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/d6f6d789-d2d1-4b5d-9c55-4339a4c8e722"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:home",
+      "t": 1790221418760,
+      "source": "sw-created",
+      "type": "info",
+      "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:home",
+      "t": 1790221418792,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:post",
+      "t": 1790221428955,
+      "source": "worker",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8456\n    at ye (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8508)\n    at fe (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8228)\n    at we (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8717)\n    at N.get (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:26965\n    at ut (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:27026)",
+      "worker": "blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:post",
+      "t": 1790221428955,
+      "source": "page",
+      "type": "error",
+      "text": "NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8456\n    at ye (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8508)\n    at fe (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8228)\n    at we (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8717)\n    at N.get (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:26965\n    at ut (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:27026)",
+      "loc": "blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2",
+      "url": "https://www.novifyx.com/"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:post",
+      "t": 1790221428971,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/4a5eb98d-5163-4196-9321-351447a79c6e"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:search",
+      "t": 1790221439030,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:https://www.novifyx.com/586362df-4e45-4fad-8ca6-3cd35902fc8e"
+    }
+  ],
+  "requestsFailed": [
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noa",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noapi&rcb=17&",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=310059411.1790221290&frm=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=310059411.1790221290&frm=0&ngs=1&ps",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:flutter-google-maps-embedded-map",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1h1v9227439996za200zd9227439996xf1&_p=1790221297464&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1468088012.1790221298&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:flutter-google-maps-embedded-map",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1h1v9227439996za200zd9227439996xf1&_p=1790221297464&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1468088012.1790221298&frm=0&ngs=1&pscdl=noapi&rcb=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:flutter-google-maps-embedded-map",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1h1v9227439996za208zd9227439996xf1&_p=1790221298030&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1468088012.1790221298&frm=0&",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-desktop",
+      "label": "P1:flutter-google-maps-embedded-map",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1h1v9227439996za208zd9227439996xf1&_p=1790221298030&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1468088012.1790221298&frm=0&ngs=1&pscd",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-dark",
+      "label": "P1dark:flutter-google-maps-embedded-map",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221316122&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1984145744.1790221316&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-dark",
+      "label": "P1dark:flutter-google-maps-embedded-map",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221316122&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1984145744.1790221316&frm=0&ngs=1&pscdl=noapi&rcb=10",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221317291&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2075303227.1790221318&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221317291&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2075303227.1790221318&frm=0&ngs=1&pscdl=noapi&rcb=13",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221317291&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=2075303227.1790221318&frm",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p1-mobile",
+      "label": "P1m:octoprint-prusa-core-one-raspberry-pi",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221317291&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=2075303227.1790221318&frm=0&ngs=1&p",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:search",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221348130&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1957006234.1790221348&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:search",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221348130&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1957006234.1790221348&frm=0&ngs=1&pscdl=noapi&rcb=1&",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:reload",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221349247&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAEAAQ&ae=a&cid=1957006234.1790221348&frm",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:reload",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221349247&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1957006234.1790221348&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:reload",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221349247&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAEAAQ&ae=a&cid=1957006234.1790221348&frm=0&ngs=1&p",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:reload",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221349247&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1957006234.1790221348&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:nomatch",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221350296&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1957006234.1790221348&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p2-search",
+      "label": "P2:nomatch",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221350296&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1957006234.1790221348&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p3-tags",
+      "label": "P3:tags",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221351958&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=478767772.1790221352&frm=0&ngs=1&pscdl=noa",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p3-tags",
+      "label": "P3:tags",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221351958&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=478767772.1790221352&frm=0&ngs=1&pscdl=noapi&rcb=18&",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p3-tags",
+      "label": "P3:tag-detail",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221354173&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=478767772.1790221352&frm=0&ngs",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p3-tags",
+      "label": "P3:tag-detail",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221354173&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=478767772.1790221352&frm=0&ngs=1&pscdl=n",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p4-router",
+      "label": "P4:post",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221355104&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=264740841.1790221355&frm=0&ngs=1&pscdl=noa",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p4-router",
+      "label": "P4:post",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221355104&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=264740841.1790221355&frm=0&ngs=1&pscdl=noapi&rcb=5&s",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221356374&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=97061762.1790221357&frm=0&ngs=1&pscdl=noap",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221356374&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=97061762.1790221357&frm=0&ngs=1&pscdl=noapi&rcb=15&s",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/posts/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221356805&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=97061762.1790221357&frm=0&ngs=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/posts/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221356805&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=97061762.1790221357&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/about/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221357672&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=97061762.1790221357&frm=0&ngs=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/about/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221357672&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=97061762.1790221357&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p5-fouc",
+      "label": "P5:/posts/audio-vs-paper-books/",
+      "url": "https://www.googletagmanager.com/td?id=G-QQMCTBW5TH&v=3&t=t&pid=361231996&gtm=45je69m1v9227439996za200zd9227439996xf1&seq=1&exp=115938466~115938469~118897920~118897930~120032689~120213116~120385422~12",
+      "type": "fetch",
+      "err": "net::ERR_ABORTED"
+    },
+    {
+      "ctx": "p6-toc",
+      "label": "P6:audio-vs-paper-books",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1h1v9227439996za200zd9227439996xf1&_p=1790221359005&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1274517373.1790221359&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p6-toc",
+      "label": "P6:audio-vs-paper-books",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1h1v9227439996za200zd9227439996xf1&_p=1790221359005&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1274517373.1790221359&frm=0&ngs=1&pscdl=noapi&rcb=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p6-toc",
+      "label": "P6:audio-vs-paper-books",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221355554&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=264740841.1790221355&frm=0&ngs",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p6-toc",
+      "label": "P6:audio-vs-paper-books",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221355554&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=264740841.1790221355&frm=0&ngs=1&pscdl=n",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221366759&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1238825266.1790221367&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221366759&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1238825266.1790221367&frm=0&ngs=1&pscdl=noapi&rcb=14",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:post",
+      "url": "https://www.novifyx.com/~partytown/proxytown",
+      "type": "xhr",
+      "err": "net::ERR_ABORTED"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:search",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za208zd9227439996xf1&_p=1790221367942&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1238825266.1790221367&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r1",
+      "label": "P8:500:1:search",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za208zd9227439996xf1&_p=1790221367942&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1238825266.1790221367&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221371333&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2009141307.1790221372&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221371333&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2009141307.1790221372&frm=0&ngs=1&pscdl=noapi&rcb=1&",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:post",
+      "url": "https://www.novifyx.com/~partytown/proxytown",
+      "type": "xhr",
+      "err": "net::ERR_ABORTED"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:search",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221372533&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=2009141307.1790221372&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell500-r2",
+      "label": "P8:500:2:search",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221372533&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=2009141307.1790221372&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221375951&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1818876477.1790221376&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221375951&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1818876477.1790221376&frm=0&ngs=1&pscdl=noapi&rcb=19",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:post",
+      "url": "https://www.novifyx.com/~partytown/proxytown",
+      "type": "xhr",
+      "err": "net::ERR_ABORTED"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:search",
+      "url": "https://www.novifyx.com/~partytown/proxytown",
+      "type": "xhr",
+      "err": "net::ERR_ABORTED"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:search",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221382115&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1818876477.1790221376&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r1",
+      "label": "P8:3000:1:search",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221382115&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1818876477.1790221376&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221385546&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2136364119.1790221386&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221385546&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2136364119.1790221386&frm=0&ngs=1&pscdl=noapi&rcb=0&",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:search",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221391812&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=2136364119.1790221386&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell3000-r2",
+      "label": "P8:3000:2:search",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221391812&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=2136364119.1790221386&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221395207&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=859082156.1790221395&frm=0&ngs=1&pscdl=noa",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221395207&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=859082156.1790221395&frm=0&ngs=1&pscdl=noapi&rcb=13&",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221395207&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=859082156.1790221395&frm=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221395207&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=859082156.1790221395&frm=0&ngs=1&ps",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:post",
+      "url": "https://www.novifyx.com/~partytown/proxytown",
+      "type": "xhr",
+      "err": "net::ERR_ABORTED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:post",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221405353&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=859082156.1790221395&frm=0&ngs",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:post",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221405353&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=859082156.1790221395&frm=0&ngs=1&pscdl=n",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:search",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za208zd9227439996xf1&_p=1790221415437&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=859082156.1790221395&frm=0&ngs",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r1",
+      "label": "P8:10000:1:search",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za208zd9227439996xf1&_p=1790221415437&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=859082156.1790221395&frm=0&ngs=1&pscdl=n",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221418896&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1714256562.1790221419&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221418896&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1714256562.1790221419&frm=0&ngs=1&pscdl=noapi&rcb=12",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:home",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221418896&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1714256562.1790221419&frm",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:home",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221418896&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1714256562.1790221419&frm=0&ngs=1&p",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:post",
+      "url": "https://www.novifyx.com/~partytown/proxytown",
+      "type": "xhr",
+      "err": "net::ERR_ABORTED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:post",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221429001&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1714256562.1790221419&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:post",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221429001&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1714256562.1790221419&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:search",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221439046&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1714256562.1790221419&frm=0&ng",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p8-dwell10000-r2",
+      "label": "P8:10000:2:search",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221439046&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1714256562.1790221419&frm=0&ngs=1&pscdl=",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    }
+  ],
+  "p0": {
+    "assets": {
+      "/~partytown/partytown.js": {
+        "status": 200,
+        "contentType": "application/javascript; charset=utf-8",
+        "bytes": 2196
+      },
+      "/~partytown/partytown-sw.js": {
+        "status": 200,
+        "contentType": "application/javascript; charset=utf-8",
+        "bytes": 43195
+      },
+      "/~partytown/partytown-sandbox-sw.html": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8",
+        "bytes": 14047
+      }
+    },
+    "browser": {
+      "version": "153.0.8010.53",
+      "gaBlocked": true,
+      "profile": "fresh non-persistent BrowserContext (no extensions; Playwright default launch)"
+    },
+    "status": 404,
+    "visibility": "visible",
+    "registrations": [
+      {
+        "scope": "https://www.novifyx.com/~partytown/",
+        "active": "https://www.novifyx.com/~partytown/partytown-sw.js",
+        "state": "activated",
+        "installing": false,
+        "waiting": false
+      }
+    ],
+    "mainWindowResources": [
+      "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+    ],
+    "mainWindowGA": {
+      "dataLayerIsArray": true,
+      "typeofGtag": "undefined",
+      "scripts": [
+        {
+          "type": "text/partytown-x",
+          "src": "https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH"
+        },
+        {
+          "type": "text/partytown-x",
+          "src": null
+        }
+      ]
+    },
+    "frames": [
+      {
+        "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "isMain": true,
+        "googleResources": [
+          "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+        ]
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "isMain": false,
+        "googleResources": []
+      }
+    ],
+    "workers": [
+      {
+        "url": "blob:https://www.novifyx.com/e6a12899-0b1a-4d97-8937-9d11680cadec",
+        "googleResources": [
+          "https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH",
+          "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noapi&rcb=17&sr=1280x1800&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&_s=1&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385422~120469145~120469153&sid=1790221290&sct=1&seg=0&dl=https%3A%2F%2Fwww.novifyx.com%2Fposts%2Foctoprint-prusa-core-one-raspberry-pi%2F&dt=404%20Not%20Found%20%7C%20Novi%20Fyx&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=453",
+          "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noapi&rcb=17&sr=1280x1800&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&_s=1&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385422~120469145~120469153&sid=1790221290&sct=1&seg=0&dl=https%3A%2F%2Fwww.novifyx.com%2Fposts%2Foctoprint-prusa-core-one-raspberry-pi%2F&dt=404%20Not%20Found%20%7C%20Novi%20Fyx&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=453&gaf=1",
+          "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noapi&rcb=17&sr=1280x1800&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&_s=2&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385422~120469145~120469153&sid=1790221290&sct=1&seg=0&dl=https%3A%2F%2Fwww.novifyx.com%2Fposts%2Foctoprint-prusa-core-one-raspberry-pi%2F&dt=404%20Not%20Found%20%7C%20Novi%20Fyx&en=scroll&epn.percent_scrolled=90&_et=8&tfd=5481",
+          "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noapi&rcb=17&sr=1280x1800&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&_s=2&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385422~120469145~120469153&sid=1790221290&sct=1&seg=0&dl=https%3A%2F%2Fwww.novifyx.com%2Fposts%2Foctoprint-prusa-core-one-raspberry-pi%2F&dt=404%20Not%20Found%20%7C%20Novi%20Fyx&en=scroll&epn.percent_scrolled=90&_et=8&tfd=5481&gaf=1"
+        ]
+      }
+    ],
+    "serviceWorkers": [
+      "https://www.novifyx.com/~partytown/partytown-sw.js"
+    ],
+    "playwrightRequests": [
+      {
+        "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap",
+        "type": "stylesheet",
+        "frame": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/partytown-sw.js",
+        "type": "script",
+        "frame": "n/a: Service Worker requests do not have an associated frame.",
+        "serviceWorker": "https://www.novifyx.com/~partytown/partytown-sw.js"
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "type": "document",
+        "frame": "",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH",
+        "type": "fetch",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l",
+        "type": "fetch",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.novifyx.com/~partytown/proxytown",
+        "type": "xhr",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dm",
+        "type": "fetch",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l",
+        "type": "fetch",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      },
+      {
+        "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dm",
+        "type": "fetch",
+        "frame": "https://www.novifyx.com/~partytown/partytown-sandbox-sw.html?1790221289883",
+        "serviceWorker": null
+      }
+    ],
+    "mainTargetCdpRequests": [
+      {
+        "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap",
+        "type": "Stylesheet",
+        "initiator": "parser",
+        "frameId": "CB4417801D2DD9BF042DE7970496CED1"
+      }
+    ],
+    "requestsFailed": [
+      {
+        "ctx": "p0-clean",
+        "label": "P0",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noa",
+        "type": "fetch",
+        "err": "net::ERR_NAME_NOT_RESOLVED"
+      },
+      {
+        "ctx": "p0-clean",
+        "label": "P0",
+        "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=310059411.1790221290&frm=0&ngs=1&pscdl=noapi&rcb=17&",
+        "type": "fetch",
+        "err": "net::ERR_NAME_NOT_RESOLVED"
+      },
+      {
+        "ctx": "p0-clean",
+        "label": "P0",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=310059411.1790221290&frm=",
+        "type": "fetch",
+        "err": "net::ERR_NAME_NOT_RESOLVED"
+      },
+      {
+        "ctx": "p0-clean",
+        "label": "P0",
+        "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790221290038&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=310059411.1790221290&frm=0&ngs=1&ps",
+        "type": "fetch",
+        "err": "net::ERR_NAME_NOT_RESOLVED"
+      }
+    ],
+    "console": [
+      {
+        "ctx": "p0-clean",
+        "label": "P0",
+        "t": 1790221289813,
+        "source": "page",
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "loc": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/"
+      },
+      {
+        "ctx": "p0-clean",
+        "label": "P0",
+        "t": 1790221289850,
+        "source": "sw-created",
+        "type": "info",
+        "text": "https://www.novifyx.com/~partytown/partytown-sw.js"
+      },
+      {
+        "ctx": "p0-clean",
+        "label": "P0",
+        "t": 1790221289891,
+        "source": "worker-created",
+        "type": "info",
+        "text": "blob:https://www.novifyx.com/e6a12899-0b1a-4d97-8937-9d11680cadec"
+      }
+    ],
+    "summary": {
+      "swRegistrationErrors": [],
+      "allErrors": [
+        {
+          "ctx": "p0-clean",
+          "label": "P0",
+          "t": 1790221289813,
+          "source": "page",
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()",
+          "loc": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "url": "https://www.novifyx.com/posts/octoprint-prusa-core-one-raspberry-pi/"
+        }
+      ],
+      "registrationActive": true,
+      "gtagFetchedInWorker": true,
+      "gtagInMainWindowResourceTiming": false,
+      "gtagInMainTargetCdpNetwork": false
+    }
+  },
+  "details": {
+    "P1": {
+      "octoprint-prusa-core-one-raspberry-pi": [],
+      "flutter-google-maps-embedded-map": [
+        {
+          "index": 1,
+          "steps": [
+            {
+              "action": "click Next",
+              "from": 0,
+              "to": 734,
+              "delta": 734,
+              "settledMs": 840,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 2
+              }
+            },
+            {
+              "action": "click Prev",
+              "from": 734,
+              "to": 0,
+              "delta": -734,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 1
+              }
+            },
+            {
+              "action": "keyboard Enter on focused Next",
+              "from": 0,
+              "to": 734,
+              "delta": 734,
+              "scrollYBefore": 0,
+              "scrollYAfter": 0
+            },
+            {
+              "action": "keyboard Space on focused Next",
+              "from": 0,
+              "to": 734,
+              "delta": 734,
+              "scrollYBefore": 0,
+              "scrollYAfter": 0
+            },
+            {
+              "action": "mouse.wheel 40% back from end",
+              "gesture": {
+                "kind": "mouse.wheel",
+                "deltaX": -294,
+                "at": [
+                  640,
+                  1109
+                ]
+              },
+              "from": 734,
+              "to": 734,
+              "maxDisplacement": 287,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 2
+              },
+              "trk": {
+                "start": 734,
+                "min": 447,
+                "max": 734,
+                "events": 8
+              }
+            },
+            {
+              "action": "mouse.wheel 40% forward from start",
+              "gesture": {
+                "kind": "mouse.wheel",
+                "deltaX": 294,
+                "at": [
+                  640,
+                  1109
+                ]
+              },
+              "from": 0,
+              "to": 0,
+              "maxDisplacement": 287,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 1
+              },
+              "trk": {
+                "start": 0,
+                "min": 0,
+                "max": 287,
+                "events": 8
+              }
+            },
+            {
+              "action": "mouse.wheel 70% forward",
+              "gesture": {
+                "kind": "mouse.wheel",
+                "deltaX": 514,
+                "at": [
+                  640,
+                  1109
+                ]
+              },
+              "from": 0,
+              "to": 734,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 2
+              },
+              "trk": {
+                "start": 0,
+                "min": 0,
+                "max": 734,
+                "events": 10
+              }
+            }
+          ],
+          "start": {
+            "scrollLeft": 0,
+            "clientWidth": 734,
+            "scrollWidth": 1468,
+            "maxScroll": 734,
+            "rectWidth": 736,
+            "slideRectWidth": 734,
+            "prevDisabled": true,
+            "nextDisabled": false,
+            "prevVisible": true,
+            "nextVisible": true,
+            "prevOpacity": "0.3",
+            "nextOpacity": "1",
+            "slideCount": 2,
+            "expectedN": 2,
+            "labels": [
+              "Slide 1 of 2",
+              "Slide 2 of 2"
+            ],
+            "nearestSlide": 1,
+            "nearestOffset": 0,
+            "imgs": [
+              {
+                "complete": true,
+                "nw": 502,
+                "src": "/_astro/project-structure.kYKNyqNg.png"
+              },
+              {
+                "complete": true,
+                "nw": 762,
+                "src": "/_astro/initial-app-render.R1G38-sp.png"
+              }
+            ],
+            "scrollY": 0,
+            "activeIsNext": false
+          },
+          "imgsLoadedAtStart": 2
+        },
+        {
+          "index": 2,
+          "steps": [
+            {
+              "action": "click Next",
+              "from": 0,
+              "to": 734,
+              "delta": 734,
+              "settledMs": 878,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 2
+              }
+            },
+            {
+              "action": "click Next",
+              "from": 734,
+              "to": 1468,
+              "delta": 734,
+              "settledMs": 903,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 3
+              }
+            },
+            {
+              "action": "click Prev",
+              "from": 1468,
+              "to": 734,
+              "delta": -734,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 2
+              }
+            },
+            {
+              "action": "keyboard Enter on focused Next",
+              "from": 734,
+              "to": 1468,
+              "delta": 734,
+              "scrollYBefore": 11630,
+              "scrollYAfter": 11630
+            },
+            {
+              "action": "keyboard Space on focused Next",
+              "from": 734,
+              "to": 1468,
+              "delta": 734,
+              "scrollYBefore": 11630,
+              "scrollYAfter": 11630
+            },
+            {
+              "action": "mouse.wheel 40% back from end",
+              "gesture": {
+                "kind": "mouse.wheel",
+                "deltaX": -294,
+                "at": [
+                  640,
+                  900
+                ]
+              },
+              "from": 1468,
+              "to": 1468,
+              "maxDisplacement": 287,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 3
+              },
+              "trk": {
+                "start": 1468,
+                "min": 1181,
+                "max": 1468,
+                "events": 8
+              }
+            },
+            {
+              "action": "mouse.wheel 40% forward from start",
+              "gesture": {
+                "kind": "mouse.wheel",
+                "deltaX": 294,
+                "at": [
+                  640,
+                  900
+                ]
+              },
+              "from": 0,
+              "to": 0,
+              "maxDisplacement": 287,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 1
+              },
+              "trk": {
+                "start": 0,
+                "min": 0,
+                "max": 287,
+                "events": 8
+              }
+            },
+            {
+              "action": "mouse.wheel 70% forward",
+              "gesture": {
+                "kind": "mouse.wheel",
+                "deltaX": 514,
+                "at": [
+                  640,
+                  900
+                ]
+              },
+              "from": 0,
+              "to": 734,
+              "snap": {
+                "mod": 0,
+                "modDist": 0,
+                "modOk": true,
+                "geomOffset": 0,
+                "geomOk": true,
+                "nearestSlide": 2
+              },
+              "trk": {
+                "start": 0,
+                "min": 0,
+                "max": 734,
+                "events": 10
+              }
+            }
+          ],
+          "start": {
+            "scrollLeft": 0,
+            "clientWidth": 734,
+            "scrollWidth": 2202,
+            "maxScroll": 1468,
+            "rectWidth": 736,
+            "slideRectWidth": 734,
+            "prevDisabled": true,
+            "nextDisabled": false,
+            "prevVisible": true,
+            "nextVisible": true,
+            "prevOpacity": "0.3",
+            "nextOpacity": "1",
+            "slideCount": 3,
+            "expectedN": 3,
+            "labels": [
+              "Slide 1 of 3",
+              "Slide 2 of 3",
+              "Slide 3 of 3"
+            ],
+            "nearestSlide": 1,
+            "nearestOffset": 0,
+            "imgs": [
+              {
+                "complete": true,
+                "nw": 570,
+                "src": "/_astro/device-location-request.Bf-YNUhY.png"
+              },
+              {
+                "complete": true,
+                "nw": 570,
+                "src": "/_astro/loading-circle-animation.1pEckRD5.png"
+              },
+              {
+                "complete": false,
+                "nw": 0,
+                "src": "/_astro/map-screen-with-marker.D1Ov7Ltm.png"
+              }
+            ],
+            "scrollY": 11630,
+            "activeIsNext": false
+          },
+          "imgsLoadedAtStart": 2
+        }
+      ]
+    },
+    "P1dark": {
+      "flutter-google-maps-embedded-map": {
+        "lightColorsFirstCarousel": {
+          "theme": "light",
+          "bodyBg": "rgb(251, 254, 251)",
+          "bodyBgRGBA": [
+            251,
+            254,
+            251,
+            1
+          ],
+          "btnBg": "oklab(0.924934 0.0000422001 0.000018537 / 0.8)",
+          "btnFg": "rgb(40, 39, 40)",
+          "btnFgRGBA": [
+            40,
+            39,
+            40,
+            1
+          ],
+          "btnBgCompositeRGB": [
+            234,
+            235,
+            234
+          ],
+          "iconVsButtonContrast": 12.44,
+          "scrollerBorderColor": "oklch(0.928 0.006 264.531)",
+          "bodyLuminance": 0.984
+        },
+        "carousels": [
+          {
+            "st": {
+              "scrollLeft": 0,
+              "clientWidth": 734,
+              "scrollWidth": 1468,
+              "maxScroll": 734,
+              "rectWidth": 736,
+              "slideRectWidth": 734,
+              "prevDisabled": true,
+              "nextDisabled": false,
+              "prevVisible": true,
+              "nextVisible": true,
+              "prevOpacity": "0.3",
+              "nextOpacity": "1",
+              "slideCount": 2,
+              "expectedN": 2,
+              "labels": [
+                "Slide 1 of 2",
+                "Slide 2 of 2"
+              ],
+              "nearestSlide": 1,
+              "nearestOffset": 0,
+              "imgs": [
+                {
+                  "complete": true,
+                  "nw": 502,
+                  "src": "/_astro/project-structure.kYKNyqNg.png"
+                },
+                {
+                  "complete": true,
+                  "nw": 762,
+                  "src": "/_astro/initial-app-render.R1G38-sp.png"
+                }
+              ],
+              "scrollY": 0,
+              "activeIsNext": false
+            },
+            "col": {
+              "theme": "dark",
+              "bodyBg": "rgb(33, 39, 55)",
+              "bodyBgRGBA": [
+                33,
+                39,
+                55,
+                1
+              ],
+              "btnBg": "oklab(0.373388 -0.000638455 -0.0587515 / 0.8)",
+              "btnFg": "rgb(234, 237, 243)",
+              "btnFgRGBA": [
+                234,
+                237,
+                243,
+                1
+              ],
+              "btnBgCompositeRGB": [
+                48,
+                57,
+                88
+              ],
+              "iconVsButtonContrast": 9.63,
+              "scrollerBorderColor": "oklch(0.928 0.006 264.531)",
+              "bodyLuminance": 0.021
+            }
+          },
+          {
+            "st": {
+              "scrollLeft": 0,
+              "clientWidth": 734,
+              "scrollWidth": 2202,
+              "maxScroll": 1468,
+              "rectWidth": 736,
+              "slideRectWidth": 734,
+              "prevDisabled": true,
+              "nextDisabled": false,
+              "prevVisible": true,
+              "nextVisible": true,
+              "prevOpacity": "0.3",
+              "nextOpacity": "1",
+              "slideCount": 3,
+              "expectedN": 3,
+              "labels": [
+                "Slide 1 of 3",
+                "Slide 2 of 3",
+                "Slide 3 of 3"
+              ],
+              "nearestSlide": 1,
+              "nearestOffset": 0,
+              "imgs": [
+                {
+                  "complete": false,
+                  "nw": 0,
+                  "src": "/_astro/device-location-request.Bf-YNUhY.png"
+                },
+                {
+                  "complete": false,
+                  "nw": 0,
+                  "src": "/_astro/loading-circle-animation.1pEckRD5.png"
+                },
+                {
+                  "complete": false,
+                  "nw": 0,
+                  "src": "/_astro/map-screen-with-marker.D1Ov7Ltm.png"
+                }
+              ],
+              "scrollY": 11630,
+              "activeIsNext": false
+            },
+            "col": {
+              "theme": "dark",
+              "bodyBg": "rgb(33, 39, 55)",
+              "bodyBgRGBA": [
+                33,
+                39,
+                55,
+                1
+              ],
+              "btnBg": "oklab(0.373388 -0.000638455 -0.0587515 / 0.8)",
+              "btnFg": "rgb(234, 237, 243)",
+              "btnFgRGBA": [
+                234,
+                237,
+                243,
+                1
+              ],
+              "btnBgCompositeRGB": [
+                48,
+                57,
+                88
+              ],
+              "iconVsButtonContrast": 9.63,
+              "scrollerBorderColor": "oklch(0.928 0.006 264.531)",
+              "bodyLuminance": 0.021
+            }
+          }
+        ],
+        "screenshot": "/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09/playwright/screenshots-prod/dark-carousel-flutter-google-maps-embedded-map.png"
+      }
+    },
+    "P1mobile": [],
+    "P5": {
+      "light": {
+        "theme": "light",
+        "bg": "rgb(251, 254, 251)",
+        "ls": null,
+        "fouc": {
+          "firstRafWithBody": {
+            "theme": "light",
+            "bg": "rgb(251, 254, 251)",
+            "t": 121
+          },
+          "dcl": {
+            "theme": "light",
+            "bg": "rgb(251, 254, 251)",
+            "t": 120
+          }
+        }
+      },
+      "dark": {
+        "theme": "dark",
+        "bg": "rgb(33, 39, 55)",
+        "ls": "dark",
+        "btn": "dark",
+        "metaThemeColor": "rgb(33, 39, 55)"
+      },
+      "rows": [
+        {
+          "page": "/posts/",
+          "fouc": {
+            "firstRafWithBody": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 65
+            },
+            "dcl": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 61
+            }
+          },
+          "theme": "dark",
+          "ls": "dark",
+          "bgNow": "rgb(33, 39, 55)",
+          "btn": "dark"
+        },
+        {
+          "page": "/tags/",
+          "fouc": {
+            "firstRafWithBody": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 38
+            },
+            "dcl": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 37
+            }
+          },
+          "theme": "dark",
+          "ls": "dark",
+          "bgNow": "rgb(33, 39, 55)",
+          "btn": "dark"
+        },
+        {
+          "page": "/about/",
+          "fouc": {
+            "firstRafWithBody": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 166
+            },
+            "dcl": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 164
+            }
+          },
+          "theme": "dark",
+          "ls": "dark",
+          "bgNow": "rgb(33, 39, 55)",
+          "btn": "dark"
+        },
+        {
+          "page": "/posts/audio-vs-paper-books/",
+          "fouc": {
+            "firstRafWithBody": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 56
+            },
+            "dcl": {
+              "theme": "dark",
+              "bg": "rgb(33, 39, 55)",
+              "t": 55
+            }
+          },
+          "theme": "dark",
+          "ls": "dark",
+          "bgNow": "rgb(33, 39, 55)",
+          "btn": "dark"
+        }
+      ]
+    },
+    "P6": {
+      "audio-vs-paper-books": {
+        "s0": {
+          "open": false,
+          "summary": "Open Table of contents",
+          "links": [
+            "#why-books",
+            "#my-thoughts-on-paper-books",
+            "#why-i-like-paper-books",
+            "#why-i-dont-like-paper-books",
+            "#my-experience-with-audiobooks",
+            "#why-i-like-audiobooks",
+            "#why-i-dont-like-audiobooks",
+            "#conclusion"
+          ]
+        },
+        "anchors": [
+          {
+            "href": "#why-books",
+            "exists": true
+          },
+          {
+            "href": "#my-thoughts-on-paper-books",
+            "exists": true
+          },
+          {
+            "href": "#why-i-like-paper-books",
+            "exists": true
+          },
+          {
+            "href": "#why-i-dont-like-paper-books",
+            "exists": true
+          },
+          {
+            "href": "#my-experience-with-audiobooks",
+            "exists": true
+          },
+          {
+            "href": "#why-i-like-audiobooks",
+            "exists": true
+          },
+          {
+            "href": "#why-i-dont-like-audiobooks",
+            "exists": true
+          },
+          {
+            "href": "#conclusion",
+            "exists": true
+          }
+        ],
+        "clicked": [
+          {
+            "href": "#my-thoughts-on-paper-books",
+            "hash": "#my-thoughts-on-paper-books",
+            "path": "/posts/audio-vs-paper-books/",
+            "targetTop": 0,
+            "scrollY": 1753,
+            "atBottom": false
+          },
+          {
+            "href": "#conclusion",
+            "hash": "#conclusion",
+            "path": "/posts/audio-vs-paper-books/",
+            "targetTop": 1011,
+            "scrollY": 3078,
+            "atBottom": true
+          }
+        ]
+      },
+      "dad-ops-playbook": {
+        "s0": {
+          "open": false,
+          "summary": "Open Table of contents",
+          "links": [
+            "#principle-1-be-the-umbrella-parent",
+            "#principle-2-the-art-of-patient-observation",
+            "#principle-3-let-them-scrape-their-knees",
+            "#principle-4-the-chore-chart-principle",
+            "#principle-5-building-the-treehouse",
+            "#conclusion",
+            "#appendix-1"
+          ]
+        },
+        "anchors": [
+          {
+            "href": "#principle-1-be-the-umbrella-parent",
+            "exists": true
+          },
+          {
+            "href": "#principle-2-the-art-of-patient-observation",
+            "exists": true
+          },
+          {
+            "href": "#principle-3-let-them-scrape-their-knees",
+            "exists": true
+          },
+          {
+            "href": "#principle-4-the-chore-chart-principle",
+            "exists": true
+          },
+          {
+            "href": "#principle-5-building-the-treehouse",
+            "exists": true
+          },
+          {
+            "href": "#conclusion",
+            "exists": true
+          },
+          {
+            "href": "#appendix-1",
+            "exists": true
+          }
+        ],
+        "clicked": [
+          {
+            "href": "#principle-2-the-art-of-patient-observation",
+            "hash": "#principle-2-the-art-of-patient-observation",
+            "path": "/posts/dad-ops-playbook/",
+            "targetTop": 0,
+            "scrollY": 3967,
+            "atBottom": false
+          },
+          {
+            "href": "#appendix-1",
+            "hash": "#appendix-1",
+            "path": "/posts/dad-ops-playbook/",
+            "targetTop": 953,
+            "scrollY": 11444,
+            "atBottom": true
+          }
+        ]
+      }
+    },
+    "P8": [
+      {
+        "dwellMs": 500,
+        "rep": 1,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      },
+      {
+        "dwellMs": 500,
+        "rep": 2,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 1,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 2,
+        "pageErrors": 0,
+        "proxytownErrors": 2,
+        "otherErrors": [],
+        "abortedProxytownXHR": 2
+      },
+      {
+        "dwellMs": 3000,
+        "rep": 2,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 0,
+        "pageErrors": 0,
+        "proxytownErrors": 0,
+        "otherErrors": [],
+        "abortedProxytownXHR": 0
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 1,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      },
+      {
+        "dwellMs": 10000,
+        "rep": 2,
+        "postLink": "/posts/two-books-which-influenced-my-hiring-pipeline/",
+        "pageConsoleErrors": 1,
+        "pageErrors": 0,
+        "proxytownErrors": 1,
+        "otherErrors": [],
+        "abortedProxytownXHR": 1
+      }
+    ],
+    "P7": {
+      "visits": 22,
+      "islandsTotalAcrossVisits": 9,
+      "badVisits": [],
+      "hydrationMsgs": []
+    }
+  },
+  "consoleSignatures": {
+    "errors": {
+      "page|Failed to load resource: the server responded with a status of 404 ()": {
+        "count": 4,
+        "labels": [
+          "P0",
+          "P1:octoprint-prusa-core-one-raspberry-pi",
+          "P1dark:octoprint-prusa-core-one-raspberry-pi",
+          "P1m:octoprint-prusa-core-one-raspberry-pi"
+        ]
+      },
+      "page|NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'ORIGIN/~partytown/proxytown'.": {
+        "count": 6,
+        "labels": [
+          "P8:500:1:post",
+          "P8:500:2:post",
+          "P8:3000:1:post",
+          "P8:3000:1:search",
+          "P8:10000:1:post",
+          "P8:10000:2:post"
+        ]
+      }
+    },
+    "warnings": {}
+  },
+  "consoleSummary": {
+    "total": 72,
+    "errors": 10,
+    "warnings": 0,
+    "errorTexts": [
+      "page:Failed to load resource: the server responded with a status of 404 ()",
+      "page:NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8456\n    at ye (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8508)\n    at fe (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8228)\n    at we (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:8717)\n    at N.get (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:26965\n    at ut (blob:https://www.novifyx.com/16f199a5-88c0-4868-9b52-f0b8b012c7fc:2:27026)",
+      "page:NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8456\n    at ye (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8508)\n    at fe (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8228)\n    at we (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:8717)\n    at N.get (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:26965\n    at ut (blob:https://www.novifyx.com/c0f5efc8-c0cc-407f-9c00-d3650e3ff55a:2:27026)",
+      "page:NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8456\n    at ye (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8508)\n    at fe (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8228)\n    at we (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:8717)\n    at N.get (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:26965\n    at ut (blob:https://www.novifyx.com/e579ae7a-127f-4f5e-92c0-367689016391:2:27026)",
+      "page:NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8456\n    at ye (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8508)\n    at fe (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8228)\n    at we (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:8717)\n    at N.get (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:26965\n    at ut (blob:https://www.novifyx.com/188eaa73-528c-472f-9fc4-4db9dc94e421:2:27026)",
+      "page:NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8456\n    at ye (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8508)\n    at fe (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8228)\n    at we (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:8717)\n    at N.get (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:26965\n    at ut (blob:https://www.novifyx.com/f685531b-6703-49f5-83d0-d974c11f46d8:2:27026)",
+      "page:NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 'https://www.novifyx.com/~partytown/proxytown'.\n    at blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8456\n    at ye (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8508)\n    at fe (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8228)\n    at we (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:8717)\n    at N.get (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:5040)\n    at qd (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:271:152)\n    at N.eval (https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH:882:466)\n    at blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:26965\n    at ut (blob:https://www.novifyx.com/8133ae92-bef7-4e87-b537-114727d7e7a2:2:27026)"
+    ],
+    "warningTexts": []
+  },
+  "visibilityStates": [
+    "visible"
+  ]
+}

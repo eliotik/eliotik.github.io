@@ -1,0 +1,91 @@
+{
+ "mode": "par",
+ "elapsedMs": 12713,
+ "totalResponses": 284,
+ "statusCounts": {
+  "200": 263,
+  "304": 21
+ },
+ "count504": 0,
+ "bad": [],
+ "failed": [],
+ "pageErrors": [],
+ "consoleErrors": [],
+ "failedDynImport": [],
+ "docLoads": [
+  "1785 /search/ /search/",
+  "1792 / /",
+  "1865 /posts/flutter-google-maps-address-manipulation/ /posts/flutter-google-maps-address-manipulation/",
+  "1992 /search/ /search/",
+  "2034 /posts/flutter-google-maps-embedded-map/ /posts/flutter-google-maps-embedded-map/",
+  "2036 /posts/octoprint-prusa-core-one-raspberry-pi/ /posts/octoprint-prusa-core-one-raspberry-pi/"
+ ],
+ "viteWs": [
+  "1775 /search/ VITE_WS {\"type\":\"full-reload\",\"path\":\"*\"}"
+ ],
+ "positiveControl": {
+  "fetchStatus": 504,
+  "fetchStatusText": "Outdated Optimize Dep",
+  "dynImportError": "Failed to fetch dynamically imported module: http://localhost:4322/node_modules/.vite/deps/react.js?v=deadbe01",
+  "recordedByResponseListener": [
+   "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbeef",
+   "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbe01"
+  ],
+  "consoleDuringControl": [
+   "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+   "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+  ]
+ },
+ "pages": {
+  "/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": false,
+   "apps": null,
+   "perfBad": 0,
+   "tbChunks": 4,
+   "islands": 0,
+   "unhydrated": 0
+  },
+  "/posts/octoprint-prusa-core-one-raspberry-pi/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": false,
+   "apps": null,
+   "perfBad": 0,
+   "tbChunks": 4,
+   "islands": 7,
+   "unhydrated": 0
+  },
+  "/posts/flutter-google-maps-address-manipulation/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": false,
+   "apps": null,
+   "perfBad": 0,
+   "tbChunks": 4,
+   "islands": 3,
+   "unhydrated": 0
+  },
+  "/posts/flutter-google-maps-embedded-map/": {
+   "status": 200,
+   "navType": "navigate",
+   "toolbar": false,
+   "apps": null,
+   "perfBad": 0,
+   "tbChunks": 4,
+   "islands": 2,
+   "unhydrated": 0
+  },
+  "/search/": {
+   "status": 200,
+   "navType": "reload",
+   "toolbar": false,
+   "apps": null,
+   "perfBad": 0,
+   "tbChunks": 4,
+   "islands": 1,
+   "unhydrated": 0
+  }
+ }
+}

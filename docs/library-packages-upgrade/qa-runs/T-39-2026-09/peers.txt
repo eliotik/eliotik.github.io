@@ -1,0 +1,28 @@
+# Peer check — T-39 Task 8 build lane (ruling R11)
+# HEAD 55a65300a2dce56e7c225232ca8c4abb2c7bd5b4, Node v22.23.3, pnpm 10.33.2
+# Method: copy package.json + pnpm-lock.yaml + .npmrc to a fresh scratch dir (mktemp -d under the session scratchpad),
+#   `pnpm install --resolution-only` there; pnpm exit=0; scratch lockfile sha256 before == after
+#   (f2e6d155c401d6df0d8a5f824bdbd9f263116458c9ddd46cef0110351aca6cdd = repo lockfile) -> lockfile unchanged.
+# Block below = `sed -n '/Issues with peer/,$p'` of that run (verbatim).
+# Other output of the same run: " WARN  2 deprecated subdependencies found: @ungap/structured-clone@1.2.0, whatwg-encoding@2.0.0"
+ WARN  Issues with peer dependencies found
+.
+└─┬ @divriots/jampack 0.34.1
+  └─┬ quicklink 2.3.0
+    ├── ✕ unmet peer react@^16.8.0: found 19.3.0
+    └── ✕ unmet peer react-dom@^16.8.0: found 19.3.0
+
+Done in 820ms using pnpm v10.33.2
+
+# ---- Comparison with baseline block (docs/library-packages-upgrade/baseline/2026-09/gate.txt, top) ----
+# SAME  @divriots/jampack 0.34.1 > quicklink 2.3.0 > react@^16.8.0 / react-dom@^16.8.0 (found 19.2.8 -> now 19.3.0).
+#       Transitive (parent quicklink is not a direct dep). Upstream-locked: jampack 0.34.1 is registry latest and
+#       declares quicklink ^2.3.0; quicklink 2.3.0 is the newest 2.x; only quicklink 3.x (3.0.2 peers
+#       react ^16.8.0||^17||^18||^19) accepts React 19.
+# GONE  astro 6.2.1 > tsconfck 3.1.6 > typescript@^5.0.0 (tsconfck no longer in the tree: 0 matches in pnpm-lock.yaml under Astro 7.3.4)
+# GONE  astro-eslint-parser 3.0.0 > ... > @napi-rs/wasm-runtime 1.2.0 > @emnapi/runtime@^2.0.0-alpha.3
+# GONE  eslint-plugin-jsx-a11y 6.10.2 > eslint@^3..^9 (replaced by eslint-plugin-jsx-a11y-x ^0.2.0)
+# NEW   none
+# Deprecated subdeps: baseline 3 (@ungap/structured-clone@1.2.0, tsconfck@3.1.6, whatwg-encoding@2.0.0) + deprecated
+#   direct @types/github-slugger@2.0.0 -> now 2 (@ungap/structured-clone@1.2.0, whatwg-encoding@2.0.0); no deprecated direct dep.
+# Verdict (R11): PASS - no NEW unmet peer under a direct-dependency parent; the one remaining item predates the branch.

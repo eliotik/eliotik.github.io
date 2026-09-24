@@ -1,0 +1,139 @@
+// Cold-start module crawler. Every HTTP GET is done by a spawned `curl`.
+// All pages are requested in parallel at t=0; every module referenced by a page
+// (script src, inline module imports, astro-island component/renderer/before-hydration
+// urls, modulepreload/stylesheet links) is requested as soon as its parent returns,
+// and JS module bodies are recursively followed (static + string-literal dynamic imports).
+// Usage: node crawl.mjs <base> <out.json>
+import { execFile } from 'node:child_process';
+import fs from 'node:fs';
+
+const BASE = process.argv[2];
+const OUT = process.argv[3];
+const PAGES = (process.env.PAGES ||
+  '/,/posts/octoprint-prusa-core-one-raspberry-pi/,/search/,/posts/flutter-google-maps-address-manipulation/,/posts/flutter-google-maps-embedded-map/').split(',');
+
+const t0 = Date.now();
+const seen = new Map(); // url -> record
+const inflight = [];
+
+function curl(url, accept) {
+  return new Promise((resolve) => {
+    const start = Date.now() - t0;
+    execFile(
+      'curl',
+      ['-s', '-H', `Accept: ${accept}`, '-w', '\n__CURL_STATUS__%{http_code}', url],
+      { maxBuffer: 256 * 1024 * 1024, encoding: 'utf8' },
+      (err, stdout) => {
+        const end = Date.now() - t0;
+        const idx = stdout ? stdout.lastIndexOf('\n__CURL_STATUS__') : -1;
+        const status = idx >= 0 ? Number(stdout.slice(idx + 16)) : 0;
+        const body = idx >= 0 ? stdout.slice(0, idx) : '';
+        resolve({ status, body, start, end, curlErr: err ? String(err.code ?? err.message) : null });
+      }
+    );
+  });
+}
+
+const decode = (s) =>
+  s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+
+function isLocalModuleish(u) {
+  return u.startsWith('/') || u.startsWith('./') || u.startsWith('../') || u.startsWith(BASE);
+}
+
+function resolveUrl(spec, parent) {
+  try {
+    return new URL(spec, parent).href;
+  } catch {
+    return null;
+  }
+}
+
+function extractFromHtml(html, pageUrl) {
+  const out = [];
+  const push = (spec, kind) => {
+    spec = decode(spec.trim());
+    if (!isLocalModuleish(spec)) return;
+    const u = resolveUrl(spec, pageUrl);
+    if (u && u.startsWith(BASE)) out.push({ url: u, kind });
+  };
+  for (const m of html.matchAll(/<script\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi)) push(m[1], 'script-src');
+  for (const m of html.matchAll(/<link\b[^>]*>/gi)) {
+    const tag = m[0];
+    const rel = /\brel\s*=\s*["']([^"']+)["']/i.exec(tag)?.[1] ?? '';
+    const href = /\bhref\s*=\s*["']([^"']+)["']/i.exec(tag)?.[1];
+    if (href && /modulepreload|stylesheet/i.test(rel)) push(href, `link-${rel}`);
+  }
+  for (const m of html.matchAll(/<astro-island\b[^>]*>/gi)) {
+    const tag = m[0];
+    for (const attr of ['component-url', 'renderer-url', 'before-hydration-url']) {
+      const v = new RegExp(`\\b${attr}\\s*=\\s*["']([^"']*)["']`, 'i').exec(tag)?.[1];
+      if (v) push(v, attr);
+    }
+  }
+  for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    if (/\bsrc\s*=/.test(m[1])) continue;
+    if (!/type\s*=\s*["']module["']/i.test(m[1])) continue;
+    for (const spec of extractImports(m[2])) push(spec, 'inline-module-import');
+  }
+  return out;
+}
+
+function extractImports(code) {
+  const specs = new Set();
+  const res = [
+    /\bimport\s*(?:[\w*${}\s,]+?\s*from\s*)?["']([^"'\n]+)["']/g,
+    /\bexport\s*(?:\*|\{[^}]*\})\s*(?:as\s+\w+\s*)?from\s*["']([^"'\n]+)["']/g,
+    /\bimport\(\s*["']([^"'\n]+)["']\s*\)/g,
+    /__vite__injectQuery\(\s*["']([^"'\n]+)["']/g,
+  ];
+  for (const re of res) for (const m of code.matchAll(re)) if (isLocalModuleish(m[1])) specs.add(m[1]);
+  return [...specs];
+}
+
+async function fetchUrl(url, kind, parent, depth, accept) {
+  if (seen.has(url)) return;
+  const rec = { url, kind, parent, depth };
+  seen.set(url, rec);
+  const r = await curl(url, accept);
+  Object.assign(rec, { status: r.status, start: r.start, end: r.end, bytes: r.body.length, curlErr: r.curlErr });
+  if (r.status !== 200) {
+    rec.bodySnippet = r.body.slice(0, 300);
+    return;
+  }
+  let children = [];
+  if (kind === 'page') {
+    children = extractFromHtml(r.body, url);
+    rec.hasToolbarEntrypoint = r.body.includes('/@id/astro/runtime/client/dev-toolbar/entrypoint.js');
+    rec.islands = (r.body.match(/<astro-island\b/g) || []).length;
+  } else if (!/\.(css|png|jpe?g|webp|svg|gif|ico|woff2?)(\?|$)/i.test(new URL(url).pathname) || /[?&](import|astro|lang\.)/.test(url)) {
+    const inDeps = new URL(url).pathname.startsWith('/node_modules/.vite/deps/');
+    children = extractImports(r.body)
+      // pre-bundled deps only import other .js chunks; skip prose like "import MyComponent from './MyComponent'"
+      // that appears inside string literals of minified bundles
+      .filter((s) => !inDeps || /\.m?js(\?|$)/.test(s))
+      .map((s) => ({ url: resolveUrl(s, url), kind: 'import' }))
+      .filter((c) => c.url && c.url.startsWith(BASE));
+  }
+  rec.children = children.length;
+  await Promise.all(children.map((c) => fetchUrl(c.url, c.kind, url, depth + 1, '*/*')));
+}
+
+await Promise.all(PAGES.map((p) => fetchUrl(new URL(p, BASE).href, 'page', null, 0, 'text/html')));
+
+const all = [...seen.values()];
+const non200 = all.filter((r) => r.status !== 200);
+const summary = {
+  base: BASE,
+  pages: PAGES,
+  totalRequests: all.length,
+  elapsedMs: Date.now() - t0,
+  statusCounts: all.reduce((a, r) => ((a[r.status] = (a[r.status] || 0) + 1), a), {}),
+  count504: all.filter((r) => r.status === 504).length,
+  non200,
+  toolbarEntrypointInPages: all.filter((r) => r.kind === 'page').map((r) => ({ url: r.url, status: r.status, hasToolbarEntrypoint: r.hasToolbarEntrypoint, islands: r.islands })),
+  toolbarModules: all.filter((r) => /dev-toolbar|\/deps\/(astro|settings|audit|xray|toolbar|ui-library|astro_runtime_client_dev-toolbar)/.test(r.url)).map((r) => ({ url: r.url.replace(BASE, ''), status: r.status })),
+  requests: all.map(({ url, kind, depth, status, start, end, bytes }) => ({ url: url.replace(BASE, ''), kind, depth, status, start, end, bytes })),
+};
+fs.writeFileSync(OUT, JSON.stringify(summary, null, 2));
+console.log(JSON.stringify({ totalRequests: summary.totalRequests, elapsedMs: summary.elapsedMs, statusCounts: summary.statusCounts, count504: summary.count504, non200: non200.map((r) => `${r.status} ${r.url.replace(BASE, '')}`), toolbarModuleCount: summary.toolbarModules.length, pages: summary.toolbarEntrypointInPages }, null, 1));

@@ -1,0 +1,7 @@
+--- after clear:
+total 16
+drwxr-xr-x@  4 ap  staff   128 Sep 24 00:17 .
+drwxr-xr-x@ 37 ap  staff  1184 Sep 24 00:10 ..
+-rw-r--r--@  1 ap  staff   236 Sep 23 23:09 preview.json
+-rw-r--r--@  1 ap  staff   152 Sep 23 23:09 preview.log
+ls: node_modules/.vite: No such file or directory

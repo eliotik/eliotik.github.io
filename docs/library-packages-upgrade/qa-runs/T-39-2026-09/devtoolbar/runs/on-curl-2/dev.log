@@ -1,0 +1,13 @@
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Generated 0ms","label":"types","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Syncing content","label":"content","level":"info"}
+{"message":"Synced content","label":"content","level":"info"}
+{"message":" astro  v7.3.4 ready in 1171 ms\n┃ Local    http://localhost:4322/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
+{"message":"watching for file changes...","label":null,"level":"info"}
+{"message":"[200] /search/ 106ms","label":null,"level":"info"}
+{"message":"[200] / 158ms","label":null,"level":"info"}
+{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 958ms","label":null,"level":"info"}
+{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1167ms","label":null,"level":"info"}
+{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1187ms","label":null,"level":"info"}
+{"message":"dependencies optimized: astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-swap-functions.js, astro/virtual-modules/transitions-types.js","label":"vite","level":"info"}

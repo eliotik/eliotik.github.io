@@ -1,0 +1,19 @@
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Generated 0ms","label":"types","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Syncing content","label":"content","level":"info"}
+{"message":"Synced content","label":"content","level":"info"}
+{"message":" astro  v7.3.4 ready in 1192 ms\n┃ Local    http://localhost:4322/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
+{"message":"watching for file changes...","label":null,"level":"info"}
+{"message":"[200] /search/ 145ms","label":null,"level":"info"}
+{"message":"[200] /search/ 29ms","label":null,"level":"info"}
+{"message":"[200] / 160ms","label":null,"level":"info"}
+{"message":"[200] / 42ms","label":null,"level":"info"}
+{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 1100ms","label":null,"level":"info"}
+{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 1024ms","label":null,"level":"info"}
+{"message":"[200] /search/ 3ms","label":null,"level":"info"}
+{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1357ms","label":null,"level":"info"}
+{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1280ms","label":null,"level":"info"}
+{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1398ms","label":null,"level":"info"}
+{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1322ms","label":null,"level":"info"}
+{"message":"dependencies optimized: astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-swap-functions.js, astro/virtual-modules/transitions-types.js","label":"vite","level":"info"}

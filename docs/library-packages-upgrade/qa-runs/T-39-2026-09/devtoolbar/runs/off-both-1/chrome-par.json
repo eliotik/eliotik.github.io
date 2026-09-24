@@ -1,0 +1,2097 @@
+{
+  "base": "http://localhost:4322",
+  "mode": "par",
+  "pages": {
+    "/": {
+      "start": 540,
+      "loadedAt": 1792,
+      "status": 200,
+      "state": {
+        "url": "/",
+        "navType": "navigate",
+        "toolbarElement": false,
+        "toolbarShadow": false,
+        "toolbarApps": null,
+        "toolbarEntrypointScript": false,
+        "perfBad": [],
+        "perfToolbarChunks": [
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af",
+            "status": 200
+          }
+        ],
+        "islands": 0,
+        "unhydratedIslands": 0
+      }
+    },
+    "/posts/octoprint-prusa-core-one-raspberry-pi/": {
+      "start": 540,
+      "loadedAt": 2036,
+      "status": 200,
+      "state": {
+        "url": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "navType": "navigate",
+        "toolbarElement": false,
+        "toolbarShadow": false,
+        "toolbarApps": null,
+        "toolbarEntrypointScript": false,
+        "perfBad": [],
+        "perfToolbarChunks": [
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193",
+            "status": 200
+          }
+        ],
+        "islands": 7,
+        "unhydratedIslands": 0
+      }
+    },
+    "/posts/flutter-google-maps-address-manipulation/": {
+      "start": 540,
+      "loadedAt": 1865,
+      "status": 200,
+      "state": {
+        "url": "/posts/flutter-google-maps-address-manipulation/",
+        "navType": "navigate",
+        "toolbarElement": false,
+        "toolbarShadow": false,
+        "toolbarApps": null,
+        "toolbarEntrypointScript": false,
+        "perfBad": [],
+        "perfToolbarChunks": [
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af",
+            "status": 200
+          }
+        ],
+        "islands": 3,
+        "unhydratedIslands": 0
+      }
+    },
+    "/posts/flutter-google-maps-embedded-map/": {
+      "start": 540,
+      "loadedAt": 2034,
+      "status": 200,
+      "state": {
+        "url": "/posts/flutter-google-maps-embedded-map/",
+        "navType": "navigate",
+        "toolbarElement": false,
+        "toolbarShadow": false,
+        "toolbarApps": null,
+        "toolbarEntrypointScript": false,
+        "perfBad": [],
+        "perfToolbarChunks": [
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af",
+            "status": 200
+          }
+        ],
+        "islands": 2,
+        "unhydratedIslands": 0
+      }
+    },
+    "/search/": {
+      "start": 540,
+      "loadedAt": 1785,
+      "status": 200,
+      "state": {
+        "url": "/search/",
+        "navType": "reload",
+        "toolbarElement": false,
+        "toolbarShadow": false,
+        "toolbarApps": null,
+        "toolbarEntrypointScript": false,
+        "perfBad": [],
+        "perfToolbarChunks": [
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf",
+            "status": 200
+          },
+          {
+            "name": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af",
+            "status": 200
+          }
+        ],
+        "islands": 1,
+        "unhydratedIslands": 0
+      }
+    }
+  },
+  "positiveControl": {
+    "fetchStatus": 504,
+    "fetchStatusText": "Outdated Optimize Dep",
+    "dynImportError": "Failed to fetch dynamically imported module: http://localhost:4322/node_modules/.vite/deps/react.js?v=deadbe01",
+    "recordedByResponseListener": [
+      "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbeef",
+      "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbe01"
+    ],
+    "consoleDuringControl": [
+      "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+      "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+    ]
+  },
+  "docLoads": [
+    {
+      "t": 1785,
+      "page": "/search/",
+      "url": "/search/"
+    },
+    {
+      "t": 1792,
+      "page": "/",
+      "url": "/"
+    },
+    {
+      "t": 1865,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "url": "/posts/flutter-google-maps-address-manipulation/"
+    },
+    {
+      "t": 1992,
+      "page": "/search/",
+      "url": "/search/"
+    },
+    {
+      "t": 2034,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "url": "/posts/flutter-google-maps-embedded-map/"
+    },
+    {
+      "t": 2036,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "url": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+    }
+  ],
+  "allResponses": [
+    {
+      "t": 634,
+      "status": 200,
+      "url": "/search/"
+    },
+    {
+      "t": 642,
+      "status": 200,
+      "url": "/"
+    },
+    {
+      "t": 650,
+      "status": 200,
+      "url": "/toggle-theme.js"
+    },
+    {
+      "t": 663,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 769,
+      "status": 200,
+      "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+    },
+    {
+      "t": 769,
+      "status": 200,
+      "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+    },
+    {
+      "t": 867,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 867,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 869,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2"
+    },
+    {
+      "t": 877,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6pfjptAgt5VM-kVkqdyU8n1ioa1XdgregdFA.woff2"
+    },
+    {
+      "t": 1455,
+      "status": 200,
+      "url": "/src/styles/base.css"
+    },
+    {
+      "t": 1455,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1465,
+      "status": 200,
+      "url": "/@vite/client"
+    },
+    {
+      "t": 1568,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/viewtransitions.css"
+    },
+    {
+      "t": 1613,
+      "status": 200,
+      "url": "/posts/flutter-google-maps-address-manipulation/"
+    },
+    {
+      "t": 1614,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1617,
+      "status": 200,
+      "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+    },
+    {
+      "t": 1640,
+      "status": 200,
+      "url": "/src/components/Socials.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1643,
+      "status": 200,
+      "url": "/src/components/Footer.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1643,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1644,
+      "status": 200,
+      "url": "/src/components/Breadcrumbs.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1644,
+      "status": 200,
+      "url": "/src/layouts/Main.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1645,
+      "status": 200,
+      "url": "/src/components/TopTags.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1647,
+      "status": 200,
+      "url": "/src/pages/index.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1648,
+      "status": 200,
+      "url": "/toggle-theme.js"
+    },
+    {
+      "t": 1648,
+      "status": 200,
+      "url": "/@id/astro:scripts/before-hydration.js"
+    },
+    {
+      "t": 1649,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/prefetch.js?v=7cebfda5"
+    },
+    {
+      "t": 1649,
+      "status": 200,
+      "url": "/@id/__x00__astro:transitions/client"
+    },
+    {
+      "t": 1651,
+      "status": 200,
+      "url": "/node_modules/.pnpm/vite@8.3.0_@types+node@24.13.3_esbuild@0.28.2_jiti@2.7.0_terser@5.28.1_yaml@2.9.0/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "t": 1659,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/viewtransitions.css"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6pfjptAgt5VM-kVkqdyU8n1ioa1XdgregdFA.woff2"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "/src/styles/base.css"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "/@vite/client"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "/src/components/Socials.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1667,
+      "status": 200,
+      "url": "/src/components/Footer.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1670,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/prefetch.js?v=7cebfda5"
+    },
+    {
+      "t": 1754,
+      "status": 200,
+      "url": "/src/components/Pagination.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1754,
+      "status": 200,
+      "url": "/src/components/Tag.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1754,
+      "status": 200,
+      "url": "/src/layouts/PostDetails.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1754,
+      "status": 200,
+      "url": "/src/components/ShareLinks.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1756,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1756,
+      "status": 200,
+      "url": "/src/components/Breadcrumbs.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1756,
+      "status": 200,
+      "url": "/src/layouts/Main.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1756,
+      "status": 200,
+      "url": "/toggle-theme.js"
+    },
+    {
+      "t": 1758,
+      "status": 200,
+      "url": "/@react-refresh"
+    },
+    {
+      "t": 1764,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1764,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1764,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c"
+    },
+    {
+      "t": 1764,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193"
+    },
+    {
+      "t": 1768,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1769,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1769,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2"
+    },
+    {
+      "t": 1769,
+      "status": 200,
+      "url": "/src/styles/base.css"
+    },
+    {
+      "t": 1769,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1771,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/prefetch.js?v=7cebfda5"
+    },
+    {
+      "t": 1771,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1773,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf"
+    },
+    {
+      "t": 1774,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af"
+    },
+    {
+      "t": 1775,
+      "status": 200,
+      "url": "/@vite/client"
+    },
+    {
+      "t": 1776,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1776,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1776,
+      "status": 200,
+      "url": "/src/components/Socials.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1776,
+      "status": 200,
+      "url": "/src/components/Footer.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1776,
+      "status": 200,
+      "url": "/_astro/ec.0vx5m.js"
+    },
+    {
+      "t": 1776,
+      "status": 200,
+      "url": "/@id/__x00__astro:transitions/client"
+    },
+    {
+      "t": 1777,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c"
+    },
+    {
+      "t": 1777,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf"
+    },
+    {
+      "t": 1777,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193"
+    },
+    {
+      "t": 1777,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af"
+    },
+    {
+      "t": 1778,
+      "status": 200,
+      "url": "/node_modules/.pnpm/vite@8.3.0_@types+node@24.13.3_esbuild@0.28.2_jiti@2.7.0_terser@5.28.1_yaml@2.9.0/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "t": 1778,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1779,
+      "status": 200,
+      "url": "/src/components/Search.tsx"
+    },
+    {
+      "t": 1780,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/client.js"
+    },
+    {
+      "t": 1780,
+      "status": 200,
+      "url": "/@id/__x00__virtual:astro:adapter-config/client"
+    },
+    {
+      "t": 1780,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/swap-functions-DUqOLkIm.js?v=7cebfda5"
+    },
+    {
+      "t": 1780,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/swap-functions-DUqOLkIm.js?v=7cebfda5"
+    },
+    {
+      "t": 1781,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/events-C2HBXNIf.js?v=7cebfda5"
+    },
+    {
+      "t": 1781,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/events-C2HBXNIf.js?v=7cebfda5"
+    },
+    {
+      "t": 1782,
+      "status": 200,
+      "url": "/@id/__x00__astro:transitions/client"
+    },
+    {
+      "t": 1782,
+      "status": 200,
+      "url": "/node_modules/.pnpm/vite@8.3.0_@types+node@24.13.3_esbuild@0.28.2_jiti@2.7.0_terser@5.28.1_yaml@2.9.0/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "t": 1783,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c"
+    },
+    {
+      "t": 1783,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf"
+    },
+    {
+      "t": 1783,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af"
+    },
+    {
+      "t": 1783,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193"
+    },
+    {
+      "t": 1783,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/events-C2HBXNIf.js?v=7cebfda5"
+    },
+    {
+      "t": 1783,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/swap-functions-DUqOLkIm.js?v=7cebfda5"
+    },
+    {
+      "t": 1786,
+      "status": 200,
+      "url": "/src/components/Card.tsx"
+    },
+    {
+      "t": 1786,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/fuse__js.js?v=031facdd"
+    },
+    {
+      "t": 1786,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react.js?v=031facdd"
+    },
+    {
+      "t": 1786,
+      "status": 200,
+      "url": "/@id/__x00__virtual:astro:adapter-config/client"
+    },
+    {
+      "t": 1786,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=031facdd"
+    },
+    {
+      "t": 1786,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom_client.js?v=031facdd"
+    },
+    {
+      "t": 1788,
+      "status": 200,
+      "url": "/@id/__x00__virtual:astro:adapter-config/client"
+    },
+    {
+      "t": 1788,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/static-html.js?v=7cebfda5"
+    },
+    {
+      "t": 1788,
+      "status": 200,
+      "url": "/src/utils/slugify.ts"
+    },
+    {
+      "t": 1788,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/rolldown-runtime-BPOCksWG.js?v=7cebfda5"
+    },
+    {
+      "t": 1792,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3pQPwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1800,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sw.js"
+    },
+    {
+      "t": 1803,
+      "status": 200,
+      "url": "/favicon.svg"
+    },
+    {
+      "t": 1805,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.html?1790223447084"
+    },
+    {
+      "t": 1806,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.html?1790223447085"
+    },
+    {
+      "t": 1807,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/github-slugger.js?v=02919262"
+    },
+    {
+      "t": 1808,
+      "status": 200,
+      "url": "/search/"
+    },
+    {
+      "t": 1810,
+      "status": 200,
+      "url": "/favicon.svg"
+    },
+    {
+      "t": 1810,
+      "status": 200,
+      "url": "/_astro/ec.s4b1i.css"
+    },
+    {
+      "t": 1813,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 1814,
+      "status": 200,
+      "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+    },
+    {
+      "t": 1816,
+      "status": 304,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1816,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/prefetch.js?v=7cebfda5"
+    },
+    {
+      "t": 1816,
+      "status": 304,
+      "url": "/toggle-theme.js"
+    },
+    {
+      "t": 1816,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1818,
+      "status": 304,
+      "url": "/@vite/client"
+    },
+    {
+      "t": 1818,
+      "status": 304,
+      "url": "/src/styles/base.css"
+    },
+    {
+      "t": 1818,
+      "status": 304,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/viewtransitions.css"
+    },
+    {
+      "t": 1818,
+      "status": 304,
+      "url": "/src/components/Breadcrumbs.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1818,
+      "status": 304,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1821,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6pfjptAgt5VM-kVkqdyU8n1ioa1XdgregdFA.woff2"
+    },
+    {
+      "t": 1821,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2"
+    },
+    {
+      "t": 1821,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1821,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1821,
+      "status": 304,
+      "url": "/src/layouts/Main.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1821,
+      "status": 304,
+      "url": "/src/components/Header.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1821,
+      "status": 304,
+      "url": "/src/components/Socials.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1822,
+      "status": 304,
+      "url": "/src/components/Footer.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1822,
+      "status": 304,
+      "url": "/src/components/Header.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1822,
+      "status": 304,
+      "url": "/@id/__x00__astro:transitions/client"
+    },
+    {
+      "t": 1822,
+      "status": 304,
+      "url": "/@id/__x00__virtual:astro:adapter-config/client"
+    },
+    {
+      "t": 1822,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193"
+    },
+    {
+      "t": 1822,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c"
+    },
+    {
+      "t": 1822,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf"
+    },
+    {
+      "t": 1822,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af"
+    },
+    {
+      "t": 1822,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/swap-functions-DUqOLkIm.js?v=7cebfda5"
+    },
+    {
+      "t": 1822,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/events-C2HBXNIf.js?v=7cebfda5"
+    },
+    {
+      "t": 1839,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6pfjptAgt5VM-kVkqdyU8n1ioa1XdgregdFA.woff2"
+    },
+    {
+      "t": 1855,
+      "status": 200,
+      "url": "/@id/astro:scripts/before-hydration.js"
+    },
+    {
+      "t": 1858,
+      "status": 200,
+      "url": "/posts/flutter-google-maps-embedded-map/"
+    },
+    {
+      "t": 1862,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6sfjptAgt5VM-kVkqdyU8n1ioSClN1gMoQPttozw.woff2"
+    },
+    {
+      "t": 1863,
+      "status": 200,
+      "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+    },
+    {
+      "t": 1867,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.html?1790223447148"
+    },
+    {
+      "t": 1898,
+      "status": 200,
+      "url": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+      "t": 1902,
+      "status": 304,
+      "url": "/node_modules/.pnpm/vite@8.3.0_@types+node@24.13.3_esbuild@0.28.2_jiti@2.7.0_terser@5.28.1_yaml@2.9.0/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "t": 1902,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 1902,
+      "status": 200,
+      "url": "/@react-refresh"
+    },
+    {
+      "t": 1903,
+      "status": 200,
+      "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+    },
+    {
+      "t": 1905,
+      "status": 200,
+      "url": "/favicon.svg"
+    },
+    {
+      "t": 1905,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1906,
+      "status": 200,
+      "url": "/toggle-theme.js"
+    },
+    {
+      "t": 1907,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1907,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/prefetch.js?v=7cebfda5"
+    },
+    {
+      "t": 1908,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1908,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 1908,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1909,
+      "status": 200,
+      "url": "/src/styles/base.css"
+    },
+    {
+      "t": 1909,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/prefetch.js?v=7cebfda5"
+    },
+    {
+      "t": 1909,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/viewtransitions.css"
+    },
+    {
+      "t": 1909,
+      "status": 200,
+      "url": "/src/components/Breadcrumbs.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1909,
+      "status": 200,
+      "url": "/@vite/client"
+    },
+    {
+      "t": 1909,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1909,
+      "status": 200,
+      "url": "/src/components/Socials.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1992,
+      "status": 200,
+      "url": "/toggle-theme.js"
+    },
+    {
+      "t": 1994,
+      "status": 304,
+      "url": "/@id/astro:scripts/before-hydration.js"
+    },
+    {
+      "t": 1994,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/ClientRouter.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1994,
+      "status": 200,
+      "url": "/src/styles/base.css"
+    },
+    {
+      "t": 1994,
+      "status": 200,
+      "url": "/@vite/client"
+    },
+    {
+      "t": 1994,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.html?1790223447193"
+    },
+    {
+      "t": 1995,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/components/viewtransitions.css"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/layouts/Main.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/components/Footer.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/components/Pagination.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/components/Tag.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/components/ShareLinks.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/layouts/PostDetails.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/@id/__x00__astro:transitions/client"
+    },
+    {
+      "t": 1996,
+      "status": 200,
+      "url": "/src/components/ImageSliderClient.tsx"
+    },
+    {
+      "t": 1997,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/client.js"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/components/Breadcrumbs.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/components/Socials.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/layouts/Main.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/components/Footer.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/components/Pagination.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/components/Tag.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/_astro/ec.s4b1i.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3pQPwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/_astro/ec.s4b1i.css"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/@id/__x00__virtual:astro:adapter-config/client"
+    },
+    {
+      "t": 1998,
+      "status": 200,
+      "url": "/src/components/ShareLinks.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1999,
+      "status": 200,
+      "url": "/src/layouts/PostDetails.astro?astro&type=style&index=0&lang.css"
+    },
+    {
+      "t": 1999,
+      "status": 200,
+      "url": "/src/components/Header.astro?astro&type=script&index=0&lang.ts"
+    },
+    {
+      "t": 1999,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3pQPwlBFgsAXHNk.woff2"
+    },
+    {
+      "t": 1999,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6pfjptAgt5VM-kVkqdyU8n1ioa1XdgregdFA.woff2"
+    },
+    {
+      "t": 1999,
+      "status": 200,
+      "url": "/@id/__x00__astro:transitions/client"
+    },
+    {
+      "t": 2000,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6sfjptAgt5VM-kVkqdyU8n1ioSClN1gMoQPttozw.woff2"
+    },
+    {
+      "t": 2000,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6pfjptAgt5VM-kVkqdyU8n1ioa1XdgregdFA.woff2"
+    },
+    {
+      "t": 2000,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6sfjptAgt5VM-kVkqdyU8n1ioSClN1gMoQPttozw.woff2"
+    },
+    {
+      "t": 2001,
+      "status": 200,
+      "url": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgsAXHNlYzg.woff2"
+    },
+    {
+      "t": 2002,
+      "status": 304,
+      "url": "/@react-refresh"
+    },
+    {
+      "t": 2006,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react.js?v=031facdd"
+    },
+    {
+      "t": 2006,
+      "status": 200,
+      "url": "/node_modules/.pnpm/vite@8.3.0_@types+node@24.13.3_esbuild@0.28.2_jiti@2.7.0_terser@5.28.1_yaml@2.9.0/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "t": 2006,
+      "status": 200,
+      "url": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 2007,
+      "status": 304,
+      "url": "/src/components/Search.tsx"
+    },
+    {
+      "t": 2007,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/fuse__js.js?v=031facdd"
+    },
+    {
+      "t": 2007,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react.js?v=031facdd"
+    },
+    {
+      "t": 2007,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=031facdd"
+    },
+    {
+      "t": 2007,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/rolldown-runtime-BPOCksWG.js?v=7cebfda5"
+    },
+    {
+      "t": 2007,
+      "status": 200,
+      "url": "/favicon.svg"
+    },
+    {
+      "t": 2008,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom_client.js?v=031facdd"
+    },
+    {
+      "t": 2008,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=031facdd"
+    },
+    {
+      "t": 2008,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/static-html.js?v=7cebfda5"
+    },
+    {
+      "t": 2014,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c"
+    },
+    {
+      "t": 2014,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf"
+    },
+    {
+      "t": 2014,
+      "status": 200,
+      "url": "/@id/astro:scripts/before-hydration.js"
+    },
+    {
+      "t": 2014,
+      "status": 200,
+      "url": "/node_modules/.pnpm/vite@8.3.0_@types+node@24.13.3_esbuild@0.28.2_jiti@2.7.0_terser@5.28.1_yaml@2.9.0/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "t": 2014,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af"
+    },
+    {
+      "t": 2014,
+      "status": 200,
+      "url": "/_astro/ec.0vx5m.js"
+    },
+    {
+      "t": 2015,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193"
+    },
+    {
+      "t": 2015,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2015,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-types__js.js?v=6882863c"
+    },
+    {
+      "t": 2015,
+      "status": 200,
+      "url": "/_astro/ec.0vx5m.js"
+    },
+    {
+      "t": 2015,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-events__js.js?v=264bddbf"
+    },
+    {
+      "t": 2015,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-swap-functions__js.js?v=a18767af"
+    },
+    {
+      "t": 2015,
+      "status": 200,
+      "url": "/@id/astro:scripts/before-hydration.js"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/astro_virtual-modules_transitions-router__js.js?v=b6e7b193"
+    },
+    {
+      "t": 2017,
+      "status": 304,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/client.js"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom_client.js?v=031facdd"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/static-html.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/@id/__x00__virtual:astro:adapter-config/client"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/rolldown-runtime-BPOCksWG.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/events-C2HBXNIf.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "status": 304,
+      "url": "/src/components/Card.tsx"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/events-C2HBXNIf.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/swap-functions-DUqOLkIm.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/swap-functions-DUqOLkIm.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "status": 304,
+      "url": "/src/utils/slugify.ts"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/github-slugger.js?v=02919262"
+    },
+    {
+      "t": 2017,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2018,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2030,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2032,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom.js?v=031facdd"
+    },
+    {
+      "t": 2033,
+      "status": 200,
+      "url": "/@react-refresh"
+    },
+    {
+      "t": 2036,
+      "status": 200,
+      "url": "/@react-refresh"
+    },
+    {
+      "t": 2043,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2043,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.html?1790223447323"
+    },
+    {
+      "t": 2045,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom.js?v=031facdd"
+    },
+    {
+      "t": 2048,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.html?1790223447329"
+    },
+    {
+      "t": 2051,
+      "status": 200,
+      "url": "/favicon.svg"
+    },
+    {
+      "t": 2051,
+      "status": 200,
+      "url": "/src/components/ImageSliderClient.tsx"
+    },
+    {
+      "t": 2051,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/client.js"
+    },
+    {
+      "t": 2051,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2054,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=031facdd"
+    },
+    {
+      "t": 2054,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/static-html.js?v=7cebfda5"
+    },
+    {
+      "t": 2054,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom_client.js?v=031facdd"
+    },
+    {
+      "t": 2054,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react.js?v=031facdd"
+    },
+    {
+      "t": 2056,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/rolldown-runtime-BPOCksWG.js?v=7cebfda5"
+    },
+    {
+      "t": 2057,
+      "status": 200,
+      "url": "/favicon.svg"
+    },
+    {
+      "t": 2057,
+      "status": 200,
+      "url": "/src/components/ImageSliderClient.tsx"
+    },
+    {
+      "t": 2057,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2058,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/client.js"
+    },
+    {
+      "t": 2059,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=031facdd"
+    },
+    {
+      "t": 2059,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react.js?v=031facdd"
+    },
+    {
+      "t": 2059,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom_client.js?v=031facdd"
+    },
+    {
+      "t": 2059,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2060,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/rolldown-runtime-BPOCksWG.js?v=7cebfda5"
+    },
+    {
+      "t": 2060,
+      "status": 200,
+      "url": "/node_modules/.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/static-html.js?v=7cebfda5"
+    },
+    {
+      "t": 2063,
+      "status": 200,
+      "url": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2071,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2072,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom.js?v=031facdd"
+    },
+    {
+      "t": 2091,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2094,
+      "status": 200,
+      "url": "/node_modules/.vite/deps/react-dom.js?v=031facdd"
+    },
+    {
+      "t": 2103,
+      "status": 200,
+      "url": "/@fs/Users/ap/development/other/eliotik.github.io/src/assets/images/flutter-google-maps/project-structure.png?origWidth=502&origHeight=1014&origFormat=png"
+    },
+    {
+      "t": 2103,
+      "status": 200,
+      "url": "/@fs/Users/ap/development/other/eliotik.github.io/src/assets/images/flutter-google-maps/initial-app-render.png?origWidth=762&origHeight=1618&origFormat=png"
+    }
+  ],
+  "viteWs": [
+    {
+      "t": 1775,
+      "page": "/search/",
+      "text": "VITE_WS {\"type\":\"full-reload\",\"path\":\"*\"}"
+    }
+  ],
+  "elapsedMs": 12713,
+  "totalResponses": 284,
+  "statusCounts": {
+    "200": 263,
+    "304": 21
+  },
+  "bad": [],
+  "count504": 0,
+  "failed": [],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "consoleAll": [
+    {
+      "t": 1760,
+      "page": "/search/",
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1775,
+      "page": "/search/",
+      "type": "debug",
+      "text": "[vite] connected.",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1775,
+      "page": "/search/",
+      "type": "debug",
+      "text": "VITE_WS {\"type\":\"full-reload\",\"path\":\"*\"}",
+      "loc": ""
+    },
+    {
+      "t": 1782,
+      "page": "/search/",
+      "type": "debug",
+      "text": "[astro] Initializing prefetch script",
+      "loc": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1788,
+      "page": "/",
+      "type": "debug",
+      "text": "[astro] Initializing prefetch script",
+      "loc": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1788,
+      "page": "/",
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1807,
+      "page": "/",
+      "type": "debug",
+      "text": "[vite] connected.",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1815,
+      "page": "/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created Partytown web worker (0.14.4)",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 1838,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "[astro] Initializing prefetch script",
+      "loc": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1840,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1903,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "[vite] connected.",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1907,
+      "page": "/search/",
+      "type": "debug",
+      "text": "[astro] Initializing prefetch script",
+      "loc": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 1907,
+      "page": "/search/",
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1993,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created Partytown web worker (0.14.4)",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 1998,
+      "page": "/search/",
+      "type": "debug",
+      "text": "[vite] connected.",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 1999,
+      "page": "/",
+      "type": "debug",
+      "text": "%cPartytown 🎉 background: #9844bf; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized web worker",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 1999,
+      "page": "/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Registered top window 1",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 1999,
+      "page": "/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Executed top window 1 environment scripts in 17.2ms",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2006,
+      "page": "/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created top window 1 environment",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2006,
+      "page": "/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized top window 1 environment 🎉",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2017,
+      "page": "/search/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created Partytown web worker (0.14.4)",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2017,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "[astro] Initializing prefetch script",
+      "loc": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "[astro] Initializing prefetch script",
+      "loc": "/node_modules/.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/prefetch/index.js?v=7cebfda5"
+    },
+    {
+      "t": 2017,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 2017,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 2029,
+      "page": "/search/",
+      "type": "debug",
+      "text": "%cPartytown 🎉 background: #9844bf; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized web worker",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2031,
+      "page": "/search/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Registered top window 1",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2037,
+      "page": "/search/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created top window 1 environment",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2039,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "%cPartytown 🎉 background: #9844bf; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized web worker",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2044,
+      "page": "/search/",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "loc": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2044,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Registered top window 1",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2046,
+      "page": "/search/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Executed top window 1 environment scripts in 15.5ms",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2046,
+      "page": "/search/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized top window 1 environment 🎉",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2049,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "[vite] connected.",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 2052,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created Partytown web worker (0.14.4)",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2056,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "[vite] connected.",
+      "loc": "/@vite/client"
+    },
+    {
+      "t": 2059,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created Partytown web worker (0.14.4)",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2063,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created top window 1 environment",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2069,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "%cPartytown 🎉 background: #9844bf; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized web worker",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2069,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Registered top window 1",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2076,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created top window 1 environment",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2083,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "loc": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2083,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "loc": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2084,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Executed top window 1 environment scripts in 15.1ms",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2084,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized top window 1 environment 🎉",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2086,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "%cPartytown 🎉 background: #9844bf; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized web worker",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2092,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Registered top window 1",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2101,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Executed top window 1 environment scripts in 57.8ms",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2102,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized top window 1 environment 🎉",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2121,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Created top window 1 environment",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2137,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "loc": "/node_modules/.vite/deps/client-B83HekvG.js?v=7cebfda5"
+    },
+    {
+      "t": 2153,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "%cMain 🌎 background: #717171; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Executed top window 1 environment scripts in 60.8ms",
+      "loc": "/~partytown/debug/partytown-sandbox-sw.js?v=0.14.4"
+    },
+    {
+      "t": 2153,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "debug",
+      "text": "%cWorker (1) 🎉 background: #00309e; color: white; padding: 2px 3px; border-radius: 2px; font-size: 0.8em; Initialized top window 1 environment 🎉",
+      "loc": "/~partytown/debug/partytown-ww-sw.js?v=0.14.4"
+    }
+  ],
+  "navs": [
+    {
+      "t": 635,
+      "page": "/search/",
+      "url": "/search/"
+    },
+    {
+      "t": 644,
+      "page": "/",
+      "url": "/"
+    },
+    {
+      "t": 1614,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "url": "/posts/flutter-google-maps-address-manipulation/"
+    },
+    {
+      "t": 1782,
+      "page": "/search/",
+      "url": "/search/"
+    },
+    {
+      "t": 1788,
+      "page": "/",
+      "url": "/"
+    },
+    {
+      "t": 1811,
+      "page": "/search/",
+      "url": "/search/"
+    },
+    {
+      "t": 1838,
+      "page": "/posts/flutter-google-maps-address-manipulation/",
+      "url": "/posts/flutter-google-maps-address-manipulation/"
+    },
+    {
+      "t": 1860,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "url": "/posts/flutter-google-maps-embedded-map/"
+    },
+    {
+      "t": 1900,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "url": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+      "t": 2017,
+      "page": "/posts/flutter-google-maps-embedded-map/",
+      "url": "/posts/flutter-google-maps-embedded-map/"
+    },
+    {
+      "t": 2017,
+      "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "url": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+      "t": 2054,
+      "page": "/search/",
+      "url": "/search/"
+    }
+  ],
+  "failedDynImport": []
+}
