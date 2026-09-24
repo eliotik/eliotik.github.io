@@ -66,10 +66,8 @@ const pagination = getPagination<CollectionEntry<'blog'>>({
 });
 ---
 
-{
-    post ? (
-        <PostDetails post={post} relatedPosts={relatedPostsArray} />
-    ) : (
-        <Posts {...pagination} threadPositions={threadPositions} />
-    )
-}
+{post ? (
+    <PostDetails post={post} relatedPosts={relatedPostsArray} />
+) : (
+    <Posts {...pagination} threadPositions={threadPositions} />
+)}

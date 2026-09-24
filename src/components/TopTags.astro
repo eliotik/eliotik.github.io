@@ -16,37 +16,30 @@ const topTags = [...allTags]
 const totalTags = allTags.length;
 ---
 
-{
-    topTags.length > 0 && (
-        <section id="top-tags">
-            <header class="top-tags__head">
-                <div class="top-tags__head-left">
-                    <h2>Top tags</h2>
-                    <span class="top-tags__sub">
-                        <span class="top-tags__prompt">$</span> tags --top --by
-                        count
-                    </span>
-                </div>
-                <a class="top-tags__more" href="/tags/">
-                    All {totalTags} tags
-                    <span class="top-tags__more-arrow">→</span>
-                </a>
-            </header>
-            <div class="top-tags__list">
-                {topTags.map(t => (
-                    <div class="top-tags__row">
-                        <a class="top-tags__name" href={`/tags/${t.tag}/`}>
-                            {[<span class="top-tags__hash">#</span>, t.tag]}
-                        </a>
-                        <span class="top-tags__dots" aria-hidden="true" />
-                        <span class="top-tags__count">{t.count}</span>
-                        <span class="top-tags__unit">posts</span>
-                    </div>
-                ))}
-            </div>
-        </section>
-    )
-}
+{topTags.length > 0 && <section id="top-tags">
+    <header class="top-tags__head">
+        <div class="top-tags__head-left">
+            <h2>Top tags</h2>
+            <span class="top-tags__sub">
+                <span class="top-tags__prompt">$</span> tags --top --by count
+            </span>
+        </div>
+        <a class="top-tags__more" href="/tags/">
+            All {totalTags} tags
+            <span class="top-tags__more-arrow">→</span>
+        </a>
+    </header>
+    <div class="top-tags__list">
+        {topTags.map(t => <div class="top-tags__row">
+            <a class="top-tags__name" href={`/tags/${t.tag}/`}>
+                {[<span class="top-tags__hash">#</span>, t.tag]}
+            </a>
+            <span class="top-tags__dots" aria-hidden="true" />
+            <span class="top-tags__count">{t.count}</span>
+            <span class="top-tags__unit">posts</span>
+        </div>)}
+    </div>
+</section>}
 
 <style>
     @reference "../styles/base.css";

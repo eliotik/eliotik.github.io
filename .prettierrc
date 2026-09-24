@@ -8,6 +8,7 @@
     "trailingComma": "es5",
     "bracketSpacing": true,
     "endOfLine": "lf",
+    "astroCompressHTML": true,
     "plugins": ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
     "overrides": [
         {
