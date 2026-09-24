@@ -64,20 +64,21 @@
         "typescript": "6.0.3"
     },
     "lint-staged": {
-        "*.{js,jsx,ts,tsx,astro}": [
+        "*.{js,mjs,cjs,jsx,ts,tsx,astro}": [
             "eslint --fix",
             "prettier --write"
         ],
         "*.{md,mdx,json,css,yml,yaml}": [
+            "prettier --write"
+        ],
+        ".prettierrc": [
             "prettier --write"
         ]
     },
     "pnpm": {
         "onlyBuiltDependencies": [
             "@swc/core",
-            "contentlayer",
             "esbuild",
-            "protobufjs",
             "sharp"
         ]
     }

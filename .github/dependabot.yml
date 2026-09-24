@@ -26,6 +26,9 @@ updates:
                   - 'eslint-*'
                   - '@typescript-eslint/*'
                   - 'astro-eslint-parser'
+                  - '@eslint/*'
+                  - '@eslint/js'
+                  - 'typescript-eslint'
           tailwind:
               patterns:
                   - 'tailwindcss'
@@ -34,9 +37,45 @@ updates:
           prod-minor:
               dependency-type: production
               update-types: ['minor', 'patch']
+              exclude-patterns:
+                  - 'astro'
+                  - '@astrojs/*'
+                  - 'astro-*'
+                  - 'react'
+                  - 'react-dom'
+                  - '@types/react'
+                  - '@types/react-dom'
+                  - 'eslint'
+                  - 'eslint-*'
+                  - '@eslint/*'
+                  - '@eslint/js'
+                  - '@typescript-eslint/*'
+                  - 'typescript-eslint'
+                  - 'astro-eslint-parser'
+                  - 'tailwindcss'
+                  - '@tailwindcss/*'
+                  - 'prettier-plugin-tailwindcss'
           dev-minor:
               dependency-type: development
               update-types: ['minor', 'patch']
+              exclude-patterns:
+                  - 'astro'
+                  - '@astrojs/*'
+                  - 'astro-*'
+                  - 'react'
+                  - 'react-dom'
+                  - '@types/react'
+                  - '@types/react-dom'
+                  - 'eslint'
+                  - 'eslint-*'
+                  - '@eslint/*'
+                  - '@eslint/js'
+                  - '@typescript-eslint/*'
+                  - 'typescript-eslint'
+                  - 'astro-eslint-parser'
+                  - 'tailwindcss'
+                  - '@tailwindcss/*'
+                  - 'prettier-plugin-tailwindcss'
       labels:
           - 'dependencies'
 
