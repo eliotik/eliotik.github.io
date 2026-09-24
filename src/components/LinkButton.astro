@@ -5,28 +5,14 @@ export interface Props {
     ariaLabel?: string;
     title?: string;
     disabled?: boolean;
-    class?: string;
 }
 
-const {
-    href,
-    className,
-    ariaLabel,
-    title,
-    disabled = false,
-    class: scopedClass,
-} = Astro.props;
-
-// Only forward the parent's scoped-style class when the caller explicitly
-// passed a className, matching Astro 6's behaviour of splicing the scope
-// hash into an existing className value. Callers that pass no className
-// (e.g. the plain "All Posts" LinkButton) must not gain one either.
-const forwardedScope = className !== undefined ? scopedClass : undefined;
+const { href, className, ariaLabel, title, disabled = false } = Astro.props;
 ---
 
 {disabled ? (
     <span
-        class:list={['group', 'inline-block', className, forwardedScope]}
+        class:list={['group', 'inline-block', className]}
         aria-label={ariaLabel}
         title={title}
         aria-disabled={disabled}
@@ -41,7 +27,6 @@ const forwardedScope = className !== undefined ? scopedClass : undefined;
             'hover:text-skin-accent',
             'inline-block',
             className,
-            forwardedScope,
         ]}
         aria-label={ariaLabel}
         title={title}
