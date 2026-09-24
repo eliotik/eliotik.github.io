@@ -10,6 +10,7 @@ export interface Props {
 const { posts, limit = 7 } = Astro.props;
 
 const allTags = getUniqueTags(posts);
+// In the tag row template below, '#' and the tag name are passed as one array so Astro 7's compiler does not turn the line break between them into a visible space (compressHTML: true).
 const topTags = [...allTags]
     .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
     .slice(0, limit);

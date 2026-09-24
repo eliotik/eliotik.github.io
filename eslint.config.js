@@ -69,7 +69,7 @@ export default [
   //
   // eslint-plugin-astro v2+ is ESM-only and exposes unprefixed preset names.
   // v3 dropped astro/no-omitted-end-tags and astro/valid-compile from
-  // recommended — the Rust compiler and `astro check` now cover both.
+  // recommended — the Rust compiler (enforced by `astro build`) now covers both.
   // jsx-a11y rules resolve eslint-plugin-jsx-a11y-x (eslint-plugin-jsx-a11y
   // stops at ESLint 9).
   // -------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-23
 **Owner:** @eliotik
-**Status:** Approved in brainstorming, pending spec review
+**Status:** Implemented on upgrade/2026-09 (see verification-report-2026-09.md)
 **Predecessor:** [2026-04-29-upgrade-design.md](./2026-04-29-upgrade-design.md) (Astro 4→6, React 19, Tailwind 4, ESLint 9, pnpm)
 
 ## 1. Goals & Success Criteria
