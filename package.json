@@ -64,11 +64,12 @@
         "typescript": "6.0.3"
     },
     "lint-staged": {
-        "*.{js,jsx,ts,tsx,md,mdx,json}": [
+        "*.{js,jsx,ts,tsx,astro}": [
+            "eslint --fix",
             "prettier --write"
         ],
-        "*.{js,jsx,ts,tsx,astro}": [
-            "eslint --fix"
+        "*.{md,mdx,json,css,yml,yaml}": [
+            "prettier --write"
         ]
     },
     "pnpm": {

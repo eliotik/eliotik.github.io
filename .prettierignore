@@ -6,10 +6,10 @@
 !/public
 !/.github
 !tsconfig.json
-!astro.config.ts
+!astro.config.mjs
 !package.json
 !.prettierrc
-!.eslintrc.cjs
+!eslint.config.js
 !README.md
 
 # Astro content collections — prettier strips escapes inside code-block info-strings

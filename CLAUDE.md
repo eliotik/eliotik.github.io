@@ -57,7 +57,7 @@ Key utility functions:
 
 - Node version: 22.23.3 (specified in `.nvmrc`, `package.json` engines and `.github/workflows/deploy.yml` `node-version`; keep all three identical)
 - Package manager is pnpm (see `packageManager` in `package.json`)
-- Uses Husky + lint-staged for pre-commit hooks (Prettier for js/ts/md/mdx/json, ESLint --fix for js/ts/astro; `.astro` formatting is checked by `pnpm format:check`)
+- Uses Husky + lint-staged for pre-commit hooks (ESLint --fix then Prettier for js/ts/astro; Prettier for md/mdx/json/css/yml); CI runs `pnpm format:check`
 - Images optimized with sharp
 - Build output is optimized with jampack
 - `compressHTML: true` in `astro.config.mjs` must match `astroCompressHTML` in `.prettierrc`
