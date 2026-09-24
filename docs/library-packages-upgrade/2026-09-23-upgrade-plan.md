@@ -619,7 +619,7 @@ Expected: no uncommitted changes; `0` FAIL rows.
 
 ```bash
 git push -u origin upgrade/2026-09
-gh pr create --base main --title "build: upgrade to Astro 7, ESLint 10, Node 22.23 (Sept 2026)" --body "$(cat <<'EOF'
+gh pr create --base main --title "build: upgrade to Astro 7, ESLint 10, Node 22.23; fix Partytown on ClientRouter navigation (Sept 2026)" --body "$(cat <<'EOF'
 ## Summary
 - Astro 6.2 → 7.x (mdx 8, react 7); remark plugins kept via `@astrojs/markdown-remark` unified processor; `compressHTML: true` pinned
 - ESLint 10 stack: eslint-plugin-astro 3, astro-eslint-parser 3, `eslint-plugin-jsx-a11y` → `eslint-plugin-jsx-a11y-x`

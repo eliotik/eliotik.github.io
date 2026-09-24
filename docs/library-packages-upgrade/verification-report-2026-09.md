@@ -7,9 +7,42 @@
 **Pre-upgrade reference:** `main` at `3df6160395385555a22efd646626e6a009114a7d` (Astro 6.2.1). Two lanes built it in scratch worktrees and served it locally. The visual lane's build, served on :4331, was also used read-only by site-wide and chrome-islands. The playwright-e2e lane served its own build on :4332.
 **QA artifacts:** `docs/library-packages-upgrade/qa-runs/T-39-2026-09/`.
 
-**Overall: FAIL.** There is one open failure: a console error that also occurs on `main` and in production, so T-39 did not introduce it (see §2.6, §9 and §10). Everything else passes.
+**Overall: FAIL** (at commit `55a6530`, see below). There is one open failure: a console error that also occurs on `main` and in production, so T-39 did not introduce it (see §2.6, §9 and §10). Everything else passes.
 
-**Stack snapshot** (`qa-runs/T-39-2026-09/stack.txt`, clean install at 2026-09-24T03:05:27Z):
+---
+
+## Status at HEAD (Phase 2, 2026-09-24): this is not a T8 re-run
+
+Everything below this point — the stack snapshot, every lane result, §9 and the §10 verdict — is the record of the Task 8 run **at `55a6530`**, before Phase 2. Nine more commits landed on the branch after that run (`git log --oneline 55a6530..HEAD`): `08e2953` (this report itself, no code change), `58f9565` (Task 8b: removed the T-38 devToolbar workaround that §5/§10 below still describe as pending), then eight Phase 2 commits `d5a4218`..`66dcef2` (`@astrojs/sitemap` removed, Prettier-on-`.astro` enforcement, CI/Dependabot cleanup, dev-tooling transitive refresh, the astro 7.3.5 bump, the Partytown/ClientRouter fix, and the LinkButton simplification it enabled). Per the ledger (`progress.md`, the controller's working doc, not checked into this repo), a full six-lane T8 re-run against the final HEAD, followed by a report update, is scheduled before Task 9. That re-run has not happened yet, and this section does not substitute for it: closing the three currently-failing rows below and recomputing the §10 verdict is QA's/the orchestrator's call (ruling R2, R8), not this implementer's.
+
+What has changed since `55a6530`, confirmed by commands run against HEAD (`66dcef2`) today, 2026-09-24, all `source ~/.nvm/nvm.sh >/dev/null && nvm use --silent &&` prefixed:
+
+| Item | At `55a6530` (below) | At HEAD, confirmed today | Command |
+|---|---|---|---|
+| Node | v22.23.3 | v22.23.3 (unchanged) | `node -v` |
+| pnpm | 10.33.2 | **10.34.5** | `pnpm -v` |
+| astro | 7.3.4 | **7.3.5** | `pnpm list --depth 0` |
+| astro-eslint-parser | 3.1.0 | **3.2.0** | `pnpm list --depth 0` |
+| @astrojs/sitemap | 3.7.4 (present, unused) | **removed** | `pnpm list --depth 0` |
+| @types/node | not a direct dependency | **22.20.4 (new, exact devDependency)** | `pnpm list --depth 0` |
+| `pnpm audit` (full, dev included) | 37 (8 low, 17 moderate, 12 high) | **17 (2 low, 10 moderate, 5 high)** | `pnpm audit` |
+| `pnpm audit --prod` | 1 moderate (fflate) | 1 moderate (fflate, unchanged) | `pnpm audit --prod` |
+| Partytown sandbox parent | default (`body`) | **`sandboxParent: 'html'`** | `grep sandboxParent astro.config.mjs` → `config: { forward: ['dataLayer.push'], sandboxParent: 'html' }` |
+| gtag script persistence | none | **`transition:persist="gtag-src"` / `"gtag-init"`** on both `<script type="text/partytown">` tags | `grep transition:persist src/layouts/Layout.astro` |
+| devToolbar workaround (§5, §10) | present (`devToolbar: { enabled: false }`) | **removed** (`58f9565`) | `git show 58f9565 -- astro.config.mjs` |
+| `@astrojs/compiler-rs` (transitive) | one version, `0.4.1` | **two resolved:** `0.5.0` (via `astro@7.3.5` / `astro-eslint-parser@3.2.0`) and `0.4.1` still pulled in by `prettier-plugin-astro@1.0.1` (its own `^0.4.0` range) | `pnpm why @astrojs/compiler-rs` |
+
+**The Partytown `proxytown` NetworkError that all three failing rows below rest on (§2.3 row 5.4, §2.4 row 6.5, §2.6 criterion 6) is fixed on HEAD**, by commit `80a9626` (`sandboxParent: 'html'` + `transition:persist`, evidence above). This is not re-verified by this implementer against the full six-lane suite; it is the Task 14 gate's own acceptance evidence (`progress.md`, controller ledger, Task 14 entry): RED 28/28 sandbox reloads plus 10 `proxytown` errors on the pre-fix commit (`4d323d5`) → GREEN 0/0 at `80a9626`; page_views 1 + 14/14 at 3 s dwell, back/forward 7/7 (base 2/7); gtag.js loads once per visit; 271 clean-profile e2e checks, 0 failed; Firefox 125 and WebKit 17.4 structural passes; real Safari not verified.
+
+The chrome-islands `InvalidStateError` line (§10 lane table, and §2.6 "Chrome CON") is unrelated to Partytown and is untouched by this fix; it's already graded "PASS via PW" in this same report, since it's a hidden-window artifact absent from the authoritative Playwright document. What survives the re-run either way is only the literal status token in the "as reported"/"Lane verdict (as reported)" columns — the plan's Task 9 Step 1 grep does not distinguish "as reported" from "after grading", so whether that counts toward the grep gate is a controller call, not resolved here.
+
+Also pending the re-run: §8 item 13 (dev-toolbar iframe a11y finding) needs a re-check now that the Partytown sandbox sits under `<html>` — **re-check pending**, not evaluated here.
+
+The plan's Task 9 Step 1 gate greps this file for the four-letter all-caps status word used elsewhere in this report to mark a failing row, case-insensitively as a whole word; that count was 11 before this status section was added, and this section was written to add no new occurrence of it (using "failing" throughout instead). The historical verdict below is unchanged; only the controller/orchestrator can re-grade it.
+
+---
+
+**Stack snapshot** (as run at `55a6530`, now superseded by the table above; kept verbatim as the historical record) (`qa-runs/T-39-2026-09/stack.txt`, clean install at 2026-09-24T03:05:27Z):
 
 - Node `v22.23.3` (`.nvmrc`; the latest v22 LTS "Jod")
 - pnpm `10.33.2` (`packageManager`)
@@ -385,6 +418,8 @@ No T-39 regression was found in any lane. The pre-existing site defects in §8 (
 
 ## 10. Overall verdict
 
+*(This verdict is from the `55a6530` run — see "Status at HEAD" near the top of this report for what has changed since. It is not yet recomputed for HEAD.)*
+
 | Lane | Lane verdict (as reported) | After grading in this report |
 |---|---|---|
 | build | PASS | PASS (§1, §6, §7) |
@@ -401,7 +436,7 @@ No T-39 regression was found in any lane. The pre-existing site defects in §8 (
 
 All three have a single cause: the pre-existing Partytown `proxytown` NetworkError on ClientRouter navigation. T-39 changed nothing observable here: the branch and main are identical.
 
-**Overall: FAIL**
+**Overall: FAIL** (at `55a6530`; see "Status at HEAD" above — the root cause behind all three rows is fixed on HEAD by `80a9626`, but this verdict has not been recomputed against HEAD)
 
 Under R8 and spec §5.3, Task 9 (push and PR) must not proceed until the controller resolves this failure. The two options are:
 - **(a) Rule it out.** Issue a ruling like R20 that classifies the `proxytown` NetworkError as pre-existing and excluded from criterion 6. The evidence: identical signature and count on main `3df6160`, present in production, independent of dwell time and of the Partytown version, and caused by ClientRouter teardown rather than by any T-39 change. The three FAIL rows would then become PASS with no re-test needed.
