@@ -1,0 +1,429 @@
+// Shared helpers for the computed-style comparator and the CSS rule-set diff.
+import { chromium } from 'playwright';
+
+export const UP = 'http://localhost:4321';
+export const MAIN = 'http://localhost:4331';
+
+export const ROUTES = [
+    ['01-home', '/'],
+    ['02-posts-index', '/posts'],
+    ['03-post-with-images', '/posts/ems-connecting-the-systems'],
+    ['04-post-with-carousel', '/posts/flutter-google-maps-embedded-map'],
+    ['05-tips-index', '/tips'],
+    ['06-tags-index', '/tags'],
+    ['07-tag-detail', '/tags/engineering-management/'],
+    ['08-threads-index', '/threads'],
+    ['09-about', '/about'],
+    ['10-404', '/this-route-doesnt-exist'],
+    ['11-octoprint', '/posts/octoprint-prusa-core-one-raspberry-pi/'],
+    ['12-search', '/search/?q=hiring'],
+    // extra templates / long post (not in the screenshot table)
+    ['x-ems-delivery', '/posts/ems-the-delivery-system/'],
+    ['x-dad-ops-mdx', '/posts/dad-ops-playbook/'],
+    ['x-audio-md-toc', '/posts/audio-vs-paper-books/'],
+    ['x-posts-page2', '/posts/2/'],
+    ['x-tips-page2', '/tips/2/'],
+    ['x-tip-detail', '/tips/speed/'],
+    ['x-thread-detail', '/threads/five-systems-of-engineering-management/'],
+    ['x-tag-hiring', '/tags/hiring/'],
+    ['x-tag-em-page2', '/tags/engineering-management/2/'],
+];
+
+export async function launch() {
+    try {
+        return await chromium.launch({ channel: 'chrome', headless: true });
+    } catch (e) {
+        console.error('channel chrome failed, falling back:', e.message);
+        return await chromium.launch({
+            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            headless: true,
+        });
+    }
+}
+
+export async function newPage(browser, theme, width, height = 1800) {
+    const context = await browser.newContext({
+        viewport: { width, height },
+        deviceScaleFactor: 1,
+        reducedMotion: 'reduce',
+        colorScheme: theme,
+    });
+    await context.addInitScript((t) => {
+        try {
+            localStorage.setItem('theme', t);
+        } catch {}
+    }, theme);
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(String(e)));
+    page.on('console', (m) => {
+        if (m.type() === 'error') errors.push('console: ' + m.text());
+    });
+    page.__errors = errors;
+    return page;
+}
+
+export async function settle(page, base, route) {
+    const resp = await page.goto(base + route, { waitUntil: 'load' });
+    const idle = await page
+        .waitForLoadState('networkidle', { timeout: 20000 })
+        .then(() => true)
+        .catch(() => false);
+    const hydrated = await page
+        .waitForFunction(() => !document.querySelector('astro-island[ssr]'), null, { timeout: 15000 })
+        .then(() => true)
+        .catch(() => false);
+    await page.evaluate(() => document.fonts.ready);
+    let searchReady = null;
+    if (route.startsWith('/search'))
+        searchReady = await page
+            .waitForFunction(() => /Found \d+ results? for/.test(document.body.innerText), null, { timeout: 10000 })
+            .then(() => true)
+            .catch(() => false);
+    await page.waitForTimeout(300);
+    const info = await page.evaluate(() => ({
+        dataTheme: document.documentElement.getAttribute('data-theme'),
+        dark: document.documentElement.classList.contains('dark'),
+        hoverMQ: matchMedia('(hover: hover)').matches,
+        innerWidth,
+    }));
+    return { status: resp?.status(), idle, hydrated, searchReady, ...info };
+}
+
+// State setters. Each returns a short description of what it did (for evidence).
+export const STATES = {
+    'menu-open': async (page) => {
+        const b = page.locator('button[aria-label="Open Menu"]');
+        if (!(await b.count())) return 'no menu button';
+        await b.first().click();
+        await page.waitForTimeout(300);
+        return await page.evaluate(() => {
+            const m = document.getElementById('menu-items');
+            const r = m?.getBoundingClientRect();
+            return `menu-items class="${m?.className}" rect=${r ? [r.width, r.height].join('x') : '-'}`;
+        });
+    },
+    'carousel-end': async (page) => {
+        const n = await page.evaluate(() => {
+            const cs = [...document.querySelectorAll('[aria-roledescription="carousel"]')];
+            cs.forEach((c) => c.scrollTo({ left: c.scrollWidth, behavior: 'instant' }));
+            return cs.length;
+        });
+        await page
+            .waitForFunction(
+                () => [...document.querySelectorAll('[aria-label="Next slide"]')].every((b) => b.disabled) && [...document.querySelectorAll('[aria-label="Previous slide"]')].every((b) => !b.disabled),
+                null,
+                { timeout: 5000 }
+            )
+            .catch(() => {});
+        await page.waitForTimeout(300);
+        return await page.evaluate(
+            (n) => `carousels=${n} nextDisabled=${[...document.querySelectorAll('[aria-label="Next slide"]')].map((b) => b.disabled).join(',')} prevDisabled=${[...document.querySelectorAll('[aria-label="Previous slide"]')].map((b) => b.disabled).join(',')} scrollLeft=${[...document.querySelectorAll('[aria-roledescription="carousel"]')].map((c) => c.scrollLeft).join(',')}`,
+            n
+        );
+    },
+    'details-open': async (page) => {
+        const n = await page.evaluate(() => {
+            const d = [...document.querySelectorAll('details')];
+            d.forEach((x) => (x.open = true));
+            return d.length;
+        });
+        await page.waitForTimeout(200);
+        return `details opened=${n}`;
+    },
+    'filter-sort': async (page) => {
+        const inp = page.locator('input[aria-label="Filter tags"]');
+        if (!(await inp.count())) return 'no filter input';
+        await inp.fill('engin');
+        await page.getByRole('button', { name: 'a→z' }).click();
+        await page.waitForTimeout(300);
+        return await page.evaluate(() => `rows=${document.querySelectorAll('ul li a[href^="/tags/"]').length} clearBtn=${!!document.querySelector('[aria-label="Clear filter"]')} alphaPressed=${[...document.querySelectorAll('button[aria-pressed]')].map((b) => b.textContent + ':' + b.getAttribute('aria-pressed')).join(',')}`);
+    },
+    'expand-all': async (page) => {
+        const b = page.locator('#toggle-tips');
+        if (!(await b.count())) return 'no toggle';
+        await b.click();
+        await page.waitForTimeout(300);
+        return await page.evaluate(() => `expanded=${document.querySelectorAll('.tips-item.is-expanded').length} visibleArticles=${[...document.querySelectorAll('article.tip-content')].filter((a) => !a.hidden).length} toggleText=${document.getElementById('toggle-text')?.textContent}`);
+    },
+    'search-none': async (page) => {
+        const inp = page.locator('input[type="text"], input[type="search"]').first();
+        await inp.fill('zzqqxxnomatch');
+        await page.waitForTimeout(500);
+        return await page.evaluate(() => `input=${document.querySelector('input')?.value} text=${(document.querySelector('main')?.innerText || '').slice(0, 80).replace(/\s+/g, ' ')}`);
+    },
+};
+
+// Which extra states apply to a route at a given width.
+export function statesFor(name, width) {
+    const s = ['default'];
+    if (name === '01-home' && width < 640) s.push('menu-open');
+    if (name === '04-post-with-carousel' || name === '11-octoprint') s.push('carousel-end');
+    if (['04-post-with-carousel', '11-octoprint', '03-post-with-images', 'x-ems-delivery', 'x-dad-ops-mdx', 'x-audio-md-toc'].includes(name)) s.push('details-open');
+    if (name === '06-tags-index') s.push('filter-sort');
+    if (name === '05-tips-index' || name === 'x-tips-page2') s.push('expand-all');
+    if (name === '12-search') s.push('search-none');
+    return s;
+}
+
+// ---------------- in-page code ----------------
+// Installs window.__vr with: collect() -> [{k,h,hc,hp,r,cls}], detail(k) -> full maps,
+// affected(i) for hover/focus pass.
+export function installVR(ignoreCus = []) {
+    const IGN = new Set(ignoreCus);
+    const SKIP = new Set(['SCRIPT', 'STYLE', 'LINK', 'META', 'NOSCRIPT', 'TEMPLATE', 'TITLE', 'HEAD', 'BASE']);
+    const isPT = (el) => el.tagName === 'IFRAME' && (/partytown/.test(el.getAttribute('src') || '') || el.hasAttribute('data-partytown'));
+    const norm = (v) =>
+        v
+            .replace(/localhost:43\d\d/g, 'HOST')
+            .replace(/\bastro-[a-z0-9]{8}\b/g, 'astro-SCOPE')
+            .replace(/(\/_astro\/[^"')\s]*?)\.[A-Za-z0-9_-]{8}\.(\w+)/g, '$1.HASH.$2');
+    const els = [];
+    const keys = [];
+    const idx = new Map();
+    function walk(el, key) {
+        let i = 0;
+        for (const c of el.children) {
+            if (SKIP.has(c.tagName) || isPT(c)) continue;
+            const k = key + '/' + c.tagName.toLowerCase() + i;
+            i++;
+            idx.set(c, els.length);
+            els.push(c);
+            keys.push(k);
+            walk(c, k);
+        }
+    }
+    idx.set(document.documentElement, 0);
+    els.push(document.documentElement);
+    keys.push('html');
+    walk(document.documentElement, 'html');
+    function cyrb53(str, seed = 0) {
+        let h1 = 0xdeadbeef ^ seed,
+            h2 = 0x41c6ce57 ^ seed;
+        for (let i = 0, ch; i < str.length; i++) {
+            ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+    }
+    function styleMaps(cs) {
+        const std = {},
+            cus = {};
+        for (let i = 0; i < cs.length; i++) {
+            const p = cs[i];
+            const v = norm(cs.getPropertyValue(p));
+            if (p.startsWith('--')) cus[p] = v;
+            else std[p] = v;
+        }
+        return { std, cus };
+    }
+    const ser = (o) =>
+        Object.keys(o)
+            .sort()
+            .map((k) => k + ':' + o[k])
+            .join(';');
+    function pseudoList(el) {
+        const l = ['::before', '::after'];
+        const tn = el.tagName;
+        const disp = getComputedStyle(el).display;
+        if (disp.includes('list-item') || tn === 'SUMMARY' || tn === 'LI') l.push('::marker');
+        if (tn === 'INPUT' || tn === 'TEXTAREA') l.push('::placeholder');
+        return l;
+    }
+    function pseudoMaps(el) {
+        const out = {};
+        for (const p of pseudoList(el)) {
+            const cs = getComputedStyle(el, p);
+            const content = cs.getPropertyValue('content');
+            if ((p === '::before' || p === '::after') && (content === 'none' || content === 'normal')) {
+                out[p] = { std: { content }, cus: {} };
+                continue;
+            }
+            out[p] = styleMaps(cs);
+        }
+        return out;
+    }
+    function rectOf(el) {
+        const r = el.getBoundingClientRect();
+        return [r.x + scrollX, r.y + scrollY, r.width, r.height].map((v) => Math.round(v * 100) / 100).join(',');
+    }
+    function record(i) {
+        const el = els[i];
+        const { std, cus } = styleMaps(getComputedStyle(el));
+        const pm = pseudoMaps(el);
+        const pstd = Object.keys(pm)
+            .sort()
+            .map((p) => p + '{' + ser(pm[p].std) + '}')
+            .join('');
+        const pcus = Object.keys(pm)
+            .sort()
+            .map((p) => p + '{' + ser(pm[p].cus) + '}')
+            .join('');
+        const cusx = {};
+        for (const p in cus) if (!IGN.has(p)) cusx[p] = cus[p];
+        const pcusx = Object.keys(pm)
+            .sort()
+            .map((p) => {
+                const o = {};
+                for (const q in pm[p].cus) if (!IGN.has(q)) o[q] = pm[p].cus[q];
+                return p + '{' + ser(o) + '}';
+            })
+            .join('');
+        return {
+            k: keys[i],
+            h: cyrb53(ser(std)),
+            hc: cyrb53(ser(cus)),
+            hcx: cyrb53(ser(cusx) + '|' + pcusx),
+            hp: cyrb53(pstd),
+            hpc: cyrb53(pcus),
+            r: rectOf(el),
+            cls: norm(el.getAttribute('class') || ''),
+            nstd: Object.keys(std).length,
+            ncus: Object.keys(cus).length,
+        };
+    }
+    function subtree(el, out, cap) {
+        const i = idx.get(el);
+        if (i === undefined) return;
+        out.add(i);
+        if (out.size > cap) return;
+        for (const c of el.children) subtree(c, out, cap);
+    }
+    window.__vr = {
+        count: els.length,
+        keys,
+        els,
+        collect() {
+            const out = [];
+            for (let i = 0; i < els.length; i++) out.push(record(i));
+            return out;
+        },
+        detail(k) {
+            const i = keys.indexOf(k);
+            if (i < 0) return null;
+            const el = els[i];
+            return { ...styleMaps(getComputedStyle(el)), pseudo: pseudoMaps(el), rect: rectOf(el), cls: el.getAttribute('class'), tag: el.tagName, text: (el.textContent || '').trim().slice(0, 60) };
+        },
+        indexOfKey(k) {
+            return keys.indexOf(k);
+        },
+        // candidates for hover/focus: interactive elements + subjects of any hover/focus rule (superset selector)
+        candidates(kind, process_env_lean = false) {
+            const set = new Set();
+            const base = kind === 'hover' ? 'a, button, summary, input, textarea, select, label, [role=button], [tabindex], .group, .peer, svg, li' : 'a[href], button, summary, input, textarea, select, [tabindex], [contenteditable]';
+            document.querySelectorAll(base).forEach((e) => idx.has(e) && set.add(idx.get(e)));
+            const re = kind === 'hover' ? /:hover/ : /:focus/;
+            const strip = (s) => {
+                let t = s.replace(/::?-?[a-z-]*(?:placeholder|scrollbar[a-z-]*|selection|marker|before|after|backdrop|file-selector-button|details-marker)\b/g, '');
+                t = t.replace(/:(?:hover|focus-visible|focus-within|focus|active|visited|target|checked|disabled|enabled|placeholder-shown|open|popover-open|user-invalid|user-valid|invalid|valid|indeterminate|default|autofill|-webkit-autofill)(?![\w-])/g, '');
+                for (let n = 0; n < 5; n++) t = t.replace(/:(?:not|is|where|has)\(\s*\)/g, '');
+                t = t.replace(/([>+~(]|,)\s*$/, '$1 *').trim();
+                return t || '*';
+            };
+            const walkRules = (rules) => {
+                for (const r of rules) {
+                    // ::-webkit-scrollbar-thumb:hover is a scrollbar-part state (not forceable via element
+                    // pseudo-state); its stripped superset is '*', which would make every element a candidate.
+                    const skipScroll = process_env_lean && r.selectorText && /::-webkit-scrollbar/.test(r.selectorText);
+                    if (r.selectorText && re.test(r.selectorText) && !skipScroll) {
+                        for (const part of r.selectorText.split(/,(?![^(]*\))/)) {
+                            try {
+                                document.querySelectorAll(strip(part)).forEach((e) => {
+                                    if (idx.has(e) && !(e === document.documentElement || e === document.body)) set.add(idx.get(e));
+                                });
+                            } catch {}
+                            if (process_env_lean) {
+                                // anchor = the compound that carries the state pseudo-class (e.g. '.prose' in
+                                // '.prose:hover :where(a)', '.group' in ':is(:where(.group):hover *)'): forcing it
+                                // with its whole subtree recorded covers "anchor hovered, descendants not".
+                                const m = part.search(re);
+                                if (m > 0) {
+                                    let pre = part.slice(0, m);
+                                    let depth = 0, cut = -1;
+                                    for (let i = 0; i < pre.length; i++) {
+                                        if (pre[i] === '(') { depth++; if (cut < 0 || depth === 1) cut = i; }
+                                        else if (pre[i] === ')') depth--;
+                                    }
+                                    if (depth > 0) {
+                                        // unbalanced: take the text after the last unmatched '('
+                                        let d = 0, last = -1;
+                                        for (let i = pre.length - 1; i >= 0; i--) {
+                                            if (pre[i] === ')') d++;
+                                            else if (pre[i] === '(') { if (d === 0) { last = i; break; } d--; }
+                                        }
+                                        pre = pre.slice(last + 1);
+                                    }
+                                    // ':not(:hover)' etc. leaves an empty anchor -> skip (would become '*')
+                                    if (!pre.trim() || /[>+~(]\s*$/.test(pre.trim())) continue;
+                                    try {
+                                        document.querySelectorAll(strip(pre)).forEach((e) => {
+                                            if (idx.has(e) && !(e === document.documentElement || e === document.body)) set.add(idx.get(e));
+                                        });
+                                    } catch {}
+                                }
+                            }
+                        }
+                    }
+                    if (r.cssRules) walkRules(r.cssRules);
+                }
+            };
+            for (const sh of document.styleSheets) {
+                try {
+                    walkRules(sh.cssRules);
+                } catch {}
+            }
+            set.delete(0);
+            return [...set].sort((a, b) => a - b).map((i) => keys[i]);
+        },
+        // chain (target + ancestors) indices, and the affected set to record
+        chain(k) {
+            const i = keys.indexOf(k);
+            const out = [];
+            let e = els[i];
+            while (e && e.nodeType === 1) {
+                out.push(idx.get(e));
+                e = e.parentElement;
+            }
+            return out;
+        },
+        // lean mode (VR_LEAN=1): ancestors + own subtree + closest .group subtree, uncapped.
+        // Valid because no :hover/:focus* rule in any bundle uses a sibling combinator (checked by grep).
+        affectedLean(k) {
+            const i = keys.indexOf(k);
+            const el = els[i];
+            const set = new Set();
+            let e = el;
+            while (e && e.nodeType === 1) {
+                if (idx.has(e)) set.add(idx.get(e));
+                e = e.parentElement;
+            }
+            subtree(el, set, 1e9);
+            const grp = el.closest('.group');
+            if (grp && grp !== document.body) subtree(grp, set, 1e9);
+            return [...set].sort((a, b) => a - b);
+        },
+        affected(k) {
+            const i = keys.indexOf(k);
+            const el = els[i];
+            const set = new Set();
+            let e = el;
+            while (e && e.nodeType === 1) {
+                if (idx.has(e)) set.add(idx.get(e));
+                e = e.parentElement;
+            }
+            subtree(el, set, 800);
+            const grp = el.closest('.group');
+            if (grp && grp !== document.body) subtree(grp, set, 1200);
+            const par = el.parentElement;
+            if (par && par !== document.body && par !== document.documentElement) for (const c of par.children) subtree(c, set, 1200);
+            return [...set].sort((a, b) => a - b);
+        },
+        recordSet(indices) {
+            return indices.map((i) => record(i));
+        },
+    };
+    return els.length;
+}

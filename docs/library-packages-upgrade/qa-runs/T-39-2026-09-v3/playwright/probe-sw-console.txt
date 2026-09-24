@@ -1,0 +1,2 @@
+{"swEventFired":true,"swFound":true,"errorViaServiceworkerEventListener":true,"warnViaServiceworkerEventListener":true,"errorViaDirectHandle":true,"errorLeakedToPageChannel":false} 
+EXIT=0

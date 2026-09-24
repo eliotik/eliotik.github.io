@@ -1,0 +1,22 @@
+// For each custom property removed from :root on HEAD, count references var(--x) in each dist (css/html/js/mjs).
+import fs from 'node:fs';
+import path from 'node:path';
+const [listFile, ...dists] = process.argv.slice(2);
+const names = fs.readFileSync(listFile, 'utf8').split('\n').filter(Boolean);
+function files(d) { const out = []; (function w(p) { for (const e of fs.readdirSync(p, { withFileTypes: true })) { const q = path.join(p, e.name); if (e.isDirectory()) w(q); else if (/\.(css|html|js|mjs)$/.test(e.name)) out.push(q); } })(d); return out; }
+const res = {};
+for (const d of dists) {
+  const fl = files(d); const texts = fl.map((f) => [f, fs.readFileSync(f, 'utf8')]);
+  res[d] = { files: fl.length, refs: {}, defs: {} };
+  for (const n of names) {
+    const re = new RegExp('var\\(\\s*' + n.replace(/[-]/g, '\\-') + '\\s*[,)]');
+    const dre = new RegExp('(?<![\\w-])' + n.replace(/[-]/g, '\\-') + '\\s*:');
+    const r = texts.filter(([, t]) => re.test(t)).map(([f]) => path.relative(d, f));
+    const df = texts.filter(([, t]) => dre.test(t)).map(([f]) => path.relative(d, f));
+    if (r.length) res[d].refs[n] = r.slice(0, 5).concat(r.length > 5 ? [`…+${r.length - 5}`] : []);
+    if (df.length) res[d].defs[n] = df.slice(0, 3);
+  }
+}
+for (const d of dists) console.log(d, 'files', res[d].files, 'names referenced via var():', Object.keys(res[d].refs).length, 'names defined:', Object.keys(res[d].defs).length);
+console.log(JSON.stringify(Object.fromEntries(dists.map((d) => [d, res[d].refs])), null, 1).slice(0, 4000));
+fs.writeFileSync(listFile.replace('.txt', '-refs.json'), JSON.stringify(res, null, 1));

@@ -1,0 +1,58 @@
+{
+  "v2": "/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v2/playwright/results.json",
+  "v3": "/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v2/playwright/results-run2.json",
+  "v2Meta": {
+    "base": "http://localhost:4321",
+    "isProd": false,
+    "startedAt": "2026-09-24T16:45:34.125Z",
+    "node": "v22.23.3",
+    "gaBlockArg": "--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND",
+    "browserVersion": "153.0.8010.53",
+    "groups": [
+      "H",
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P8"
+    ],
+    "finishedAt": "2026-09-24T16:49:58.301Z",
+    "pass": true,
+    "checks": {
+      "total": 291,
+      "failed": []
+    }
+  },
+  "v3Meta": {
+    "base": "http://localhost:4321",
+    "isProd": false,
+    "startedAt": "2026-09-24T16:56:28.904Z",
+    "node": "v22.23.3",
+    "gaBlockArg": "--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND",
+    "browserVersion": "153.0.8010.53",
+    "groups": [
+      "H",
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P8"
+    ],
+    "finishedAt": "2026-09-24T17:00:54.556Z",
+    "pass": true,
+    "checks": {
+      "total": 291,
+      "failed": []
+    }
+  },
+  "keysCompared": 912,
+  "identical": 912,
+  "differing": 0,
+  "diffs": []
+}

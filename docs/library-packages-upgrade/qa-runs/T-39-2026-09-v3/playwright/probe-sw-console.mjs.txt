@@ -1,0 +1,62 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8 v3, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs next to node_modules/playwright.
+// T-39 Task 8 v3 lane playwright-e2e: positive control for the service-worker console channel.
+// Proves (or disproves) that ctx.on('serviceworker') -> sw.on('console') — the exact listener the e2e harness uses —
+// delivers console messages emitted inside the real Partytown service worker (Playwright 1.63 + installed Chrome).
+// usage: node probe-sw-console.mjs <baseURL> <out.json>
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+
+const BASE = (process.argv[2] || 'http://localhost:4321').replace(/\/$/, '');
+const OUT = process.argv[3] || 'probe-sw-console.json';
+const GA_BLOCK =
+    '--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const R = { base: BASE, startedAt: new Date().toISOString(), swEvents: [], swConsole: [], pageConsole: [], errors: [] };
+
+const browser = await chromium.launch({ channel: 'chrome', headless: true, args: [GA_BLOCK] });
+R.browserVersion = browser.version();
+const ctx = await browser.newContext({ viewport: { width: 1280, height: 1800 }, colorScheme: 'light' });
+// identical wiring to e2e.mjs instrument(): listener attached in the 'serviceworker' event
+ctx.on('serviceworker', sw => {
+    R.swEvents.push(sw.url());
+    try {
+        sw.on('console', m => R.swConsole.push({ via: 'serviceworker-event', type: m.type(), text: m.text() }));
+    } catch (e) {
+        R.errors.push('sw.on(console) threw: ' + String(e).slice(0, 200));
+    }
+});
+const page = await ctx.newPage();
+page.on('console', m => R.pageConsole.push({ type: m.type(), text: m.text() }));
+await page.goto(BASE + '/about/', { waitUntil: 'load' });
+const t0 = Date.now();
+while (Date.now() - t0 < 15000 && !ctx.serviceWorkers().some(s => /partytown-sw\.js/.test(s.url()))) await sleep(200);
+const sw = ctx.serviceWorkers().find(s => /partytown-sw\.js/.test(s.url()));
+R.swFound = sw ? sw.url() : null;
+// also attach directly to the handle found via ctx.serviceWorkers() (covers an SW that existed before the event listener)
+if (sw) {
+    sw.on('console', m => R.swConsole.push({ via: 'direct-handle', type: m.type(), text: m.text() }));
+    try {
+        R.evaluateResult = await sw.evaluate(() => {
+            console.error('HARNESS-CONTROL sw console.error');
+            console.warn('HARNESS-CONTROL sw console.warn');
+            return typeof self.registration;
+        });
+    } catch (e) {
+        R.errors.push('sw.evaluate threw: ' + String(e).slice(0, 300));
+    }
+}
+await sleep(1500);
+R.result = {
+    swEventFired: R.swEvents.length > 0,
+    swFound: !!R.swFound,
+    errorViaServiceworkerEventListener: R.swConsole.some(c => c.via === 'serviceworker-event' && c.type === 'error' && /HARNESS-CONTROL sw console\.error/.test(c.text)),
+    warnViaServiceworkerEventListener: R.swConsole.some(c => c.via === 'serviceworker-event' && c.type === 'warning' && /HARNESS-CONTROL sw console\.warn/.test(c.text)),
+    errorViaDirectHandle: R.swConsole.some(c => c.via === 'direct-handle' && c.type === 'error' && /HARNESS-CONTROL sw/.test(c.text)),
+    errorLeakedToPageChannel: R.pageConsole.some(c => /HARNESS-CONTROL sw/.test(c.text)),
+};
+R.finishedAt = new Date().toISOString();
+fs.writeFileSync(OUT, JSON.stringify(R, null, 2));
+console.log(JSON.stringify(R.result), R.errors.length ? R.errors : '');
+await browser.close();

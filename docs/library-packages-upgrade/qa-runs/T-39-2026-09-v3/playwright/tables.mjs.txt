@@ -1,0 +1,62 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8 v3, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs next to node_modules/playwright.
+// Emits the markdown P1 table and a few evidence lines from a results.json (T-39 Task 8 v3 lane playwright-e2e).
+import fs from 'node:fs';
+const r = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const ev = id => r.checks.find(c => c.id === id);
+const short = s => (s.startsWith('octoprint') ? 'octoprint' : 'flutter');
+const rows = [];
+const groups = [
+    ['1280', 'P1', r.details.P1],
+    ['375 touch', 'P1m', { 'octoprint-prusa-core-one-raspberry-pi': r.details.P1mobile }],
+];
+for (const [vp, pre, data] of groups) {
+    for (const [slug, cars] of Object.entries(data)) {
+        for (const c of cars) {
+            const s = c.start;
+            const st = c.steps;
+            const find = re => st.find(x => re.test(x.action));
+            const next1 = st[0];
+            const walk = st.filter(x => /Next/.test(x.action) && !/keyboard/.test(x.action)).map(x => Math.round(x.delta));
+            const prev = st.find(x => /Prev/.test(x.action));
+            const enter = find(/Enter/);
+            const space = find(/Space/);
+            const g1 = find(/40% back/);
+            const g2 = find(/40% forward/);
+            const g3 = find(/70% forward/);
+            const id = `${pre}.${slug}.c${c.index}`;
+            const cs = r.checks.filter(x => x.id.startsWith(id + '.'));
+            const end = ev(`${id}.walk-end`)?.evidence;
+            const imgs = ev(`${id}.images`)?.evidence;
+            const loadedEnd = imgs ? imgs.imgs.filter(x => x.complete && x.nw > 0).length : '?';
+            rows.push(
+                `| ${vp} | ${short(slug)} #${c.index} | ${s.slideCount} | ${s.clientWidth} | ${c.imgsLoadedAtStart}→${loadedEnd} | ${Math.round(next1.delta)}${pre === 'P1m' ? ' (tap)' : ''} | [${walk.join(",")}] ${end?.nextDisabled ? '✓' : '✗'} | ${Math.round(prev.delta)} | ${Math.round(enter.delta)} / ${Math.round(space.delta)} (${space.scrollYBefore}→${space.scrollYAfter}) | ${Math.round(g1.maxDisplacement)} → slide ${g1.snap.nearestSlide}, mod ${g1.snap.mod}, off ${g1.snap.geomOffset} | ${Math.round(g2.maxDisplacement)} → slide ${g2.snap.nearestSlide}, mod ${g2.snap.mod}, off ${g2.snap.geomOffset} | ${g3.snap.nearestSlide === 2 ? '1→2' : '?→' + g3.snap.nearestSlide}, mod ${g3.snap.mod} | ${cs.filter(x => x.pass).length}/${cs.length} |`
+            );
+        }
+    }
+}
+console.log('| viewport | carousel | N | cw | imgs | Next click Δ | walk-to-end Δs → Next disabled | Prev Δ | Enter / Space Δ (page scrollY before→after Space) | 40% back from end | 40% fwd from start | 70% fwd | checks |');
+console.log('|---|---|---|---|---|---|---|---|---|---|---|---|---|');
+for (const x of rows) console.log(x);
+console.log('\nP1 check counts:', ['P1.', 'P1dark.', 'P1m.'].map(p => `${p} ${r.checks.filter(c => c.id.startsWith(p) && c.pass).length}/${r.checks.filter(c => c.id.startsWith(p)).length}`).join(', '));
+for (const [slug, d] of Object.entries(r.details.P1dark)) {
+    console.log(`dark ${slug}: ${d.carousels.map((c, i) => `c${i + 1} N=${c.st.slideCount} sl=${c.st.scrollLeft} prevDis=${c.st.prevDisabled} nextDis=${c.st.nextDisabled} contrast=${c.col.iconVsButtonContrast}`).join('; ')} | body ${d.carousels[0].col.bodyBg} | light contrast ${d.lightColorsFirstCarousel.iconVsButtonContrast}`);
+    const t = ev(`P1dark.${slug}.toggle`)?.evidence;
+    console.log(`   toggle: ${JSON.stringify(t)}`);
+}
+const byGroup = {};
+for (const c of r.checks) {
+    const g = c.id.split('.')[0];
+    byGroup[g] = byGroup[g] || [0, 0];
+    byGroup[g][1]++;
+    if (c.pass) byGroup[g][0]++;
+}
+console.log('by group:', JSON.stringify(byGroup));
+for (const id of ['P2.type', 'P2.url', 'P2.reload', 'P2.click-result', 'P2.nomatch', 'P3.initial-count-sort', 'P3.filter', 'P3.sort-alpha-filtered', 'P3.sort-alpha-full', 'P3.sort-count', 'P3.tag-click', 'P4.nav-post', 'P4.post-island', 'P4.nav-search', 'P4.search-island', 'P4.nav-tags', 'P4.tags-island', 'P4b.theme-persist-client-nav', 'P4b.toggle-after-nav', 'P5.toggle', 'P5.fouc./posts/', 'P5.fouc./tags/', 'P5.fouc./about/', 'P5.fouc./posts/audio-vs-paper-books/', 'P5.persist', 'P6.audio-vs-paper-books.collapse', 'P6.audio-vs-paper-books.anchors', 'P6.audio-vs-paper-books.navigate', 'P6.dad-ops-playbook.collapse', 'P6.dad-ops-playbook.anchors', 'P6.dad-ops-playbook.navigate', 'P7.islands-hydrated', 'P7.no-hydration-warnings', 'H.capture-control', 'C.console-zero', 'C.requests-failed']) {
+    const c = ev(id);
+    let e = JSON.stringify(c?.evidence);
+    if (id.startsWith('P4b.theme')) e = JSON.stringify({ ...c.evidence, dataThemeMutations: c.evidence.dataThemeMutations.slice(0, 6) });
+    console.log(`\n${c?.pass ? 'PASS' : 'FAIL'} ${id}: ${e?.slice(0, 900)}`);
+}
+console.log('\nP8:', JSON.stringify(r.details.P8.map(x => `${x.dwellMs}/${x.rep}: path=${x.path} err=${x.errors} aborted=${x.abortedProxytownXHR}`)));

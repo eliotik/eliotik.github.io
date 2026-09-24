@@ -1,0 +1,5 @@
+command: node <scratchpad>/t8v3/../pt/pt-repro.mjs http://localhost:4321 --strict --out=<lane>/pt-repro.json
+start: 2026-09-24T19:03:44Z
+end: 2026-09-24T19:04:55Z
+exit code: 0
+stderr bytes:        0

@@ -1,0 +1,43 @@
+{
+  "base": "http://localhost:4321",
+  "startedAt": "2026-09-24T19:23:02.635Z",
+  "swEvents": [
+    "http://localhost:4321/~partytown/partytown-sw.js"
+  ],
+  "swConsole": [
+    {
+      "via": "serviceworker-event",
+      "type": "error",
+      "text": "HARNESS-CONTROL sw console.error"
+    },
+    {
+      "via": "direct-handle",
+      "type": "error",
+      "text": "HARNESS-CONTROL sw console.error"
+    },
+    {
+      "via": "serviceworker-event",
+      "type": "warning",
+      "text": "HARNESS-CONTROL sw console.warn"
+    },
+    {
+      "via": "direct-handle",
+      "type": "warning",
+      "text": "HARNESS-CONTROL sw console.warn"
+    }
+  ],
+  "pageConsole": [],
+  "errors": [],
+  "browserVersion": "153.0.8010.53",
+  "swFound": "http://localhost:4321/~partytown/partytown-sw.js",
+  "evaluateResult": "object",
+  "result": {
+    "swEventFired": true,
+    "swFound": true,
+    "errorViaServiceworkerEventListener": true,
+    "warnViaServiceworkerEventListener": true,
+    "errorViaDirectHandle": true,
+    "errorLeakedToPageChannel": false
+  },
+  "finishedAt": "2026-09-24T19:23:04.887Z"
+}
