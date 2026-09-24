@@ -36,8 +36,7 @@ const totalTags = allTags.length;
                 {topTags.map(t => (
                     <div class="top-tags__row">
                         <a class="top-tags__name" href={`/tags/${t.tag}/`}>
-                            <span class="top-tags__hash">#</span>
-                            {t.tag}
+                            {[<span class="top-tags__hash">#</span>, t.tag]}
                         </a>
                         <span class="top-tags__dots" aria-hidden="true" />
                         <span class="top-tags__count">{t.count}</span>

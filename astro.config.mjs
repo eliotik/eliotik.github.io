@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
+import { unified } from '@astrojs/markdown-remark';
 import { SITE } from "./src/config";
 
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
@@ -39,9 +40,13 @@ export default defineConfig({
   //  service: passthroughImageService(),
   // },
   markdown: {
-    remarkPlugins: [remarkToc, [remarkCollapse, {
-      test: "Table of contents"
-    }]],
+    // Astro 7 defaults to the Sätteri processor, which ignores remark plugins.
+    // Stay on unified so remark-toc / remark-collapse keep rendering the TOC.
+    processor: unified({
+      remarkPlugins: [remarkToc, [remarkCollapse, {
+        test: "Table of contents"
+      }]],
+    }),
     shikiConfig: {
       theme: "one-dark-pro",
       wrap: true
@@ -65,5 +70,8 @@ export default defineConfig({
     // Clear screen on dev server start
     clearScreen: false
   },
-  scopedStyleStrategy: "where"
+  scopedStyleStrategy: "where",
+  // Astro 7 defaults to 'jsx' whitespace rules; keep lossless compression so
+  // inline spacing matches the pre-upgrade output. Mirror in .prettierrc.
+  compressHTML: true,
 });
