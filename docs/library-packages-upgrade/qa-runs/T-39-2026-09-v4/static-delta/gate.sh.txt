@@ -1,0 +1,16 @@
+#!/bin/bash
+# usage: gate.sh <worktree> <logprefix> <full:1|0>
+WT=$1; LP=$2; FULL=$3
+cd "$WT" || exit 99
+source ~/.nvm/nvm.sh >/dev/null && nvm use --silent
+{
+echo "node $(node -v) pnpm $(pnpm -v) HEAD $(git rev-parse HEAD) start $(date -u +%FT%TZ)"
+pnpm install --frozen-lockfile > $LP-install.log 2>&1; echo "install exit $?"
+if [ "$FULL" = 1 ]; then
+  pnpm astro check > $LP-check.log 2>&1; echo "check exit $?"
+  pnpm lint > $LP-lint.log 2>&1; echo "lint exit $?"
+  pnpm format:check > $LP-format.log 2>&1; echo "format:check exit $?"
+fi
+pnpm build > $LP-build.log 2>&1; echo "build exit $?"
+echo "end $(date -u +%FT%TZ)"
+} > $LP-gate.txt 2>&1

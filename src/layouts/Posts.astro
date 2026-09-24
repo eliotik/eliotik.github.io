@@ -34,23 +34,23 @@ const canonicalURL =
     <Header activeNav="posts" />
     <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
         <ul>
-            {
-                paginatedEntities.map(({ data, id }) => (
-                    <Card
-                        href={`/posts/${id}/`}
-                        frontmatter={data}
-                        threadPosition={threadPositions?.[id]}
-                    />
-                ))
-            }
+            {paginatedEntities.map(({ data, id }) => (
+                <Card
+                    href={`/posts/${id}/`}
+                    frontmatter={data}
+                    threadPosition={threadPositions?.[id]}
+                />
+            ))}
         </ul>
     </Main>
 
     <Pagination
         {currentPage}
         {totalPages}
-        prevUrl={`/posts${currentPage - 1 !== 1 ? '/' + (currentPage - 1) : ''}`}
-        nextUrl={`/posts/${currentPage + 1}`}
+        prevUrl={
+            currentPage - 1 !== 1 ? `/posts/${currentPage - 1}/` : '/posts/'
+        }
+        nextUrl={`/posts/${currentPage + 1}/`}
     />
 
     <Footer noMarginTop={totalPages > 1} />

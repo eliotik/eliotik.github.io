@@ -1,0 +1,10 @@
+- 0 errors
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/dad-ops-playbook.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/flutter-building-number-picker.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/flutter-google-maps-address-manipulation.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/flutter-google-maps-embedded-map.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/flutter-google-maps-static-map.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/from-skeptic-to-champion.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/octoprint-prusa-core-one-raspberry-pi.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/the-scaling-handbook.mdx?astroPropagatedAssets" may not be preserved when bundling.
+[WARN] [vite] [33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "use astro:head-inject" in "src/content/blog/two-horses-asses-is-it-that-bad.mdx?astroPropagatedAssets" may not be preserved when bundling.

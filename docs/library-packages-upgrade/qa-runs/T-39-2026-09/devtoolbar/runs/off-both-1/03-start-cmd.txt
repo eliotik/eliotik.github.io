@@ -1,0 +1,5 @@
+
+> eliotik.github.io@0.0.1 astro /Users/ap/development/other/eliotik.github.io
+> astro dev --port 4322
+
+{"message":"Dev server running at http://localhost:4322 (pid 37385)\n  Stop:   astro dev stop\n  Status: astro dev status\n  Logs:   astro dev logs","label":"SKIP_FORMAT","level":"info"}

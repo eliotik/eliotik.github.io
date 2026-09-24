@@ -1,0 +1,1445 @@
+{
+  "engine": "webkit",
+  "base": "http://localhost:4321",
+  "checks": [
+    {
+      "id": "P9.webkit.H.capture-control",
+      "name": "harness control: page console.error, main-frame worker console.error, sandbox-iframe worker console.error, worker uncaught and pageerror are all captured on this engine",
+      "pass": true,
+      "evidence": {
+        "pageConsoleError": true,
+        "workerConsoleErrorViaWorkerChannel": false,
+        "workerConsoleErrorViaPageChannel": true,
+        "sandboxFrameFound": true,
+        "sandboxIframeWorkerConsoleError": true,
+        "workerUncaughtSeenAnywhere": true,
+        "pageerror": true,
+        "workerEventsHooked": 3,
+        "workerConsoleUnsupported": null,
+        "captured": [
+          "page:error:HARNESS-CONTROL page console.error",
+          "page:error:HARNESS-CONTROL worker console.error",
+          "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+          "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+          "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+          "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+          "page:error:HARNESS-CONTROL sandbox-iframe worker console.error",
+          "pageerror:Error: HARNESS-CONTROL uncaught",
+          "pageerror:Error: HARNESS-CONTROL worker uncaught"
+        ]
+      }
+    },
+    {
+      "id": "P9.webkit.P4.soft-navs",
+      "name": "10 real-click ClientRouter navigations are soft (token survives, 0 load events), expected paths, islands hydrated",
+      "pass": true,
+      "evidence": {
+        "navs": [
+          {
+            "k": 1,
+            "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 2,
+            "path": "/search/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 3,
+            "path": "/tags/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 4,
+            "path": "/tags/engineering-management/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 5,
+            "path": "/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 6,
+            "path": "/posts/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 7,
+            "path": "/posts/local-coding-model-desktop-macbook/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 8,
+            "path": "/tips/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 9,
+            "path": "/about/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 10,
+            "path": "/",
+            "soft": true,
+            "ssr": 0
+          }
+        ],
+        "loadEvents": 0
+      }
+    },
+    {
+      "id": "P9.webkit.P4.carousel-after-nav",
+      "name": "after client nav home→post: carousel Next click advances by clientWidth ±2",
+      "pass": true,
+      "evidence": {
+        "from": 0,
+        "to": 734,
+        "clientWidth": 734,
+        "prevDisabledBefore": true,
+        "ok": true
+      }
+    },
+    {
+      "id": "P9.webkit.P4.search-after-nav",
+      "name": "after client nav →/search/: typing 'hiring' lists ≥1 result and sets ?q=hiring",
+      "pass": true,
+      "evidence": {
+        "value": "hiring",
+        "items": 5,
+        "search": "?q=hiring",
+        "ok": true
+      }
+    },
+    {
+      "id": "P9.webkit.P4.tags-after-nav",
+      "name": "after client nav →/tags/: filter 'engin' narrows and includes engineering-management",
+      "pass": true,
+      "evidence": {
+        "before": 68,
+        "after": 5,
+        "hasEM": true,
+        "allMatch": true,
+        "ok": true
+      }
+    },
+    {
+      "id": "P9.webkit.P0.sandbox-parent-html",
+      "name": "sandbox iframe parent is <html>, exactly 1 sandbox, on / and after every navigation",
+      "pass": true,
+      "evidence": {
+        "parents": [
+          "/:HTMLx1",
+          "/posts/octoprint-prusa-core-one-raspberry-pi/:HTMLx1",
+          "/search/:HTMLx1",
+          "/tags/:HTMLx1",
+          "/tags/engineering-management/:HTMLx1",
+          "/:HTMLx1",
+          "/posts/:HTMLx1",
+          "/posts/local-coding-model-desktop-macbook/:HTMLx1",
+          "/tips/:HTMLx1",
+          "/about/:HTMLx1",
+          "/:HTMLx1",
+          "/:HTMLx1"
+        ]
+      }
+    },
+    {
+      "id": "P9.webkit.P0.iframe-not-reloaded",
+      "name": "sandbox iframe never reloads: DOM load events 1, sandbox-html requests 1, same element after every nav, 0 removals",
+      "pass": true,
+      "evidence": {
+        "iframeLoads": 1,
+        "sandboxHtmlRequests": 1,
+        "sbNavigatedEvents": 1,
+        "sbDetachedEvents": 0,
+        "removed": 0,
+        "same": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "P9.webkit.P0.gtag-once",
+      "name": "gtag.js requested exactly once; gtag-src <script> is the same persisted element after every nav; 0 pending text/partytown",
+      "pass": true,
+      "evidence": {
+        "gtagRequests": [
+          "A:/"
+        ],
+        "same": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "P9.webkit.P0.proxytown",
+      "name": "0 failed/aborted proxytown requests and 0 proxytown console errors",
+      "pass": true,
+      "evidence": {
+        "proxytownFailed": []
+      }
+    },
+    {
+      "id": "P9.webkit.P0.worker-internal",
+      "name": "hook inside the real Partytown worker (console.error/warn wrap + error/unhandledrejection listeners, installed at worker creation) buffered nothing across the 10 navigations",
+      "pass": true,
+      "evidence": {
+        "hooked": true,
+        "hookError": null,
+        "buffer": [],
+        "readError": null
+      }
+    },
+    {
+      "id": "P9.webkit.P1.carousels",
+      "name": "octoprint: 7 carousels (7 slider islands); start Prev disabled/Next enabled; each Next click = clientWidth ±2; end state Next disabled at max; all slide images loaded",
+      "pass": true,
+      "evidence": {
+        "carousels": [
+          {
+            "i": 1,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 2,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 3,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 4,
+            "N": 3,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734,
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 3,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 5,
+            "N": 3,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734,
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 3,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 6,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 7,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "P9.webkit.P2.search-typing",
+      "name": "search: real keyboard typing 'hiring' lists ≥1 result, URL ?q=hiring",
+      "pass": true,
+      "evidence": {
+        "value": "hiring",
+        "count": 5,
+        "first": "/posts/ems-the-people-system",
+        "search": "?q=hiring"
+      }
+    },
+    {
+      "id": "P9.webkit.P3.tags-filter",
+      "name": "tags: typing 'engin' narrows the list, includes engineering-management, all items match",
+      "pass": true,
+      "evidence": {
+        "before": 68,
+        "after": 5,
+        "items": [
+          "/tags/engineering-management/",
+          "/tags/engineering-leadership/",
+          "/tags/engineering-culture/",
+          "/tags/senior-software-engineer/",
+          "/tags/software-engineering/"
+        ]
+      }
+    },
+    {
+      "id": "P9.webkit.console",
+      "name": "console errors = 0 except network errors to the blocked analytics hosts; 0 page errors; 0 failed requests to non-analytics URLs",
+      "pass": true,
+      "evidence": {
+        "errorsBySrc": {
+          "page": 36
+        },
+        "proxyOnlyRefusedAnalytics": true,
+        "requestFailedOther": [],
+        "attributionByLabel": {
+          "A:/": {
+            "consoleErrors": 4,
+            "exempt": 4,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav2:/search/": {
+            "consoleErrors": 4,
+            "exempt": 4,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav4:/tags/engineering-management/": {
+            "consoleErrors": 4,
+            "exempt": 4,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav6:/posts/": {
+            "consoleErrors": 4,
+            "exempt": 4,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav10:/": {
+            "consoleErrors": 4,
+            "exempt": 4,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "B:P1": {
+            "consoleErrors": 4,
+            "exempt": 4,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "B:P2": {
+            "consoleErrors": 8,
+            "exempt": 8,
+            "blockedAnalyticsRequestFailed": 4
+          },
+          "B:P3": {
+            "consoleErrors": 4,
+            "exempt": 4,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "H:control": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          }
+        },
+        "nonExempt": [],
+        "exemptCount": 36,
+        "pageErrors": [],
+        "exemptSamples": [
+          {
+            "ctx": "A",
+            "src": "page",
+            "label": "A:/",
+            "type": "error",
+            "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+            "loc": ""
+          },
+          {
+            "ctx": "A",
+            "src": "page",
+            "label": "A:/",
+            "type": "error",
+            "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+            "loc": ""
+          },
+          {
+            "ctx": "A",
+            "src": "page",
+            "label": "A:/",
+            "type": "error",
+            "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+            "loc": ""
+          }
+        ]
+      }
+    }
+  ],
+  "console": [
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "HARNESS-CONTROL page console.error",
+      "loc": ""
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "HARNESS-CONTROL worker console.error",
+      "loc": "blob:http://localhost:4321/9cec0f4d-30ca-4ff3-9a5b-b3d865fe8a74"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "HARNESS-CONTROL sandbox-iframe worker console.error",
+      "loc": "blob:http://localhost:4321/93980169-779d-47c1-b657-c99d4fb84bc7"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav2:/search/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav2:/search/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav2:/search/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav2:/search/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav4:/tags/engineering-management/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav4:/tags/engineering-management/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav4:/tags/engineering-management/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav4:/tags/engineering-management/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav6:/posts/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav6:/posts/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav6:/posts/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav6:/posts/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav10:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav10:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav10:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav10:/",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "error",
+      "text": "Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+      "loc": ""
+    }
+  ],
+  "pageErrors": [
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "text": "Error: HARNESS-CONTROL uncaught"
+    },
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "text": "Error: HARNESS-CONTROL worker uncaught"
+    }
+  ],
+  "requestFailed": [
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269765471&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=80",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269765471&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=805521416.17",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=81",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=810484731.17",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav2:/search/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav2:/search/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav4:/tags/engineering-management/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav4:/tags/engineering-management/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav6:/posts/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav6:/posts/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav10:/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav10:/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269769345&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P1",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269799937&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=10",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P1",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269799937&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1024606771.1",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P2",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h2v9227439996za200zd9227439996xf1&_p=1790269806674&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P2",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h2v9227439996za200zd9227439996xf1&_p=1790269806674&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P2",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h2v9227439996za200zd9227439996xf1&_p=1790269806674&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAEAAQ&ae",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P2",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h2v9227439996za200zd9227439996xf1&_p=1790269806674&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&ci",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P3",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269807745&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AA",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P3",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269807745&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=",
+      "err": "The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)"
+    }
+  ],
+  "proxy": {
+    "blocked": [
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com"
+    ],
+    "tunnels": {
+      "fonts.googleapis.com": 6,
+      "fonts.gstatic.com": 6,
+      "www.googletagmanager.com": 3
+    },
+    "httpRefused": [],
+    "tunnelErrors": []
+  },
+  "details": {
+    "control": {
+      "pageConsoleError": true,
+      "workerConsoleErrorViaWorkerChannel": false,
+      "workerConsoleErrorViaPageChannel": true,
+      "sandboxFrameFound": true,
+      "sandboxIframeWorkerConsoleError": true,
+      "workerUncaughtSeenAnywhere": true,
+      "pageerror": true,
+      "workerEventsHooked": 3,
+      "workerConsoleUnsupported": null,
+      "captured": [
+        "page:error:HARNESS-CONTROL page console.error",
+        "page:error:HARNESS-CONTROL worker console.error",
+        "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+        "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+        "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+        "page:error:Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 310.)",
+        "page:error:HARNESS-CONTROL sandbox-iframe worker console.error",
+        "pageerror:Error: HARNESS-CONTROL uncaught",
+        "pageerror:Error: HARNESS-CONTROL worker uncaught"
+      ]
+    },
+    "A": {
+      "status": 200,
+      "initial": {
+        "path": "/",
+        "token": "78jbpjr1fpa",
+        "pageLoads": 1,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "iframeSame": true,
+        "gtagSrcSame": true,
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "ssrIslands": 0,
+        "islands": 0
+      },
+      "navs": [
+        {
+          "k": 1,
+          "expect": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 2,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 7,
+          "soft": true
+        },
+        {
+          "k": 2,
+          "expect": "/search/",
+          "path": "/search/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 3,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 1,
+          "soft": true
+        },
+        {
+          "k": 3,
+          "expect": "/tags/",
+          "path": "/tags/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 4,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 1,
+          "soft": true
+        },
+        {
+          "k": 4,
+          "expect": "/tags/engineering-management/",
+          "path": "/tags/engineering-management/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 5,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 5,
+          "expect": "/",
+          "path": "/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 6,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 6,
+          "expect": "/posts/",
+          "path": "/posts/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 7,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 7,
+          "expect": "/posts/local-coding-model-desktop-macbook/",
+          "path": "/posts/local-coding-model-desktop-macbook/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 8,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 8,
+          "expect": "/tips/",
+          "path": "/tips/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 9,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 9,
+          "expect": "/about/",
+          "path": "/about/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 10,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 10,
+          "expect": "/",
+          "path": "/",
+          "token": "78jbpjr1fpa",
+          "pageLoads": 11,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        }
+      ],
+      "final": {
+        "path": "/",
+        "token": "78jbpjr1fpa",
+        "pageLoads": 11,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "iframeSame": true,
+        "gtagSrcSame": true,
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "ssrIslands": 0,
+        "islands": 0
+      },
+      "island": {
+        "carousel": {
+          "from": 0,
+          "to": 734,
+          "clientWidth": 734,
+          "prevDisabledBefore": true,
+          "ok": true
+        },
+        "search": {
+          "value": "hiring",
+          "items": 5,
+          "search": "?q=hiring",
+          "ok": true
+        },
+        "tags": {
+          "before": 68,
+          "after": 5,
+          "hasEM": true,
+          "allMatch": true,
+          "ok": true
+        }
+      },
+      "T": {
+        "sandboxHtml": 1,
+        "gtag": [
+          "A:/"
+        ],
+        "workers": [
+          "blob:http://localhost:4321/277820c9-e423-49be-80e7-8784062833f2"
+        ],
+        "workersClosed": 0,
+        "sbNavigated": 1,
+        "sbDetached": 0,
+        "loadEvents": 0,
+        "proxytownFailed": [],
+        "workerHooked": true,
+        "workerBuffer": [],
+        "workersClosedBeforeContextClose": 0
+      },
+      "workerEvent": {
+        "created": 1,
+        "closedBeforeContextClose": 0,
+        "note": null
+      }
+    },
+    "P1": [
+      {
+        "i": 1,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 2,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 3,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 4,
+        "N": 3,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734,
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 3,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 5,
+        "N": 3,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734,
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 3,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 6,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 7,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      }
+    ],
+    "P1counts": {
+      "carousels": 7,
+      "sliderIslands": 7
+    },
+    "P2": {
+      "value": "hiring",
+      "items": [
+        "/posts/ems-the-people-system",
+        "/posts/the-emotional-roller-coaster-of-hiring",
+        "/posts/two-books-which-influenced-my-hiring-pipeline",
+        "/posts/ems-why-systems-not-processes",
+        "/posts/dad-ops-playbook"
+      ],
+      "search": "?q=hiring"
+    },
+    "P3": {
+      "before": 68,
+      "after": [
+        "/tags/engineering-management/",
+        "/tags/engineering-leadership/",
+        "/tags/engineering-culture/",
+        "/tags/senior-software-engineer/",
+        "/tags/software-engineering/"
+      ]
+    }
+  },
+  "browserVersion": "17.4",
+  "playwrightVersion": "1.44.1",
+  "workerConsoleHooked": 7,
+  "consoleAttribution": {
+    "A:/": {
+      "consoleErrors": 4,
+      "exempt": 4,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav2:/search/": {
+      "consoleErrors": 4,
+      "exempt": 4,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav4:/tags/engineering-management/": {
+      "consoleErrors": 4,
+      "exempt": 4,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav6:/posts/": {
+      "consoleErrors": 4,
+      "exempt": 4,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav10:/": {
+      "consoleErrors": 4,
+      "exempt": 4,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "B:P1": {
+      "consoleErrors": 4,
+      "exempt": 4,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "B:P2": {
+      "consoleErrors": 8,
+      "exempt": 8,
+      "blockedAnalyticsRequestFailed": 4
+    },
+    "B:P3": {
+      "consoleErrors": 4,
+      "exempt": 4,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "H:control": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    }
+  },
+  "consoleSummary": {
+    "errors": 36,
+    "errorsBySrc": {
+      "page": 36
+    },
+    "exemptAnalyticsNetwork": 36,
+    "nonExempt": [],
+    "warnings": [],
+    "pageErrors": []
+  },
+  "requestFailedOther": [],
+  "pass": true
+}

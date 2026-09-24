@@ -1,0 +1,3246 @@
+{
+ "meta": {
+  "startedAt": "2026-09-24T21:55:45.837Z",
+  "node": "v22.23.3",
+  "HEAD": "http://localhost:4411",
+  "BASE": "http://localhost:4412",
+  "gaBlockArg": "--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND",
+  "only": [
+   "R2",
+   "R3",
+   "R4",
+   "R5"
+  ],
+  "browserVersion": "153.0.8010.53",
+  "finishedAt": "2026-09-24T21:56:39.143Z"
+ },
+ "checks": [
+  {
+   "id": "R2.dom",
+   "name": "each changed link exists exactly once in #article with the new absolute href and the expected text",
+   "pass": true,
+   "evidence": [
+    "/posts/flutter-google-maps-embedded-map/ [First post] -> /posts/flutter-google-maps-setup/ x1",
+    "/posts/flutter-google-maps-address-manipulation/ [Second post] -> /posts/flutter-google-maps-embedded-map/ x1",
+    "/posts/flutter-google-maps-address-manipulation/ [First post] -> /posts/flutter-google-maps-setup/ x1",
+    "/posts/flutter-google-maps-static-map/ [Third post] -> /posts/flutter-google-maps-address-manipulation/ x1"
+   ]
+  },
+  {
+   "id": "R2.click-softnav",
+   "name": "real click on each of the 4 changed links navigates via ClientRouter (window token survives, 0 load events) to the exact target URL",
+   "pass": true,
+   "evidence": [
+    {
+     "link": 1,
+     "path": "/posts/flutter-google-maps-setup/",
+     "soft": true,
+     "loadEvents": 0
+    },
+    {
+     "link": 2,
+     "path": "/posts/flutter-google-maps-embedded-map/",
+     "soft": true,
+     "loadEvents": 0
+    },
+    {
+     "link": 3,
+     "path": "/posts/flutter-google-maps-setup/",
+     "soft": true,
+     "loadEvents": 0
+    },
+    {
+     "link": 4,
+     "path": "/posts/flutter-google-maps-address-manipulation/",
+     "soft": true,
+     "loadEvents": 0
+    }
+   ]
+  },
+  {
+   "id": "R2.click-200",
+   "name": "the target document fetch(es) for each click returned 200 (prefetch and/or navigation fetch), none >= 400",
+   "pass": true,
+   "evidence": [
+    {
+     "link": 1,
+     "responses": [
+      {
+       "status": 200,
+       "type": "fetch",
+       "purpose": null,
+       "t": 1790286946717,
+       "dtMs": 123
+      }
+     ]
+    },
+    {
+     "link": 2,
+     "responses": [
+      {
+       "status": 200,
+       "type": "fetch",
+       "purpose": null,
+       "t": 1790286947588,
+       "dtMs": 67
+      }
+     ]
+    },
+    {
+     "link": 3,
+     "responses": [
+      {
+       "status": 200,
+       "type": "fetch",
+       "purpose": null,
+       "t": 1790286948467,
+       "dtMs": 78
+      }
+     ]
+    },
+    {
+     "link": 4,
+     "responses": [
+      {
+       "status": 200,
+       "type": "fetch",
+       "purpose": null,
+       "t": 1790286949300,
+       "dtMs": 84
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R2.right-post",
+   "name": "after each click the rendered h1/title equals the full-load h1/title of the target post",
+   "pass": true,
+   "evidence": [
+    {
+     "link": 1,
+     "h1": "Flutter Google Maps - Setup",
+     "expectedH1": "Flutter Google Maps - Setup"
+    },
+    {
+     "link": 2,
+     "h1": "Flutter Google Maps - Embedded Map",
+     "expectedH1": "Flutter Google Maps - Embedded Map"
+    },
+    {
+     "link": 3,
+     "h1": "Flutter Google Maps - Setup",
+     "expectedH1": "Flutter Google Maps - Setup"
+    },
+    {
+     "link": 4,
+     "h1": "Flutter Google Maps - Address Manipulation",
+     "expectedH1": "Flutter Google Maps - Address Manipulation"
+    }
+   ]
+  },
+  {
+   "id": "R2.fullload",
+   "name": "full load of every target returns 200 at the same path",
+   "pass": true,
+   "evidence": [
+    {
+     "path": "/posts/flutter-google-maps-setup/",
+     "status": 200,
+     "finalPath": "/posts/flutter-google-maps-setup/",
+     "h1": "Flutter Google Maps - Setup",
+     "title": "Flutter Google Maps - Setup | Novi Fyx"
+    },
+    {
+     "path": "/posts/flutter-google-maps-embedded-map/",
+     "status": 200,
+     "finalPath": "/posts/flutter-google-maps-embedded-map/",
+     "h1": "Flutter Google Maps - Embedded Map",
+     "title": "Flutter Google Maps - Embedded Map | Novi Fyx"
+    },
+    {
+     "path": "/posts/flutter-google-maps-address-manipulation/",
+     "status": 200,
+     "finalPath": "/posts/flutter-google-maps-address-manipulation/",
+     "h1": "Flutter Google Maps - Address Manipulation",
+     "title": "Flutter Google Maps - Address Manipulation | Novi Fyx"
+    }
+   ]
+  },
+  {
+   "id": "R2.base-contrast",
+   "name": "contrast: base tree still has the old relative hrefs which resolve to 404 nested URLs; head has only the new hrefs",
+   "pass": true,
+   "evidence": [
+    {
+     "src": "/posts/flutter-google-maps-embedded-map/",
+     "baseHasOldHref": true,
+     "headHasOldHref": false,
+     "headHasNewHref": true,
+     "oldResolvedOnBase": "/posts/flutter-google-maps-embedded-map/flutter-google-maps-setup",
+     "oldResolvedStatusOnBase": 404
+    },
+    {
+     "src": "/posts/flutter-google-maps-address-manipulation/",
+     "baseHasOldHref": true,
+     "headHasOldHref": false,
+     "headHasNewHref": true,
+     "oldResolvedOnBase": "/posts/flutter-google-maps-address-manipulation/flutter-google-maps-embedded-map",
+     "oldResolvedStatusOnBase": 404
+    },
+    {
+     "src": "/posts/flutter-google-maps-address-manipulation/",
+     "baseHasOldHref": true,
+     "headHasOldHref": false,
+     "headHasNewHref": true,
+     "oldResolvedOnBase": "/posts/flutter-google-maps-address-manipulation/flutter-google-maps-setup",
+     "oldResolvedStatusOnBase": 404
+    },
+    {
+     "src": "/posts/flutter-google-maps-static-map/",
+     "baseHasOldHref": true,
+     "headHasOldHref": false,
+     "headHasNewHref": true,
+     "oldResolvedOnBase": "/posts/flutter-google-maps-static-map/flutter-google-maps-address-manipulation",
+     "oldResolvedStatusOnBase": 404
+    }
+   ]
+  },
+  {
+   "id": "R2.console",
+   "name": "R2 contexts: 0 console errors / page errors of any kind",
+   "pass": true,
+   "evidence": {
+    "errors": [],
+    "all404": []
+   }
+  },
+  {
+   "id": "R3.home",
+   "name": "head: / has no 'false' class token (and no scroll-smooth), scroll-behavior auto",
+   "pass": true,
+   "evidence": {
+    "name": "1 full load /",
+    "path": "/",
+    "token": "raeqlbsmmdi",
+    "pageLoads": 1,
+    "classAttr": null,
+    "classTokens": [],
+    "dataTheme": "light",
+    "scrollBehavior": "auto",
+    "bodyBg": "rgb(251, 254, 251)",
+    "themeBtnAria": "light",
+    "h1": null,
+    "title": "Novi Fyx",
+    "dcl": {
+     "t": 34,
+     "path": "/",
+     "dataTheme": "light",
+     "classAttr": null,
+     "bodyBg": "rgb(251, 254, 251)",
+     "htmlBg": "rgba(0, 0, 0, 0)",
+     "scrollBehavior": "auto",
+     "lsTheme": null
+    },
+    "firstFrame": {
+     "t": 10,
+     "path": "/",
+     "dataTheme": "light",
+     "classAttr": null,
+     "bodyBg": "rgb(251, 254, 251)",
+     "htmlBg": "rgba(0, 0, 0, 0)",
+     "scrollBehavior": "auto",
+     "lsTheme": null
+    },
+    "loadEventsSoFar": 1
+   }
+  },
+  {
+   "id": "R3.post",
+   "name": "head: soft nav to post -> class contains 'scroll-smooth', computed scrollBehavior 'smooth', no 'false'",
+   "pass": true,
+   "evidence": {
+    "name": "3 click home card -> post",
+    "path": "/posts/local-coding-model-desktop-macbook/",
+    "token": "raeqlbsmmdi",
+    "pageLoads": 2,
+    "classAttr": "scroll-smooth",
+    "classTokens": [
+     "scroll-smooth"
+    ],
+    "dataTheme": "dark",
+    "scrollBehavior": "smooth",
+    "bodyBg": "rgb(33, 39, 55)",
+    "themeBtnAria": "dark",
+    "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+    "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+    "soft": true,
+    "loadEventsSoFar": 1
+   }
+  },
+  {
+   "id": "R3.tags",
+   "name": "head: header link to /tags/ (soft) -> no scroll-smooth, no 'false', scrollBehavior auto",
+   "pass": true,
+   "evidence": {
+    "name": "4 click header /tags/",
+    "path": "/tags/",
+    "token": "raeqlbsmmdi",
+    "pageLoads": 3,
+    "classAttr": null,
+    "classTokens": [],
+    "dataTheme": "dark",
+    "scrollBehavior": "auto",
+    "bodyBg": "rgb(33, 39, 55)",
+    "themeBtnAria": "dark",
+    "h1": "Tags",
+    "title": "Tags | Novi Fyx",
+    "soft": true,
+    "loadEventsSoFar": 1
+   }
+  },
+  {
+   "id": "R3.back",
+   "name": "head: back button -> post (soft) -> 'scroll-smooth' again, scrollBehavior smooth; forward/back repeat consistent",
+   "pass": true,
+   "evidence": [
+    {
+     "name": "5 back button -> post",
+     "classAttr": "scroll-smooth",
+     "scroll": "smooth",
+     "soft": true
+    },
+    {
+     "name": "5b forward button -> /tags/",
+     "classAttr": null,
+     "scroll": "auto",
+     "soft": true
+    },
+    {
+     "name": "5c back again -> post",
+     "classAttr": "scroll-smooth",
+     "scroll": "smooth",
+     "soft": true
+    }
+   ]
+  },
+  {
+   "id": "R3.all-no-false",
+   "name": "head: no step (soft or full) ever has a 'false' class token; rAF samples never saw class 'false'",
+   "pass": true,
+   "evidence": {
+    "classAttrs": [
+     "1 full load /: null",
+     "2 after theme toggle on /: null",
+     "3 click home card -> post: \"scroll-smooth\"",
+     "4 click header /tags/: null",
+     "5 back button -> post: \"scroll-smooth\"",
+     "5b forward button -> /tags/: null",
+     "5c back again -> post: \"scroll-smooth\"",
+     "6 reload post (full): \"scroll-smooth dark\"",
+     "7 goto /tags/ (full): \"dark\"",
+     "8 goto / (full): \"dark\"",
+     "9 goto post (full): \"scroll-smooth dark\""
+    ],
+    "rafClassAttrs": [
+     "/ => null",
+     "/posts/local-coding-model-desktop-macbook/ => scroll-smooth",
+     "/tags/ => null",
+     "/posts/local-coding-model-desktop-macbook/ => null",
+     "/tags/ => scroll-smooth"
+    ]
+   }
+  },
+  {
+   "id": "R3.theme-dark-every-page",
+   "name": "head: after toggle, data-theme 'dark' on every page (soft + full), localStorage theme 'dark', body bg identical dark",
+   "pass": true,
+   "evidence": {
+    "darkBg": "rgb(33, 39, 55)",
+    "lightBg": "rgb(251, 254, 251)",
+    "steps": [
+     "2 after theme toggle on /: dark rgb(33, 39, 55)",
+     "3 click home card -> post: dark rgb(33, 39, 55)",
+     "4 click header /tags/: dark rgb(33, 39, 55)",
+     "5 back button -> post: dark rgb(33, 39, 55)",
+     "5b forward button -> /tags/: dark rgb(33, 39, 55)",
+     "5c back again -> post: dark rgb(33, 39, 55)",
+     "6 reload post (full): dark rgb(33, 39, 55)",
+     "7 goto /tags/ (full): dark rgb(33, 39, 55)",
+     "8 goto / (full): dark rgb(33, 39, 55)",
+     "9 goto post (full): dark rgb(33, 39, 55)"
+    ]
+   }
+  },
+  {
+   "id": "R3.no-flash-softnav",
+   "name": "head: rAF sampler across 5 soft navs saw only dark frames with the dark body bg",
+   "pass": true,
+   "evidence": {
+    "count": 139,
+    "paths": [
+     "/",
+     "/posts/local-coding-model-desktop-macbook/",
+     "/tags/"
+    ],
+    "nonDark": [],
+    "classAttrsSeen": [
+     "/ => null",
+     "/posts/local-coding-model-desktop-macbook/ => scroll-smooth",
+     "/tags/ => null",
+     "/posts/local-coding-model-desktop-macbook/ => null",
+     "/tags/ => scroll-smooth"
+    ]
+   }
+  },
+  {
+   "id": "R3.no-flash-fullload",
+   "name": "head: 4 full loads with theme=dark: data-theme 'dark' + dark body bg already at DOMContentLoaded and at first rAF; data-theme never written as anything but 'dark'",
+   "pass": true,
+   "evidence": [
+    {
+     "name": "6 reload post (full)",
+     "status": 200,
+     "dcl": {
+      "t": 22,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 48,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 17,
+       "old": null,
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      },
+      {
+       "t": 42,
+       "old": "dark",
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      }
+     ]
+    },
+    {
+     "name": "7 goto /tags/ (full)",
+     "status": 200,
+     "dcl": {
+      "t": 48,
+      "path": "/tags/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 42,
+      "path": "/tags/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 40,
+       "old": null,
+       "now": "dark",
+       "path": "/tags/"
+      },
+      {
+       "t": 48,
+       "old": "dark",
+       "now": "dark",
+       "path": "/tags/"
+      }
+     ]
+    },
+    {
+     "name": "8 goto / (full)",
+     "status": 200,
+     "dcl": {
+      "t": 21,
+      "path": "/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 17,
+      "path": "/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 16,
+       "old": null,
+       "now": "dark",
+       "path": "/"
+      },
+      {
+       "t": 21,
+       "old": "dark",
+       "now": "dark",
+       "path": "/"
+      }
+     ]
+    },
+    {
+     "name": "9 goto post (full)",
+     "status": 200,
+     "dcl": {
+      "t": 34,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 13,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 11,
+       "old": null,
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      },
+      {
+       "t": 35,
+       "old": "dark",
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R3.head-vs-base",
+   "name": "same sequence on 9eb1ec3: identical behaviour except the removed 'false' token (class tokens w/o 'false', scroll-behavior, data-theme, body bg, soft-nav, h1, DCL/first-frame theme all equal)",
+   "pass": true,
+   "evidence": {
+    "normalisedDiffs": [],
+    "fullLoadDiffs": [],
+    "rawClassAttrDiffs": [
+     {
+      "step": "1 full load /",
+      "head": null,
+      "base": "false"
+     },
+     {
+      "step": "2 after theme toggle on /",
+      "head": null,
+      "base": "false"
+     },
+     {
+      "step": "4 click header /tags/",
+      "head": null,
+      "base": "false"
+     },
+     {
+      "step": "5b forward button -> /tags/",
+      "head": null,
+      "base": "false"
+     },
+     {
+      "step": "7 goto /tags/ (full)",
+      "head": "dark",
+      "base": "false dark"
+     },
+     {
+      "step": "8 goto / (full)",
+      "head": "dark",
+      "base": "false dark"
+     }
+    ],
+    "baseNonDarkFrames": []
+   }
+  },
+  {
+   "id": "R3.console",
+   "name": "R3 contexts (both builds): 0 console errors / page errors of any kind",
+   "pass": true,
+   "evidence": []
+  },
+  {
+   "id": "R4.status-render",
+   "name": "head: GET /this-route-does-not-exist -> 404 and renders the custom 404 page (h1 404, \"Page Not Found\", Go back home link, header+footer)",
+   "pass": true,
+   "evidence": {
+    "status": 404,
+    "h1": "404",
+    "mainText": "404 ¡Ay, caramba! Page Not Found Go back home",
+    "links": [
+     {
+      "text": "Go back home",
+      "href": "/"
+     }
+    ],
+    "title": "404 Not Found | Novi Fyx"
+   }
+  },
+  {
+   "id": "R4.head-meta",
+   "name": "head: 404 <head> has robots noindex,follow and NO canonical / og:url / twitter:url; <html> has no class attribute",
+   "pass": true,
+   "evidence": {
+    "robots": [
+     "noindex,follow"
+    ],
+    "canonical": [],
+    "ogUrl": [],
+    "twitterUrl": [],
+    "classAttr": null
+   }
+  },
+  {
+   "id": "R4.go-home",
+   "name": "head: clicking 'Go back home' navigates (ClientRouter, soft) to / with a 200 fetch; home head now has canonical + og:url + twitter:url and no robots meta",
+   "pass": true,
+   "evidence": {
+    "path": "/",
+    "token": "impbph7ap7k",
+    "pageLoads": 2,
+    "classAttr": null,
+    "classTokens": [],
+    "dataTheme": "light",
+    "scrollBehavior": "auto",
+    "bodyBg": "rgb(251, 254, 251)",
+    "themeBtnAria": "light",
+    "h1": null,
+    "title": "Novi Fyx",
+    "soft": true,
+    "robots": [],
+    "canonical": [
+     "https://www.novifyx.com/"
+    ],
+    "ogUrl": [
+     "https://www.novifyx.com/"
+    ],
+    "twitterUrl": [
+     "https://www.novifyx.com/"
+    ],
+    "ogTitle": "Novi Fyx",
+    "h1Aria": null,
+    "mainText": "Recent tip Motivation is a trap. Build a system instead. Recent Posts Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One A broken USB port pushed me back to OctoPrint. The parts I bought and printed, a Buddy3D camera through go2rtc, Telegram alerts. Two books which influenced my hiring pipeline The interview pipeline I keep rebuilding. Where I borrowed from \"Who - The A Method for Hiring\", where I borrowed from \"Noise\" and what I learned by running it. How I run a local coding model on my desktop and use it from my MacBook A walkthrough of getting a local coding LLM running on a Windows desktop and using it from Opencode on a MacBook. Connecting the Systems PART OF Five Systems of Engineering Management · 7 of 7 A diagnostic framework and worked example for seeing all five systems at once. All Posts Top tags $ tags --top --by count All 68 tags → #engineering-management 15 posts #engineering-leadership 11 posts #leadership 11 posts #systems-thinking 8 posts #tutorial 7 posts #flutter 5 posts #mobile-development 5 posts",
+    "homeLink": [
+     {
+      "text": "Motivation is a trap. Build a system instead.",
+      "href": "/tips/motivation-is-a-trap/"
+     },
+     {
+      "text": "Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One",
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+     },
+     {
+      "text": "Two books which influenced my hiring pipeline",
+      "href": "/posts/two-books-which-influenced-my-hiring-pipeline/"
+     },
+     {
+      "text": "How I run a local coding model on my desktop and use it from my MacBook",
+      "href": "/posts/local-coding-model-desktop-macbook/"
+     },
+     {
+      "text": "Connecting the Systems",
+      "href": "/posts/ems-connecting-the-systems/"
+     },
+     {
+      "text": "All Posts",
+      "href": "/posts"
+     },
+     {
+      "text": "All 68 tags\n→",
+      "href": "/tags/"
+     },
+     {
+      "text": "#engineering-management",
+      "href": "/tags/engineering-management/"
+     },
+     {
+      "text": "#engineering-leadership",
+      "href": "/tags/engineering-leadership/"
+     },
+     {
+      "text": "#leadership",
+      "href": "/tags/leadership/"
+     },
+     {
+      "text": "#systems-thinking",
+      "href": "/tags/systems-thinking/"
+     },
+     {
+      "text": "#tutorial",
+      "href": "/tags/tutorial/"
+     },
+     {
+      "text": "#flutter",
+      "href": "/tags/flutter/"
+     },
+     {
+      "text": "#mobile-development",
+      "href": "/tags/mobile-development/"
+     }
+    ],
+    "headerPresent": true,
+    "footerPresent": true,
+    "loadEvents": 0,
+    "homeResponses": [
+     {
+      "status": 200,
+      "type": "fetch"
+     }
+    ]
+   }
+  },
+  {
+   "id": "R4.base-contrast",
+   "name": "contrast: base 404 had canonical/og:url/twitter:url and no robots (the fixed defect); base Go back home behaves the same",
+   "pass": true,
+   "evidence": {
+    "status": 404,
+    "robots": [],
+    "canonical": [
+     "https://www.novifyx.com/404/"
+    ],
+    "ogUrl": [
+     "https://www.novifyx.com/404/"
+    ],
+    "twitterUrl": [
+     "https://www.novifyx.com/404/"
+    ],
+    "classAttr": "false",
+    "afterHomeSoft": true
+   }
+  },
+  {
+   "id": "R4.console",
+   "name": "R4 contexts: 0 unexpected console errors / page errors; the main-document 404 message is the only error and appears identically on both builds",
+   "pass": true,
+   "evidence": {
+    "unexpected": [],
+    "excused": [
+     "R4:head :: Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4411/this-route-does-not-exist",
+     "R4:base :: Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4412/this-route-does-not-exist"
+    ]
+   }
+  },
+  {
+   "id": "R5.carousel",
+   "name": "head: octoprint carousel Next moves exactly one slide (Slide 1 -> Slide 2, scrollLeft == clientWidth, Prev enabled)",
+   "pass": true,
+   "evidence": {
+    "status": 200,
+    "before": {
+     "scrollLeft": 0,
+     "clientWidth": 734,
+     "slides": 2,
+     "visibleIndex": 0,
+     "visibleLabel": "Slide 1 of 2",
+     "prevDisabled": true,
+     "nextDisabled": false
+    },
+    "after": {
+     "scrollLeft": 734,
+     "clientWidth": 734,
+     "slides": 2,
+     "visibleIndex": 1,
+     "visibleLabel": "Slide 2 of 2",
+     "prevDisabled": false,
+     "nextDisabled": true
+    }
+   }
+  },
+  {
+   "id": "R5.search",
+   "name": "head: /search/ typing 'hiring' (300 ms after load) shows results and sets ?q=hiring",
+   "pass": true,
+   "evidence": {
+    "status": 200,
+    "value": "hiring",
+    "items": [
+     "/posts/ems-the-people-system",
+     "/posts/the-emotional-roller-coaster-of-hiring",
+     "/posts/two-books-which-influenced-my-hiring-pipeline",
+     "/posts/ems-why-systems-not-processes",
+     "/posts/dad-ops-playbook"
+    ],
+    "found": "Found 5 results for 'hiring'",
+    "search": "?q=hiring"
+   }
+  },
+  {
+   "id": "R5.tags",
+   "name": "head: /tags/ filter 'engin' narrows the list, every item matches, includes engineering-management",
+   "pass": true,
+   "evidence": {
+    "status": 200,
+    "before": 68,
+    "after": 5,
+    "afterItems": [
+     "engineering-management",
+     "engineering-leadership",
+     "engineering-culture",
+     "senior-software-engineer",
+     "software-engineering"
+    ]
+   }
+  },
+  {
+   "id": "R5.partytown",
+   "name": "head: sandbox iframe parent <html> on every page, 1 sandbox iframe, loaded once; exactly 1 gtag.js request over 3 ClientRouter navs (0 full loads); 0 proxytown errors (failed / >=400 / console)",
+   "pass": true,
+   "evidence": {
+    "snaps": [
+     {
+      "path": "/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/tags/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     }
+    ],
+    "gtagRequests": 1,
+    "sandboxHtmlRequests": 1,
+    "proxytownRequests": 105,
+    "proxytownFailed": [],
+    "proxytownBadStatus": [],
+    "proxytownConsole": [],
+    "workers": 1,
+    "loadEventsAfterInitial": 0
+   }
+  },
+  {
+   "id": "R5.head-vs-base",
+   "name": "base run of the same smoke gives identical outcomes (slide index, search result list, filtered tags, gtag count, sandbox parents)",
+   "pass": true,
+   "evidence": {
+    "base": {
+     "carousel": {
+      "scrollLeft": 734,
+      "clientWidth": 734,
+      "slides": 2,
+      "visibleIndex": 1,
+      "visibleLabel": "Slide 2 of 2",
+      "prevDisabled": false,
+      "nextDisabled": true
+     },
+     "search": 5,
+     "tags": 5,
+     "gtag": 1
+    }
+   }
+  },
+  {
+   "id": "R5.console",
+   "name": "R5 contexts (both builds): 0 console errors / page errors of any kind (page, frames, workers, service worker)",
+   "pass": true,
+   "evidence": []
+  }
+ ],
+ "console": [
+  {
+   "ctx": "R2:head:link1",
+   "label": "R2:head:link1",
+   "t": 1790286946456,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R2:head:link1",
+   "label": "R2:head:link1",
+   "t": 1790286946480,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/d82b6ca7-2348-482b-857d-e76137191dfd"
+  },
+  {
+   "ctx": "R2:head:link2",
+   "label": "R2:head:link2",
+   "t": 1790286947414,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R2:head:link2",
+   "label": "R2:head:link2",
+   "t": 1790286947441,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/3e1130fd-2521-4189-9795-ec08c7ebea98"
+  },
+  {
+   "ctx": "R2:head:link3",
+   "label": "R2:head:link3",
+   "t": 1790286948288,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R2:head:link3",
+   "label": "R2:head:link3",
+   "t": 1790286948314,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/19fe1361-afa2-4c6b-82ea-b767c94428af"
+  },
+  {
+   "ctx": "R2:head:link4",
+   "label": "R2:head:link4",
+   "t": 1790286949107,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R2:head:link4",
+   "label": "R2:head:link4",
+   "t": 1790286949132,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/751cc91a-b264-4fbb-832a-b243b68d84c9"
+  },
+  {
+   "ctx": "R2:head:fullload",
+   "label": "R2:head:fullload",
+   "t": 1790286949934,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R2:head:fullload",
+   "label": "R2:head:fullload",
+   "t": 1790286949946,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/30b47ea9-a661-4f80-8477-8e9ab35708ba"
+  },
+  {
+   "ctx": "R2:head:fullload",
+   "label": "R2:head:fullload",
+   "t": 1790286950127,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/03f505a3-c737-4e0b-8b1c-66dc32f3416f"
+  },
+  {
+   "ctx": "R2:head:fullload",
+   "label": "R2:head:fullload",
+   "t": 1790286950228,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/7ff9d64a-250b-49ef-8935-0c5e69da262a"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "t": 1790286950435,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "t": 1790286950448,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/f55f6d61-a75d-4593-a927-51a7d8b9d6a4"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "t": 1790286953133,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/875ab6b2-ddcf-4a52-9436-6ce3062c16f9"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "t": 1790286953511,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/4c24d0cb-a781-41cd-ac8b-39a67666b54f"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "t": 1790286953853,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/fc68fbed-e1c3-40cc-9808-7d39e3c82ca3"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "t": 1790286954210,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/e4b51096-4388-4d33-8d13-1a76a92b5abc"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "t": 1790286954679,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4412/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "t": 1790286954692,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/33302211-9886-48f7-a0ef-0b968bb40d95"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "t": 1790286957398,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/d903ee62-c3cc-4356-ac74-9b2236745688"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "t": 1790286957760,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/aa89b44b-6f7e-432d-bbde-ae870264bc41"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "t": 1790286958120,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/2157b846-8c9c-4777-a64b-f2ae379d74ce"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "t": 1790286958477,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/1fcb265d-86d0-4bf2-b0c4-b58769bbca37"
+  },
+  {
+   "ctx": "R4:head",
+   "label": "R4:head",
+   "t": 1790286958936,
+   "source": "page",
+   "type": "error",
+   "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "loc": "http://localhost:4411/this-route-does-not-exist",
+   "url": "http://localhost:4411/this-route-does-not-exist"
+  },
+  {
+   "ctx": "R4:head",
+   "label": "R4:head",
+   "t": 1790286958956,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R4:head",
+   "label": "R4:head",
+   "t": 1790286958972,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/dc108a28-34e2-409d-bda5-a41717364818"
+  },
+  {
+   "ctx": "R4:base",
+   "label": "R4:base",
+   "t": 1790286959867,
+   "source": "page",
+   "type": "error",
+   "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "loc": "http://localhost:4412/this-route-does-not-exist",
+   "url": "http://localhost:4412/this-route-does-not-exist"
+  },
+  {
+   "ctx": "R4:base",
+   "label": "R4:base",
+   "t": 1790286959890,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4412/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R4:base",
+   "label": "R4:base",
+   "t": 1790286959906,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/093bdf1d-bfe9-4ec1-873a-67711d960b65"
+  },
+  {
+   "ctx": "R5:head:carousel",
+   "label": "R5:head:carousel",
+   "t": 1790286960943,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:head:carousel",
+   "label": "R5:head:carousel",
+   "t": 1790286960970,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/7888413e-9da2-471f-99de-91b6aaa57073"
+  },
+  {
+   "ctx": "R5:head:search",
+   "label": "R5:head:search",
+   "t": 1790286962514,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:head:search",
+   "label": "R5:head:search",
+   "t": 1790286962534,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/c4a09f20-56e8-4aa6-9804-743a3631349e"
+  },
+  {
+   "ctx": "R5:head:tags",
+   "label": "R5:head:tags",
+   "t": 1790286963895,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:head:tags",
+   "label": "R5:head:tags",
+   "t": 1790286963919,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/bb3567b0-bfc2-45ac-94ea-2bab2ed2c927"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "t": 1790286964913,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4411/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "t": 1790286964927,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4411/20b9a5b9-fd7f-4160-9b8f-a6b02f0d1092"
+  },
+  {
+   "ctx": "R5:base:carousel",
+   "label": "R5:base:carousel",
+   "t": 1790286980077,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4412/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:base:carousel",
+   "label": "R5:base:carousel",
+   "t": 1790286980104,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/122d1891-3696-4c77-9d53-95715cdaadaa"
+  },
+  {
+   "ctx": "R5:base:search",
+   "label": "R5:base:search",
+   "t": 1790286981674,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4412/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:base:search",
+   "label": "R5:base:search",
+   "t": 1790286981696,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/65ffc34d-8f4a-441d-bb5f-127f7b112f23"
+  },
+  {
+   "ctx": "R5:base:tags",
+   "label": "R5:base:tags",
+   "t": 1790286983037,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4412/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:base:tags",
+   "label": "R5:base:tags",
+   "t": 1790286983061,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/1731ee2c-1420-4d5d-ad5f-a7ee90c917b0"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "t": 1790286984081,
+   "source": "sw-created",
+   "type": "info",
+   "text": "http://localhost:4412/~partytown/partytown-sw.js"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "t": 1790286984094,
+   "source": "worker-created",
+   "type": "info",
+   "text": "blob:http://localhost:4412/362f058b-d36d-415e-96e6-f2c5d36b671e"
+  }
+ ],
+ "requestsFailed": [
+  {
+   "ctx": "R2:head:link1",
+   "label": "R2:head:link1",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286946541&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=663902222.1790286947&frm=0&ngs=1&pscdl=noa",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R2:head:link1",
+   "label": "R2:head:link1",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286946541&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=663902222.1790286947&frm=0&ngs=1&pscdl=noapi&rcb=12&",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R2:head:link2",
+   "label": "R2:head:link2",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286947511&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=912152414.1790286948&frm=0&ngs=1&pscdl=noa",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R2:head:link2",
+   "label": "R2:head:link2",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286947511&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=912152414.1790286948&frm=0&ngs=1&pscdl=noapi&rcb=8&s",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R2:head:link3",
+   "label": "R2:head:link3",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69o0h2v9227439996za200zd9227439996xf1&_p=1790286948371&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=148384419.1790286949&frm=0&ngs=1&pscdl=n",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R2:head:link3",
+   "label": "R2:head:link3",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69o0h2v9227439996za200zd9227439996xf1&_p=1790286948371&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=148384419.1790286949&frm=0&ngs=1&pscdl=noapi&rcb=0",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R2:head:link4",
+   "label": "R2:head:link4",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286949202&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=233115018.1790286950&frm=0&ngs=1&pscdl=noa",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R2:head:link4",
+   "label": "R2:head:link4",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286949202&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=233115018.1790286950&frm=0&ngs=1&pscdl=noapi&rcb=2&s",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69o0h2v9227439996za200zd9227439996xf1&_p=1790286950535&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=11245179.1790286951&frm=0&ngs=1&pscdl=no",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69o0h2v9227439996za200zd9227439996xf1&_p=1790286950535&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=11245179.1790286951&frm=0&ngs=1&pscdl=noapi&rcb=13",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69o0h2v9227439996za200zd9227439996xf1&_p=1790286953868&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=11245179.1790286951&frm=0&ng",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:head",
+   "label": "R3:head",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69o0h2v9227439996za200zd9227439996xf1&_p=1790286953868&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=11245179.1790286951&frm=0&ngs=1&pscdl=",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286954791&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1657160242.1790286955&frm=0&ngs=1&pscdl=no",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286954791&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1657160242.1790286955&frm=0&ngs=1&pscdl=noapi&rcb=0&",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "url": "https://www.googletagmanager.com/td?id=G-QQMCTBW5TH&v=3&t=t&pid=828080420&gtm=45je69n1v9227439996za200zd9227439996xf1&seq=1&exp=115938465~115938468~118897920~118897930~120213116~120385423~120469145~12",
+   "type": "fetch",
+   "err": "net::ERR_ABORTED"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286958141&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1657160242.1790286955&frm=0&ng",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R3:base",
+   "label": "R3:base",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286958141&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=1657160242.1790286955&frm=0&ngs=1&pscdl=",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R4:head",
+   "label": "R4:head",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286959074&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2098089666.1790286960&frm=0&ngs=1&pscdl=no",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R4:head",
+   "label": "R4:head",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286959074&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=2098089666.1790286960&frm=0&ngs=1&pscdl=noapi&rcb=11",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R4:base",
+   "label": "R4:base",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h1v9227439996za200zd9227439996xf1&_p=1790286960005&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1067518316.1790286960&frm=0&ngs=1&pscdl=",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R4:base",
+   "label": "R4:base",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h1v9227439996za200zd9227439996xf1&_p=1790286960005&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1067518316.1790286960&frm=0&ngs=1&pscdl=noapi&rcb=",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:carousel",
+   "label": "R5:head:carousel",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286961030&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=184559448.1790286961&frm=0&ngs=1&pscdl=noa",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:carousel",
+   "label": "R5:head:carousel",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286961030&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=184559448.1790286961&frm=0&ngs=1&pscdl=noapi&rcb=7&s",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:search",
+   "label": "R5:head:search",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286962642&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAE&ae=a&cid=721964980.1790286963&frm=0&n",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:search",
+   "label": "R5:head:search",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286962642&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=721964980.1790286963&frm=0&ngs",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:search",
+   "label": "R5:head:search",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286962642&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAE&ae=a&cid=721964980.1790286963&frm=0&ngs=1&pscdl",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:search",
+   "label": "R5:head:search",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286962642&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=721964980.1790286963&frm=0&ngs=1&pscdl=n",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:tags",
+   "label": "R5:head:tags",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286963990&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1871192842.1790286964&frm=0&ngs=1&pscdl=no",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:tags",
+   "label": "R5:head:tags",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286963990&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1871192842.1790286964&frm=0&ngs=1&pscdl=noapi&rcb=14",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286965007&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1545473988.1790286965&frm=0&ngs=1&pscdl=no",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286965007&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1545473988.1790286965&frm=0&ngs=1&pscdl=noapi&rcb=12",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286965007&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1545473988.1790286965&frm",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286965007&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1545473988.1790286965&frm=0&ngs=1&p",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286965007&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1545473988.1790286965&frm",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:head:partytown",
+   "label": "R5:head:partytown",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286965007&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1545473988.1790286965&frm=0&ngs=1&p",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:carousel",
+   "label": "R5:base:carousel",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za208zd9227439996xf1&_p=1790286980147&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=58503452.1790286981&frm=0&ngs=1&pscdl=noap",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:carousel",
+   "label": "R5:base:carousel",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za208zd9227439996xf1&_p=1790286980147&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=58503452.1790286981&frm=0&ngs=1&pscdl=noapi&rcb=3&sr",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:search",
+   "label": "R5:base:search",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286981787&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAE&ae=a&cid=687312259.1790286982&frm=0&n",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:search",
+   "label": "R5:base:search",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286981787&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=687312259.1790286982&frm=0&ngs",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:search",
+   "label": "R5:base:search",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286981787&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAE&ae=a&cid=687312259.1790286982&frm=0&ngs=1&pscdl",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:search",
+   "label": "R5:base:search",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286981787&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=687312259.1790286982&frm=0&ngs=1&pscdl=n",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:tags",
+   "label": "R5:base:tags",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286983141&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1480257626.1790286984&frm=0&ngs=1&pscdl=no",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:tags",
+   "label": "R5:base:tags",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286983141&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1480257626.1790286984&frm=0&ngs=1&pscdl=noapi&rcb=15",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286984191&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=672506896.1790286985&frm=0&ngs=1&pscdl=noa",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286984191&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=672506896.1790286985&frm=0&ngs=1&pscdl=noapi&rcb=11&",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286984191&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=672506896.1790286985&frm=",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286984191&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=672506896.1790286985&frm=0&ngs=1&ps",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286984191&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=672506896.1790286985&frm=",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  },
+  {
+   "ctx": "R5:base:partytown",
+   "label": "R5:base:partytown",
+   "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1v9227439996za200zd9227439996xf1&_p=1790286984191&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=672506896.1790286985&frm=0&ngs=1&ps",
+   "type": "fetch",
+   "err": "net::ERR_NAME_NOT_RESOLVED"
+  }
+ ],
+ "badResponses": [
+  {
+   "ctx": "R4:head",
+   "label": "R4:head",
+   "status": 404,
+   "url": "http://localhost:4411/this-route-does-not-exist",
+   "type": "document"
+  },
+  {
+   "ctx": "R4:base",
+   "label": "R4:base",
+   "status": 404,
+   "url": "http://localhost:4412/this-route-does-not-exist",
+   "type": "document"
+  }
+ ],
+ "R1": [],
+ "R2": {
+  "clicks": [
+   {
+    "link": 1,
+    "src": "/posts/flutter-google-maps-embedded-map/",
+    "href": "/posts/flutter-google-maps-setup/",
+    "text": "First post",
+    "oldHref": "./flutter-google-maps-setup",
+    "srcStatus": 200,
+    "matchCount": 1,
+    "domHref": "/posts/flutter-google-maps-setup/",
+    "after": {
+     "path": "/posts/flutter-google-maps-setup/",
+     "token": "8tuthmiq9k8",
+     "pageLoads": 2,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "light",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(251, 254, 251)",
+     "themeBtnAria": "light",
+     "h1": "Flutter Google Maps - Setup",
+     "title": "Flutter Google Maps - Setup | Novi Fyx",
+     "soft": true
+    },
+    "loadEventsDuringClick": 0,
+    "targetResponses": [
+     {
+      "status": 200,
+      "type": "fetch",
+      "purpose": null,
+      "t": 1790286946717,
+      "dtMs": 123
+     }
+    ]
+   },
+   {
+    "link": 2,
+    "src": "/posts/flutter-google-maps-address-manipulation/",
+    "href": "/posts/flutter-google-maps-embedded-map/",
+    "text": "Second post",
+    "oldHref": "./flutter-google-maps-embedded-map",
+    "srcStatus": 200,
+    "matchCount": 1,
+    "domHref": "/posts/flutter-google-maps-embedded-map/",
+    "after": {
+     "path": "/posts/flutter-google-maps-embedded-map/",
+     "token": "m5e2vm1b25h",
+     "pageLoads": 2,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "light",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(251, 254, 251)",
+     "themeBtnAria": "light",
+     "h1": "Flutter Google Maps - Embedded Map",
+     "title": "Flutter Google Maps - Embedded Map | Novi Fyx",
+     "soft": true
+    },
+    "loadEventsDuringClick": 0,
+    "targetResponses": [
+     {
+      "status": 200,
+      "type": "fetch",
+      "purpose": null,
+      "t": 1790286947588,
+      "dtMs": 67
+     }
+    ]
+   },
+   {
+    "link": 3,
+    "src": "/posts/flutter-google-maps-address-manipulation/",
+    "href": "/posts/flutter-google-maps-setup/",
+    "text": "First post",
+    "oldHref": "./flutter-google-maps-setup",
+    "srcStatus": 200,
+    "matchCount": 1,
+    "domHref": "/posts/flutter-google-maps-setup/",
+    "after": {
+     "path": "/posts/flutter-google-maps-setup/",
+     "token": "7nk6ibbgpf",
+     "pageLoads": 2,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "light",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(251, 254, 251)",
+     "themeBtnAria": "light",
+     "h1": "Flutter Google Maps - Setup",
+     "title": "Flutter Google Maps - Setup | Novi Fyx",
+     "soft": true
+    },
+    "loadEventsDuringClick": 0,
+    "targetResponses": [
+     {
+      "status": 200,
+      "type": "fetch",
+      "purpose": null,
+      "t": 1790286948467,
+      "dtMs": 78
+     }
+    ]
+   },
+   {
+    "link": 4,
+    "src": "/posts/flutter-google-maps-static-map/",
+    "href": "/posts/flutter-google-maps-address-manipulation/",
+    "text": "Third post",
+    "oldHref": "./flutter-google-maps-address-manipulation",
+    "srcStatus": 200,
+    "matchCount": 1,
+    "domHref": "/posts/flutter-google-maps-address-manipulation/",
+    "after": {
+     "path": "/posts/flutter-google-maps-address-manipulation/",
+     "token": "3tidc8pi6q4",
+     "pageLoads": 2,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "light",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(251, 254, 251)",
+     "themeBtnAria": "light",
+     "h1": "Flutter Google Maps - Address Manipulation",
+     "title": "Flutter Google Maps - Address Manipulation | Novi Fyx",
+     "soft": true
+    },
+    "loadEventsDuringClick": 0,
+    "targetResponses": [
+     {
+      "status": 200,
+      "type": "fetch",
+      "purpose": null,
+      "t": 1790286949300,
+      "dtMs": 84
+     }
+    ]
+   }
+  ],
+  "fullLoads": [
+   {
+    "path": "/posts/flutter-google-maps-setup/",
+    "status": 200,
+    "finalPath": "/posts/flutter-google-maps-setup/",
+    "h1": "Flutter Google Maps - Setup",
+    "title": "Flutter Google Maps - Setup | Novi Fyx"
+   },
+   {
+    "path": "/posts/flutter-google-maps-embedded-map/",
+    "status": 200,
+    "finalPath": "/posts/flutter-google-maps-embedded-map/",
+    "h1": "Flutter Google Maps - Embedded Map",
+    "title": "Flutter Google Maps - Embedded Map | Novi Fyx"
+   },
+   {
+    "path": "/posts/flutter-google-maps-address-manipulation/",
+    "status": 200,
+    "finalPath": "/posts/flutter-google-maps-address-manipulation/",
+    "h1": "Flutter Google Maps - Address Manipulation",
+    "title": "Flutter Google Maps - Address Manipulation | Novi Fyx"
+   }
+  ],
+  "baseContrast": [
+   {
+    "src": "/posts/flutter-google-maps-embedded-map/",
+    "baseHasOldHref": true,
+    "headHasOldHref": false,
+    "headHasNewHref": true,
+    "oldResolvedOnBase": "/posts/flutter-google-maps-embedded-map/flutter-google-maps-setup",
+    "oldResolvedStatusOnBase": 404
+   },
+   {
+    "src": "/posts/flutter-google-maps-address-manipulation/",
+    "baseHasOldHref": true,
+    "headHasOldHref": false,
+    "headHasNewHref": true,
+    "oldResolvedOnBase": "/posts/flutter-google-maps-address-manipulation/flutter-google-maps-embedded-map",
+    "oldResolvedStatusOnBase": 404
+   },
+   {
+    "src": "/posts/flutter-google-maps-address-manipulation/",
+    "baseHasOldHref": true,
+    "headHasOldHref": false,
+    "headHasNewHref": true,
+    "oldResolvedOnBase": "/posts/flutter-google-maps-address-manipulation/flutter-google-maps-setup",
+    "oldResolvedStatusOnBase": 404
+   },
+   {
+    "src": "/posts/flutter-google-maps-static-map/",
+    "baseHasOldHref": true,
+    "headHasOldHref": false,
+    "headHasNewHref": true,
+    "oldResolvedOnBase": "/posts/flutter-google-maps-static-map/flutter-google-maps-address-manipulation",
+    "oldResolvedStatusOnBase": 404
+   }
+  ]
+ },
+ "R3": {
+  "head": {
+   "build": "head",
+   "darkBg": "rgb(33, 39, 55)",
+   "steps": [
+    {
+     "name": "1 full load /",
+     "path": "/",
+     "token": "raeqlbsmmdi",
+     "pageLoads": 1,
+     "classAttr": null,
+     "classTokens": [],
+     "dataTheme": "light",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(251, 254, 251)",
+     "themeBtnAria": "light",
+     "h1": null,
+     "title": "Novi Fyx",
+     "dcl": {
+      "t": 34,
+      "path": "/",
+      "dataTheme": "light",
+      "classAttr": null,
+      "bodyBg": "rgb(251, 254, 251)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": null
+     },
+     "firstFrame": {
+      "t": 10,
+      "path": "/",
+      "dataTheme": "light",
+      "classAttr": null,
+      "bodyBg": "rgb(251, 254, 251)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": null
+     },
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "2 after theme toggle on /",
+     "path": "/",
+     "token": "raeqlbsmmdi",
+     "pageLoads": 1,
+     "classAttr": null,
+     "classTokens": [],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": null,
+     "title": "Novi Fyx",
+     "lsTheme": "dark",
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "3 click home card -> post",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "raeqlbsmmdi",
+     "pageLoads": 2,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "4 click header /tags/",
+     "path": "/tags/",
+     "token": "raeqlbsmmdi",
+     "pageLoads": 3,
+     "classAttr": null,
+     "classTokens": [],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "Tags",
+     "title": "Tags | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "5 back button -> post",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "raeqlbsmmdi",
+     "pageLoads": 4,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "5b forward button -> /tags/",
+     "path": "/tags/",
+     "token": "raeqlbsmmdi",
+     "pageLoads": 5,
+     "classAttr": null,
+     "classTokens": [],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "Tags",
+     "title": "Tags | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "5c back again -> post",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "raeqlbsmmdi",
+     "pageLoads": 6,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "6 reload post (full)",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "2n4vkre9wol",
+     "pageLoads": 1,
+     "classAttr": "scroll-smooth dark",
+     "classTokens": [
+      "scroll-smooth",
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "loadEventsSoFar": 2
+    },
+    {
+     "name": "7 goto /tags/ (full)",
+     "path": "/tags/",
+     "token": "rn7664nu7zp",
+     "pageLoads": 1,
+     "classAttr": "dark",
+     "classTokens": [
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "Tags",
+     "title": "Tags | Novi Fyx",
+     "loadEventsSoFar": 3
+    },
+    {
+     "name": "8 goto / (full)",
+     "path": "/",
+     "token": "yd81bernn7",
+     "pageLoads": 1,
+     "classAttr": "dark",
+     "classTokens": [
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": null,
+     "title": "Novi Fyx",
+     "loadEventsSoFar": 4
+    },
+    {
+     "name": "9 goto post (full)",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "j2k291785x",
+     "pageLoads": 1,
+     "classAttr": "scroll-smooth dark",
+     "classTokens": [
+      "scroll-smooth",
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "loadEventsSoFar": 5
+    }
+   ],
+   "frames": {
+    "count": 139,
+    "paths": [
+     "/",
+     "/posts/local-coding-model-desktop-macbook/",
+     "/tags/"
+    ],
+    "nonDark": [],
+    "classAttrsSeen": [
+     "/ => null",
+     "/posts/local-coding-model-desktop-macbook/ => scroll-smooth",
+     "/tags/ => null",
+     "/posts/local-coding-model-desktop-macbook/ => null",
+     "/tags/ => scroll-smooth"
+    ]
+   },
+   "fulls": [
+    {
+     "name": "6 reload post (full)",
+     "status": 200,
+     "dcl": {
+      "t": 22,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 48,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 17,
+       "old": null,
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      },
+      {
+       "t": 42,
+       "old": "dark",
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      }
+     ],
+     "now": {
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "token": "2n4vkre9wol",
+      "pageLoads": 1,
+      "classAttr": "scroll-smooth dark",
+      "classTokens": [
+       "scroll-smooth",
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "smooth",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+      "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx"
+     }
+    },
+    {
+     "name": "7 goto /tags/ (full)",
+     "status": 200,
+     "dcl": {
+      "t": 48,
+      "path": "/tags/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 42,
+      "path": "/tags/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 40,
+       "old": null,
+       "now": "dark",
+       "path": "/tags/"
+      },
+      {
+       "t": 48,
+       "old": "dark",
+       "now": "dark",
+       "path": "/tags/"
+      }
+     ],
+     "now": {
+      "path": "/tags/",
+      "token": "rn7664nu7zp",
+      "pageLoads": 1,
+      "classAttr": "dark",
+      "classTokens": [
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "auto",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": "Tags",
+      "title": "Tags | Novi Fyx"
+     }
+    },
+    {
+     "name": "8 goto / (full)",
+     "status": 200,
+     "dcl": {
+      "t": 21,
+      "path": "/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 17,
+      "path": "/",
+      "dataTheme": "dark",
+      "classAttr": "dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 16,
+       "old": null,
+       "now": "dark",
+       "path": "/"
+      },
+      {
+       "t": 21,
+       "old": "dark",
+       "now": "dark",
+       "path": "/"
+      }
+     ],
+     "now": {
+      "path": "/",
+      "token": "yd81bernn7",
+      "pageLoads": 1,
+      "classAttr": "dark",
+      "classTokens": [
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "auto",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": null,
+      "title": "Novi Fyx"
+     }
+    },
+    {
+     "name": "9 goto post (full)",
+     "status": 200,
+     "dcl": {
+      "t": 34,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 13,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 11,
+       "old": null,
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      },
+      {
+       "t": 35,
+       "old": "dark",
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      }
+     ],
+     "now": {
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "token": "j2k291785x",
+      "pageLoads": 1,
+      "classAttr": "scroll-smooth dark",
+      "classTokens": [
+       "scroll-smooth",
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "smooth",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+      "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx"
+     }
+    }
+   ]
+  },
+  "base": {
+   "build": "base",
+   "darkBg": "rgb(33, 39, 55)",
+   "steps": [
+    {
+     "name": "1 full load /",
+     "path": "/",
+     "token": "5p9jcz7kdra",
+     "pageLoads": 1,
+     "classAttr": "false",
+     "classTokens": [
+      "false"
+     ],
+     "dataTheme": "light",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(251, 254, 251)",
+     "themeBtnAria": "light",
+     "h1": null,
+     "title": "Novi Fyx",
+     "dcl": {
+      "t": 32,
+      "path": "/",
+      "dataTheme": "light",
+      "classAttr": "false",
+      "bodyBg": "rgb(251, 254, 251)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": null
+     },
+     "firstFrame": {
+      "t": 11,
+      "path": "/",
+      "dataTheme": "light",
+      "classAttr": "false",
+      "bodyBg": "rgb(251, 254, 251)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": null
+     },
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "2 after theme toggle on /",
+     "path": "/",
+     "token": "5p9jcz7kdra",
+     "pageLoads": 1,
+     "classAttr": "false",
+     "classTokens": [
+      "false"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": null,
+     "title": "Novi Fyx",
+     "lsTheme": "dark",
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "3 click home card -> post",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "5p9jcz7kdra",
+     "pageLoads": 2,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "4 click header /tags/",
+     "path": "/tags/",
+     "token": "5p9jcz7kdra",
+     "pageLoads": 3,
+     "classAttr": "false",
+     "classTokens": [
+      "false"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "Tags",
+     "title": "Tags | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "5 back button -> post",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "5p9jcz7kdra",
+     "pageLoads": 4,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "5b forward button -> /tags/",
+     "path": "/tags/",
+     "token": "5p9jcz7kdra",
+     "pageLoads": 5,
+     "classAttr": "false",
+     "classTokens": [
+      "false"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "Tags",
+     "title": "Tags | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "5c back again -> post",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "5p9jcz7kdra",
+     "pageLoads": 6,
+     "classAttr": "scroll-smooth",
+     "classTokens": [
+      "scroll-smooth"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "soft": true,
+     "loadEventsSoFar": 1
+    },
+    {
+     "name": "6 reload post (full)",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "4dyc9w0rigl",
+     "pageLoads": 1,
+     "classAttr": "scroll-smooth dark",
+     "classTokens": [
+      "scroll-smooth",
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "loadEventsSoFar": 2
+    },
+    {
+     "name": "7 goto /tags/ (full)",
+     "path": "/tags/",
+     "token": "mrer8z87daq",
+     "pageLoads": 1,
+     "classAttr": "false dark",
+     "classTokens": [
+      "false",
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "Tags",
+     "title": "Tags | Novi Fyx",
+     "loadEventsSoFar": 3
+    },
+    {
+     "name": "8 goto / (full)",
+     "path": "/",
+     "token": "dvcapfwelxn",
+     "pageLoads": 1,
+     "classAttr": "false dark",
+     "classTokens": [
+      "false",
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "auto",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": null,
+     "title": "Novi Fyx",
+     "loadEventsSoFar": 4
+    },
+    {
+     "name": "9 goto post (full)",
+     "path": "/posts/local-coding-model-desktop-macbook/",
+     "token": "oge8m8x8zpi",
+     "pageLoads": 1,
+     "classAttr": "scroll-smooth dark",
+     "classTokens": [
+      "scroll-smooth",
+      "dark"
+     ],
+     "dataTheme": "dark",
+     "scrollBehavior": "smooth",
+     "bodyBg": "rgb(33, 39, 55)",
+     "themeBtnAria": "dark",
+     "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+     "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx",
+     "loadEventsSoFar": 5
+    }
+   ],
+   "frames": {
+    "count": 138,
+    "paths": [
+     "/",
+     "/posts/local-coding-model-desktop-macbook/",
+     "/tags/"
+    ],
+    "nonDark": [],
+    "classAttrsSeen": [
+     "/ => false",
+     "/posts/local-coding-model-desktop-macbook/ => scroll-smooth",
+     "/tags/ => false",
+     "/posts/local-coding-model-desktop-macbook/ => false",
+     "/tags/ => scroll-smooth"
+    ]
+   },
+   "fulls": [
+    {
+     "name": "6 reload post (full)",
+     "status": 200,
+     "dcl": {
+      "t": 52,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 22,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 17,
+       "old": null,
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      },
+      {
+       "t": 53,
+       "old": "dark",
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      }
+     ],
+     "now": {
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "token": "4dyc9w0rigl",
+      "pageLoads": 1,
+      "classAttr": "scroll-smooth dark",
+      "classTokens": [
+       "scroll-smooth",
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "smooth",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+      "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx"
+     }
+    },
+    {
+     "name": "7 goto /tags/ (full)",
+     "status": 200,
+     "dcl": {
+      "t": 34,
+      "path": "/tags/",
+      "dataTheme": "dark",
+      "classAttr": "false dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 29,
+      "path": "/tags/",
+      "dataTheme": "dark",
+      "classAttr": "false dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 27,
+       "old": null,
+       "now": "dark",
+       "path": "/tags/"
+      },
+      {
+       "t": 35,
+       "old": "dark",
+       "now": "dark",
+       "path": "/tags/"
+      }
+     ],
+     "now": {
+      "path": "/tags/",
+      "token": "mrer8z87daq",
+      "pageLoads": 1,
+      "classAttr": "false dark",
+      "classTokens": [
+       "false",
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "auto",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": "Tags",
+      "title": "Tags | Novi Fyx"
+     }
+    },
+    {
+     "name": "8 goto / (full)",
+     "status": 200,
+     "dcl": {
+      "t": 29,
+      "path": "/",
+      "dataTheme": "dark",
+      "classAttr": "false dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 24,
+      "path": "/",
+      "dataTheme": "dark",
+      "classAttr": "false dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "auto",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 24,
+       "old": null,
+       "now": "dark",
+       "path": "/"
+      },
+      {
+       "t": 29,
+       "old": "dark",
+       "now": "dark",
+       "path": "/"
+      }
+     ],
+     "now": {
+      "path": "/",
+      "token": "dvcapfwelxn",
+      "pageLoads": 1,
+      "classAttr": "false dark",
+      "classTokens": [
+       "false",
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "auto",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": null,
+      "title": "Novi Fyx"
+     }
+    },
+    {
+     "name": "9 goto post (full)",
+     "status": 200,
+     "dcl": {
+      "t": 37,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "firstFrame": {
+      "t": 38,
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "dataTheme": "dark",
+      "classAttr": "scroll-smooth dark",
+      "bodyBg": "rgb(33, 39, 55)",
+      "htmlBg": "rgba(0, 0, 0, 0)",
+      "scrollBehavior": "smooth",
+      "lsTheme": "dark"
+     },
+     "themeMut": [
+      {
+       "t": 15,
+       "old": null,
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      },
+      {
+       "t": 38,
+       "old": "dark",
+       "now": "dark",
+       "path": "/posts/local-coding-model-desktop-macbook/"
+      }
+     ],
+     "now": {
+      "path": "/posts/local-coding-model-desktop-macbook/",
+      "token": "oge8m8x8zpi",
+      "pageLoads": 1,
+      "classAttr": "scroll-smooth dark",
+      "classTokens": [
+       "scroll-smooth",
+       "dark"
+      ],
+      "dataTheme": "dark",
+      "scrollBehavior": "smooth",
+      "bodyBg": "rgb(33, 39, 55)",
+      "themeBtnAria": "dark",
+      "h1": "How I run a local coding model on my desktop and use it from my MacBook",
+      "title": "How I run a local coding model on my desktop and use it from my MacBook | Novi Fyx"
+     }
+    }
+   ]
+  }
+ },
+ "R4": {
+  "head": {
+   "build": "head",
+   "status": 404,
+   "on404": {
+    "path": "/this-route-does-not-exist",
+    "title": "404 Not Found | Novi Fyx",
+    "robots": [
+     "noindex,follow"
+    ],
+    "canonical": [],
+    "ogUrl": [],
+    "twitterUrl": [],
+    "ogTitle": "404 Not Found | Novi Fyx",
+    "classAttr": null,
+    "h1": "404",
+    "h1Aria": "404 Not Found",
+    "mainText": "404 ¡Ay, caramba! Page Not Found Go back home",
+    "homeLink": [
+     {
+      "text": "Go back home",
+      "href": "/"
+     }
+    ],
+    "headerPresent": true,
+    "footerPresent": true
+   },
+   "afterHome": {
+    "path": "/",
+    "token": "impbph7ap7k",
+    "pageLoads": 2,
+    "classAttr": null,
+    "classTokens": [],
+    "dataTheme": "light",
+    "scrollBehavior": "auto",
+    "bodyBg": "rgb(251, 254, 251)",
+    "themeBtnAria": "light",
+    "h1": null,
+    "title": "Novi Fyx",
+    "soft": true,
+    "robots": [],
+    "canonical": [
+     "https://www.novifyx.com/"
+    ],
+    "ogUrl": [
+     "https://www.novifyx.com/"
+    ],
+    "twitterUrl": [
+     "https://www.novifyx.com/"
+    ],
+    "ogTitle": "Novi Fyx",
+    "h1Aria": null,
+    "mainText": "Recent tip Motivation is a trap. Build a system instead. Recent Posts Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One A broken USB port pushed me back to OctoPrint. The parts I bought and printed, a Buddy3D camera through go2rtc, Telegram alerts. Two books which influenced my hiring pipeline The interview pipeline I keep rebuilding. Where I borrowed from \"Who - The A Method for Hiring\", where I borrowed from \"Noise\" and what I learned by running it. How I run a local coding model on my desktop and use it from my MacBook A walkthrough of getting a local coding LLM running on a Windows desktop and using it from Opencode on a MacBook. Connecting the Systems PART OF Five Systems of Engineering Management · 7 of 7 A diagnostic framework and worked example for seeing all five systems at once. All Posts Top tags $ tags --top --by count All 68 tags → #engineering-management 15 posts #engineering-leadership 11 posts #leadership 11 posts #systems-thinking 8 posts #tutorial 7 posts #flutter 5 posts #mobile-development 5 posts",
+    "homeLink": [
+     {
+      "text": "Motivation is a trap. Build a system instead.",
+      "href": "/tips/motivation-is-a-trap/"
+     },
+     {
+      "text": "Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One",
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+     },
+     {
+      "text": "Two books which influenced my hiring pipeline",
+      "href": "/posts/two-books-which-influenced-my-hiring-pipeline/"
+     },
+     {
+      "text": "How I run a local coding model on my desktop and use it from my MacBook",
+      "href": "/posts/local-coding-model-desktop-macbook/"
+     },
+     {
+      "text": "Connecting the Systems",
+      "href": "/posts/ems-connecting-the-systems/"
+     },
+     {
+      "text": "All Posts",
+      "href": "/posts"
+     },
+     {
+      "text": "All 68 tags\n→",
+      "href": "/tags/"
+     },
+     {
+      "text": "#engineering-management",
+      "href": "/tags/engineering-management/"
+     },
+     {
+      "text": "#engineering-leadership",
+      "href": "/tags/engineering-leadership/"
+     },
+     {
+      "text": "#leadership",
+      "href": "/tags/leadership/"
+     },
+     {
+      "text": "#systems-thinking",
+      "href": "/tags/systems-thinking/"
+     },
+     {
+      "text": "#tutorial",
+      "href": "/tags/tutorial/"
+     },
+     {
+      "text": "#flutter",
+      "href": "/tags/flutter/"
+     },
+     {
+      "text": "#mobile-development",
+      "href": "/tags/mobile-development/"
+     }
+    ],
+    "headerPresent": true,
+    "footerPresent": true,
+    "loadEvents": 0,
+    "homeResponses": [
+     {
+      "status": 200,
+      "type": "fetch"
+     }
+    ]
+   }
+  },
+  "base": {
+   "build": "base",
+   "status": 404,
+   "on404": {
+    "path": "/this-route-does-not-exist",
+    "title": "404 Not Found | Novi Fyx",
+    "robots": [],
+    "canonical": [
+     "https://www.novifyx.com/404/"
+    ],
+    "ogUrl": [
+     "https://www.novifyx.com/404/"
+    ],
+    "twitterUrl": [
+     "https://www.novifyx.com/404/"
+    ],
+    "ogTitle": "404 Not Found | Novi Fyx",
+    "classAttr": "false",
+    "h1": "404",
+    "h1Aria": "404 Not Found",
+    "mainText": "404 ¡Ay, caramba! Page Not Found Go back home",
+    "homeLink": [
+     {
+      "text": "Go back home",
+      "href": "/"
+     }
+    ],
+    "headerPresent": true,
+    "footerPresent": true
+   },
+   "afterHome": {
+    "path": "/",
+    "token": "5ag6x0bbjsi",
+    "pageLoads": 2,
+    "classAttr": "false",
+    "classTokens": [
+     "false"
+    ],
+    "dataTheme": "light",
+    "scrollBehavior": "auto",
+    "bodyBg": "rgb(251, 254, 251)",
+    "themeBtnAria": "light",
+    "h1": null,
+    "title": "Novi Fyx",
+    "soft": true,
+    "robots": [],
+    "canonical": [
+     "https://www.novifyx.com/"
+    ],
+    "ogUrl": [
+     "https://www.novifyx.com/"
+    ],
+    "twitterUrl": [
+     "https://www.novifyx.com/"
+    ],
+    "ogTitle": "Novi Fyx",
+    "h1Aria": null,
+    "mainText": "Recent tip Motivation is a trap. Build a system instead. Recent Posts Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One A broken USB port pushed me back to OctoPrint. The parts I bought and printed, a Buddy3D camera through go2rtc, Telegram alerts. Two books which influenced my hiring pipeline The interview pipeline I keep rebuilding. Where I borrowed from \"Who - The A Method for Hiring\", where I borrowed from \"Noise\" and what I learned by running it. How I run a local coding model on my desktop and use it from my MacBook A walkthrough of getting a local coding LLM running on a Windows desktop and using it from Opencode on a MacBook. Connecting the Systems PART OF Five Systems of Engineering Management · 7 of 7 A diagnostic framework and worked example for seeing all five systems at once. All Posts Top tags $ tags --top --by count All 68 tags → #engineering-management 15 posts #engineering-leadership 11 posts #leadership 11 posts #systems-thinking 8 posts #tutorial 7 posts #flutter 5 posts #mobile-development 5 posts",
+    "homeLink": [
+     {
+      "text": "Motivation is a trap. Build a system instead.",
+      "href": "/tips/motivation-is-a-trap/"
+     },
+     {
+      "text": "Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One",
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+     },
+     {
+      "text": "Two books which influenced my hiring pipeline",
+      "href": "/posts/two-books-which-influenced-my-hiring-pipeline/"
+     },
+     {
+      "text": "How I run a local coding model on my desktop and use it from my MacBook",
+      "href": "/posts/local-coding-model-desktop-macbook/"
+     },
+     {
+      "text": "Connecting the Systems",
+      "href": "/posts/ems-connecting-the-systems/"
+     },
+     {
+      "text": "All Posts",
+      "href": "/posts"
+     },
+     {
+      "text": "All 68 tags\n→",
+      "href": "/tags/"
+     },
+     {
+      "text": "#engineering-management",
+      "href": "/tags/engineering-management/"
+     },
+     {
+      "text": "#engineering-leadership",
+      "href": "/tags/engineering-leadership/"
+     },
+     {
+      "text": "#leadership",
+      "href": "/tags/leadership/"
+     },
+     {
+      "text": "#systems-thinking",
+      "href": "/tags/systems-thinking/"
+     },
+     {
+      "text": "#tutorial",
+      "href": "/tags/tutorial/"
+     },
+     {
+      "text": "#flutter",
+      "href": "/tags/flutter/"
+     },
+     {
+      "text": "#mobile-development",
+      "href": "/tags/mobile-development/"
+     }
+    ],
+    "headerPresent": true,
+    "footerPresent": true,
+    "loadEvents": 0,
+    "homeResponses": [
+     {
+      "status": 200,
+      "type": "fetch"
+     }
+    ]
+   }
+  }
+ },
+ "R5": {
+  "head": {
+   "build": "head",
+   "carousel": {
+    "status": 200,
+    "before": {
+     "scrollLeft": 0,
+     "clientWidth": 734,
+     "slides": 2,
+     "visibleIndex": 0,
+     "visibleLabel": "Slide 1 of 2",
+     "prevDisabled": true,
+     "nextDisabled": false
+    },
+    "after": {
+     "scrollLeft": 734,
+     "clientWidth": 734,
+     "slides": 2,
+     "visibleIndex": 1,
+     "visibleLabel": "Slide 2 of 2",
+     "prevDisabled": false,
+     "nextDisabled": true
+    }
+   },
+   "search": {
+    "status": 200,
+    "value": "hiring",
+    "items": [
+     "/posts/ems-the-people-system",
+     "/posts/the-emotional-roller-coaster-of-hiring",
+     "/posts/two-books-which-influenced-my-hiring-pipeline",
+     "/posts/ems-why-systems-not-processes",
+     "/posts/dad-ops-playbook"
+    ],
+    "found": "Found 5 results for 'hiring'",
+    "search": "?q=hiring"
+   },
+   "tags": {
+    "status": 200,
+    "before": 68,
+    "after": 5,
+    "afterItems": [
+     "engineering-management",
+     "engineering-leadership",
+     "engineering-culture",
+     "senior-software-engineer",
+     "software-engineering"
+    ]
+   },
+   "partytown": {
+    "snaps": [
+     {
+      "path": "/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/tags/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/",
+      "token": "u2wurlg3k68",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     }
+    ],
+    "gtagRequests": 1,
+    "sandboxHtmlRequests": 1,
+    "proxytownRequests": 105,
+    "proxytownFailed": [],
+    "proxytownBadStatus": [],
+    "proxytownConsole": [],
+    "workers": 1,
+    "loadEventsAfterInitial": 0
+   }
+  },
+  "base": {
+   "build": "base",
+   "carousel": {
+    "status": 200,
+    "before": {
+     "scrollLeft": 0,
+     "clientWidth": 734,
+     "slides": 2,
+     "visibleIndex": 0,
+     "visibleLabel": "Slide 1 of 2",
+     "prevDisabled": true,
+     "nextDisabled": false
+    },
+    "after": {
+     "scrollLeft": 734,
+     "clientWidth": 734,
+     "slides": 2,
+     "visibleIndex": 1,
+     "visibleLabel": "Slide 2 of 2",
+     "prevDisabled": false,
+     "nextDisabled": true
+    }
+   },
+   "search": {
+    "status": 200,
+    "value": "hiring",
+    "items": [
+     "/posts/ems-the-people-system",
+     "/posts/the-emotional-roller-coaster-of-hiring",
+     "/posts/two-books-which-influenced-my-hiring-pipeline",
+     "/posts/ems-why-systems-not-processes",
+     "/posts/dad-ops-playbook"
+    ],
+    "found": "Found 5 results for 'hiring'",
+    "search": "?q=hiring"
+   },
+   "tags": {
+    "status": 200,
+    "before": 68,
+    "after": 5,
+    "afterItems": [
+     "engineering-management",
+     "engineering-leadership",
+     "engineering-culture",
+     "senior-software-engineer",
+     "software-engineering"
+    ]
+   },
+   "partytown": {
+    "snaps": [
+     {
+      "path": "/",
+      "token": "apei4823jil",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "token": "apei4823jil",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/tags/",
+      "token": "apei4823jil",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/",
+      "token": "apei4823jil",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     },
+     {
+      "path": "/",
+      "token": "apei4823jil",
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "ptPending": 0
+     }
+    ],
+    "gtagRequests": 1,
+    "sandboxHtmlRequests": 1,
+    "proxytownRequests": 105,
+    "proxytownFailed": [],
+    "proxytownBadStatus": [],
+    "proxytownConsole": [],
+    "workers": 1,
+    "loadEventsAfterInitial": 0
+   }
+  }
+ },
+ "summary": {
+  "total": 28,
+  "failed": [],
+  "allErrors": 2,
+  "excused404Doc": 2
+ }
+}

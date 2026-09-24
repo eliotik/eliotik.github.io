@@ -1,0 +1,42 @@
+{
+ "totalRequests": 52,
+ "elapsedMs": 2101,
+ "statusCounts": {
+  "200": 52
+ },
+ "count504": 0,
+ "non200": [],
+ "toolbarModuleCount": 4,
+ "pages": [
+  {
+   "url": "http://localhost:4322/",
+   "status": 200,
+   "hasToolbarEntrypoint": false,
+   "islands": 0
+  },
+  {
+   "url": "http://localhost:4322/posts/octoprint-prusa-core-one-raspberry-pi/",
+   "status": 200,
+   "hasToolbarEntrypoint": false,
+   "islands": 7
+  },
+  {
+   "url": "http://localhost:4322/search/",
+   "status": 200,
+   "hasToolbarEntrypoint": false,
+   "islands": 1
+  },
+  {
+   "url": "http://localhost:4322/posts/flutter-google-maps-address-manipulation/",
+   "status": 200,
+   "hasToolbarEntrypoint": false,
+   "islands": 3
+  },
+  {
+   "url": "http://localhost:4322/posts/flutter-google-maps-embedded-map/",
+   "status": 200,
+   "hasToolbarEntrypoint": false,
+   "islands": 2
+  }
+ ]
+}

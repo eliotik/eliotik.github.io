@@ -22,27 +22,21 @@ const hasHeaderMeta = Astro.slots.has('header-meta');
 <main id="main-content">
     <div class={hasHeaderMeta ? 'flex items-start justify-between gap-4' : ''}>
         <div>
-            {
-                'titleTransition' in props ? (
-                    <h1>
-                        {props.pageTitle[0]}
-                        <span transition:name={props.titleTransition}>
-                            {props.pageTitle[1]}
-                        </span>
-                    </h1>
-                ) : (
-                    <h1>{props.pageTitle}</h1>
-                )
-            }
+            {'titleTransition' in props ? (
+                <h1>
+                    {props.pageTitle[0]}
+                    <span transition:name={props.titleTransition}>
+                        {props.pageTitle[1]}
+                    </span>
+                </h1>
+            ) : (
+                <h1>{props.pageTitle}</h1>
+            )}
             <p>{props.pageDesc}</p>
         </div>
-        {
-            hasHeaderMeta && (
-                <div class="shrink-0 whitespace-nowrap">
-                    <slot name="header-meta" />
-                </div>
-            )
-        }
+        {hasHeaderMeta && <div class="shrink-0 whitespace-nowrap">
+            <slot name="header-meta" />
+        </div>}
     </div>
     <slot />
 </main>

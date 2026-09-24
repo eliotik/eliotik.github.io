@@ -1,0 +1,975 @@
+{
+  "meta": {
+    "base": "http://localhost:4321",
+    "isProd": false,
+    "startedAt": "2026-09-24T17:00:54.869Z",
+    "node": "v22.23.3",
+    "gaBlockArg": "--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND",
+    "browserVersion": "153.0.8010.53",
+    "groups": [
+      "P0"
+    ],
+    "finishedAt": "2026-09-24T17:01:22.274Z",
+    "pass": true,
+    "checks": {
+      "total": 15,
+      "failed": []
+    }
+  },
+  "checks": [
+    {
+      "id": "P0.1.assets",
+      "name": "Partytown assets partytown.js / partytown-sw.js / partytown-sandbox-sw.html all 200",
+      "pass": true,
+      "evidence": {
+        "/~partytown/partytown.js": {
+          "status": 200,
+          "contentType": "text/javascript",
+          "bytes": 3198
+        },
+        "/~partytown/partytown-sw.js": {
+          "status": 200,
+          "contentType": "text/javascript",
+          "bytes": 47177
+        },
+        "/~partytown/partytown-sandbox-sw.html": {
+          "status": 200,
+          "contentType": "text/html;charset=utf-8",
+          "bytes": 45949
+        }
+      }
+    },
+    {
+      "id": "P0.2.initial",
+      "name": "initial full load of /: exactly 1 sandbox iframe, parent <html>, loaded once, 1 worker, gtag.js requested, page_view attempted (non-vacuous)",
+      "pass": true,
+      "evidence": {
+        "snapshot": {
+          "path": "/",
+          "token": "yvvax1mvx8g",
+          "pageLoads": 1,
+          "beforeSwaps": 0,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "sandboxIsLastChildOfHtml": true,
+          "iframeSameElement": true,
+          "gtagSrcSameElement": true,
+          "gtagInitSameElement": true,
+          "gtagScriptTypes": [
+            "text/partytown-x",
+            "text/partytown-x"
+          ],
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "visibility": "visible"
+        },
+        "gtagRequests": 1,
+        "workers": 1,
+        "sandboxHtmlRequests": 1,
+        "collectAttempts": 2,
+        "pageViews": [
+          "/"
+        ],
+        "collectFailed": 2
+      }
+    },
+    {
+      "id": "P0.2.soft-navs",
+      "name": "10 real-click ClientRouter navigations, all soft (window token survives, 0 load/DOMContentLoaded events), expected paths",
+      "pass": true,
+      "evidence": {
+        "navs": [
+          {
+            "idx": 1,
+            "name": "home → octoprint post (main card)",
+            "dwellMs": 500,
+            "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+            "soft": true,
+            "pageLoads": 2
+          },
+          {
+            "idx": 2,
+            "name": "post → /search/ (header)",
+            "dwellMs": 3000,
+            "path": "/search/",
+            "soft": true,
+            "pageLoads": 3
+          },
+          {
+            "idx": 3,
+            "name": "search → /tags/ (header)",
+            "dwellMs": 500,
+            "path": "/tags/",
+            "soft": true,
+            "pageLoads": 4
+          },
+          {
+            "idx": 4,
+            "name": "tags → /tags/engineering-management/ (island link)",
+            "dwellMs": 3000,
+            "path": "/tags/engineering-management/",
+            "soft": true,
+            "pageLoads": 5
+          },
+          {
+            "idx": 5,
+            "name": "tag → / (header logo)",
+            "dwellMs": 500,
+            "path": "/",
+            "soft": true,
+            "pageLoads": 6
+          },
+          {
+            "idx": 6,
+            "name": "home → /posts/ (header)",
+            "dwellMs": 3000,
+            "path": "/posts/",
+            "soft": true,
+            "pageLoads": 7
+          },
+          {
+            "idx": 7,
+            "name": "posts → local-coding-model post (main card)",
+            "dwellMs": 500,
+            "path": "/posts/local-coding-model-desktop-macbook/",
+            "soft": true,
+            "pageLoads": 8
+          },
+          {
+            "idx": 8,
+            "name": "post → /tips/ (header)",
+            "dwellMs": 3000,
+            "path": "/tips/",
+            "soft": true,
+            "pageLoads": 9
+          },
+          {
+            "idx": 9,
+            "name": "tips → /about/ (header)",
+            "dwellMs": 500,
+            "path": "/about/",
+            "soft": true,
+            "pageLoads": 10
+          },
+          {
+            "idx": 10,
+            "name": "about → / (header logo)",
+            "dwellMs": 3000,
+            "path": "/",
+            "soft": true,
+            "pageLoads": 11
+          }
+        ],
+        "loadEvents": 0,
+        "dclEvents": 0
+      }
+    },
+    {
+      "id": "P0.2.sandbox-parent-html",
+      "name": "sandbox iframe parent is <html> on / and after every navigation; exactly 1 sandbox iframe throughout",
+      "pass": true,
+      "evidence": {
+        "parents": [
+          "/:HTMLx1",
+          "/posts/octoprint-prusa-core-one-raspberry-pi/:HTMLx1",
+          "/search/:HTMLx1",
+          "/tags/:HTMLx1",
+          "/tags/engineering-management/:HTMLx1",
+          "/:HTMLx1",
+          "/posts/:HTMLx1",
+          "/posts/local-coding-model-desktop-macbook/:HTMLx1",
+          "/tips/:HTMLx1",
+          "/about/:HTMLx1",
+          "/:HTMLx1",
+          "/:HTMLx1"
+        ]
+      }
+    },
+    {
+      "id": "P0.2.iframe-never-reloads",
+      "name": "sandbox iframe never reloads: DOM 'load' events = 1, sandbox-html requests = 1, sandbox framenavigated = 1, framedetached = 0, element identity preserved, 0 removals",
+      "pass": true,
+      "evidence": {
+        "iframeLoadEvents": 1,
+        "sandboxHtmlRequests": 1,
+        "sandboxFrameNavigated": 1,
+        "sandboxFrameDetached": 0,
+        "sameElementEveryNav": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "mutationAdded": 1,
+        "mutationRemoved": 0
+      }
+    },
+    {
+      "id": "P0.2.one-worker",
+      "name": "exactly 1 Partytown worker created (page.on(worker)) and never closed",
+      "pass": true,
+      "evidence": {
+        "created": [
+          {
+            "navIdx": 0,
+            "url": "blob:http://localhost:4321/b9054f0d-e359-4c6f-9cba-2ad03e418867"
+          }
+        ],
+        "closedBeforeContextClose": []
+      }
+    },
+    {
+      "id": "P0.2.gtag-once",
+      "name": "gtag.js requested exactly once; both gtag <script>s are the same persisted elements (text/partytown-x) after every navigation; 0 pending text/partytown scripts",
+      "pass": true,
+      "evidence": {
+        "gtagRequests": [
+          {
+            "navIdx": 0,
+            "url": "https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH",
+            "type": "fetch"
+          }
+        ],
+        "gtagSrcSame": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "gtagInitSame": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "ptPending": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "finalTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ]
+      }
+    },
+    {
+      "id": "P0.2.proxytown",
+      "name": "0 '/~partytown/proxytown' console errors and 0 failed/aborted proxytown requests",
+      "pass": true,
+      "evidence": {
+        "proxytownConsole": [],
+        "proxytownFailed": [],
+        "proxytownRequestsTotal": 178
+      }
+    },
+    {
+      "id": "P0.2.analytics-alive",
+      "name": "analytics still alive after the navigations (collect attempts observed after the last navigation; non-vacuous)",
+      "pass": true,
+      "evidence": {
+        "beforeNav": [
+          "/"
+        ],
+        "afterLastNav": [
+          "page_view /tips/",
+          "page_view /",
+          "page_view /tips/",
+          "page_view /"
+        ],
+        "pageViewsByNav": [
+          {
+            "navIdx": 0,
+            "dl": "/"
+          },
+          {
+            "navIdx": 2,
+            "dl": "/search/"
+          },
+          {
+            "navIdx": 6,
+            "dl": "/tags/engineering-management/"
+          },
+          {
+            "navIdx": 6,
+            "dl": "/posts/"
+          },
+          {
+            "navIdx": 10,
+            "dl": "/tips/"
+          },
+          {
+            "navIdx": 10,
+            "dl": "/"
+          }
+        ],
+        "eventsByName": {
+          "page_view": 6,
+          "scroll": 1
+        }
+      }
+    },
+    {
+      "id": "P0.2.console-zero",
+      "name": "P0 context: 0 console errors of any kind (page, frames, workers, service worker) and 0 page errors",
+      "pass": true,
+      "evidence": {
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "id": "P0.2.sw-registration",
+      "name": "Partytown SW registered + activated for scope /~partytown/ (no registration error)",
+      "pass": true,
+      "evidence": [
+        {
+          "scope": "http://localhost:4321/~partytown/",
+          "active": "http://localhost:4321/~partytown/partytown-sw.js",
+          "state": "activated"
+        }
+      ]
+    },
+    {
+      "id": "P7.islands-hydrated",
+      "name": "no astro-island[ssr] remains after load/navigation on any visited page (2 visits)",
+      "pass": true,
+      "evidence": {
+        "visits": 2,
+        "islandsTotal": 0,
+        "badVisits": []
+      }
+    },
+    {
+      "id": "P7.no-hydration-warnings",
+      "name": "no React hydration warnings/errors in console (page, frames, workers, pageerror)",
+      "pass": true,
+      "evidence": {
+        "hydrationMsgs": []
+      }
+    },
+    {
+      "id": "C.console-zero",
+      "name": "ZERO console errors and ZERO page errors across every test (2 messages captured, 2 visits)",
+      "pass": true,
+      "evidence": {
+        "errors": [],
+        "errorsBySource": {}
+      }
+    },
+    {
+      "id": "C.requests-failed",
+      "name": "no failed request other than the DNS-blocked GA collect hosts",
+      "pass": true,
+      "evidence": {
+        "other": [],
+        "analyticsBlocked": 8
+      }
+    }
+  ],
+  "visits": [
+    {
+      "id": "P0:/",
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "http://localhost:4321/",
+      "how": "goto",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Novi Fyx",
+      "theme": "light"
+    },
+    {
+      "id": "P0:final",
+      "ctx": "p0-clean",
+      "label": "P0:settle",
+      "url": "http://localhost:4321/",
+      "how": "client-nav",
+      "islands": 0,
+      "islandsSsrRemaining": 0,
+      "ssrComponents": [],
+      "visibility": "visible",
+      "title": "Novi Fyx",
+      "theme": "light"
+    }
+  ],
+  "console": [
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "t": 1790269255311,
+      "source": "sw-created",
+      "type": "info",
+      "text": "http://localhost:4321/~partytown/partytown-sw.js"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "t": 1790269255325,
+      "source": "worker-created",
+      "type": "info",
+      "text": "blob:http://localhost:4321/b9054f0d-e359-4c6f-9cba-2ad03e418867"
+    }
+  ],
+  "requestsFailed": [
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1893864544.1790269256&frm=0&ngs=1&pscdl=no",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1893864544.1790269256&frm=0&ngs=1&pscdl=noapi&rcb=14",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0:nav2",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1893864544.1790269256&frm",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0:nav2",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1893864544.1790269256&frm=0&ngs=1&p",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0:nav6",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1893864544.1790269256&frm",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0:nav6",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1893864544.1790269256&frm=0&ngs=1&p",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0:nav10",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1893864544.1790269256&frm",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    },
+    {
+      "ctx": "p0-clean",
+      "label": "P0:nav10",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790269255481&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=1893864544.1790269256&frm=0&ngs=1&p",
+      "type": "fetch",
+      "err": "net::ERR_NAME_NOT_RESOLVED"
+    }
+  ],
+  "p0": {
+    "assets": {
+      "/~partytown/partytown.js": {
+        "status": 200,
+        "contentType": "text/javascript",
+        "bytes": 3198
+      },
+      "/~partytown/partytown-sw.js": {
+        "status": 200,
+        "contentType": "text/javascript",
+        "bytes": 47177
+      },
+      "/~partytown/partytown-sandbox-sw.html": {
+        "status": 200,
+        "contentType": "text/html;charset=utf-8",
+        "bytes": 45949
+      }
+    },
+    "status": 200,
+    "registrations": [
+      {
+        "scope": "http://localhost:4321/~partytown/",
+        "active": "http://localhost:4321/~partytown/partytown-sw.js",
+        "state": "activated"
+      }
+    ],
+    "initial": {
+      "path": "/",
+      "token": "yvvax1mvx8g",
+      "pageLoads": 1,
+      "beforeSwaps": 0,
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "sandboxIsLastChildOfHtml": true,
+      "iframeSameElement": true,
+      "gtagSrcSameElement": true,
+      "gtagInitSameElement": true,
+      "gtagScriptTypes": [
+        "text/partytown-x",
+        "text/partytown-x"
+      ],
+      "ptPending": 0,
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "visibility": "visible"
+    },
+    "beforeNav": {
+      "gtagRequests": 1,
+      "workers": 1,
+      "sandboxHtmlRequests": 1,
+      "collectAttempts": 2,
+      "pageViews": [
+        "/"
+      ],
+      "collectFailed": 2
+    },
+    "navs": [
+      {
+        "idx": 1,
+        "name": "home → octoprint post (main card)",
+        "dwellMs": 500,
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 2,
+        "beforeSwaps": 1,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 2,
+        "name": "post → /search/ (header)",
+        "dwellMs": 3000,
+        "path": "/search/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 3,
+        "beforeSwaps": 2,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 3,
+        "name": "search → /tags/ (header)",
+        "dwellMs": 500,
+        "path": "/tags/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 4,
+        "beforeSwaps": 3,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 4,
+        "name": "tags → /tags/engineering-management/ (island link)",
+        "dwellMs": 3000,
+        "path": "/tags/engineering-management/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 5,
+        "beforeSwaps": 4,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 5,
+        "name": "tag → / (header logo)",
+        "dwellMs": 500,
+        "path": "/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 6,
+        "beforeSwaps": 5,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 6,
+        "name": "home → /posts/ (header)",
+        "dwellMs": 3000,
+        "path": "/posts/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 7,
+        "beforeSwaps": 6,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 7,
+        "name": "posts → local-coding-model post (main card)",
+        "dwellMs": 500,
+        "path": "/posts/local-coding-model-desktop-macbook/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 8,
+        "beforeSwaps": 7,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 8,
+        "name": "post → /tips/ (header)",
+        "dwellMs": 3000,
+        "path": "/tips/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 9,
+        "beforeSwaps": 8,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 9,
+        "name": "tips → /about/ (header)",
+        "dwellMs": 500,
+        "path": "/about/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 10,
+        "beforeSwaps": 9,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      },
+      {
+        "idx": 10,
+        "name": "about → / (header logo)",
+        "dwellMs": 3000,
+        "path": "/",
+        "token": "yvvax1mvx8g",
+        "pageLoads": 11,
+        "beforeSwaps": 10,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "sandboxIsLastChildOfHtml": true,
+        "iframeSameElement": true,
+        "gtagSrcSameElement": true,
+        "gtagInitSameElement": true,
+        "gtagScriptTypes": [
+          "text/partytown-x",
+          "text/partytown-x"
+        ],
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "visibility": "visible",
+        "soft": true,
+        "pathOk": true,
+        "fullLoadEventsSoFar": 0,
+        "workersSoFar": 1,
+        "gtagRequestsSoFar": 1
+      }
+    ],
+    "final": {
+      "path": "/",
+      "token": "yvvax1mvx8g",
+      "pageLoads": 11,
+      "beforeSwaps": 10,
+      "sandboxCount": 1,
+      "sandboxParent": "HTML",
+      "sandboxIsLastChildOfHtml": true,
+      "iframeSameElement": true,
+      "gtagSrcSameElement": true,
+      "gtagInitSameElement": true,
+      "gtagScriptTypes": [
+        "text/partytown-x",
+        "text/partytown-x"
+      ],
+      "ptPending": 0,
+      "iframeLoads": 1,
+      "sbAdded": 1,
+      "sbRemoved": 0,
+      "visibility": "visible"
+    },
+    "tallies": {
+      "loadEventsAfterInitial": 0,
+      "dclEventsAfterInitial": 0,
+      "sandboxHtmlRequests": [
+        {
+          "navIdx": 0,
+          "url": "/~partytown/partytown-sandbox-sw.html?1790269255317"
+        }
+      ],
+      "sandboxFrameNavigated": [
+        {
+          "navIdx": 0,
+          "url": "/~partytown/partytown-sandbox-sw.html?1790269255317"
+        }
+      ],
+      "sandboxFrameDetached": [],
+      "framesAttachedTotal": 1,
+      "workersCreated": [
+        {
+          "navIdx": 0,
+          "url": "blob:http://localhost:4321/b9054f0d-e359-4c6f-9cba-2ad03e418867"
+        }
+      ],
+      "workersClosedBeforeContextClose": [],
+      "gtagRequests": [
+        {
+          "navIdx": 0,
+          "url": "https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH",
+          "type": "fetch"
+        }
+      ],
+      "proxytownRequests": 178,
+      "proxytownFailed": [],
+      "collectAttempts": 14,
+      "collectFailedByErr": {
+        "www.google-analytics.com net::ERR_NAME_NOT_RESOLVED": 4,
+        "www.google.com net::ERR_NAME_NOT_RESOLVED": 4
+      },
+      "pageViewsByNav": [
+        {
+          "navIdx": 0,
+          "dl": "/"
+        },
+        {
+          "navIdx": 2,
+          "dl": "/search/"
+        },
+        {
+          "navIdx": 6,
+          "dl": "/tags/engineering-management/"
+        },
+        {
+          "navIdx": 6,
+          "dl": "/posts/"
+        },
+        {
+          "navIdx": 10,
+          "dl": "/tips/"
+        },
+        {
+          "navIdx": 10,
+          "dl": "/"
+        }
+      ],
+      "eventsAfterLastNav": [
+        "page_view /tips/",
+        "page_view /",
+        "page_view /tips/",
+        "page_view /"
+      ],
+      "eventsByName": {
+        "page_view": 6,
+        "scroll": 1
+      }
+    }
+  },
+  "details": {
+    "P7": {
+      "visits": 2,
+      "islandsTotalAcrossVisits": 0,
+      "badVisits": [],
+      "hydrationMsgs": []
+    }
+  },
+  "consoleSummary": {
+    "totalMessages": 2,
+    "errors": 0,
+    "errorsBySource": {},
+    "warnings": 0,
+    "warningsBySource": {},
+    "errorTexts": [],
+    "warningTexts": [],
+    "typesSeen": {
+      "sw-created:info": 1,
+      "worker-created:info": 1
+    },
+    "requestsFailedTotal": 8,
+    "requestsFailedAnalyticsBlocked": 8,
+    "requestsFailedOther": []
+  },
+  "visibilityStates": [
+    "visible"
+  ]
+}

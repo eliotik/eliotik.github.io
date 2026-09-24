@@ -1,0 +1,256 @@
+{
+ "old_count": 362,
+ "new_count": 362,
+ "only_old": [],
+ "only_new": [],
+ "common": 362,
+ "nonhtml_identical": 230,
+ "nonhtml_different": [],
+ "nonhtml_ext_counts_identical_different": {
+  ".json": [
+   1,
+   0
+  ],
+  "(none)": [
+   2,
+   0
+  ],
+  ".js": [
+   13,
+   0
+  ],
+  ".css": [
+   4,
+   0
+  ],
+  ".webp": [
+   123,
+   0
+  ],
+  ".png": [
+   67,
+   0
+  ],
+  ".gif": [
+   6,
+   0
+  ],
+  ".jpg": [
+   7,
+   0
+  ],
+  ".svg": [
+   1,
+   0
+  ],
+  ".txt": [
+   1,
+   0
+  ],
+  ".xml": [
+   5,
+   0
+  ]
+ },
+ "special": {
+  "sitemap-index.xml": {
+   "raw_equal": false,
+   "equal_after_lastmod_strip": true,
+   "old_lastmods": [
+    "2026-09-24T21:47:39.973Z"
+   ],
+   "new_lastmods": [
+    "2026-09-24T21:47:47.643Z"
+   ]
+  },
+  "sitemap-pages.xml": {
+   "old_urls": [
+    "https://www.novifyx.com/",
+    "https://www.novifyx.com/about/",
+    "https://www.novifyx.com/posts/",
+    "https://www.novifyx.com/tips/",
+    "https://www.novifyx.com/threads/",
+    "https://www.novifyx.com/tags/",
+    "https://www.novifyx.com/search/"
+   ],
+   "new_urls": [
+    "https://www.novifyx.com/",
+    "https://www.novifyx.com/about/",
+    "https://www.novifyx.com/posts/",
+    "https://www.novifyx.com/tips/",
+    "https://www.novifyx.com/search/"
+   ],
+   "removed": [
+    "https://www.novifyx.com/threads/",
+    "https://www.novifyx.com/tags/"
+   ],
+   "removed_blocks": [
+    "  <url>\n    <loc>https://www.novifyx.com/threads/</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n",
+    "  <url>\n    <loc>https://www.novifyx.com/tags/</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n"
+   ],
+   "added": [],
+   "remaining_order_preserved": true,
+   "new_equals_old_minus_removed_blocks": true
+  }
+ },
+ "html_total": 130,
+ "html_raw_identical": 33,
+ "html_uid_only": [
+  {
+   "file": "posts/from-skeptic-to-champion/index.html",
+   "islands": 1
+  },
+  {
+   "file": "posts/octoprint-prusa-core-one-raspberry-pi/index.html",
+   "islands": 7
+  }
+ ],
+ "html_with_diffs": 95,
+ "uid_count_mismatch": [],
+ "hunks_total": 100,
+ "hunks_by_class": {
+  "a": 4,
+  "b": 4,
+  "c": 92,
+  "null": 0
+ },
+ "a_found": {
+  "posts/flutter-google-maps-address-manipulation/index.html": [
+   "flutter-google-maps-embedded-map",
+   "flutter-google-maps-setup"
+  ],
+  "posts/flutter-google-maps-embedded-map/index.html": [
+   "flutter-google-maps-setup"
+  ],
+  "posts/flutter-google-maps-static-map/index.html": [
+   "flutter-google-maps-address-manipulation"
+  ]
+ },
+ "a_expected": {
+  "posts/flutter-google-maps-address-manipulation/index.html": [
+   "flutter-google-maps-embedded-map",
+   "flutter-google-maps-setup"
+  ],
+  "posts/flutter-google-maps-embedded-map/index.html": [
+   "flutter-google-maps-setup"
+  ],
+  "posts/flutter-google-maps-static-map/index.html": [
+   "flutter-google-maps-address-manipulation"
+  ]
+ },
+ "a_matches_expected": true,
+ "b_found": [
+  "canonical",
+  "og:url",
+  "robots-noindex",
+  "twitter:url"
+ ],
+ "c_pages_count": 92,
+ "c_pages_unique": 92,
+ "old_html_class_false": 92,
+ "new_html_no_class": 92,
+ "old_false_set_eq_c_pages": true,
+ "new_bad_class": [],
+ "html_tag_kinds_new": {
+  "<html lang=\"en\">": 92,
+  "null": 2,
+  "<html lang=\"en\" class=\"scroll-smooth\">": 35,
+  "<html>": 1
+ },
+ "scroll_smooth_old": 35,
+ "scroll_smooth_new": 35,
+ "scroll_smooth_sets_equal": true,
+ "detail_pages": 35,
+ "scroll_smooth_eq_detail_pages": true,
+ "unclassified": [],
+ "non_c_hunks": [
+  {
+   "file": "404.html",
+   "op": "delete",
+   "old": [
+    "<link rel=\"canonical\" href=\"https://www.novifyx.com/404/\">"
+   ],
+   "new": [],
+   "class": "b",
+   "detail": "canonical"
+  },
+  {
+   "file": "404.html",
+   "op": "insert",
+   "old": [],
+   "new": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "class": "b",
+   "detail": "robots-noindex"
+  },
+  {
+   "file": "404.html",
+   "op": "delete",
+   "old": [
+    "<meta property=\"og:url\" content=\"https://www.novifyx.com/404/\">"
+   ],
+   "new": [],
+   "class": "b",
+   "detail": "og:url"
+  },
+  {
+   "file": "404.html",
+   "op": "delete",
+   "old": [
+    "<meta property=\"twitter:url\" content=\"https://www.novifyx.com/404/\">"
+   ],
+   "new": [],
+   "class": "b",
+   "detail": "twitter:url"
+  },
+  {
+   "file": "posts/flutter-google-maps-address-manipulation/index.html",
+   "op": "replace",
+   "old": [
+    "<a href=\"./flutter-google-maps-embedded-map\">"
+   ],
+   "new": [
+    "<a href=\"/posts/flutter-google-maps-embedded-map/\">"
+   ],
+   "class": "a",
+   "detail": "flutter-google-maps-embedded-map"
+  },
+  {
+   "file": "posts/flutter-google-maps-address-manipulation/index.html",
+   "op": "replace",
+   "old": [
+    "<a href=\"./flutter-google-maps-setup\">"
+   ],
+   "new": [
+    "<a href=\"/posts/flutter-google-maps-setup/\">"
+   ],
+   "class": "a",
+   "detail": "flutter-google-maps-setup"
+  },
+  {
+   "file": "posts/flutter-google-maps-embedded-map/index.html",
+   "op": "replace",
+   "old": [
+    "<a href=\"./flutter-google-maps-setup\">"
+   ],
+   "new": [
+    "<a href=\"/posts/flutter-google-maps-setup/\">"
+   ],
+   "class": "a",
+   "detail": "flutter-google-maps-setup"
+  },
+  {
+   "file": "posts/flutter-google-maps-static-map/index.html",
+   "op": "replace",
+   "old": [
+    "<a href=\"./flutter-google-maps-address-manipulation\">"
+   ],
+   "new": [
+    "<a href=\"/posts/flutter-google-maps-address-manipulation/\">"
+   ],
+   "class": "a",
+   "detail": "flutter-google-maps-address-manipulation"
+  }
+ ]
+}

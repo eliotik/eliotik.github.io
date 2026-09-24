@@ -1,0 +1,164 @@
+{
+  "hash": "456b9218",
+  "configHash": "f326ad0c",
+  "lockfileHash": "f2e6d155",
+  "browserHash": "ae6c88e9",
+  "optimized": {
+    "@astrojs/react/client.js": {
+      "src": "../../.pnpm/@astrojs+react@7.0.0_@types+node@24.13.3_@types+react-dom@19.3.0_@types+react@19.3.0__@_95bf02fc3719b20cff67037ff3d45e02/node_modules/@astrojs/react/dist/client.js",
+      "file": "@astrojs_react_client__js.js",
+      "fileHash": "4b248d4a",
+      "needsInterop": false
+    },
+    "astro > aria-query": {
+      "src": "../../.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js",
+      "file": "astro_n_aria-query.js",
+      "fileHash": "c49ed208",
+      "needsInterop": true
+    },
+    "astro > axobject-query": {
+      "src": "../../.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js",
+      "file": "astro_n_axobject-query.js",
+      "fileHash": "ed6f7ed6",
+      "needsInterop": true
+    },
+    "astro > html-escaper": {
+      "src": "../../.pnpm/html-escaper@3.0.3/node_modules/html-escaper/esm/index.js",
+      "file": "astro_n_html-escaper.js",
+      "fileHash": "49ca3d15",
+      "needsInterop": false
+    },
+    "astro/runtime/client/dev-toolbar/entrypoint.js": {
+      "src": "../../.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js",
+      "file": "astro_runtime_client_dev-toolbar_entrypoint__js.js",
+      "fileHash": "423569b4",
+      "needsInterop": false
+    },
+    "astro/virtual-modules/transitions-events.js": {
+      "src": "../../.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/transitions-events.js",
+      "file": "astro_virtual-modules_transitions-events__js.js",
+      "fileHash": "391c12a6",
+      "needsInterop": false
+    },
+    "astro/virtual-modules/transitions-router.js": {
+      "src": "../../.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/transitions-router.js",
+      "file": "astro_virtual-modules_transitions-router__js.js",
+      "fileHash": "5e4d9258",
+      "needsInterop": false
+    },
+    "astro/virtual-modules/transitions-swap-functions.js": {
+      "src": "../../.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/transitions-swap-functions.js",
+      "file": "astro_virtual-modules_transitions-swap-functions__js.js",
+      "fileHash": "236c6fb1",
+      "needsInterop": false
+    },
+    "astro/virtual-modules/transitions-types.js": {
+      "src": "../../.pnpm/astro@7.3.4_@astrojs+markdown-remark@7.3.1_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1_841323b6f288c93c209b1cbb2b38a503/node_modules/astro/dist/virtual-modules/transitions-types.js",
+      "file": "astro_virtual-modules_transitions-types__js.js",
+      "fileHash": "1323b436",
+      "needsInterop": false
+    },
+    "fuse.js": {
+      "src": "../../.pnpm/fuse.js@7.5.0/node_modules/fuse.js/dist/fuse.mjs",
+      "file": "fuse__js.js",
+      "fileHash": "4ba9123d",
+      "needsInterop": false
+    },
+    "github-slugger": {
+      "src": "../../.pnpm/github-slugger@2.0.0/node_modules/github-slugger/index.js",
+      "file": "github-slugger.js",
+      "fileHash": "3c91a205",
+      "needsInterop": false
+    },
+    "react-dom": {
+      "src": "../../.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "6075d279",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "e0cfc2aa",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../.pnpm/react@19.3.0/node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "4ca701e4",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../.pnpm/react@19.3.0/node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "0da4b8f8",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../.pnpm/react@19.3.0/node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "12dec8b6",
+      "needsInterop": true
+    },
+    "satori": {
+      "src": "../../.pnpm/satori@0.33.5/node_modules/satori/dist/index.js",
+      "file": "satori.js",
+      "fileHash": "8cb0251b",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "astro-FHoXtXMg": {
+      "file": "astro-FHoXtXMg.js",
+      "isDynamicEntry": true
+    },
+    "audit-BhVuJR6h": {
+      "file": "audit-BhVuJR6h.js",
+      "isDynamicEntry": true
+    },
+    "client-B83HekvG": {
+      "file": "client-B83HekvG.js",
+      "isDynamicEntry": false
+    },
+    "events-C2HBXNIf": {
+      "file": "events-C2HBXNIf.js",
+      "isDynamicEntry": false
+    },
+    "highlight-CZC9QMK7": {
+      "file": "highlight-CZC9QMK7.js",
+      "isDynamicEntry": false
+    },
+    "icons-DZkHqnOF": {
+      "file": "icons-DZkHqnOF.js",
+      "isDynamicEntry": false
+    },
+    "rolldown-runtime-BPOCksWG": {
+      "file": "rolldown-runtime-BPOCksWG.js",
+      "isDynamicEntry": false
+    },
+    "settings-CwxpV2xH": {
+      "file": "settings-CwxpV2xH.js",
+      "isDynamicEntry": true
+    },
+    "swap-functions-DUqOLkIm": {
+      "file": "swap-functions-DUqOLkIm.js",
+      "isDynamicEntry": false
+    },
+    "toolbar-m3qV4lOF": {
+      "file": "toolbar-m3qV4lOF.js",
+      "isDynamicEntry": true
+    },
+    "ui-library-C6QDP-6v": {
+      "file": "ui-library-C6QDP-6v.js",
+      "isDynamicEntry": true
+    },
+    "window-B3PM1eiy": {
+      "file": "window-B3PM1eiy.js",
+      "isDynamicEntry": false
+    },
+    "xray-d1X_SF6n": {
+      "file": "xray-d1X_SF6n.js",
+      "isDynamicEntry": true
+    }
+  }
+}

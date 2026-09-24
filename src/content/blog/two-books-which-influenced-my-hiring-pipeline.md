@@ -117,13 +117,13 @@ That's the part people skip. Score independently, then talk and delay your intui
 
 > If you and I sat in the same interview, would we write down the same number before we spoke?
 
-I want to be honest about the limits, because [I've written something close to the opposite before](/posts/ems-the-people-system). Structure does improve your odds. It doesn't make them good. I've hired people who scored cleanly and turned out to be the wrong fit by month two. So the rubric does two jobs and only two: it keeps the bar the same regardless of who's in the room and it moves the odds. It doesn't replace probation and I've stopped expecting it to.
+I want to be honest about the limits, because [I've written something close to the opposite before](/posts/ems-the-people-system/). Structure does improve your odds. It doesn't make them good. I've hired people who scored cleanly and turned out to be the wrong fit by month two. So the rubric does two jobs and only two: it keeps the bar the same regardless of who's in the room and it moves the odds. It doesn't replace probation and I've stopped expecting it to.
 
 ## Then I got in my own way
 
 I've rebuilt some version of this pipeline at several companies. Each time it got tighter. Each time I was the one running it.
 
-That's the failure, [a framework only one person can execute isn't a framework](/posts/ems-why-systems-not-processes).
+That's the failure, [a framework only one person can execute isn't a framework](/posts/ems-why-systems-not-processes/).
 
 So this time, at my current company, I did it differently from the start. I built three panels for three open roles and I put my engineers in the room as shadows from the very first interview - not after some readiness milestone. They watch, they take notes, they write their own evaluation report, they compare it to mine, we talk about the gaps.
 
@@ -133,7 +133,7 @@ We're early. The signal I'm watching for is three shadowed interviews and scores
 
 "Who" recommends running interviews alongside a colleague too, including one who's there purely to learn the method by watching. I wish I'd taken that seriously three companies ago.
 
-I wrote "[no single-person dependencies](/posts/ems-the-decision-system)" into a strategy manifesto years ago, took me a while to point it at myself.
+I wrote "[no single-person dependencies](/posts/ems-the-decision-system/)" into a strategy manifesto years ago, took me a while to point it at myself.
 
 > Which part of your hiring only works because you're in the room?
 

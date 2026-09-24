@@ -1,0 +1,152 @@
+// Pixel-diff library + driver. node diff.mjs <outJson>
+import fs from 'node:fs';
+import path from 'node:path';
+import { PNG } from 'pngjs';
+import pixelmatch from 'pixelmatch';
+
+export const S =
+    '/private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8v3';
+export const V = `${S}/visual-regression`;
+export const R =
+    '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v3';
+export const BASE =
+    '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/baseline';
+export const DIFFDIR = `${R}/diff`;
+fs.mkdirSync(`${V}/diff-scratch`, { recursive: true });
+
+const read = (p) => PNG.sync.read(fs.readFileSync(p));
+
+function crop(img, w, h) {
+    if (img.width === w && img.height === h) return img;
+    const out = new PNG({ width: w, height: h });
+    for (let y = 0; y < h; y++)
+        img.data.copy(out.data, y * w * 4, y * img.width * 4, y * img.width * 4 + w * 4);
+    return out;
+}
+
+function boxes(mask, w, h) {
+    // mask: Uint8Array w*h of 1 = mismatched; cluster on 16px cells
+    const C = 16;
+    const cw = Math.ceil(w / C),
+        ch = Math.ceil(h / C);
+    const cell = new Int32Array(cw * ch).fill(-1);
+    const bb = new Map();
+    for (let y = 0; y < h; y++)
+        for (let x = 0; x < w; x++)
+            if (mask[y * w + x]) cell[((y / C) | 0) * cw + ((x / C) | 0)] = 0;
+    let id = 0;
+    const comps = [];
+    for (let i = 0; i < cell.length; i++) {
+        if (cell[i] !== 0) continue;
+        id++;
+        const stack = [i];
+        cell[i] = id;
+        const cells = [];
+        while (stack.length) {
+            const c = stack.pop();
+            cells.push(c);
+            const cx = c % cw,
+                cy = (c / cw) | 0;
+            for (let dy = -1; dy <= 1; dy++)
+                for (let dx = -1; dx <= 1; dx++) {
+                    const nx = cx + dx,
+                        ny = cy + dy;
+                    if (nx < 0 || ny < 0 || nx >= cw || ny >= ch) continue;
+                    const n = ny * cw + nx;
+                    if (cell[n] === 0) {
+                        cell[n] = id;
+                        stack.push(n);
+                    }
+                }
+        }
+        comps.push(id);
+    }
+    for (let y = 0; y < h; y++)
+        for (let x = 0; x < w; x++) {
+            if (!mask[y * w + x]) continue;
+            const c = cell[((y / C) | 0) * cw + ((x / C) | 0)];
+            const b = bb.get(c) || { x0: x, y0: y, x1: x, y1: y, px: 0 };
+            b.x0 = Math.min(b.x0, x);
+            b.y0 = Math.min(b.y0, y);
+            b.x1 = Math.max(b.x1, x);
+            b.y1 = Math.max(b.y1, y);
+            b.px++;
+            bb.set(c, b);
+        }
+    return [...bb.values()]
+        .sort((a, b) => b.px - a.px)
+        .slice(0, 25)
+        .map((b) => ({ x: b.x0, y: b.y0, w: b.x1 - b.x0 + 1, h: b.y1 - b.y0 + 1, px: b.px }));
+}
+
+export function diffPair(aPath, bPath, { saveDiffTo, saveAbovePct = 0.1 } = {}) {
+    const A = read(aPath),
+        B = read(bPath);
+    const res = {
+        a: aPath,
+        b: bPath,
+        aSize: [A.width, A.height],
+        bSize: [B.width, B.height],
+        sameSize: A.width === B.width && A.height === B.height,
+    };
+    const w = Math.min(A.width, B.width),
+        h = Math.min(A.height, B.height);
+    const a = crop(A, w, h),
+        b = crop(B, w, h);
+    res.comparedSize = [w, h];
+    res.byteIdentical = res.sameSize && Buffer.compare(A.data, B.data) === 0;
+    // exact per-pixel RGBA comparison
+    let exact = 0,
+        firstRow = -1;
+    const exactMask = new Uint8Array(w * h);
+    for (let i = 0, p = 0; p < w * h; p++, i += 4) {
+        if (
+            a.data[i] !== b.data[i] ||
+            a.data[i + 1] !== b.data[i + 1] ||
+            a.data[i + 2] !== b.data[i + 2] ||
+            a.data[i + 3] !== b.data[i + 3]
+        ) {
+            exact++;
+            exactMask[p] = 1;
+            if (firstRow < 0) firstRow = (p / w) | 0;
+        }
+    }
+    res.exactDiffPixels = exact;
+    res.firstDifferingRow = firstRow;
+    // pixelmatch threshold 0.1 (task metric), AA excluded (default)
+    const out = new PNG({ width: w, height: h });
+    const mismatched = pixelmatch(a.data, b.data, out.data, w, h, {
+        threshold: 0.1,
+    });
+    const maskOut = new PNG({ width: w, height: h });
+    pixelmatch(a.data, b.data, maskOut.data, w, h, {
+        threshold: 0.1,
+        diffMask: true,
+        diffColor: [255, 0, 0],
+        aaColor: [0, 0, 255],
+    });
+    const pmMask = new Uint8Array(w * h);
+    for (let p = 0, i = 0; p < w * h; p++, i += 4)
+        if (
+            maskOut.data[i] === 255 &&
+            maskOut.data[i + 1] === 0 &&
+            maskOut.data[i + 2] === 0 &&
+            maskOut.data[i + 3] > 0
+        )
+            pmMask[p] = 1;
+    res.pm01Pixels = mismatched;
+    res.pm01Pct = +((mismatched / (w * h)) * 100).toFixed(4);
+    res.pm0Pixels = pixelmatch(a.data, b.data, null, w, h, {
+        threshold: 0,
+        includeAA: true,
+    });
+    res.pm01Boxes = mismatched ? boxes(pmMask, w, h) : [];
+    res.exactBoxes = exact ? boxes(exactMask, w, h) : [];
+    if (saveDiffTo && res.pm01Pct > saveAbovePct) {
+        fs.mkdirSync(path.dirname(saveDiffTo), { recursive: true });
+        fs.writeFileSync(saveDiffTo, PNG.sync.write(out));
+        res.diffPng = saveDiffTo;
+    }
+    return res;
+}
+

@@ -40,10 +40,8 @@ const pagination = getPagination<CollectionEntry<'tips'>>({
 });
 ---
 
-{
-    tip ? (
-        <TipDetails tip={tip} />
-    ) : (
-        <Tips {...pagination} totalEntities={sortedTips.length} />
-    )
-}
+{tip ? (
+    <TipDetails tip={tip} />
+) : (
+    <Tips {...pagination} totalEntities={sortedTips.length} />
+)}

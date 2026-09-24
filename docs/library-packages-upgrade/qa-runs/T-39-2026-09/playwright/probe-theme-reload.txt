@@ -1,0 +1,11 @@
+# node probe-theme-reload.mjs.txt (as .mjs) http://localhost:4321 /search/ type   (2026-09-24T03:51:56Z, host AppleInterfaceStyle=Dark)
+loaded {"t":"light","ls":null,"mm":false,"mq":[],"set":[]}
+typed {"t":"light","ls":null,"mm":false,"mq":[],"set":[]}
+reload1 {"t":"dark","ls":"dark","mm":false,"mq":[{"at":"/search/?q=hiring","matches":true,"t":1790221917802,"ls":null}],"set":[{"k":"theme","v":"dark","at":"/search/","t":1790221917802,"stack":"    at setPreference (http://localhost:4321/toggle-theme.js:1:284) |     at MediaQueryList.<anonymous> (http://localhost:4321/toggle-theme.js:1:1038)"}]}
+goto-again {"t":"light","ls":null,"mm":false,"mq":[{"at":"/search/?q=hiring","matches":true,"t":1790221917802,"ls":null}],"set":[{"k":"theme","v":"dark","at":"/search/","t":1790221917802,"stack":"    at setPreference (http://localhost:4321/toggle-theme.js:1:284) |     at MediaQueryList.<anonymous> (http://localhost:4321/toggle-theme.js:1:1038)"}]}
+js-reload {"t":"light","ls":null,"mm":false,"mq":[{"at":"/search/?q=hiring","matches":true,"t":1790221917802,"ls":null}],"set":[{"k":"theme","v":"dark","at":"/search/","t":1790221917802,"stack":"    at setPreference (http://localhost:4321/toggle-theme.js:1:284) |     at MediaQueryList.<anonymous> (http://localhost:4321/toggle-theme.js:1:1038)"}]}
+# control: same without typing (URL not changed by history.replaceState)
+loaded {"t":"light","ls":null,"mm":false,"mq":[],"set":[]}
+reload1 {"t":"light","ls":null,"mm":false,"mq":[],"set":[]}
+goto-again {"t":"light","ls":null,"mm":false,"mq":[],"set":[]}
+js-reload {"t":"light","ls":null,"mm":false,"mq":[],"set":[]}

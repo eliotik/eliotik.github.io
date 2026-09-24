@@ -1,0 +1,93 @@
+// v3 diff driver. node diff.mjs <outJson>
+// main vs up-A (task table), up-A vs up-B (noise floor), up-A(v3) vs v2 committed shots
+// (isolates Tasks 17/17b), segments main vs up, April baseline vs up-A (light, unaligned).
+import fs from 'node:fs';
+import { diffPair, S, V, R, BASE, DIFFDIR } from './difflib.mjs';
+
+const V2 =
+    '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v2';
+const outJson = process.argv[2];
+const up = (f) => `${R}/${f}`;
+const main = (f) => `${S}/main-shots/${f}`;
+const upB = (f) => `${V}/up-B/${f}`;
+
+const capUp = JSON.parse(fs.readFileSync(`${V}/capture-up-A.json`));
+const capMain = JSON.parse(fs.readFileSync(`${V}/capture-main.json`));
+const capUpB = JSON.parse(fs.readFileSync(`${V}/capture-up-B.json`));
+const segUp = fs.existsSync(`${V}/segments-up.json`) ? JSON.parse(fs.readFileSync(`${V}/segments-up.json`)) : null;
+const segMain = fs.existsSync(`${V}/segments-main.json`) ? JSON.parse(fs.readFileSync(`${V}/segments-main.json`)) : null;
+
+const report = {
+    generatedAt: new Date().toISOString(),
+    browser: { up: capUp.browserVersion, main: capMain.browserVersion, upB: capUpB.browserVersion },
+    mainVsUp: [],
+    upAvsUpB: [],
+    v2VsV3: [],
+    segments: [],
+    april: [],
+    metadata: [],
+};
+
+for (const s of capUp.shots) {
+    const f = s.file;
+    const d = diffPair(up(f), main(f), { saveDiffTo: `${DIFFDIR}/${f.replace('.png', '')}-main-vs-up.png` });
+    report.mainVsUp.push({ file: f, route: s.route, theme: s.theme, fullPage: s.fullPage, ...d });
+    const n = diffPair(up(f), upB(f), { saveDiffTo: `${V}/diff-scratch/${f.replace('.png', '')}-upA-vs-upB.png` });
+    report.upAvsUpB.push({ file: f, ...n });
+    if (fs.existsSync(`${V2}/${f}`)) {
+        const v = diffPair(up(f), `${V2}/${f}`, { saveDiffTo: `${V}/diff-scratch/${f.replace('.png', '')}-v2-vs-v3.png` });
+        report.v2VsV3.push({ file: f, ...v });
+    } else report.v2VsV3.push({ file: f, missing: true });
+    const m = capMain.shots.find((x) => x.file === f);
+    const b = capUpB.shots.find((x) => x.file === f);
+    const keys = ['status', 'finalURL', 'title', 'dataTheme', 'htmlClass', 'bodyBg', 'bodyColor', 'bodyFontFamily', 'fontPlexMonoLoaded', 'fontsLoaded', 'scrollHeight', 'scrollWidth', 'elementCount', 'imgTotal', 'imgBroken', 'carouselSlides', 'innerTextLen', 'innerTextHash', 'htmlChildren', 'console', 'pageErrors', 'badResponses'];
+    const cmp = {};
+    for (const k of keys) {
+        const uv = JSON.stringify(s[k]).replace(/localhost:4321/g, 'HOST');
+        const mv = JSON.stringify(m[k]).replace(/localhost:4331/g, 'HOST');
+        if (uv !== mv) cmp[k] = { up: s[k], main: m[k] };
+    }
+    report.metadata.push({
+        file: f,
+        differingKeys: Object.keys(cmp),
+        diffs: cmp,
+        upIframes: s.iframes.map((i) => ({ ...i, src: i.src.replace(/\?\d+$/, '') })),
+        mainIframes: m.iframes.map((i) => ({ ...i, src: i.src.replace(/\?\d+$/, '') })),
+        upB_innerTextHashSame: b.innerTextHash === s.innerTextHash,
+        up: { scrollHeight: s.scrollHeight, elementCount: s.elementCount, innerTextHash: s.innerTextHash, fonts: s.fontsLoaded.length, imgTotal: s.imgTotal, networkIdle: s.networkIdle, themeOk: s.themeOk, searchReady: s.searchReady, fpImgsComplete: s.fpImgsComplete, failedRequests: s.failedRequests.map((r) => r.replace(/\?.*::/, '?… ::')) },
+        main: { scrollHeight: m.scrollHeight, elementCount: m.elementCount, innerTextHash: m.innerTextHash, fonts: m.fontsLoaded.length, imgTotal: m.imgTotal, networkIdle: m.networkIdle, themeOk: m.themeOk, searchReady: m.searchReady, fpImgsComplete: m.fpImgsComplete, failedRequests: m.failedRequests.map((r) => r.replace(/\?.*::/, '?… ::')) },
+    });
+}
+
+if (segUp && segMain) {
+    for (const p of segUp.pages) {
+        const pm = segMain.pages.find((x) => x.name === p.name && x.theme === p.theme);
+        for (const sg of p.segs) {
+            const sm = pm.segs.find((x) => x.k === sg.k);
+            const d = diffPair(`${V}/seg-up/${sg.file}`, `${V}/seg-main/${sm.file}`, { saveDiffTo: `${DIFFDIR}/${sg.file.replace('.png', '')}-main-vs-up.png` });
+            report.segments.push({ file: sg.file, name: p.name, theme: p.theme, k: sg.k, scrollYUp: sg.scrollY, scrollYMain: sm.scrollY, heightUp: p.scrollHeight, heightMain: pm.scrollHeight, imgsOkUp: sg.imgsOk, imgsOkMain: sm.imgsOk, themeOkUp: p.themeOk, themeOkMain: pm.themeOk, ...d });
+        }
+    }
+}
+
+const APRIL = ['01-home', '02-posts-index', '03-post-with-images', '04-post-with-carousel', '05-tips-index', '06-tags-index', '07-tag-detail', '08-threads-index', '09-about', '10-404'];
+for (const n of APRIL) {
+    const d = diffPair(up(`${n}.png`), `${BASE}/${n}.png`, { saveDiffTo: `${V}/diff-scratch/april/${n}-april-vs-up.png`, saveAbovePct: -1 });
+    report.april.push({ name: n, ...d });
+}
+
+fs.writeFileSync(outJson, JSON.stringify(report, null, 2));
+const fmt = (r) => `${(r.file || r.name).padEnd(44)} size=${r.sameSize ? 'same' : r.aSize + ' vs ' + r.bSize} byteId=${r.byteIdentical} exact=${r.exactDiffPixels} pm0=${r.pm0Pixels} pm01=${r.pm01Pixels} (${r.pm01Pct}%)`;
+console.log('browser', JSON.stringify(report.browser));
+console.log('== main vs up-A');
+report.mainVsUp.forEach((r) => console.log(fmt(r)));
+console.log('== up-A vs up-B (noise floor)');
+report.upAvsUpB.forEach((r) => console.log(fmt(r)));
+console.log('== v3 up-A vs v2 committed');
+report.v2VsV3.forEach((r) => console.log(r.missing ? `${r.file} MISSING` : fmt(r)));
+console.log('== segments main vs up: total', report.segments.length, 'nonzero exact:', report.segments.filter((r) => r.exactDiffPixels).length, 'nonidentical size:', report.segments.filter((r) => !r.sameSize).length, 'scrollY mismatch:', report.segments.filter((r) => r.scrollYUp !== r.scrollYMain).length, 'imgs not ok:', report.segments.filter((r) => !r.imgsOkUp || !r.imgsOkMain).length);
+report.segments.filter((r) => r.exactDiffPixels || !r.sameSize).forEach((r) => console.log(fmt(r)));
+console.log('== april vs up-A (light, unaligned)');
+report.april.forEach((r) => console.log(fmt(r)));
+console.log('== metadata differing keys (main vs up-A)');
+report.metadata.forEach((m) => console.log(m.file.padEnd(40), m.differingKeys.join(',') || '-', '| upB textHash same:', m.upB_innerTextHashSame, '| themeOk', m.up.themeOk, m.main.themeOk));

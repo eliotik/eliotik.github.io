@@ -26,17 +26,64 @@ updates:
                   - 'eslint-*'
                   - '@typescript-eslint/*'
                   - 'astro-eslint-parser'
+                  - '@eslint/*'
+                  - '@eslint/js'
+                  - 'typescript-eslint'
           tailwind:
               patterns:
                   - 'tailwindcss'
                   - '@tailwindcss/*'
                   - 'prettier-plugin-tailwindcss'
+          # exclude-patterns below must list every pattern of the named groups above (Dependabot scores a pattern-less dependency-type group higher than wildcards).
           prod-minor:
               dependency-type: production
               update-types: ['minor', 'patch']
+              exclude-patterns:
+                  - 'astro'
+                  - '@astrojs/*'
+                  - 'astro-*'
+                  - 'react'
+                  - 'react-dom'
+                  - '@types/react'
+                  - '@types/react-dom'
+                  - 'eslint'
+                  - 'eslint-*'
+                  - '@eslint/*'
+                  - '@eslint/js'
+                  - '@typescript-eslint/*'
+                  - 'typescript-eslint'
+                  - 'astro-eslint-parser'
+                  - 'tailwindcss'
+                  - '@tailwindcss/*'
+                  - 'prettier-plugin-tailwindcss'
           dev-minor:
               dependency-type: development
               update-types: ['minor', 'patch']
+              exclude-patterns:
+                  - 'astro'
+                  - '@astrojs/*'
+                  - 'astro-*'
+                  - 'react'
+                  - 'react-dom'
+                  - '@types/react'
+                  - '@types/react-dom'
+                  - 'eslint'
+                  - 'eslint-*'
+                  - '@eslint/*'
+                  - '@eslint/js'
+                  - '@typescript-eslint/*'
+                  - 'typescript-eslint'
+                  - 'astro-eslint-parser'
+                  - 'tailwindcss'
+                  - '@tailwindcss/*'
+                  - 'prettier-plugin-tailwindcss'
+      ignore:
+          # @types/node follows the Node runtime major (.nvmrc, Node 22)
+          - dependency-name: '@types/node'
+            update-types: ['version-update:semver-major']
+          # typescript-eslint and @astrojs/check peer ranges cap typescript at 6.0.x (typescript-eslint requires <6.1.0)
+          - dependency-name: 'typescript'
+            versions: ['>= 6.1.0']
       labels:
           - 'dependencies'
 

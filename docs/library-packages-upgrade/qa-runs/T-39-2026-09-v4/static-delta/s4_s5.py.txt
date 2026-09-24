@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+"""S4 sitemaps + S5 SEO heads.
+
+usage: s4_s5.py <old_dist> <new_dist> <out_json>
+
+S4: xmllint --noout on every sitemap*.xml (+ rss.xml); page <loc> totals vs
+    unique per build; union set old vs new; every NEW <loc> maps to a dist
+    file (case-exact); sitemap-index <loc> set == dist sitemap-*.xml files.
+S5: every canonical / og:url / twitter:url (and og:image / twitter:image as
+    a bonus) on every NEW page maps to a dist file; 404.html has none and has
+    robots noindex; noindex set NEW == OLD + {404.html}, tags byte-identical
+    on all other pages; no page has more than one robots meta.
+"""
+import json
+import os
+import re
+import subprocess
+import sys
+from html.parser import HTMLParser
+from urllib.parse import urlsplit, unquote
+
+OLD, NEW, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
+ORIGIN_HOST = 'www.novifyx.com'
+
+
+def walk(root):
+    s = set()
+    for dp, dn, fn in os.walk(root):
+        for f in fn:
+            s.add(os.path.relpath(os.path.join(dp, f), root).replace(os.sep, '/'))
+    return s
+
+
+FILES = {'old': walk(OLD), 'new': walk(NEW)}
+ROOT = {'old': OLD, 'new': NEW}
+
+
+def resolve(which, url):
+    u = urlsplit(url)
+    if u.scheme != 'https' or u.netloc != ORIGIN_HOST:
+        return None, f'offsite:{u.scheme}://{u.netloc}'
+    path = unquote(u.path) or '/'
+    p = path.lstrip('/')
+    F = FILES[which]
+    if path.endswith('/'):
+        c = p + 'index.html'
+        return (c, 'dir-index') if c in F else (None, 'missing')
+    if p in F:
+        return p, 'file'
+    if p + '/index.html' in F:
+        return p + '/index.html', 'dir-redirect'
+    if p + '.html' in F:
+        return p + '.html', 'html-ext'
+    return None, 'missing'
+
+
+res = {'S4': {}, 'S5': {}}
+
+# ---------------- S4 ----------------
+for which in ('old', 'new'):
+    root = ROOT[which]
+    sm = sorted(f for f in FILES[which] if re.fullmatch(r'sitemap[^/]*\.xml', f))
+    lint = {}
+    for f in sm + ['rss.xml']:
+        r = subprocess.run(['xmllint', '--noout', os.path.join(root, f)], capture_output=True, text=True)
+        lint[f] = {'exit': r.returncode, 'stderr': r.stderr.strip()}
+    per = {}
+    all_locs = []
+    idx_locs = []
+    for f in sm:
+        s = open(os.path.join(root, f), encoding='utf-8').read()
+        locs = re.findall(r'<loc>(.*?)</loc>', s)
+        if '<sitemapindex' in s:
+            idx_locs = locs
+            per[f] = {'type': 'index', 'locs': len(locs)}
+        else:
+            per[f] = {'type': 'urlset', 'locs': len(locs), 'urls': s.count('<url>')}
+            all_locs += locs
+    dup = sorted({l for l in all_locs if all_locs.count(l) > 1})
+    idx_files = sorted(urlsplit(l).path.lstrip('/') for l in idx_locs)
+    sitemap_files = sorted(f for f in sm if f != 'sitemap-index.xml')
+    unresolved = []
+    rules = {}
+    for l in sorted(set(all_locs)):
+        t, rule = resolve(which, l)
+        rules[rule] = rules.get(rule, 0) + 1
+        if t is None:
+            unresolved.append({'loc': l, 'why': rule})
+    res['S4'][which] = {
+        'sitemap_files': sm,
+        'xmllint': lint,
+        'per_file': per,
+        'total_locs': len(all_locs),
+        'unique_locs': len(set(all_locs)),
+        'duplicates': dup,
+        'index_lists': idx_files,
+        'index_equals_sitemap_files': idx_files == sitemap_files,
+        'index_locs_resolve': [resolve(which, l)[0] is not None for l in idx_locs].count(True),
+        'loc_resolution_rules': rules,
+        'unresolved': unresolved,
+        '_set': sorted(set(all_locs)),
+    }
+so, sn = set(res['S4']['old']['_set']), set(res['S4']['new']['_set'])
+res['S4']['union_equal'] = so == sn
+res['S4']['only_old'] = sorted(so - sn)
+res['S4']['only_new'] = sorted(sn - so)
+for w in ('old', 'new'):
+    res['S4'][w].pop('_set')
+
+
+# ---------------- S5 ----------------
+class HeadP(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.items = []  # (kind, value, raw_tag)
+        self.robots = []
+
+    def handle_starttag(self, tag, attrs):
+        self._t(tag, attrs)
+
+    def handle_startendtag(self, tag, attrs):
+        self._t(tag, attrs)
+
+    def _t(self, tag, attrs):
+        d = dict(attrs)
+        raw = self.get_starttag_text()
+        if tag == 'link' and (d.get('rel') or '').lower() == 'canonical':
+            self.items.append(('canonical', d.get('href'), raw))
+        if tag == 'meta':
+            key = (d.get('property') or d.get('name') or '').lower()
+            if key in ('og:url', 'twitter:url', 'og:image', 'twitter:image'):
+                self.items.append((key, d.get('content'), raw))
+            if key == 'robots':
+                self.robots.append(raw)
+
+
+def heads(which):
+    out = {}
+    for f in sorted(x for x in FILES[which] if x.endswith('.html')):
+        p = HeadP()
+        p.feed(open(os.path.join(ROOT[which], f), encoding='utf-8').read())
+        out[f] = p
+    return out
+
+
+H = {'old': heads('old'), 'new': heads('new')}
+counts, unresolved, rules = {}, [], {}
+for f, p in H['new'].items():
+    for kind, val, raw in p.items:
+        counts[kind] = counts.get(kind, 0) + 1
+        t, rule = resolve('new', val or '')
+        rules[f'{kind}:{rule}'] = rules.get(f'{kind}:{rule}', 0) + 1
+        if t is None:
+            unresolved.append({'page': f, 'kind': kind, 'value': val, 'why': rule})
+p404 = H['new']['404.html']
+noidx_old = {f: p.robots for f, p in H['old'].items() if p.robots}
+noidx_new = {f: p.robots for f, p in H['new'].items() if p.robots}
+multi = [f for w in ('old', 'new') for f, p in H[w].items() if len(p.robots) > 1]
+changed = sorted(
+    f for f in set(noidx_old) & set(noidx_new) if noidx_old[f] != noidx_new[f]
+)
+res['S5'] = {
+    'pages': len(H['new']),
+    'counts_new': counts,
+    'resolution_rules_new': rules,
+    'unresolved_new': unresolved,
+    'unresolved_new_url_kinds': [u for u in unresolved if u['kind'] in ('canonical', 'og:url', 'twitter:url')],
+    '404_url_tags': [(k, v) for k, v, _ in p404.items if k in ('canonical', 'og:url', 'twitter:url')],
+    '404_robots': p404.robots,
+    '404_robots_old': H['old']['404.html'].robots,
+    'noindex_old_count': len(noidx_old),
+    'noindex_new_count': len(noidx_new),
+    'noindex_new_minus_old': sorted(set(noidx_new) - set(noidx_old)),
+    'noindex_old_minus_new': sorted(set(noidx_old) - set(noidx_new)),
+    'noindex_tag_changed_on_common': changed,
+    'noindex_pages_new': {f: v for f, v in sorted(noidx_new.items())},
+    'multiple_robots': multi,
+    'canonical_missing_new': sorted(
+        f for f, p in H['new'].items() if not any(k == 'canonical' for k, _, _ in p.items)
+    ),
+    'canonical_multiple_new': sorted(
+        f for f, p in H['new'].items() if sum(1 for k, _, _ in p.items if k == 'canonical') > 1
+    ),
+}
+with open(OUT, 'w') as fh:
+    json.dump(res, fh, indent=1)
+print(json.dumps(res, indent=1))

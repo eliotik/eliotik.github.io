@@ -1,0 +1,21 @@
+// node capture-simple.mjs <base> <width> <outDir>  (10 April routes, light theme)
+import { chromium } from 'playwright'; import fs from 'node:fs';
+const [base, width, outDir] = process.argv.slice(2);
+const ROUTES = [['01-home','/'],['02-posts-index','/posts'],['03-post-with-images','/posts/ems-connecting-the-systems'],['04-post-with-carousel','/posts/flutter-google-maps-embedded-map'],['05-tips-index','/tips'],['06-tags-index','/tags'],['07-tag-detail','/tags/engineering-management/'],['08-threads-index','/threads'],['09-about','/about'],['10-404','/this-route-doesnt-exist']];
+fs.mkdirSync(outDir, { recursive: true });
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+for (const [name, route] of ROUTES) {
+  const ctx = await browser.newContext({ viewport: { width: +width, height: 1800 }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: 'light' });
+  await ctx.addInitScript(() => localStorage.setItem('theme', 'light'));
+  const page = await ctx.newPage();
+  const r = await page.goto(base + route, { waitUntil: 'load' });
+  await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForFunction(() => [...document.images].filter(i => { const b = i.getBoundingClientRect(); return b.top < innerHeight && b.bottom > 0 && b.left < innerWidth && b.right > 0; }).every(i => i.complete), null, { timeout: 20000 }).catch(() => {});
+  await page.waitForTimeout(500);
+  const th = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
+  await page.screenshot({ path: `${outDir}/${name}.png`, animations: 'disabled', caret: 'hide' });
+  console.log(outDir, name, r.status(), th);
+  await ctx.close();
+}
+await browser.close();

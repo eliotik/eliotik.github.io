@@ -1,0 +1,13 @@
+--- dev.log signals:
+8:{"message":"[200] /search/ 145ms","label":null,"level":"info"}
+9:{"message":"[200] /search/ 29ms","label":null,"level":"info"}
+10:{"message":"[200] / 160ms","label":null,"level":"info"}
+11:{"message":"[200] / 42ms","label":null,"level":"info"}
+12:{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 1100ms","label":null,"level":"info"}
+13:{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 1024ms","label":null,"level":"info"}
+14:{"message":"[200] /search/ 3ms","label":null,"level":"info"}
+15:{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1357ms","label":null,"level":"info"}
+16:{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1280ms","label":null,"level":"info"}
+17:{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1398ms","label":null,"level":"info"}
+18:{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1322ms","label":null,"level":"info"}
+19:{"message":"dependencies optimized: astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-swap-functions.js, astro/virtual-modules/transitions-types.js","label":"vite","level":"info"}

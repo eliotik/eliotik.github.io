@@ -1,0 +1,29 @@
+import json,re,collections,os
+pages=[]
+for dp,dn,fn in os.walk('old-dist-run1'):
+    for f in fn:
+        if f.endswith('.html'):
+            rel=os.path.relpath(os.path.join(dp,f),'old-dist-run1')
+            s=open(os.path.join(dp,f)).read()
+            m=re.search(r'<html\b[^>]*>',s)
+            if m and 'class="false"' in m.group(0): pages.append(rel)
+def cat(p):
+    if p in ('index.html','404.html','about/index.html','search/index.html','posts/index.html','tips/index.html','tags/index.html','threads/index.html'): return p
+    if re.fullmatch(r'posts/\d+/index.html',p): return 'posts/<n>/'
+    if re.fullmatch(r'tips/\d+/index.html',p): return 'tips/<n>/'
+    if re.fullmatch(r'tags/[^/]+/\d+/index.html',p): return 'tags/<tag>/<n>/'
+    if re.fullmatch(r'tags/[^/]+/index.html',p): return 'tags/<tag>/'
+    if re.fullmatch(r'threads/[^/]+/index.html',p): return 'threads/<slug>/'
+    return 'OTHER:'+p
+cnt=collections.Counter(cat(p) for p in pages)
+print(len(pages), dict(cnt))
+json.dump(sorted(pages), open('c-pages.json','w'), indent=0)
+bad=0
+for w in ['new-dist-run1','old-dist-run1']:
+    n=0
+    for dp,dn,fn in os.walk(w):
+        for f in fn:
+            if f.endswith('.html'):
+                s=open(os.path.join(dp,f)).read()
+                n+=len(re.findall(r'class="(?:false|undefined|null)"',s))
+    print(w,'class="false|undefined|null" occurrences:',n)

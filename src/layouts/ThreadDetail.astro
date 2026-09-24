@@ -57,60 +57,60 @@ const firstArticle = detail.articles[0];
             </div>
         </dl>
 
-        {
-            detail.topTags.length > 0 && (
-                <div class="mb-6 flex flex-wrap gap-x-4 gap-y-2">
-                    {detail.topTags.map(t => (
-                        <a
-                            href={`/tags/${t.tag}/`}
-                            class="group text-skin-base/70 hover:text-skin-accent inline-flex items-baseline font-mono text-sm font-semibold whitespace-nowrap transition-colors"
-                        >
-                            <span class="text-skin-base/40 group-hover:text-skin-accent mr-0.5 transition-colors">
-                                #
-                            </span>
-                            {t.tagName}
-                        </a>
-                    ))}
-                </div>
-            )
-        }
+        {detail.topTags.length > 0 && <div
+            class="mb-6 flex flex-wrap gap-x-4 gap-y-2"
+        >
+            {detail.topTags.map(t => <a
+                href={`/tags/${t.tag}/`}
+                class="group text-skin-base/70 hover:text-skin-accent inline-flex items-baseline font-mono text-sm font-semibold whitespace-nowrap transition-colors"
+            >
+                <span
+                    class="text-skin-base/40 group-hover:text-skin-accent mr-0.5 transition-colors"
+                >
+                    #
+                </span>
+                {t.tagName}
+            </a>)}
+        </div>}
 
         <ul
             class="divide-skin-line/40 border-skin-line/60 flex flex-col divide-y border-y"
         >
-            {
-                detail.articles.map(a => {
-                    const num = String(a.position).padStart(2, '0');
-                    return (
-                        <li>
-                            <a
-                                href={`/posts/${a.slug}/`}
-                                class="group hover:bg-skin-card/40 grid grid-cols-[40px_1fr_auto] items-start gap-3 py-3.5 pr-1 transition-colors sm:grid-cols-[56px_1fr_auto] sm:gap-4"
+            {detail.articles.map(a => {
+                const num = String(a.position).padStart(2, '0');
+                return <li>
+                    <a
+                        href={`/posts/${a.slug}/`}
+                        class="group hover:bg-skin-card/40 grid grid-cols-[40px_1fr_auto] items-start gap-3 py-3.5 pr-1 transition-colors sm:grid-cols-[56px_1fr_auto] sm:gap-4"
+                    >
+                        <div
+                            class="border-skin-line/40 group-hover:border-skin-accent/70 flex items-start justify-end self-stretch border-r pt-0.5 pr-2.5 transition-colors sm:pr-3"
+                        >
+                            <span
+                                class="text-skin-base/50 group-hover:text-skin-accent text-xs font-medium tracking-wider tabular-nums transition-colors"
                             >
-                                <div class="border-skin-line/40 group-hover:border-skin-accent/70 flex items-start justify-end self-stretch border-r pt-0.5 pr-2.5 transition-colors sm:pr-3">
-                                    <span class="text-skin-base/50 group-hover:text-skin-accent text-xs font-medium tracking-wider tabular-nums transition-colors">
-                                        {num}
-                                    </span>
-                                </div>
-                                <div class="min-w-0">
-                                    <h3 class="text-skin-accent mb-1 text-sm font-bold">
-                                        {a.title}
-                                    </h3>
-                                    <p class="text-skin-base/70 text-xs leading-relaxed">
-                                        {a.description}
-                                    </p>
-                                </div>
-                                <span
-                                    aria-hidden
-                                    class="text-skin-base/40 group-hover:text-skin-accent pt-0.5 pr-1 transition-transform group-hover:translate-x-0.5"
-                                >
-                                    →
-                                </span>
-                            </a>
-                        </li>
-                    );
-                })
-            }
+                                {num}
+                            </span>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="text-skin-accent mb-1 text-sm font-bold">
+                                {a.title}
+                            </h3>
+                            <p
+                                class="text-skin-base/70 text-xs leading-relaxed"
+                            >
+                                {a.description}
+                            </p>
+                        </div>
+                        <span
+                            aria-hidden
+                            class="text-skin-base/40 group-hover:text-skin-accent pt-0.5 pr-1 transition-transform group-hover:translate-x-0.5"
+                        >
+                            →
+                        </span>
+                    </a>
+                </li>;
+            })}
         </ul>
 
         <nav
@@ -123,17 +123,13 @@ const firstArticle = detail.articles[0];
                 <span class="text-base leading-none">←</span>
                 <span>All threads</span>
             </a>
-            {
-                firstArticle && (
-                    <a
-                        href={`/posts/${firstArticle.slug}/`}
-                        class="border-skin-accent bg-skin-accent text-skin-fill inline-flex items-center justify-center gap-2 rounded-sm border px-4 py-2.5 font-mono text-sm font-bold transition-opacity hover:opacity-90"
-                    >
-                        <span>Start reading</span>
-                        <span class="text-base leading-none">→</span>
-                    </a>
-                )
-            }
+            {firstArticle && <a
+                href={`/posts/${firstArticle.slug}/`}
+                class="border-skin-accent bg-skin-accent text-skin-fill inline-flex items-center justify-center gap-2 rounded-sm border px-4 py-2.5 font-mono text-sm font-bold transition-opacity hover:opacity-90"
+            >
+                <span>Start reading</span>
+                <span class="text-base leading-none">→</span>
+            </a>}
         </nav>
     </main>
     <Footer />

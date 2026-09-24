@@ -1,0 +1,27 @@
+webkit 17.4 (playwright 1.44.1)
+PASS P9.webkit.H.capture-control — harness control: page console.error, main-frame worker console.error, sandbox-iframe worker console.error, worker uncaught and pageerror are all captured on this engine
+  nav1 /posts/octoprint-prusa-core-one-raspberry-pi/ soft=true parent=HTML loads=1 same=true
+  nav2 /search/ soft=true parent=HTML loads=1 same=true
+  nav3 /tags/ soft=true parent=HTML loads=1 same=true
+  nav4 /tags/engineering-management/ soft=true parent=HTML loads=1 same=true
+  nav5 / soft=true parent=HTML loads=1 same=true
+  nav6 /posts/ soft=true parent=HTML loads=1 same=true
+  nav7 /posts/local-coding-model-desktop-macbook/ soft=true parent=HTML loads=1 same=true
+  nav8 /tips/ soft=true parent=HTML loads=1 same=true
+  nav9 /about/ soft=true parent=HTML loads=1 same=true
+  nav10 / soft=true parent=HTML loads=1 same=true
+PASS P9.webkit.P4.soft-navs — 10 real-click ClientRouter navigations are soft (token survives, 0 load events), expected paths, islands hydrated
+PASS P9.webkit.P4.carousel-after-nav — after client nav home→post: carousel Next click advances by clientWidth ±2
+PASS P9.webkit.P4.search-after-nav — after client nav →/search/: typing 'hiring' lists ≥1 result and sets ?q=hiring
+PASS P9.webkit.P4.tags-after-nav — after client nav →/tags/: filter 'engin' narrows and includes engineering-management
+PASS P9.webkit.P0.sandbox-parent-html — sandbox iframe parent is <html>, exactly 1 sandbox, on / and after every navigation
+PASS P9.webkit.P0.iframe-not-reloaded — sandbox iframe never reloads: DOM load events 1, sandbox-html requests 1, same element after every nav, 0 removals
+PASS P9.webkit.P0.gtag-once — gtag.js requested exactly once; gtag-src <script> is the same persisted element after every nav; 0 pending text/partytown
+PASS P9.webkit.P0.proxytown — 0 failed/aborted proxytown requests and 0 proxytown console errors
+PASS P9.webkit.P0.worker-internal — hook inside the real Partytown worker (console.error/warn wrap + error/unhandledrejection listeners, installed at worker creation) buffered nothing across the 10 navigations
+PASS P9.webkit.P1.carousels — octoprint: 7 carousels (7 slider islands); start Prev disabled/Next enabled; each Next click = clientWidth ±2; end state Next disabled at max; all slide images loaded
+PASS P9.webkit.P2.search-typing — search: real keyboard typing 'hiring' lists ≥1 result, URL ?q=hiring
+PASS P9.webkit.P3.tags-filter — tags: typing 'engin' narrows the list, includes engineering-management, all items match
+PASS P9.webkit.console — console errors = 0 except network errors to the blocked analytics hosts; 0 page errors; 0 failed requests to non-analytics URLs
+DONE webkit: 14/14 pass; console errors 36 (exempt 36); proxy blocked 20, tunnels {"fonts.googleapis.com":6,"fonts.gstatic.com":6,"www.googletagmanager.com":3}; worker events 1
+EXIT=0

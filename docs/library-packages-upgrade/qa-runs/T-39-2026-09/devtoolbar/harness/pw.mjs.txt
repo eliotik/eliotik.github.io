@@ -1,0 +1,218 @@
+// Headless Chrome (channel 'chrome') cold-start probe for the Astro dev toolbar.
+// Usage: node pw.mjs <base> <mode: par|seq> <outdir>
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const [BASE, MODE, OUTDIR] = process.argv.slice(2);
+const PAGES = [
+  '/',
+  '/posts/octoprint-prusa-core-one-raspberry-pi/',
+  '/posts/flutter-google-maps-address-manipulation/',
+  '/posts/flutter-google-maps-embedded-map/',
+  '/search/',
+];
+const t0 = Date.now();
+const ts = () => Date.now() - t0;
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const bad = []; // status >= 400
+const failed = []; // requestfailed
+const consoleMsgs = [];
+const pageErrors = [];
+const navs = [];
+const docLoads = [];
+const allResponses = [];
+let totalResponses = 0;
+const statusCounts = {};
+
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+await ctx.addInitScript(() => {
+  const NativeWS = window.WebSocket;
+  window.WebSocket = class extends NativeWS {
+    constructor(...a) {
+      super(...a);
+      this.addEventListener('message', (ev) => {
+        try {
+          const d = String(ev.data);
+          if (!/"type":"(connected|ping)"/.test(d)) console.debug('VITE_WS ' + d.slice(0, 400));
+        } catch {}
+      });
+    }
+  };
+  window.addEventListener('unhandledrejection', (e) => console.error('UNHANDLED_REJECTION ' + String(e.reason && (e.reason.stack || e.reason.message) || e.reason)));
+  window.addEventListener(
+    'error',
+    (e) => {
+      if (e.target && e.target !== window) console.error('RESOURCE_ERROR ' + (e.target.src || e.target.href || e.target.tagName));
+    },
+    true
+  );
+});
+ctx.on('response', (r) => {
+  if (!/deadbe/.test(r.url())) {
+    allResponses.push({ t: ts(), status: r.status(), url: r.url().replace(BASE, '') });
+    totalResponses++;
+    statusCounts[r.status()] = (statusCounts[r.status()] || 0) + 1;
+  }
+  if (r.status() >= 400) bad.push({ t: ts(), status: r.status(), statusText: r.statusText(), url: r.url().replace(BASE, '') });
+});
+ctx.on('requestfailed', (r) => failed.push({ t: ts(), url: r.url().replace(BASE, ''), err: r.failure()?.errorText }));
+
+function wire(page, label) {
+  page.on('console', (m) => consoleMsgs.push({ t: ts(), page: label, type: m.type(), text: m.text(), loc: m.location()?.url?.replace(BASE, '') }));
+  page.on('pageerror', (e) => pageErrors.push({ t: ts(), page: label, msg: String(e.stack || e.message) }));
+  page.on('load', () => docLoads.push({ t: ts(), page: label, url: page.url().replace(BASE, '') }));
+  page.on('framenavigated', (f) => {
+    if (f === page.mainFrame()) navs.push({ t: ts(), page: label, url: f.url().replace(BASE, '') });
+  });
+}
+
+const inspect = () => {
+  const tb = document.querySelector('astro-dev-toolbar');
+  const apps = tb && tb.shadowRoot ? [...tb.shadowRoot.querySelectorAll('button.item[data-app-id]')].map((e) => e.getAttribute('data-app-id')) : null;
+  return {
+    url: location.pathname,
+    navType: performance.getEntriesByType('navigation')[0]?.type,
+    toolbarElement: !!tb,
+    toolbarShadow: !!(tb && tb.shadowRoot),
+    toolbarApps: apps,
+    toolbarEntrypointScript: !!document.querySelector('script[src*="dev-toolbar/entrypoint.js"]'),
+    perfBad: performance
+      .getEntriesByType('resource')
+      .filter((e) => e.responseStatus >= 400)
+      .map((e) => ({ name: e.name, status: e.responseStatus })),
+    perfToolbarChunks: performance
+      .getEntriesByType('resource')
+      .filter((e) => /dev-toolbar|\/deps\/(astro|settings|audit|xray|toolbar|ui-library)[-_.]/.test(e.name))
+      .map((e) => ({ name: e.name.replace(location.origin, ''), status: e.responseStatus })),
+    islands: document.querySelectorAll('astro-island').length,
+    unhydratedIslands: document.querySelectorAll('astro-island[ssr]').length,
+  };
+};
+
+const results = { base: BASE, mode: MODE, pages: {} };
+
+async function load(page, p) {
+  const start = ts();
+  let resp, err;
+  try {
+    resp = await page.goto(BASE + p, { waitUntil: 'load', timeout: 120000 });
+  } catch (e) {
+    err = String(e.message);
+  }
+  return { start, loadedAt: ts(), status: resp?.status(), gotoError: err };
+}
+
+if (MODE === 'par') {
+  const pages = await Promise.all(PAGES.map(async (p) => { const pg = await ctx.newPage(); wire(pg, p); return [p, pg]; }));
+  const loads = await Promise.all(pages.map(async ([p, pg]) => [p, await load(pg, p)]));
+  await wait(10000);
+  for (const [p, pg] of pages) {
+    results.pages[p] = { ...Object.fromEntries(loads)[p], state: await pg.evaluate(inspect) };
+  }
+  await pages[0][1].screenshot({ path: path.join(OUTDIR, 'home-par.png') });
+} else {
+  const pg = await ctx.newPage();
+  wire(pg, 'seq');
+  let first = true;
+  for (const p of PAGES) {
+    const l = await load(pg, p);
+    await wait(first ? 10000 : 5000);
+    first = false;
+    results.pages[p] = { ...l, state: await pg.evaluate(inspect) };
+  }
+  // Toolbar functional check on "/" : open and close every app.
+  await load(pg, '/');
+  await wait(3000);
+  const apps = (await pg.evaluate(inspect)).toolbarApps || [];
+  const errBefore = consoleMsgs.filter((m) => m.type === 'error').length + pageErrors.length;
+  results.appClicks = [];
+  for (const id of apps) {
+    const r = await pg.evaluate(async (id) => {
+      const tb = document.querySelector('astro-dev-toolbar');
+      const btn = tb.shadowRoot.querySelector(`button.item[data-app-id="${id}"]`);
+      btn.click();
+      await new Promise((r) => setTimeout(r, 1200));
+      const canvas = tb.shadowRoot.querySelector(`astro-dev-toolbar-app-canvas[data-app-id="${id}"]`);
+      const open = {
+        activeClass: btn.classList.contains('active'),
+        canvas: !!canvas,
+        canvasChildren: canvas && canvas.shadowRoot ? canvas.shadowRoot.childElementCount : null,
+        canvasHidden: canvas ? canvas.style.display === 'none' || canvas.hasAttribute('hidden') : null,
+      };
+      return open;
+    }, id);
+    if (id === 'astro:audit' || id === 'astro:xray') await pg.screenshot({ path: path.join(OUTDIR, `app-${id.replace(':', '_')}.png`) });
+    await pg.evaluate(async (id) => {
+      const tb = document.querySelector('astro-dev-toolbar');
+      tb.shadowRoot.querySelector(`button.item[data-app-id="${id}"]`).click();
+      await new Promise((r) => setTimeout(r, 400));
+    }, id);
+    results.appClicks.push({ id, ...r });
+  }
+  results.errorsDuringAppClicks = consoleMsgs.filter((m) => m.type === 'error').length + pageErrors.length - errBefore;
+  await pg.screenshot({ path: path.join(OUTDIR, 'home-seq.png') });
+}
+
+// Positive control (excluded from tallies): a wrong-hash optimized dep must 504 and the
+// dynamic import must fail with Chrome's 'Failed to fetch dynamically imported module'.
+const tControl = ts();
+const pcPage = (await ctx.pages())[0];
+const positiveControl = await pcPage.evaluate(async () => {
+  const r = await fetch('/node_modules/.vite/deps/react.js?v=deadbeef');
+  let dynErr = null;
+  try { await import('/node_modules/.vite/deps/react.js?v=deadbe01'); } catch (e) { dynErr = String(e && e.message); }
+  return { fetchStatus: r.status, fetchStatusText: r.statusText, dynImportError: dynErr };
+});
+await new Promise((r) => setTimeout(r, 500));
+positiveControl.recordedByResponseListener = bad.filter((b) => b.t >= tControl).map((b) => `${b.status} ${b.statusText} ${b.url}`);
+for (let i = bad.length - 1; i >= 0; i--) if (bad[i].t >= tControl) bad.splice(i, 1);
+positiveControl.consoleDuringControl = consoleMsgs.filter((m) => m.t >= tControl && !m.text.startsWith('VITE_WS ')).map((m) => `${m.type}: ${m.text.slice(0, 200)}`);
+for (let i = consoleMsgs.length - 1; i >= 0; i--) if (consoleMsgs[i].t >= tControl) consoleMsgs.splice(i, 1);
+for (let i = failed.length - 1; i >= 0; i--) if (failed[i].t >= tControl) failed.splice(i, 1);
+for (let i = pageErrors.length - 1; i >= 0; i--) if (pageErrors[i].t >= tControl) pageErrors.splice(i, 1);
+await browser.close();
+Object.assign(results, {
+  positiveControl,
+  docLoads,
+  allResponses,
+  viteWs: consoleMsgs.filter((m) => m.text.startsWith('VITE_WS ')).map((m) => ({ t: m.t, page: m.page, text: m.text })),
+  elapsedMs: ts(),
+  totalResponses,
+  statusCounts,
+  bad,
+  count504: bad.filter((b) => b.status === 504).length,
+  failed,
+  pageErrors,
+  consoleErrors: consoleMsgs.filter((m) => m.type === 'error' || m.type === 'warning'),
+  consoleAll: consoleMsgs,
+  navs,
+  failedDynImport: [...consoleMsgs.map((m) => m.text), ...pageErrors.map((e) => e.msg)].filter((s) => /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(s)),
+});
+fs.writeFileSync(path.join(OUTDIR, `chrome-${MODE}.json`), JSON.stringify(results, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      mode: MODE,
+      elapsedMs: results.elapsedMs,
+      totalResponses,
+      statusCounts,
+      count504: results.count504,
+      bad,
+      failed,
+      pageErrors: pageErrors.map((e) => e.msg.slice(0, 200)),
+      consoleErrors: results.consoleErrors.map((m) => `${m.type}: ${m.text.slice(0, 200)}`),
+      failedDynImport: results.failedDynImport,
+      docLoads: docLoads.map((d) => `${d.t} ${d.page} ${d.url}`),
+      viteWs: results.viteWs.map((m) => `${m.t} ${m.page} ${m.text.slice(0, 200)}`),
+      positiveControl,
+      pages: Object.fromEntries(Object.entries(results.pages).map(([p, v]) => [p, { status: v.status, gotoError: v.gotoError, navType: v.state.navType, toolbar: v.state.toolbarElement, apps: v.state.toolbarApps, perfBad: v.state.perfBad.length, tbChunks: v.state.perfToolbarChunks.length, islands: v.state.islands, unhydrated: v.state.unhydratedIslands }])),
+      appClicks: results.appClicks,
+      errorsDuringAppClicks: results.errorsDuringAppClicks,
+    },
+    null,
+    1
+  )
+);

@@ -1,0 +1,9 @@
+audio-vs-paper-books 1
+ems-the-delivery-system 1
+dad-ops-playbook 1
+# Counts: `grep -o '<details' dist/posts/<slug>/index.html | wc -l` after `pnpm build` (post-jampack) on main state (HEAD 684ff4b), Node v22.22.2.
+# dad-ops-playbook = first match of `grep -l 'Table of contents' src/content/blog/*.mdx` (the other two posts are .md files).
+# TOC wrapper check (HTML around the single <details> in each post):
+# audio-vs-paper-books: yes - <h2 id="table-of-contents">Table of contents</h2><p></p> then <details><summary>Open Table of contents</summary><p></p><ul>... (8 TOC links)
+# ems-the-delivery-system: yes - <h2 id="table-of-contents">Table of contents</h2><p></p> then <details><summary>Open Table of contents</summary><p></p><ul>... (10 TOC links)
+# dad-ops-playbook: yes - <h2 id="table-of-contents">Table of contents</h2><p></p> then <details><summary>Open Table of contents</summary><p></p><ul>... (7 TOC links)

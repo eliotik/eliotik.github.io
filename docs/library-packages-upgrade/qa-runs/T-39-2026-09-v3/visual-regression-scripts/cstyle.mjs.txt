@@ -1,0 +1,379 @@
+// Computed-style comparator: main (4331) vs upgraded (4321), in memory.
+// node cstyle.mjs static      <outJson> [widths=1280,800,700,375] [routeRegex]
+// node cstyle.mjs interactive <outJson> [kinds=hover,focus]      [routeRegex]
+// node cstyle.mjs control     <outJson>
+import fs from 'node:fs';
+import { launch, newPage, settle, STATES, statesFor, ROUTES, installVR, UP, MAIN } from './common.mjs';
+
+const [mode, outJson, arg3, arg4] = process.argv.slice(2);
+const routeRe = arg4 ? new RegExp(arg4) : null;
+const THEMES = ['light', 'dark'];
+const IGNORE = fs.readFileSync(new URL('./ignore-root-vars.txt', import.meta.url), 'utf8').split('\n').filter(Boolean);
+const browser = await launch();
+const result = { mode, browserVersion: browser.version(), startedAt: new Date().toISOString(), runs: [] };
+
+function compareRecords(ra, rb) {
+    // ra = main, rb = up
+    const ma = new Map(ra.map((r) => [r.k, r]));
+    const mb = new Map(rb.map((r) => [r.k, r]));
+    const onlyMain = [...ma.keys()].filter((k) => !mb.has(k));
+    const onlyUp = [...mb.keys()].filter((k) => !ma.has(k));
+    const diff = { std: [], cus: [], pstd: [], pcus: [], cusx: [], rect: [], cls: [] };
+    for (const [k, a] of ma) {
+        const b = mb.get(k);
+        if (!b) continue;
+        if (a.h !== b.h) diff.std.push(k);
+        if (a.hc !== b.hc) diff.cus.push(k);
+        if (a.hp !== b.hp) diff.pstd.push(k);
+        if (a.hpc !== b.hpc) diff.pcus.push(k);
+        if (a.hcx !== b.hcx) diff.cusx.push(k);
+        if (a.r !== b.r) diff.rect.push({ k, main: a.r, up: b.r });
+        if (a.cls !== b.cls) diff.cls.push({ k, main: a.cls, up: b.cls });
+    }
+    return { compared: [...ma.keys()].filter((k) => mb.has(k)).length, nMain: ra.length, nUp: rb.length, onlyMain, onlyUp, diff };
+}
+
+function mapDiff(a = {}, b = {}, skip = null) {
+    const out = {};
+    for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) if (a[k] !== b[k] && !(skip && skip.has(k))) out[k] = { main: a[k], up: b[k] };
+    return out;
+}
+const IGNSET = new Set(IGNORE);
+const LEAN = process.env.VR_LEAN === '1';
+
+async function details(pm, pu, keys, cap = 25, skipIgnored = true) {
+    const out = [];
+    for (const k of keys.slice(0, cap)) {
+        const a = await pm.evaluate((k) => window.__vr.detail(k), k);
+        const b = await pu.evaluate((k) => window.__vr.detail(k), k);
+        if (!a || !b) {
+            out.push({ k, missing: true });
+            continue;
+        }
+        const pseudo = {};
+        for (const p of new Set([...Object.keys(a.pseudo), ...Object.keys(b.pseudo)])) {
+            const s = mapDiff(a.pseudo[p]?.std, b.pseudo[p]?.std);
+            const c = mapDiff(a.pseudo[p]?.cus, b.pseudo[p]?.cus, skipIgnored ? IGNSET : null);
+            if (Object.keys(s).length || Object.keys(c).length) pseudo[p] = { std: s, cus: c };
+        }
+        out.push({ k, tag: a.tag, text: a.text, clsMain: a.cls, clsUp: b.cls, std: mapDiff(a.std, b.std), cus: mapDiff(a.cus, b.cus, skipIgnored ? IGNSET : null), pseudo, rect: a.rect === b.rect ? undefined : { main: a.rect, up: b.rect } });
+    }
+    return out;
+}
+
+function summarize(c) {
+    return `cmp=${c.compared} main=${c.nMain} up=${c.nUp} onlyMain=${c.onlyMain.length} onlyUp=${c.onlyUp.length} std=${c.diff.std.length} cus=${c.diff.cus.length} pstd=${c.diff.pstd.length} pcus=${c.diff.pcus.length} cusx=${c.diff.cusx.length} rect=${c.diff.rect.length} cls=${c.diff.cls.length}`;
+}
+
+async function openPair(theme, width, route, state) {
+    const pm = await newPage(browser, theme, width);
+    const pu = await newPage(browser, theme, width);
+    const [sm, su] = await Promise.all([settle(pm, MAIN, route), settle(pu, UP, route)]);
+    let stateInfo = null;
+    if (state && state !== 'default') {
+        const a = await STATES[state](pm);
+        const b = await STATES[state](pu);
+        stateInfo = { main: a, up: b };
+    }
+    return { pm, pu, sm, su, stateInfo };
+}
+
+async function closePair({ pm, pu }) {
+    await pm.context().close();
+    await pu.context().close();
+}
+
+async function runStatic() {
+    const widths = (arg3 || '1280,800,700,375').split(',').map(Number);
+    for (const [name, route] of ROUTES) {
+        if (routeRe && !routeRe.test(name)) continue;
+        for (const width of widths)
+            for (const theme of THEMES)
+                for (const state of statesFor(name, width)) {
+                    const t0 = Date.now();
+                    const P = await openPair(theme, width, route, state);
+                    await P.pm.evaluate(installVR, IGNORE);
+                    await P.pu.evaluate(installVR, IGNORE);
+                    const ra = await P.pm.evaluate(() => window.__vr.collect());
+                    const rb = await P.pu.evaluate(() => window.__vr.collect());
+                    const c = compareRecords(ra, rb);
+                    const detailKeys = [...new Set([...c.diff.std, ...c.diff.pstd, ...c.diff.cusx, ...c.diff.rect.map((x) => x.k)])];
+                    const rootCus = await details(P.pm, P.pu, ['html'], 1, false);
+                    const rc = rootCus[0] || { cus: {} };
+                    const rootSummary = { removed: Object.entries(rc.cus).filter(([, v]) => v.up === undefined).length, added: Object.entries(rc.cus).filter(([, v]) => v.main === undefined).map(([k]) => k), changed: Object.entries(rc.cus).filter(([, v]) => v.up !== undefined && v.main !== undefined).map(([k, v]) => `${k}: ${v.main} -> ${v.up}`), notInIgnore: Object.keys(rc.cus).filter((k) => !IGNORE.includes(k)) };
+                    const det = detailKeys.length ? await details(P.pm, P.pu, detailKeys) : [];
+                    const run = {
+                        name,
+                        route,
+                        width,
+                        theme,
+                        state,
+                        settle: { main: P.sm, up: P.su },
+                        stateInfo: P.stateInfo,
+                        themeOk: P.sm.dataTheme === theme && P.su.dataTheme === theme && P.sm.dark === (theme === 'dark') && P.su.dark === (theme === 'dark'),
+                        nStdProps: ra[0]?.nstd,
+                        nCustomOnHtml: { main: ra[0]?.ncus, up: rb[0]?.ncus },
+                        ...c,
+                        rootCustom: rootSummary,
+                        details: det,
+                        errors: { main: P.pm.__errors, up: P.pu.__errors },
+                        ms: Date.now() - t0,
+                    };
+                    result.runs.push(run);
+                    console.log(`${name} w=${width} ${theme} ${state}: ${summarize(c)} themeOk=${run.themeOk} hyd=${P.sm.hydrated}/${P.su.hydrated} ${run.ms}ms`);
+                    await closePair(P);
+                }
+    }
+}
+
+async function nodeIdFor(cdp, cache, page, i) {
+    if (cache.has(i)) return cache.get(i);
+    const { result: r } = await cdp.send('Runtime.evaluate', { expression: `window.__vr.els[${i}]` });
+    const { nodeId } = await cdp.send('DOM.requestNode', { objectId: r.objectId });
+    cache.set(i, nodeId);
+    return nodeId;
+}
+
+async function prepInteractive(page) {
+    await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important}' });
+    await page.evaluate(installVR, IGNORE);
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('DOM.enable');
+    await cdp.send('CSS.enable');
+    await cdp.send('DOM.getDocument', { depth: 0 });
+    return { cdp, cache: new Map() };
+}
+
+async function force(page, S, k, kind, on) {
+    const chain = await page.evaluate((k) => window.__vr.chain(k), k);
+    for (let j = 0; j < chain.length; j++) {
+        const nodeId = await nodeIdFor(S.cdp, S.cache, page, chain[j]);
+        let pcs = [];
+        if (on) pcs = kind === 'hover' ? ['hover'] : j === 0 ? ['focus', 'focus-visible', 'focus-within'] : ['focus-within'];
+        await S.cdp.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: pcs });
+    }
+}
+
+async function interactiveOne(name, route, theme, kind, P, opts = {}) {
+    const Sm = await prepInteractive(P.pm);
+    const Su = await prepInteractive(P.pu);
+    if (opts.mutateUp) await P.pu.evaluate(opts.mutateUp);
+    const baseM = new Map((await P.pm.evaluate(() => window.__vr.collect())).map((r) => [r.k, r]));
+    const baseU = new Map((await P.pu.evaluate(() => window.__vr.collect())).map((r) => [r.k, r]));
+    const cm = await P.pm.evaluate(([kind, lean]) => window.__vr.candidates(kind, lean), [kind, LEAN]);
+    const cu = await P.pu.evaluate(([kind, lean]) => window.__vr.candidates(kind, lean), [kind, LEAN]);
+    let cands = [...new Set([...cm, ...cu])];
+    if (opts.only) cands = cands.filter(opts.only);
+    const res = { name, route, theme, kind, candidates: cands.length, candMainOnly: cm.filter((k) => !cu.includes(k)), candUpOnly: cu.filter((k) => !cm.includes(k)), affectedTotal: 0, changedByStateMain: 0, changedByStateUp: 0, mismatches: [], affectedKeyMismatch: [] };
+    for (const k of cands) {
+        await force(P.pm, Sm, k, kind, true);
+        await force(P.pu, Su, k, kind, true);
+        const am = await P.pm.evaluate(([k, lean]) => window.__vr.recordSet(lean ? window.__vr.affectedLean(k) : window.__vr.affected(k)), [k, LEAN]);
+        const au = await P.pu.evaluate(([k, lean]) => window.__vr.recordSet(lean ? window.__vr.affectedLean(k) : window.__vr.affected(k)), [k, LEAN]);
+        const c = compareRecords(am, au);
+        res.affectedTotal += c.compared;
+        const chgM = am.some((r) => { const b = baseM.get(r.k); return b && (b.h !== r.h || b.hp !== r.hp || b.hc !== r.hc || b.r !== r.r); });
+        const chgU = au.some((r) => { const b = baseU.get(r.k); return b && (b.h !== r.h || b.hp !== r.hp || b.hc !== r.hc || b.r !== r.r); });
+        if (chgM) res.changedByStateMain++;
+        if (chgU) res.changedByStateUp++;
+        if (chgM !== chgU) res.mismatches.push({ k, note: `state effect main=${chgM} up=${chgU}` });
+        if (c.onlyMain.length || c.onlyUp.length) res.affectedKeyMismatch.push({ k, onlyMain: c.onlyMain.slice(0, 5), onlyUp: c.onlyUp.slice(0, 5) });
+        const bad = [...new Set([...c.diff.std, ...c.diff.pstd, ...c.diff.cusx, ...c.diff.rect.map((x) => x.k)])];
+        if (bad.length) {
+            const det = await details(P.pm, P.pu, bad, Number(process.env.VR_DETAIL_CAP || 8));
+            res.mismatches.push({ k, summary: summarize(c), details: det });
+        }
+        await force(P.pm, Sm, k, kind, false);
+        await force(P.pu, Su, k, kind, false);
+    }
+    return res;
+}
+
+async function runInteractive() {
+    const kinds = (arg3 || 'hover,focus').split(',');
+    for (const [name, route] of ROUTES) {
+        if (routeRe && !routeRe.test(name)) continue;
+        for (const theme of (process.env.VR_THEMES ? process.env.VR_THEMES.split(',') : THEMES))
+            for (const kind of kinds) {
+                const t0 = Date.now();
+                const P = await openPair(theme, 1280, route, 'default');
+                const r = await interactiveOne(name, route, theme, kind, P);
+                r.hoverMQ = { main: P.sm.hoverMQ, up: P.su.hoverMQ };
+                r.themeOk = P.sm.dataTheme === theme && P.su.dataTheme === theme;
+                r.errors = { main: P.pm.__errors, up: P.pu.__errors };
+                r.ms = Date.now() - t0;
+                r.lean = LEAN;
+                result.runs.push(r);
+                console.log(`${name} ${theme} ${kind}: cands=${r.candidates} affected=${r.affectedTotal} changedByState main=${r.changedByStateMain} up=${r.changedByStateUp} mismatches=${r.mismatches.length} keyMismatch=${r.affectedKeyMismatch.length} candOnly=${r.candMainOnly.length}/${r.candUpOnly.length} hoverMQ=${r.hoverMQ.main}/${r.hoverMQ.up} ${r.ms}ms`);
+                await closePair(P);
+            }
+    }
+}
+
+async function runControl() {
+    const controls = [];
+    // C1: forced hover on the header nav link changes its colour on both servers.
+    {
+        const P = await openPair('light', 1280, '/', 'default');
+        const out = {};
+        for (const [lbl, page] of [['main', P.pm], ['up', P.pu]]) {
+            const S = await prepInteractive(page);
+            const k = await page.evaluate(() => { const a = document.querySelector('#menu-items a'); return window.__vr.keys[window.__vr.els.indexOf(a)]; });
+            const before = await page.evaluate((k) => { const e = window.__vr.els[window.__vr.indexOfKey(k)]; return { text: e.textContent.trim(), color: getComputedStyle(e).color }; }, k);
+            await force(page, S, k, 'hover', true);
+            const after = await page.evaluate((k) => getComputedStyle(window.__vr.els[window.__vr.indexOfKey(k)]).color, k);
+            await force(page, S, k, 'hover', false);
+            const reset = await page.evaluate((k) => getComputedStyle(window.__vr.els[window.__vr.indexOfKey(k)]).color, k);
+            out[lbl] = { k, ...before, hovered: after, reset, changed: before.color !== after && reset === before.color };
+        }
+        controls.push({ id: 'C1-forced-hover-changes-nav-link', pass: out.main.changed && out.up.changed, ...out });
+        await closePair(P);
+    }
+    // C2: deleting one used rule from HEAD's CSSOM is flagged by the static comparator.
+    {
+        const P = await openPair('light', 1280, '/', 'default');
+        await P.pm.evaluate(installVR, IGNORE);
+        await P.pu.evaluate(installVR, IGNORE);
+        const before = compareRecords(await P.pm.evaluate(() => window.__vr.collect()), await P.pu.evaluate(() => window.__vr.collect()));
+        const deleted = await P.pu.evaluate(() => {
+            for (const sh of document.styleSheets) {
+                if (!/Footer/.test(sh.href || '')) continue;
+                const find = (rules, parent) => {
+                    for (let i = 0; i < rules.length; i++) {
+                        const r = rules[i];
+                        if (r.selectorText === '.text-skin-accent' || (r.selectorText && /^\.text-skin-accent$/.test(r.selectorText))) {
+                            const n = document.querySelectorAll(r.selectorText).length;
+                            const txt = r.cssText;
+                            parent.deleteRule(i);
+                            return { sel: r.selectorText, css: txt, matched: n };
+                        }
+                        if (r.cssRules) { const x = find(r.cssRules, r); if (x) return x; }
+                    }
+                    return null;
+                };
+                const x = find(sh.cssRules, sh);
+                if (x) return x;
+            }
+            return null;
+        });
+        const after = compareRecords(await P.pm.evaluate(() => window.__vr.collect()), await P.pu.evaluate(() => window.__vr.collect()));
+        controls.push({ id: 'C2-deleted-rule-is-flagged', pass: before.diff.std.length === 0 && after.diff.std.length > 0 && !!deleted, deleted, before: summarize(before), after: summarize(after), flaggedKeys: after.diff.std.slice(0, 10) });
+        await closePair(P);
+    }
+    // C3: deleting the header nav-link hover rule from HEAD is flagged by the forced-hover pass.
+    {
+        const P = await openPair('light', 1280, '/', 'default');
+        const r = await interactiveOne('01-home', '/', 'light', 'hover', P, {
+            only: (k) => /nav0\/ul\d+\/li0\/a0$/.test(k) || /nav\d+\/ul\d+\/li0\/a0$/.test(k),
+            mutateUp: () => {
+                const del = [];
+                const walk = (rules, parent) => {
+                    for (let i = rules.length - 1; i >= 0; i--) {
+                        const r = rules[i];
+                        if (r.selectorText && /:hover/.test(r.selectorText) && document.querySelector('#menu-items a') && (() => { try { return document.querySelector('#menu-items a').matches(r.selectorText.replace(/:hover/g, '')); } catch { return false; } })()) {
+                            del.push(r.cssText.slice(0, 160));
+                            parent.deleteRule(i);
+                        } else if (r.cssRules) walk(r.cssRules, r);
+                    }
+                };
+                for (const sh of document.styleSheets) {
+                    try {
+                        walk(sh.cssRules, sh);
+                    } catch {}
+                }
+                window.__deleted = del;
+            },
+        });
+        const deleted = await P.pu.evaluate(() => window.__deleted);
+        controls.push({ id: 'C3-deleted-hover-rule-is-flagged', pass: deleted.length > 0 && r.mismatches.length > 0, deleted, candidates: r.candidates, mismatches: r.mismatches.map((m) => ({ k: m.k, summary: m.summary, note: m.note, first: m.details?.[0] && { tag: m.details[0].tag, std: m.details[0].std } })) });
+        await closePair(P);
+    }
+    // C4: same with no mutation -> 0 mismatches on the same candidates (negative control).
+    {
+        const P = await openPair('light', 1280, '/', 'default');
+        const r = await interactiveOne('01-home', '/', 'light', 'hover', P, { only: (k) => /nav\d+\/ul\d+\/li0\/a0$/.test(k) });
+        controls.push({ id: 'C4-unmutated-hover-candidate-clean', pass: r.candidates > 0 && r.mismatches.length === 0 && r.changedByStateMain > 0 && r.changedByStateUp > 0, candidates: r.candidates, changedByStateMain: r.changedByStateMain, changedByStateUp: r.changedByStateUp, mismatches: r.mismatches.length });
+        await closePair(P);
+    }
+    result.controls = controls;
+    for (const c of controls) console.log(c.id, c.pass ? 'PASS' : 'FAIL', JSON.stringify(c).slice(0, 600));
+}
+
+async function runControlLean() {
+    // Lean-mode anchor controls. Target = the first Expressive Code figure.frame, which is a candidate only through
+    // the anchor logic ('.expressive-code .frame:hover .copy button:not(:hover)'); the copy button is in its subtree.
+    const controls = [];
+    const route = '/posts/flutter-google-maps-embedded-map';
+    const firstFrame = () => {
+        let seen = false;
+        return (k) => {
+            if (seen || !/\/figure\d+$/.test(k)) return false;
+            seen = true;
+            return true;
+        };
+    };
+    // C0: the prose-hover anchor rule is neutralised by prose-a:!text-skin-base (!important) on both builds.
+    {
+        const P = await openPair('light', 1280, '/posts/ems-the-delivery-system/', 'default');
+        const r = await interactiveOne('x-ems-delivery', '/posts/ems-the-delivery-system/', 'light', 'hover', P, { only: (k) => /\/article\d+$/.test(k) });
+        controls.push({ id: 'C0-lean-prose-anchor-is-candidate', pass: LEAN && r.candidates === 1 && r.mismatches.length === 0, note: 'article.prose forced; hover:prose-a colour is overridden by prose-a:!text-skin-base (!important) on both builds, so no state effect is expected', candidates: r.candidates, changedByStateMain: r.changedByStateMain, changedByStateUp: r.changedByStateUp, affected: r.affectedTotal, mismatches: r.mismatches.length });
+        await closePair(P);
+    }
+    {
+        const P = await openPair('light', 1280, route, 'default');
+        const r = await interactiveOne('04', route, 'light', 'hover', P, {
+            only: firstFrame(),
+            mutateUp: () => {
+                const del = [];
+                const walk = (rules, parent) => {
+                    for (let i = rules.length - 1; i >= 0; i--) {
+                        const r = rules[i];
+                        if (r.selectorText && /\.frame:hover \.copy button:not\(:hover\)/.test(r.selectorText)) {
+                            del.push(r.cssText.slice(0, 220));
+                            parent.deleteRule(i);
+                        } else if (r.cssRules) walk(r.cssRules, r);
+                    }
+                };
+                for (const sh of document.styleSheets) {
+                    try {
+                        walk(sh.cssRules, sh);
+                    } catch {}
+                }
+                window.__deleted = del;
+            },
+        });
+        const deleted = await P.pu.evaluate(() => window.__deleted);
+        const first = r.mismatches.find((m) => m.details)?.details;
+        controls.push({ id: 'C5-lean-anchor-rule-deleted-is-flagged', pass: LEAN && deleted.length > 0 && r.candidates === 1 && r.mismatches.length > 0, deleted, candidates: r.candidates, changedByStateMain: r.changedByStateMain, changedByStateUp: r.changedByStateUp, mismatches: r.mismatches.map((m) => m.note || m.summary), sample: first && first.slice(0, 2).map((d) => ({ k: d.k, tag: d.tag, std: d.std })) });
+        await closePair(P);
+    }
+    {
+        const P = await openPair('light', 1280, route, 'default');
+        const r = await interactiveOne('04', route, 'light', 'hover', P, { only: firstFrame() });
+        controls.push({ id: 'C6-lean-anchor-unmutated-clean', pass: LEAN && r.candidates === 1 && r.mismatches.length === 0 && r.changedByStateMain > 0 && r.changedByStateUp > 0, candidates: r.candidates, changedByStateMain: r.changedByStateMain, changedByStateUp: r.changedByStateUp, affected: r.affectedTotal, mismatches: r.mismatches.length });
+        await closePair(P);
+    }
+    result.controls = controls;
+    for (const c of controls) console.log(c.id, c.pass ? 'PASS' : 'FAIL', JSON.stringify(c).slice(0, 800));
+}
+
+async function runArticle11() {
+    // Re-inspect the only forced-state targets whose differing-element count exceeded the detail cap.
+    for (const theme of ['light', 'dark']) {
+        const P = await openPair(theme, 1280, '/posts/octoprint-prusa-core-one-raspberry-pi/', 'default');
+        const r = await interactiveOne('11-octoprint', '/posts/octoprint-prusa-core-one-raspberry-pi/', theme, 'hover', P, { only: (k) => k === 'html/body0/main2/article1' });
+        result.runs.push(r);
+        const d = r.mismatches.flatMap((m) => m.details || []);
+        console.log(theme, 'cands', r.candidates, 'mismatches', r.mismatches.map((m) => m.summary).join(' | '), 'inspected', d.length, 'signatures', JSON.stringify([...new Set(d.map((x) => JSON.stringify({ std: x.std, cus: x.cus, pseudo: x.pseudo, rect: x.rect })))]));
+        await closePair(P);
+    }
+}
+
+if (mode === 'static') await runStatic();
+else if (mode === 'article11') await runArticle11();
+else if (mode === 'control-lean') await runControlLean();
+else if (mode === 'interactive') await runInteractive();
+else if (mode === 'control') await runControl();
+result.finishedAt = new Date().toISOString();
+fs.writeFileSync(outJson, JSON.stringify(result, null, 1));
+await browser.close();

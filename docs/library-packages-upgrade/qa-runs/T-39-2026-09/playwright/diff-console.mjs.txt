@@ -1,0 +1,53 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs, `npm i playwright`, `node <file>.mjs ...`.
+// Compare console error/warning signatures of the branch run against the pre-upgrade baselines.
+// Usage: node diff-console.mjs <branch results.json> <main-baseline.json> <prod-baseline.json> <out.json>
+// Signatures are normalised in e2e.mjs (origin -> ORIGIN, blob UUIDs, hashed /_astro/ names, line:col, ?timestamps).
+import fs from 'node:fs';
+
+const [branchF, mainF, prodF, outF] = process.argv.slice(2);
+const load = f => JSON.parse(fs.readFileSync(f, 'utf8'));
+const B = load(branchF);
+const M = load(mainF);
+const P = load(prodF);
+
+const verdict = {};
+for (const kind of ['errors', 'warnings']) {
+    verdict[kind] = Object.entries(B.consoleSignatures[kind]).map(([sig, v]) => {
+        const m = M.consoleSignatures[kind][sig];
+        const p = P.consoleSignatures[kind][sig];
+        return {
+            signature: sig,
+            branch: v,
+            main: m || null,
+            prod: p || null,
+            preExisting: !!(m || p),
+            verdict: m || p ? 'pre-existing (present on pre-upgrade build)' : 'BRANCH-ONLY -> FAIL',
+        };
+    });
+}
+const onlyInBaseline = {};
+for (const [name, R] of [
+    ['main', M],
+    ['prod', P],
+]) {
+    onlyInBaseline[name] = {};
+    for (const kind of ['errors', 'warnings'])
+        onlyInBaseline[name][kind] = Object.keys(R.consoleSignatures[kind]).filter(sig => !B.consoleSignatures[kind][sig]);
+}
+const branchOnly = [...verdict.errors, ...verdict.warnings].filter(x => !x.preExisting);
+const out = {
+    generatedAt: new Date().toISOString(),
+    inputs: { branch: B.meta.base, main: M.meta.base, prod: P.meta.base },
+    branchConsoleTotals: B.consoleSummary && { errors: B.consoleSummary.errors, warnings: B.consoleSummary.warnings },
+    mainConsoleTotals: M.consoleSummary && { errors: M.consoleSummary.errors, warnings: M.consoleSummary.warnings },
+    prodConsoleTotals: P.consoleSummary && { errors: P.consoleSummary.errors, warnings: P.consoleSummary.warnings },
+    verdict,
+    signaturesOnlyInBaseline: onlyInBaseline,
+    branchOnlyCount: branchOnly.length,
+    pass: branchOnly.length === 0,
+    p8: { branch: B.details.P8, main: M.details.P8, prod: P.details.P8 },
+};
+fs.writeFileSync(outF, JSON.stringify(out, null, 2));
+console.log(JSON.stringify({ pass: out.pass, branchOnly: branchOnly.map(x => x.signature), branchSigs: verdict.errors.map(x => [x.signature, x.branch.count, x.main?.count ?? 0, x.prod?.count ?? 0]) }, null, 1));

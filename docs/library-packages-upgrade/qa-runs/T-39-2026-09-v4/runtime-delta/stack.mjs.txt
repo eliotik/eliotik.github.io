@@ -1,0 +1,8 @@
+// stack horizontal bands [y0,y1) of several same-width PNGs vertically (x range x0..x1) with 6px separators
+import { PNG } from 'pngjs'; import fs from 'node:fs';
+const [,, out, y0s, y1s, x0s, x1s, ...srcs] = process.argv;
+const y0 = +y0s, y1 = +y1s, x0 = +x0s, x1 = +x1s, H = y1 - y0, W = x1 - x0, SEP = 6;
+const o = new PNG({ width: W, height: srcs.length * H + (srcs.length - 1) * SEP });
+o.data.fill(0); for (let i = 3; i < o.data.length; i += 4) o.data[i] = 255;
+srcs.forEach((s, k) => { const a = PNG.sync.read(fs.readFileSync(s)); for (let y = 0; y < H; y++) a.data.copy(o.data, ((k * (H + SEP)) + y) * W * 4, ((y0 + y) * a.width + x0) * 4, ((y0 + y) * a.width + x1) * 4); });
+fs.writeFileSync(out, PNG.sync.write(o));

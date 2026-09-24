@@ -524,3 +524,22 @@ tasks:
     qa_finished_at: 2026-04-29T08:55:00Z
     justification_file: docs/library-packages-upgrade/justifications/T-38.md
     defects: [docs/library-packages-upgrade/defects/T-38-D1.md]
+
+  - id: T-39
+    title: September 2026 dependency upgrade (Astro 7, ESLint 10, Node 22.23.3)
+    phase: 4
+    lane: L2
+    status: done
+    depends_on: [T-38]
+    blocks: []
+    visual_smoke_required: true
+    branch: upgrade/2026-09
+    commit_sha: 81d6e77
+    worker: claude-sonnet-5
+    started_at: 2026-09-23T17:30:00Z
+    finished_at: 2026-09-24T22:25:33Z
+    qa_worker: claude-opus-5-5
+    qa_started_at: 2026-09-24T03:05:28Z
+    qa_finished_at: 2026-09-24T22:25:33Z
+    justification_file: null
+    defects: []

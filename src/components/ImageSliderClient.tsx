@@ -47,7 +47,7 @@ export default function ImageSliderClient({ images }: Props) {
         <div className="relative h-96 w-full">
             <div
                 ref={scrollRef}
-                className="flex h-full w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden scroll-smooth rounded-lg border [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="flex h-full w-full snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overflow-y-hidden scroll-smooth rounded-lg border [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                 role="region"
                 aria-roledescription="carousel"
                 aria-label="Image slider"

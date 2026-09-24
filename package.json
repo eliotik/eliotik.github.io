@@ -2,7 +2,7 @@
     "name": "eliotik.github.io",
     "version": "0.0.1",
     "type": "module",
-    "packageManager": "pnpm@10.33.2",
+    "packageManager": "pnpm@10.34.5",
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
@@ -10,74 +10,76 @@
         "preview": "astro preview",
         "astro": "astro",
         "sync": "astro sync",
-        "format:check": "prettier --plugin-search-dir=. --check .",
-        "format": "prettier --plugin-search-dir=. --write .",
+        "format:check": "prettier --check .",
+        "format": "prettier --write .",
         "prepare": "husky",
         "lint": "eslint .",
         "clean": "./clean-cache.sh",
         "fresh": "./clean-cache.sh && pnpm dev"
     },
     "engines": {
-        "node": "22.22.2"
+        "node": "22.23.3"
     },
     "dependencies": {
         "@astrojs/check": "0.9.10",
-        "@astrojs/mdx": "5.0.4",
-        "@astrojs/partytown": "^2.1.7",
-        "@astrojs/react": "5.0.4",
+        "@astrojs/markdown-remark": "7.3.1",
+        "@astrojs/mdx": "8.0.2",
+        "@astrojs/partytown": "^2.1.8",
+        "@astrojs/react": "7.0.0",
         "@astrojs/rss": "4.0.19",
-        "@astrojs/sitemap": "3.7.3",
-        "@astrojs/ts-plugin": "1.10.10",
-        "@expressive-code/plugin-collapsible-sections": "0.44.1",
-        "@expressive-code/plugin-line-numbers": "0.44.1",
+        "@astrojs/ts-plugin": "1.10.12",
+        "@expressive-code/plugin-collapsible-sections": "0.44.2",
+        "@expressive-code/plugin-line-numbers": "0.44.2",
         "@resvg/resvg-js": "2.6.2",
-        "astro": "6.2.1",
-        "astro-expressive-code": "0.44.1",
+        "astro": "7.3.5",
+        "astro-expressive-code": "0.44.2",
         "fuse.js": "7.5.0",
         "github-slugger": "2.0.0",
         "remark-collapse": "0.1.2",
         "remark-toc": "9.0.0",
-        "satori": "0.29.0",
-        "sharp": "^0.35.3",
+        "satori": "0.33.5",
+        "sharp": "^0.35.4",
         "tailwindcss": "4.3.3"
     },
     "devDependencies": {
         "@divriots/jampack": "0.34.1",
-        "@eslint/js": "^9.39.4",
+        "@eslint/js": "^10.0.1",
         "@tailwindcss/typography": "0.5.20",
         "@tailwindcss/vite": "^4.3.3",
-        "@types/github-slugger": "2.0.0",
-        "@types/react": "^19.2.17",
-        "@types/react-dom": "^19.2.3",
-        "@typescript-eslint/eslint-plugin": "8.65.0",
-        "@typescript-eslint/parser": "8.65.0",
-        "astro-eslint-parser": "3.0.0",
-        "eslint": "10.8.0",
-        "eslint-plugin-astro": "1.7.0",
-        "eslint-plugin-jsx-a11y": "^6.10.2",
+        "@types/node": "22.20.4",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "@typescript-eslint/eslint-plugin": "8.70.1",
+        "@typescript-eslint/parser": "8.70.1",
+        "astro-eslint-parser": "3.2.0",
+        "eslint": "10.11.0",
+        "eslint-plugin-astro": "3.2.1",
+        "eslint-plugin-jsx-a11y-x": "^0.2.0",
         "husky": "9.1.7",
-        "lint-staged": "17.2.0",
-        "prettier": "3.9.6",
-        "prettier-plugin-astro": "0.14.1",
+        "lint-staged": "17.5.1",
+        "prettier": "3.9.9",
+        "prettier-plugin-astro": "1.0.1",
         "prettier-plugin-tailwindcss": "0.8.1",
-        "react": "19.2.8",
-        "react-dom": "19.2.8",
+        "react": "19.3.0",
+        "react-dom": "19.3.0",
         "typescript": "6.0.3"
     },
     "lint-staged": {
-        "*.{js,jsx,ts,tsx,md,mdx,json}": [
-            "prettier --plugin-search-dir=. --write"
+        "*.{js,mjs,cjs,jsx,ts,tsx,astro}": [
+            "eslint --fix",
+            "prettier --write"
         ],
-        "*.{js,jsx,ts,tsx,astro}": [
-            "eslint --fix"
+        "*.{md,mdx,json,css,yml,yaml}": [
+            "prettier --write"
+        ],
+        ".prettierrc": [
+            "prettier --write"
         ]
     },
     "pnpm": {
         "onlyBuiltDependencies": [
             "@swc/core",
-            "contentlayer",
             "esbuild",
-            "protobufjs",
             "sharp"
         ]
     }

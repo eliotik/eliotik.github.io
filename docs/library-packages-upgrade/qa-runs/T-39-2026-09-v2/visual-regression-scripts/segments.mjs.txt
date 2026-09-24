@@ -1,0 +1,101 @@
+// Below-the-fold coverage: scroll long pages in 1800px steps and take viewport shots.
+// node segments.mjs <baseURL> <outDir> <label> <jsonOut>
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const [base, outDir, label, jsonOut] = process.argv.slice(2);
+fs.mkdirSync(outDir, { recursive: true });
+
+const PAGES = [
+    ['03-post-with-images', '/posts/ems-connecting-the-systems'],
+    ['04-post-with-carousel', '/posts/flutter-google-maps-embedded-map'],
+    ['06-tags-index', '/tags'],
+    ['11-octoprint', '/posts/octoprint-prusa-core-one-raspberry-pi/'],
+];
+const THEMES = ['light', 'dark'];
+
+let browser;
+try {
+    browser = await chromium.launch({ channel: 'chrome', headless: true });
+} catch {
+    browser = await chromium.launch({
+        executablePath:
+            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        headless: true,
+    });
+}
+const result = { label, base, browserVersion: browser.version(), pages: [] };
+
+for (const [name, route] of PAGES) {
+    for (const theme of THEMES) {
+        const context = await browser.newContext({
+            viewport: { width: 1280, height: 1800 },
+            deviceScaleFactor: 1,
+            reducedMotion: 'reduce',
+            colorScheme: theme,
+        });
+        await context.addInitScript((t) => {
+            try {
+                localStorage.setItem('theme', t);
+            } catch {}
+        }, theme);
+        const page = await context.newPage();
+        await page.goto(base + route, { waitUntil: 'load' });
+        await page
+            .waitForLoadState('networkidle', { timeout: 20000 })
+            .catch(() => {});
+        await page.evaluate(() => document.fonts.ready);
+        const themeOk = await page.evaluate(
+            (t) =>
+                document.documentElement.getAttribute('data-theme') === t &&
+                document.documentElement.classList.contains('dark') ===
+                    (t === 'dark'),
+            theme
+        );
+        const h = await page.evaluate(
+            () => document.documentElement.scrollHeight
+        );
+        const n = Math.ceil(h / 1800);
+        const segs = [];
+        for (let k = 0; k < n; k++) {
+            const y = Math.min(k * 1800, h - 1800);
+            await page.evaluate((yy) => window.scrollTo(0, yy), y);
+            await page.waitForTimeout(150);
+            const imgsOk = await page
+                .waitForFunction(
+                    () =>
+                        [...document.images]
+                            .filter((i) => {
+                                const r = i.getBoundingClientRect();
+                                return (
+                                    r.top < innerHeight &&
+                                    r.bottom > 0 &&
+                                    r.left < innerWidth &&
+                                    r.right > 0
+                                );
+                            })
+                            .every((i) => i.complete && i.naturalWidth > 0),
+                    null,
+                    { timeout: 20000 }
+                )
+                .then(() => true)
+                .catch(() => false);
+            await page.evaluate(() => document.fonts.ready);
+            await page.waitForTimeout(300);
+            const scrollY = await page.evaluate(() => window.scrollY);
+            const file = `seg-${name}${theme === 'dark' ? '-dark' : ''}-${String(k).padStart(2, '0')}.png`;
+            await page.screenshot({
+                path: path.join(outDir, file),
+                animations: 'disabled',
+                caret: 'hide',
+            });
+            segs.push({ k, requestedY: y, scrollY, imgsOk, file });
+        }
+        result.pages.push({ name, route, theme, themeOk, scrollHeight: h, segs });
+        console.log(`${label} ${name} ${theme} h=${h} segs=${n} themeOk=${themeOk} imgsOk=${segs.every((s) => s.imgsOk)}`);
+        await context.close();
+    }
+}
+fs.writeFileSync(jsonOut, JSON.stringify(result, null, 2));
+await browser.close();

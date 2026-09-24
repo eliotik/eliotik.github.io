@@ -1,0 +1,6 @@
+
+> eliotik.github.io@0.0.1 format:check /private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/p3v/static-delta-new
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!

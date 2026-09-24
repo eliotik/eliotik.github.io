@@ -1,0 +1,39 @@
+Chrome 153.0.8010.53
+  R1.vp.light.root: 1280x1800 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.fp.light.root: 1280x1800 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.vp.dark.root: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.fp.dark.root: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.vp.light.posts_flutter-google-maps-embedded-map: 1280x1800 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fp.light.posts_flutter-google-maps-embedded-map: 1280x14417 diffPx=1600 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.vp.dark.posts_flutter-google-maps-embedded-map: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fp.dark.posts_flutter-google-maps-embedded-map: 1280x14417 diffPx=2956 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.vp.light.posts_flutter-google-maps-address-manipulation: 1280x1800 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fp.light.posts_flutter-google-maps-address-manipulation: 1280x10283 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.vp.dark.posts_flutter-google-maps-address-manipulation: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fp.dark.posts_flutter-google-maps-address-manipulation: 1280x10283 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.vp.light.posts_flutter-google-maps-static-map: 1280x1800 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fp.light.posts_flutter-google-maps-static-map: 1280x8423 diffPx=1600 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.vp.dark.posts_flutter-google-maps-static-map: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fp.dark.posts_flutter-google-maps-static-map: 1280x8423 diffPx=2956 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.vp.light.posts_audio-vs-paper-books: 1280x1800 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fp.light.posts_audio-vs-paper-books: 1280x4542 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.vp.dark.posts_audio-vs-paper-books: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fp.dark.posts_audio-vs-paper-books: 1280x4542 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.vp.light.tags: 1280x1800 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.fp.light.tags: 1280x3029 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.vp.dark.tags: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.fp.dark.tags: 1280x3029 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.vp.light.threads: 1280x1800 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.fp.light.threads: 1280x1800 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.vp.dark.threads: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.fp.dark.threads: 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.vp.light.this-route-does-not-exist: 1280x1800 diffPx=0 status=404/404 theme=light/light class=null|false fonts=true/true
+  R1.fp.light.this-route-does-not-exist: 1280x1800 diffPx=0 status=404/404 theme=light/light class=null|false fonts=true/true
+  R1.vp.dark.this-route-does-not-exist: 1280x1800 diffPx=0 status=404/404 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.fp.dark.this-route-does-not-exist: 1280x1800 diffPx=0 status=404/404 theme=dark/dark class=dark|false dark fonts=true/true
+PASS R1.status — all R1 routes: expected HTTP status on both builds (200; 404 for the 404 route)
+PASS R1.preconditions — R1 captures: data-theme matches requested theme, IBM Plex Mono sheet applied and identical loaded faces on both builds, all islands hydrated
+PASS R1.viewport — viewport 1280x1800 screenshots: 0 differing pixels head vs base for all 8 routes x light/dark (16 pairs)
+FAIL R1.fullpage — full-page screenshots: 0 differing pixels head vs base for all 8 routes x light/dark (16 pairs)
+PASS R1.console — R1 contexts: 0 unexpected console errors / page errors (page, frames, workers, SW); only the main-document 404 message of the 404 route is excused
+{"total":5,"failed":["R1.fullpage"],"allErrors":8,"excused404Doc":8}

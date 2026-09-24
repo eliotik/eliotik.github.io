@@ -63,9 +63,8 @@ const nextHref = `/tips/${currentPage + 1}/`;
 
         <div class="tips-status">
             <span class="tips-status__count"
-                ><b>{noteCount}</b> notes <span class="tips-sep">·</span> page <b
-                    >{currentPage}</b
-                > of <b>{totalPages}</b></span
+                ><b>{noteCount}</b> notes <span class="tips-sep">·</span> page
+                <b>{currentPage}</b> of <b>{totalPages}</b></span
             >
             <button
                 id="toggle-tips"
@@ -81,48 +80,44 @@ const nextHref = `/tips/${currentPage + 1}/`;
         </div>
 
         <ol class="tips-list">
-            {
-                tips.map(({ title, customSlug, noteNum, Content }) => (
-                    <li class="tips-item" data-tip-slug={customSlug}>
-                        <div class="tips-item__head">
-                            <span class="tips-item__num" aria-hidden="true">
-                                <span class="tips-item__caret">›</span> NOTE{' '}
-                                {noteNum}
-                            </span>
-                            <h2 class="tips-item__title">
-                                <a
-                                    href={`/tips/${customSlug}/`}
-                                    transition:name={slugifyStr(title)}
-                                >
-                                    {title}
-                                </a>
-                            </h2>
-                            <button
-                                class="tips-item__toggle focus-outline"
-                                aria-label={`Toggle "${title}"`}
-                                aria-expanded="false"
-                                type="button"
-                                data-tip-slug={customSlug}
-                            >
-                                <span
-                                    class="tips-item__toggle-icon"
-                                    aria-hidden="true"
-                                >
-                                    ›
-                                </span>
-                                <span class="tips-item__toggle-text">read</span>
-                            </button>
-                        </div>
-                        <article
-                            class="tip-content prose mt-4"
-                            data-tip-slug={customSlug}
-                            hidden
+            {tips.map(({ title, customSlug, noteNum, Content }) => <li
+                class="tips-item"
+                data-tip-slug={customSlug}
+            >
+                <div class="tips-item__head">
+                    <span class="tips-item__num" aria-hidden="true">
+                        <span class="tips-item__caret">›</span> NOTE{' '}
+                        {noteNum}
+                    </span>
+                    <h2 class="tips-item__title">
+                        <a
+                            href={`/tips/${customSlug}/`}
+                            transition:name={slugifyStr(title)}
                         >
-                            <Content />
-                        </article>
-                    </li>
-                ))
-            }
+                            {title}
+                        </a>
+                    </h2>
+                    <button
+                        class="tips-item__toggle focus-outline"
+                        aria-label={`Toggle "${title}"`}
+                        aria-expanded="false"
+                        type="button"
+                        data-tip-slug={customSlug}
+                    >
+                        <span class="tips-item__toggle-icon" aria-hidden="true">
+                            ›
+                        </span>
+                        <span class="tips-item__toggle-text">read</span>
+                    </button>
+                </div>
+                <article
+                    class="tip-content prose mt-4"
+                    data-tip-slug={customSlug}
+                    hidden
+                >
+                    <Content />
+                </article>
+            </li>)}
         </ol>
 
         <div class="tips-foot">
@@ -134,45 +129,40 @@ const nextHref = `/tips/${currentPage + 1}/`;
                 <span class="tips-foot__back-icon" aria-hidden="true">↑</span>
                 Back to Top
             </button>
-            {
-                totalPages > 1 && (
-                    <nav class="tips-foot__pager" aria-label="Pagination">
-                        {
-                            prevDisabled ? (
-                                <span class="tips-foot__nav is-disabled" aria-hidden="true">
-                                    <span aria-hidden="true">‹</span> Prev
-                                </span>
-                            ) : (
-                                <a
-                                    class="tips-foot__nav"
-                                    href={prevHref}
-                                    aria-label="Previous page"
-                                >
-                                    <span aria-hidden="true">‹</span> Prev
-                                </a>
-                            )
-                        }
-                        <span class="tips-foot__count">
-                            <b>{currentPage}</b> / {totalPages}
-                        </span>
-                        {
-                            nextDisabled ? (
-                                <span class="tips-foot__nav is-disabled" aria-hidden="true">
-                                    Next <span aria-hidden="true">›</span>
-                                </span>
-                            ) : (
-                                <a
-                                    class="tips-foot__nav"
-                                    href={nextHref}
-                                    aria-label="Next page"
-                                >
-                                    Next <span aria-hidden="true">›</span>
-                                </a>
-                            )
-                        }
-                    </nav>
-                )
-            }
+            {totalPages > 1 && <nav
+                class="tips-foot__pager"
+                aria-label="Pagination"
+            >
+                {prevDisabled ? (
+                    <span class="tips-foot__nav is-disabled" aria-hidden="true">
+                        <span aria-hidden="true">‹</span> Prev
+                    </span>
+                ) : (
+                    <a
+                        class="tips-foot__nav"
+                        href={prevHref}
+                        aria-label="Previous page"
+                    >
+                        <span aria-hidden="true">‹</span> Prev
+                    </a>
+                )}
+                <span class="tips-foot__count">
+                    <b>{currentPage}</b> / {totalPages}
+                </span>
+                {nextDisabled ? (
+                    <span class="tips-foot__nav is-disabled" aria-hidden="true">
+                        Next <span aria-hidden="true">›</span>
+                    </span>
+                ) : (
+                    <a
+                        class="tips-foot__nav"
+                        href={nextHref}
+                        aria-label="Next page"
+                    >
+                        Next <span aria-hidden="true">›</span>
+                    </a>
+                )}
+            </nav>}
         </div>
     </Main>
 

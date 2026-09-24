@@ -1,0 +1,396 @@
+[
+ {
+  "id": "off-seq-1",
+  "config": "false",
+  "port": 4322,
+  "checks": {
+   "C3_noBadLogLines": {
+    "pass": true,
+    "badLog": [],
+    "warnOrError": []
+   },
+   "C4_raceWindowOpen": {
+    "pass": true,
+    "lines": [
+     "dependencies optimized: astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-swap-functions.js, astro/virtual-modules/transitions-types.js"
+    ]
+   },
+   "C1_no504": {
+    "pass": true
+   },
+   "C2_noDynImportErrors": {
+    "pass": true
+   },
+   "C5_baseline": {
+    "pass": true,
+    "note": "exactly one buffered full-reload (delivered to the first-connected client) expected in both seq and par modes"
+   },
+   "C6_toolbarRan": {
+    "pass": null
+   },
+   "port4322": {
+    "pass": true
+   }
+  },
+  "notes": [],
+  "pageHits": [
+   "[200] / 77ms",
+   "[200] / 6ms",
+   "[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 390ms",
+   "[200] /posts/flutter-google-maps-address-manipulation/ 276ms",
+   "[200] /posts/flutter-google-maps-embedded-map/ 238ms",
+   "[200] /search/ 28ms",
+   "[200] / 11ms"
+  ],
+  "chrome": {
+   "mode": "seq",
+   "totalResponses": 310,
+   "statusCounts": {
+    "200": 279,
+    "304": 31
+   },
+   "count504": 0,
+   "bad": [],
+   "requestFailed": [],
+   "pageErrors": [],
+   "consoleErrorsOrWarnings": [],
+   "dynImportOrUnhandled": [],
+   "fullReloads": [
+    "1085 seq VITE_WS {\"type\":\"full-reload\",\"path\":\"*\"}"
+   ],
+   "docLoads": [
+    {
+     "t": 1097,
+     "page": "seq",
+     "url": "/"
+    },
+    {
+     "t": 1215,
+     "page": "seq",
+     "url": "/"
+    },
+    {
+     "t": 11813,
+     "page": "seq",
+     "url": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+    },
+    {
+     "t": 17176,
+     "page": "seq",
+     "url": "/posts/flutter-google-maps-address-manipulation/"
+    },
+    {
+     "t": 22527,
+     "page": "seq",
+     "url": "/posts/flutter-google-maps-embedded-map/"
+    },
+    {
+     "t": 27638,
+     "page": "seq",
+     "url": "/search/"
+    },
+    {
+     "t": 32693,
+     "page": "seq",
+     "url": "/"
+    }
+   ],
+   "pages": [
+    {
+     "p": "/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 0,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 7,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/posts/flutter-google-maps-address-manipulation/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 3,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/posts/flutter-google-maps-embedded-map/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 2,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/search/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 1,
+     "unhydrated": 0,
+     "perfBad": 0
+    }
+   ],
+   "appClicks": [],
+   "errorsDuringAppClicks": 0,
+   "entrypointStatuses": [],
+   "closureAll2xx": false,
+   "closureMissing": [
+    "astro_runtime_client_dev-toolbar_entrypoint__js.js",
+    "astro-FHoXtXMg.js",
+    "icons-DZkHqnOF.js",
+    "window-B3PM1eiy.js",
+    "audit-BhVuJR6h.js",
+    "astro_n_aria-query.js",
+    "astro_n_axobject-query.js",
+    "astro_n_html-escaper.js",
+    "highlight-CZC9QMK7.js",
+    "xray-d1X_SF6n.js",
+    "settings-CwxpV2xH.js",
+    "toolbar-m3qV4lOF.js",
+    "ui-library-C6QDP-6v.js"
+   ],
+   "timing": {
+    "toolbarFirst": 11834,
+    "toolbarFirst10s": "",
+    "transitionsFirst": 1074
+   },
+   "positiveControl": {
+    "fetchStatus": 504,
+    "fetchStatusText": "Outdated Optimize Dep",
+    "dynImportError": "Failed to fetch dynamically imported module: http://localhost:4322/node_modules/.vite/deps/react.js?v=deadbe01",
+    "recordedByResponseListener": [
+     "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbeef",
+     "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbe01"
+    ],
+    "consoleDuringControl": [
+     "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+     "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+    ]
+   }
+  },
+  "clean": true
+ },
+ {
+  "id": "off-both-1",
+  "config": "false",
+  "port": 4322,
+  "checks": {
+   "C3_noBadLogLines": {
+    "pass": true,
+    "badLog": [],
+    "warnOrError": []
+   },
+   "C4_raceWindowOpen": {
+    "pass": true,
+    "lines": [
+     "dependencies optimized: astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-swap-functions.js, astro/virtual-modules/transitions-types.js"
+    ]
+   },
+   "C1_no504": {
+    "pass": true
+   },
+   "C2_noDynImportErrors": {
+    "pass": true
+   },
+   "C5_baseline": {
+    "pass": true,
+    "note": "exactly one buffered full-reload (delivered to the first-connected client) expected in both seq and par modes"
+   },
+   "C6_toolbarRan": {
+    "pass": null
+   },
+   "port4322": {
+    "pass": true
+   }
+  },
+  "notes": [],
+  "pageHits": [
+   "[200] /search/ 140ms",
+   "[200] /search/ 77ms",
+   "[200] / 155ms",
+   "[200] / 94ms",
+   "[200] /posts/flutter-google-maps-address-manipulation/ 1087ms",
+   "[200] /posts/flutter-google-maps-address-manipulation/ 1062ms",
+   "[200] /search/ 4ms",
+   "[200] /posts/flutter-google-maps-embedded-map/ 1331ms",
+   "[200] /posts/flutter-google-maps-embedded-map/ 1305ms",
+   "[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1372ms",
+   "[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1348ms"
+  ],
+  "curl": {
+   "totalRequests": 52,
+   "statusCounts": {
+    "200": 52
+   },
+   "count504": 0,
+   "non200": [],
+   "pagesWithToolbarEntrypoint": "0/5",
+   "closureAll200": false,
+   "closureMissing": [
+    "astro_runtime_client_dev-toolbar_entrypoint__js.js",
+    "astro-FHoXtXMg.js",
+    "icons-DZkHqnOF.js",
+    "window-B3PM1eiy.js",
+    "audit-BhVuJR6h.js",
+    "astro_n_aria-query.js",
+    "astro_n_axobject-query.js",
+    "astro_n_html-escaper.js",
+    "highlight-CZC9QMK7.js",
+    "xray-d1X_SF6n.js",
+    "settings-CwxpV2xH.js",
+    "toolbar-m3qV4lOF.js",
+    "ui-library-C6QDP-6v.js"
+   ],
+   "timing": {
+    "toolbarFirstStart": 1860,
+    "toolbarLastEnd": 1873,
+    "transitionsDepsStart": 1535,
+    "transitionsDepsEnd": 1841
+   }
+  },
+  "chrome": {
+   "mode": "par",
+   "totalResponses": 284,
+   "statusCounts": {
+    "200": 263,
+    "304": 21
+   },
+   "count504": 0,
+   "bad": [],
+   "requestFailed": [],
+   "pageErrors": [],
+   "consoleErrorsOrWarnings": [],
+   "dynImportOrUnhandled": [],
+   "fullReloads": [
+    "1775 /search/ VITE_WS {\"type\":\"full-reload\",\"path\":\"*\"}"
+   ],
+   "docLoads": [
+    {
+     "t": 1785,
+     "page": "/search/",
+     "url": "/search/"
+    },
+    {
+     "t": 1792,
+     "page": "/",
+     "url": "/"
+    },
+    {
+     "t": 1865,
+     "page": "/posts/flutter-google-maps-address-manipulation/",
+     "url": "/posts/flutter-google-maps-address-manipulation/"
+    },
+    {
+     "t": 1992,
+     "page": "/search/",
+     "url": "/search/"
+    },
+    {
+     "t": 2034,
+     "page": "/posts/flutter-google-maps-embedded-map/",
+     "url": "/posts/flutter-google-maps-embedded-map/"
+    },
+    {
+     "t": 2036,
+     "page": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+     "url": "/posts/octoprint-prusa-core-one-raspberry-pi/"
+    }
+   ],
+   "pages": [
+    {
+     "p": "/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 0,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 7,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/posts/flutter-google-maps-address-manipulation/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 3,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/posts/flutter-google-maps-embedded-map/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 2,
+     "unhydrated": 0,
+     "perfBad": 0
+    },
+    {
+     "p": "/search/",
+     "status": 200,
+     "toolbar": false,
+     "apps": 0,
+     "islands": 1,
+     "unhydrated": 0,
+     "perfBad": 0
+    }
+   ],
+   "entrypointStatuses": [],
+   "closureAll2xx": false,
+   "closureMissing": [
+    "astro_runtime_client_dev-toolbar_entrypoint__js.js",
+    "astro-FHoXtXMg.js",
+    "icons-DZkHqnOF.js",
+    "window-B3PM1eiy.js",
+    "audit-BhVuJR6h.js",
+    "astro_n_aria-query.js",
+    "astro_n_axobject-query.js",
+    "astro_n_html-escaper.js",
+    "highlight-CZC9QMK7.js",
+    "xray-d1X_SF6n.js",
+    "settings-CwxpV2xH.js",
+    "toolbar-m3qV4lOF.js",
+    "ui-library-C6QDP-6v.js"
+   ],
+   "timing": {
+    "toolbarFirst": 1788,
+    "toolbarFirst10s": "1788:200:rolldown-runtime-BPOCksWG.js 2007:200:rolldown-runtime-BPOCksWG.js 2017:200:rolldown-runtime-BPOCksWG.js 2056:200:rolldown-runtime-BPOCksWG.js 2060:200:rolldown-runtime-BPOCksWG.js",
+    "transitionsFirst": 1764
+   },
+   "positiveControl": {
+    "fetchStatus": 504,
+    "fetchStatusText": "Outdated Optimize Dep",
+    "dynImportError": "Failed to fetch dynamically imported module: http://localhost:4322/node_modules/.vite/deps/react.js?v=deadbe01",
+    "recordedByResponseListener": [
+     "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbeef",
+     "504 Outdated Optimize Dep /node_modules/.vite/deps/react.js?v=deadbe01"
+    ],
+    "consoleDuringControl": [
+     "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+     "error: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+    ]
+   }
+  },
+  "clean": true
+ }
+]

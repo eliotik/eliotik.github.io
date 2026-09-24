@@ -1,0 +1,29 @@
+PASS P0.1.assets — Partytown assets partytown.js / partytown-sw.js / partytown-sandbox-sw.html all 200
+PASS P0.2.initial — initial full load of /: exactly 1 sandbox iframe, parent <html>, loaded once, 1 worker, gtag.js requested, page_view attempted (non-vacuous)
+  P0 nav 1 home → octoprint post (main card): path=/posts/octoprint-prusa-core-one-raspberry-pi/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 2 post → /search/ (header): path=/search/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 3 search → /tags/ (header): path=/tags/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 4 tags → /tags/engineering-management/ (island link): path=/tags/engineering-management/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 5 tag → / (header logo): path=/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 6 home → /posts/ (header): path=/posts/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 7 posts → local-coding-model post (main card): path=/posts/local-coding-model-desktop-macbook/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 8 post → /tips/ (header): path=/tips/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 9 tips → /about/ (header): path=/about/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 10 about → / (header logo): path=/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+PASS P0.2.soft-navs — 10 real-click ClientRouter navigations, all soft (window token survives, 0 load/DOMContentLoaded events), expected paths
+PASS P0.2.sandbox-parent-html — sandbox iframe parent is <html> on / and after every navigation; exactly 1 sandbox iframe throughout
+PASS P0.2.iframe-never-reloads — sandbox iframe never reloads: DOM 'load' events = 1, sandbox-html requests = 1, sandbox framenavigated = 1, framedetached = 0, element identity preserved, 0 removals
+PASS P0.2.one-worker — exactly 1 Partytown worker created (page.on(worker)) and never closed
+PASS P0.2.gtag-once — gtag.js requested exactly once; both gtag <script>s are the same persisted elements (text/partytown-x) after every navigation; 0 pending text/partytown scripts
+PASS P0.2.proxytown — 0 '/~partytown/proxytown' console errors and 0 failed/aborted proxytown requests
+PASS P0.2.analytics-alive — analytics still alive after the navigations (collect attempts observed after the last navigation; non-vacuous)
+PASS P0.2.console-zero — P0 context: 0 console errors of any kind (page, frames, workers, service worker) and 0 page errors
+PASS P0.2.sw-registration — Partytown SW registered + activated for scope /~partytown/ (no registration error)
+PASS P7.islands-hydrated — no astro-island[ssr] remains after load/navigation on any visited page (2 visits)
+PASS P7.no-hydration-warnings — no React hydration warnings/errors in console (page, frames, workers, pageerror)
+PASS C.console-zero — ZERO console errors and ZERO page errors across every test (2 messages captured, 2 visits)
+PASS C.requests-failed — no failed request other than the DNS-blocked GA collect hosts
+
+DONE 15 checks, 0 failed -> /private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8v3/playwright-e2e/p0-repeats/p0-rep2.json
+console: 0 errors, 0 warnings; requestsFailed other: 0
+EXIT=0

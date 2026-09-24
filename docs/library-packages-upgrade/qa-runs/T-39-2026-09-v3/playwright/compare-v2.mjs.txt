@@ -1,0 +1,132 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8 v3, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs next to node_modules/playwright.
+// T-39 Task 8 v3 lane playwright-e2e: measured-value comparison v3 (HEAD 9eb1ec3) vs v2 (63efd08).
+// The only shipped change between the two trees that can affect islands is the Tailwind source restriction
+// (5723bef: 412 unused rules removed from Footer CSS) plus og:image meta (20d335f). Pass/fail checks can hide a
+// CSS regression that still passes, so this diffs the raw measurements both runs recorded.
+// usage: node compare-v2.mjs <v2 results.json> <v3 results.json> <out.json>
+import fs from 'node:fs';
+
+const [v2p, v3p, outp] = process.argv.slice(2);
+const v2 = JSON.parse(fs.readFileSync(v2p, 'utf8'));
+const v3 = JSON.parse(fs.readFileSync(v3p, 'utf8'));
+const ev = (r, id) => r.checks.find(c => c.id === id)?.evidence;
+
+function extract(r) {
+    const m = {};
+    const put = (k, v) => (m[k] = v === undefined ? '<undefined>' : JSON.stringify(v));
+    // P1 desktop + mobile: geometry, button styles, step deltas, snap results, image natural widths
+    for (const [grp, data] of [
+        ['P1', r.details.P1],
+        ['P1m', { octoprint: r.details.P1mobile }],
+    ]) {
+        for (const [slug, cars] of Object.entries(data || {})) {
+            (cars || []).forEach(c => {
+                const k = `${grp}.${slug}.c${c.index}`;
+                const s = c.start || {};
+                for (const f of ['clientWidth', 'scrollWidth', 'maxScroll', 'rectWidth', 'slideRectWidth', 'prevDisabled', 'nextDisabled', 'prevVisible', 'nextVisible', 'prevOpacity', 'nextOpacity', 'slideCount', 'expectedN', 'labels', 'nearestOffset'])
+                    put(`${k}.start.${f}`, s[f]);
+                put(`${k}.start.imgNaturalWidths`, (s.imgs || []).map(x => x && x.nw));
+                put(`${k}.start.imgSrcs`, (s.imgs || []).map(x => x && x.src));
+                (c.steps || []).forEach((st, j) => {
+                    put(`${k}.step${j}.action`, st.action);
+                    put(`${k}.step${j}.delta`, st.delta !== undefined ? Math.round(st.delta) : undefined);
+                    put(`${k}.step${j}.to`, Math.round(st.to));
+                    if (st.snap) put(`${k}.step${j}.snap`, { mod: st.snap.mod, geom: st.snap.geomOffset, slide: st.snap.nearestSlide });
+                    if (st.maxDisplacement !== undefined) put(`${k}.step${j}.maxDisplacement~`, Math.round(st.maxDisplacement));
+                });
+            });
+        }
+    }
+    // P1 dark: colours + contrast per carousel, light colours of the first carousel
+    for (const [slug, d] of Object.entries(r.details.P1dark || {})) {
+        const lc = d.lightColorsFirstCarousel || {};
+        for (const f of ['bodyBg', 'btnBg', 'btnFg', 'btnBgCompositeRGB', 'iconVsButtonContrast', 'scrollerBorderColor']) put(`P1dark.${slug}.light.${f}`, lc[f]);
+        (d.carousels || []).forEach((c, i) => {
+            for (const f of ['bodyBg', 'btnBg', 'btnFg', 'btnBgCompositeRGB', 'iconVsButtonContrast', 'scrollerBorderColor']) put(`P1dark.${slug}.c${i + 1}.${f}`, c.col[f]);
+            for (const f of ['clientWidth', 'prevOpacity', 'nextOpacity', 'prevDisabled', 'nextDisabled', 'slideCount']) put(`P1dark.${slug}.c${i + 1}.${f}`, c.st[f]);
+        });
+    }
+    // P2 search
+    const p2 = ev(r, 'P2.type') || {};
+    put('P2.type.count', p2.count);
+    put('P2.type.found', p2.found);
+    put('P2.type.first3', (p2.first3 || []).map(x => x.href));
+    put('P2.reload.count', (ev(r, 'P2.reload') || {}).count);
+    const p2c = ev(r, 'P2.click-result') || {};
+    put('P2.click.href', p2c.href);
+    put('P2.click.h1', p2c.h1);
+    put('P2.click.status', (p2c.responseChain || []).map(x => x.status));
+    const nm = ev(r, 'P2.nomatch') || {};
+    put('P2.nomatch', { items: nm.items, found: nm.found });
+    // P3 tags
+    const p3i = ev(r, 'P3.initial-count-sort') || {};
+    put('P3.initial.total', p3i.total);
+    put('P3.initial.first5', p3i.first5);
+    put('P3.initial.summary', p3i.summary);
+    const p3f = ev(r, 'P3.filter') || {};
+    put('P3.filter.items', (p3f.items || []).map(t => `${t.tag}:${t.count}`));
+    put('P3.filter.summary', p3f.summary);
+    put('P3.alpha-filtered', (ev(r, 'P3.sort-alpha-filtered') || {}).items);
+    const p3a = ev(r, 'P3.sort-alpha-full') || {};
+    put('P3.alpha-full', { total: p3a.total, first5: p3a.first5, last3: p3a.last3 });
+    const p3c = ev(r, 'P3.sort-count') || {};
+    put('P3.count', { first8: p3c.first8, last3: p3c.last3 });
+    const p3t = ev(r, 'P3.tag-click') || {};
+    put('P3.tag-click', { path: p3t.path, h1: p3t.h1, posts: p3t.posts });
+    // P4
+    for (const n of ['n1', 'n2', 'n3']) {
+        const x = (r.details.P4 || {})[n] || {};
+        put(`P4.${n}`, { path: x.path, islands: x.islands, ssr: x.islandsSsrRemaining, fullLoads: x.fullLoads, dcls: x.dcls, pageLoads: x.pageLoads });
+    }
+    const p4i = ev(r, 'P4.post-island') || {};
+    put('P4.post-island', { from: p4i.from, to: p4i.to, cw: p4i.clientWidth });
+    put('P4.tags-island', ev(r, 'P4.tags-island'));
+    const p4b = ev(r, 'P4b.theme-persist-client-nav') || {};
+    put('P4b.darkBg', p4b.darkBg);
+    put('P4b.nonDarkFrames', (p4b.nonDarkFrames || []).length);
+    put('P4b.pathsSeen', p4b.pathsSeen);
+    // P5
+    const p5 = r.details.P5 || {};
+    put('P5.light', { theme: p5.light?.theme, bg: p5.light?.bg });
+    put('P5.dark', p5.dark);
+    for (const row of p5.rows || []) put(`P5.row.${row.page}`, { dcl: [row.fouc?.dcl?.theme, row.fouc?.dcl?.bg], raf: [row.fouc?.firstRafWithBody?.theme, row.fouc?.firstRafWithBody?.bg], ls: row.ls, bgNow: row.bgNow });
+    // P6
+    for (const [slug, d] of Object.entries(r.details.P6 || {})) {
+        put(`P6.${slug}.summary`, d.s0?.summary);
+        put(`P6.${slug}.links`, d.s0?.links);
+        put(`P6.${slug}.anchorsMissing`, (d.anchors || []).filter(a => !a.exists).length);
+        put(`P6.${slug}.clicked`, (d.clicked || []).map(c => ({ href: c.href, hash: c.hash, targetTop: c.targetTop, atBottom: c.atBottom })));
+    }
+    // P0 structural (run-dependent counters like proxytown request totals are excluded)
+    const p0 = r.p0 || {};
+    put('P0.initial', { sandboxCount: p0.initial?.sandboxCount, parent: p0.initial?.sandboxParent, lastChildOfHtml: p0.initial?.sandboxIsLastChildOfHtml, iframeLoads: p0.initial?.iframeLoads, gtagTypes: p0.initial?.gtagScriptTypes, ptPending: p0.initial?.ptPending });
+    put('P0.navs', (p0.navs || []).map(n => `${n.path}|soft=${n.soft}|${n.sandboxParent}x${n.sandboxCount}|loads=${n.iframeLoads}|same=${n.iframeSameElement}/${n.gtagSrcSameElement}/${n.gtagInitSameElement}|pending=${n.ptPending}`));
+    put('P0.tallies', { load: p0.tallies?.loadEventsAfterInitial, dcl: p0.tallies?.dclEventsAfterInitial, sandboxHtml: p0.tallies?.sandboxHtmlRequests?.length, sbNav: p0.tallies?.sandboxFrameNavigated?.length, sbDetached: p0.tallies?.sandboxFrameDetached?.length, workers: p0.tallies?.workersCreated?.length, workersClosed: p0.tallies?.workersClosedBeforeContextClose?.length, gtag: p0.tallies?.gtagRequests?.length, proxytownFailed: p0.tallies?.proxytownFailed?.length });
+    put('P0.pageViewsByNav', (p0.tallies?.pageViewsByNav || []).map(x => `${x.navIdx}:${x.dl}`));
+    put('P0.registrations', (p0.registrations || []).map(x => ({ scope: x.scope, active: x.active, state: x.state })));
+    // P7 / console
+    put('P7.visits', r.details.P7?.visits);
+    put('P7.islandsTotal', r.details.P7?.islandsTotalAcrossVisits);
+    put('C.errors', r.consoleSummary?.errors);
+    put('C.warnings', r.consoleSummary?.warnings);
+    put('C.typesSeen', r.consoleSummary?.typesSeen);
+    put('C.requestsFailedOther', (r.consoleSummary?.requestsFailedOther || []).length);
+    put('checks.total', r.checks.length);
+    put('checks.failed', r.checks.filter(c => !c.pass).map(c => c.id));
+    return m;
+}
+
+const a = extract(v2);
+const b = extract(v3);
+const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])].sort();
+// maxDisplacement during a partial gesture is timing-dependent (v2 run1 vs run2 differ by up to 9 px on mobile):
+// compared with a ±15 px tolerance; every other key must be identical.
+const TOL_KEY = /maxDisplacement~$/;
+const same = k => (TOL_KEY.test(k) && a[k] !== undefined && b[k] !== undefined ? Math.abs(Number(a[k]) - Number(b[k])) <= 15 : a[k] === b[k]);
+const diffs = keys.filter(k => !same(k)).map(k => ({ key: k, v2: a[k] ?? '<absent>', v3: b[k] ?? '<absent>' }));
+const out = { v2: v2p, v3: v3p, v2Meta: v2.meta, v3Meta: v3.meta, keysCompared: keys.length, identical: keys.length - diffs.length, differing: diffs.length, diffs };
+fs.writeFileSync(outp, JSON.stringify(out, null, 2));
+console.log(`compared ${keys.length} measured keys: ${keys.length - diffs.length} identical, ${diffs.length} differ`);
+for (const d of diffs) console.log(`DIFF ${d.key}\n   v2: ${d.v2.slice(0, 400)}\n   v3: ${d.v3.slice(0, 400)}`);

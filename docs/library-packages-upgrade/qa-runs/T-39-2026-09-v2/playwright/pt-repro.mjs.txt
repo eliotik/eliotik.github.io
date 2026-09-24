@@ -1,0 +1,593 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8 v2, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs next to node_modules/playwright.
+#!/usr/bin/env node
+// Deterministic reproduction of the Partytown "/~partytown/proxytown" NetworkError on
+// Astro ClientRouter navigations, plus GA (gtag in Partytown) hit accounting.
+//
+// usage: node pt-repro.mjs <baseURL> [--dwells=0.5,3] [--repeats=1] [--loops=3] [--strict] [--instrument]
+//                          [--probe=...] [--gtag=/path/to/gtag.js] [--no-route] [--out=file.json] [--headed]
+//
+//   baseURL      e.g. http://127.0.0.1:4351 (a static server of a PROD build: gtag is PROD-only)
+//   --dwells     dwell seconds after each ClientRouter navigation; one fresh context per dwell
+//   --repeats    how many fresh contexts per dwell value
+//   --instrument extra (slightly invasive) tracing: wraps worker console.error/warn to add
+//                timestamps + stacks, traps history.pushState re-wrapping (leak check)
+//   --gtag       cached gtag.js to serve instead of the real one (default: ./pt-repro-gtag.js
+//                next to this script; downloaded once if missing)
+//   --probe=X    runtime probe of a candidate fix (no rebuild): 'sandbox-html' pre-seeds
+//                window.partytown.sandboxParent='html'; 'movebefore' parks the sandbox iframe on
+//                <html> with Element.moveBefore before the swap and moves it back afterwards;
+//                'persist-scripts' rewrites served HTML to add data-astro-transition-persist to the two
+//                gtag <script type=text/partytown> tags (so the swap keeps the executed ones).
+//                Comma-combine, e.g. --probe=sandbox-html,persist-scripts
+//   --loops=N    repeat the click sequence N times per context (more navigations => the timing-
+//                dependent proxytown error becomes near-certain; the sandbox churn is always there)
+//   --settle=S   seconds to keep observing after the last navigation (default 6: GA4 flushes its
+//                event batch ~5s after a page_view when the worker survives)
+//   --strict     also exit 1 when a ClientRouter navigation detaches/reloads the Partytown sandbox
+//                iframe or recreates its worker (the deterministic mechanism behind the error)
+//   --no-route   control mode: no Playwright routing; real gtag.js is fetched from Google and
+//                GA collect hosts are blocked only by DNS (host-resolver-rules). Hits are then
+//                observed as failed requests.
+//
+// Analytics egress is always blocked: in route mode every Google host is answered locally
+// (gtag.js from cache, everything else 204) and host-resolver-rules maps GA/collect hosts to
+// ~NOTFOUND as a leak net (a leak is reported as harnessLeaks).
+//
+// Output: JSON on stdout (and --out). Exit codes:
+//   0  no proxytown errors, no console errors, no page errors, analytics observed
+//   1  proxytownErrors > 0 or any other console error / page error
+//   2  harness invalid / vacuous: gtag.js never ran or no page_view on the initial full load,
+//      a click did not produce a ClientRouter (soft) navigation to the expected path,
+//      or no page_view at all after the first ClientRouter navigation (analytics died),
+//      or analytics leaked past the local stubs (only when no exit-1 condition)
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createRequire } from 'node:module';
+
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+
+async function loadPlaywright() {
+    try {
+        return await import('playwright');
+    } catch {
+        /* fall through */
+    }
+    const dirs = [process.env.PW_DIR, ...fs.readdirSync(HERE).filter((d) => d.endsWith('-pw')).map((d) => path.join(HERE, d))].filter(Boolean);
+    for (const d of dirs) {
+        try {
+            const req = createRequire(path.join(d, 'package.json'));
+            return await import(pathToFileURL(req.resolve('playwright')).href);
+        } catch {
+            /* next */
+        }
+    }
+    throw new Error('playwright not found: npm i playwright@1.63.0 in a sibling *-pw dir or set PW_DIR');
+}
+
+// ---------- args ----------
+const argv = process.argv.slice(2);
+const base = (argv.find((a) => !a.startsWith('--')) || '').replace(/\/$/, '');
+if (!base) {
+    console.error('usage: node pt-repro.mjs <baseURL> [--dwells=0.5,3] [--repeats=1] [--instrument] [--no-route]');
+    process.exit(64);
+}
+const opt = (name, def) => {
+    const a = argv.find((x) => x === `--${name}` || x.startsWith(`--${name}=`));
+    if (!a) return def;
+    return a.includes('=') ? a.slice(a.indexOf('=') + 1) : true;
+};
+const DWELLS = String(opt('dwells', '0.5,3')).split(',').map(Number);
+const REPEATS = Number(opt('repeats', 1));
+const INSTRUMENT = !!opt('instrument', false);
+const NO_ROUTE = !!opt('no-route', false);
+const HEADED = !!opt('headed', false);
+const OUT = opt('out', null);
+const PROBE = opt('probe', null);
+const PROBES = PROBE ? String(PROBE).split(',') : [];
+const LOOPS = Number(opt('loops', 3));
+const SETTLE = Number(opt('settle', 6)); // seconds after the last navigation (GA4 batches hits ~5s)
+const STRICT = !!opt('strict', false); // also fail (exit 1) if any soft navigation reloads the sandbox / recreates the worker // repeat the 4-click sequence (tag -> home via header logo in between)
+const GTAG_PATH = opt('gtag', path.join(HERE, 'pt-repro-gtag.js'));
+const GA_ID = 'G-QQMCTBW5TH';
+
+const GOOGLE_RE = /^https?:\/\/([a-z0-9-]+\.)*(google-analytics\.com|googletagmanager\.com|doubleclick\.net|google\.com|googlesyndication\.com|googleadservices\.com)\//i;
+const GA_HIT_RE = /\/(g\/collect|collect|j\/collect|r\/collect|ccm\/collect|td|a)(\?|$)/;
+const LEAK_NET = [
+    'MAP *.google-analytics.com ~NOTFOUND',
+    'MAP google-analytics.com ~NOTFOUND',
+    'MAP *.doubleclick.net ~NOTFOUND',
+    'MAP *.google.com ~NOTFOUND',
+    'MAP *.googlesyndication.com ~NOTFOUND',
+    'MAP *.googleadservices.com ~NOTFOUND',
+    // in route mode gtag.js is served from cache, so googletagmanager can be blackholed too
+    ...(NO_ROUTE ? [] : ['MAP *.googletagmanager.com ~NOTFOUND']),
+].join(', ');
+
+const STEPS = [
+    { name: 'home->post', sel: 'main a[href="/posts/octoprint-prusa-core-one-raspberry-pi/"]', expect: (p) => p === '/posts/octoprint-prusa-core-one-raspberry-pi/' },
+    { name: 'post->search', sel: 'header a[href="/search/"]', expect: (p) => p === '/search/' },
+    { name: 'search->tags', sel: 'header a[href="/tags/"]', expect: (p) => p === '/tags/' },
+    { name: 'tags->tag', sel: 'main a[href^="/tags/"]:not([href="/tags/"])', expect: (p) => /^\/tags\/[^/]+\/$/.test(p) },
+];
+
+async function ensureGtag() {
+    if (NO_ROUTE) return null;
+    if (!fs.existsSync(GTAG_PATH)) {
+        const r = await fetch(`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`);
+        if (!r.ok) throw new Error(`cannot download gtag.js: ${r.status}`);
+        fs.writeFileSync(GTAG_PATH, Buffer.from(await r.arrayBuffer()));
+    }
+    return fs.readFileSync(GTAG_PATH);
+}
+
+// ---------- page-side passive instrumentation (runs before any page script) ----------
+const PAGE_INIT = ({ instrument }) => {
+    if (window.top !== window) return; // main frame only
+    const now = () => performance.timeOrigin + performance.now();
+    const S = (window.__ptrepro = { ev: [], iframeLoads: 0, token: Math.random().toString(36).slice(2), pushStateSets: 0 });
+    const log = (type, data = {}) => S.ev.push({ t: now(), type, path: location.pathname, ...data });
+    const isSandbox = (n) => n && n.nodeType === 1 && n.tagName === 'IFRAME' && /~partytown\//.test(n.getAttribute('src') || '');
+    const findSandbox = (n) => (isSandbox(n) ? n : n && n.querySelector ? n.querySelector('iframe[src*="/~partytown/"]') : null);
+    const ids = new WeakMap();
+    let seq = 0;
+    const wid = (w) => {
+        if (!w) return null;
+        if (!ids.has(w)) ids.set(w, ++seq);
+        return ids.get(w);
+    };
+    S.wid = wid;
+    const hook = (f) => {
+        if (f.__ptHooked) return;
+        f.__ptHooked = 1;
+        f.addEventListener('load', () => {
+            S.iframeLoads++;
+            const cw = f.contentWindow;
+            log('sandbox-load', { loads: S.iframeLoads, cw: wid(cw), parent: f.parentNode && f.parentNode.nodeName, src: f.getAttribute('src') });
+            try {
+                const onHide = (ev) =>
+                    log('sandbox-' + ev.type, {
+                        cw: wid(cw),
+                        connected: f.isConnected,
+                        inLiveDoc: f.ownerDocument === document,
+                        stack: String(new Error().stack).split('\n').slice(1, 9).join('\n'),
+                    });
+                cw.addEventListener('pagehide', onHide);
+                cw.addEventListener('unload', onHide);
+            } catch (e) {
+                log('sandbox-hook-failed', { err: String(e) });
+            }
+        });
+    };
+    new MutationObserver((muts) => {
+        for (const m of muts) {
+            for (const n of m.removedNodes) {
+                const f = findSandbox(n);
+                if (f) log('mo-sandbox-removed', { via: n === f ? 'IFRAME' : n.nodeName, from: m.target.nodeName, connectedAtCallback: f.isConnected, ownerIsLive: f.ownerDocument === document });
+            }
+            for (const n of m.addedNodes) {
+                const f = findSandbox(n);
+                if (f) {
+                    hook(f);
+                    log('mo-sandbox-added', { via: n === f ? 'IFRAME' : n.nodeName, to: m.target.nodeName });
+                }
+            }
+        }
+    }).observe(document, { childList: true, subtree: true });
+    const snap = () => {
+        const f = document.querySelector('iframe[src*="/~partytown/"]');
+        return {
+            sandboxInDom: !!f,
+            sandboxParent: f && f.parentNode ? f.parentNode.nodeName : null,
+            cw: f ? wid(f.contentWindow) : null,
+            iframes: document.querySelectorAll('iframe').length,
+            ptScripts: document.querySelectorAll('script[type="text/partytown"]').length,
+            ptScriptsDone: document.querySelectorAll('script[type="text/partytown-x"]').length,
+        };
+    };
+    S.snap = snap;
+    for (const e of ['astro:before-preparation', 'astro:after-preparation', 'astro:before-swap', 'astro:after-swap', 'astro:page-load']) {
+        document.addEventListener(e, (ev) => {
+            const d = snap();
+            if (e === 'astro:before-swap') d.newDocHasSandbox = !!(ev.newDocument && ev.newDocument.querySelector('iframe[src*="/~partytown/"]'));
+            log(e, d);
+        });
+    }
+    if (instrument) {
+        let cur = history.pushState;
+        Object.defineProperty(history, 'pushState', {
+            configurable: true,
+            get() {
+                return cur;
+            },
+            set(v) {
+                S.pushStateSets++;
+                cur = v;
+                log('history.pushState-rewrapped', { sets: S.pushStateSets });
+            },
+        });
+    }
+};
+
+const WORKER_INIT = () => {
+    if (self.__ptw) return 'already';
+    self.__ptw = 1;
+    const now = () => performance.timeOrigin + performance.now();
+    for (const k of ['error', 'warn']) {
+        const o = console[k].bind(console);
+        console[k] = (...a) =>
+            o(
+                `[ptw ${k} t=${now().toFixed(1)}]`,
+                ...a.map((x) => (x && typeof x === 'object' && 'stack' in x ? `${x.name}: ${x.message}\nSTACK: ${x.stack}\nCALLER: ${new Error().stack}` : x))
+            );
+    }
+    const dbg = console.debug.bind(console);
+    const of = self.fetch;
+    self.fetch = function (input, init) {
+        const u = String((input && input.url) || input);
+        if (!/proxytown/.test(u)) dbg(`[ptw fetch t=${now().toFixed(1)}] ${(init && init.method) || 'GET'} ${u.slice(0, 300)}`);
+        return of.apply(this, arguments);
+    };
+    const oo = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function (m, u) {
+        if (!/proxytown/.test(String(u))) dbg(`[ptw xhr t=${now().toFixed(1)}] ${m} ${String(u).slice(0, 300)}`);
+        return oo.apply(this, arguments);
+    };
+    return 'ok';
+};
+
+function parseHits(url, body) {
+    const u = new URL(url);
+    const shared = Object.fromEntries(u.searchParams);
+    const lines = (body || '').split('\n').filter((l) => l.includes('='));
+    const evs = lines.length ? lines.map((l) => ({ ...shared, ...Object.fromEntries(new URLSearchParams(l)) })) : [shared];
+    return evs.map((e) => ({ en: e.en, dl: e.dl, dt: e.dt, dr: e.dr, _s: e._s, sid: e.sid, sct: e.sct, seg: e.seg, _et: e._et, _ss: e._ss, _fv: e._fv, _nsi: e._nsi, tid: e.tid, cid: e.cid }));
+}
+
+async function runOnce(pw, gtagBody, dwell, rep) {
+    const label = `dwell=${dwell}s#${rep}`;
+    const T0 = Date.now();
+    const browser = await pw.chromium.launch({ channel: 'chrome', headless: !HEADED, args: [`--host-resolver-rules=${LEAK_NET}`] });
+    const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const R = {
+        label,
+        dwell,
+        consoleErrors: [],
+        consoleOther: [],
+        proxytownErrors: 0,
+        pageErrors: [],
+        abortedRequests: [],
+        gaRequests: [],
+        proxytown: { requests: 0, failed: 0 },
+        workers: [],
+        serviceWorkers: [],
+        frames: [],
+        perNavigation: [],
+        harnessLeaks: [],
+        gtagServed: 0,
+        routeHits: 0,
+        proxytownLog: [],
+        requestEventsGoogle: 0,
+        pageEvents: [],
+    };
+    const t = () => Date.now();
+    await context.addInitScript(PAGE_INIT, { instrument: INSTRUMENT });
+    for (const p of PROBES) if (!['sandbox-html', 'movebefore', 'persist-scripts'].includes(p)) throw new Error('unknown --probe ' + p);
+    if (PROBES.includes('persist-scripts')) {
+        const origin = new URL(base).origin;
+        await context.route(
+            (u) => u.origin === origin && !u.pathname.startsWith('/~partytown/') && !/\.[a-z0-9]+$/i.test(u.pathname),
+            async (route) => {
+                const resp = await route.fetch();
+                if (!String(resp.headers()['content-type'] || '').includes('text/html')) return route.fulfill({ response: resp });
+                let n = 0;
+                const body = (await resp.text()).replace(/<script data-category="analytics" type="text\/partytown"/g, (m) => `<script data-astro-transition-persist="pt-gtag-${++n}" data-category="analytics" type="text/partytown"`);
+                R.persistRewrites = (R.persistRewrites || 0) + (n ? 1 : 0);
+                return route.fulfill({ response: resp, body });
+            }
+        );
+    }
+    if (PROBES.includes('sandbox-html')) {
+        await context.addInitScript(() => {
+            if (window.top === window) window.partytown = Object.assign(window.partytown || {}, { sandboxParent: 'html' });
+        });
+    }
+    if (PROBES.includes('movebefore')) {
+        await context.addInitScript(() => {
+            if (window.top !== window) return;
+            const sel = 'iframe[src*="/~partytown/"]';
+            // registered before @astrojs/partytown's own before-swap listener, so it runs first
+            document.addEventListener('astro:before-swap', () => {
+                const f = document.body && document.body.querySelector(sel);
+                if (f && typeof document.documentElement.moveBefore === 'function') document.documentElement.moveBefore(f, null);
+            });
+            document.addEventListener('astro:after-swap', () => {
+                const f = document.querySelector(sel);
+                if (f && f.parentNode === document.documentElement && typeof document.body.moveBefore === 'function') document.body.moveBefore(f, null);
+            });
+        });
+    }
+
+    // ----- GA/Google routing (analytics egress blocked, hits recorded) -----
+    if (!NO_ROUTE) {
+        await context.route(GOOGLE_RE, async (route, req) => {
+            R.routeHits++;
+            const url = req.url();
+            const origin = req.headers()['origin'];
+            const cors = origin
+                ? { 'access-control-allow-origin': origin, 'access-control-allow-credentials': 'true' }
+                : { 'access-control-allow-origin': '*' };
+            if (/googletagmanager\.com\/gtag\/js/.test(url)) {
+                R.gtagServed++;
+                return route.fulfill({ status: 200, headers: { 'content-type': 'application/javascript', ...cors }, body: gtagBody });
+            }
+            return route.fulfill({ status: 204, headers: cors, body: '' });
+        });
+    }
+
+    const who = (req) => {
+        try {
+            const sw = req.serviceWorker();
+            if (sw) return `serviceworker:${sw.url()}`;
+        } catch {}
+        try {
+            const f = req.frame();
+            return `frame:${f.url()}`;
+        } catch (e) {
+            return 'worker-or-unknown';
+        }
+    };
+    const workerGen = () => R.workers.length; // only dedicated workers on this site are Partytown's (prod: blob: URL)
+
+    const onReq = (req) => {
+        const url = req.url();
+        if (/\/~partytown\/proxytown/.test(url)) {
+            R.proxytown.requests++;
+            const pr = { t: t() };
+            R.proxytownLog.push(pr);
+            req.__pt = pr;
+        }
+        if (GOOGLE_RE.test(url)) {
+            R.requestEventsGoogle++;
+            const isHit = GA_HIT_RE.test(new URL(url).pathname);
+            const rec = { t: t(), url: url.slice(0, 2000), method: req.method(), from: who(req), resourceType: req.resourceType(), ptWorkerGen: workerGen(), kind: /gtag\/js/.test(url) ? 'gtag.js' : isHit ? 'hit' : 'other' };
+            if (isHit) rec.events = parseHits(url, req.postData());
+            rec.pageView = !!(rec.events || []).some((e) => e.en === 'page_view');
+            R.gaRequests.push(rec);
+            req.__rec = rec;
+        }
+    };
+    context.on('request', onReq);
+    context.on('requestfinished', async (req) => {
+        if (req.__pt) req.__pt.tEnd = t();
+        if (req.__rec) {
+            const r = await req.response().catch(() => null);
+            req.__rec.status = r ? r.status() : null;
+            req.__rec.tEnd = t();
+        }
+    });
+    context.on('requestfailed', (req) => {
+        const url = req.url();
+        const f = req.failure();
+        const rec = { t: t(), url: url.slice(0, 200), method: req.method(), from: who(req), resourceType: req.resourceType(), error: f && f.errorText };
+        if (/\/~partytown\/proxytown/.test(url)) R.proxytown.failed++;
+        if (req.__pt) (req.__pt.tEnd = t()), (req.__pt.failed = f && f.errorText);
+        R.abortedRequests.push(rec);
+        if (req.__rec) {
+            req.__rec.status = 'failed:' + (f && f.errorText);
+            req.__rec.tEnd = t();
+            if (!NO_ROUTE && /NAME_NOT_RESOLVED|ADDRESS_UNREACHABLE|CONNECTION/.test(String(f && f.errorText))) R.harnessLeaks.push(rec);
+        }
+    });
+    context.on('serviceworker', (sw) => R.serviceWorkers.push({ t: t(), url: sw.url() }));
+
+    const consoleSeen = new Set();
+    const onConsole = async (msg, src) => {
+        const type = msg.type();
+        let text = msg.text();
+        const w = msg.worker ? msg.worker() : null;
+        const key = `${type}|${text}|${msg.timestamp ? msg.timestamp() : ''}|${w ? w.url() : 'page'}`;
+        if (consoleSeen.has(key)) return;
+        consoleSeen.add(key);
+        const rec = { t: t(), tMsg: msg.timestamp ? msg.timestamp() : null, type, text: text.slice(0, 4000), from: w ? `worker:${w.url()}` : src, location: msg.location(), ptWorkerGen: workerGen() };
+        if (type === 'error') {
+            const a0 = msg.args()[0];
+            if (a0) {
+                rec.argStack = await Promise.race([a0.evaluate((e) => (e && e.stack) || null).catch((e) => `unavailable: ${String(e).slice(0, 120)}`), new Promise((r) => setTimeout(() => r('timeout'), 1000))]);
+            }
+            if (/proxytown/.test(text) || /proxytown/.test(String(rec.argStack))) R.proxytownErrors++;
+            R.consoleErrors.push(rec);
+        } else if (type === 'warning' || INSTRUMENT) {
+            R.consoleOther.push(rec);
+        }
+    };
+    context.on('console', (m) => onConsole(m, 'context'));
+    context.on('weberror', (we) => R.pageErrors.push({ t: t(), via: 'weberror', error: String(we.error()?.stack || we.error()).slice(0, 2000) }));
+
+    const page = await context.newPage();
+    page.on('pageerror', (e) => R.pageErrors.push({ t: t(), via: 'pageerror', error: String(e.stack || e).slice(0, 2000) }));
+    page.on('frameattached', (f) => R.frames.push({ t: t(), ev: 'attached', url: f.url() }));
+    page.on('framedetached', (f) => R.frames.push({ t: t(), ev: 'detached', url: f.url() }));
+    page.on('framenavigated', (f) => f !== page.mainFrame() && R.frames.push({ t: t(), ev: 'navigated', url: f.url() }));
+    page.on('worker', (w) => {
+        const rec = { t: t(), url: w.url(), gen: R.workers.length + 1 };
+        R.workers.push(rec);
+        w.on('close', () => (rec.closed = t()));
+        w.on('console', (m) => onConsole(m, `worker:${w.url()}`));
+        if (INSTRUMENT) {
+            w.evaluate(WORKER_INIT)
+                .then((r) => (rec.instrumented = r))
+                .catch((e) => (rec.instrumented = String(e).slice(0, 100)));
+        }
+    });
+
+    const cdp = INSTRUMENT ? await context.newCDPSession(page) : null;
+    const domCounters = async () => {
+        if (!cdp) return undefined;
+        try {
+            await cdp.send('HeapProfiler.collectGarbage');
+            return await cdp.send('Memory.getDOMCounters');
+        } catch (e) {
+            return { err: String(e).slice(0, 100) };
+        }
+    };
+    const liveSnapshot = async () => {
+        const inPage = await page.evaluate(() => ({ ...window.__ptrepro.snap(), token: window.__ptrepro.token, iframeLoads: window.__ptrepro.iframeLoads, pushStateSets: window.__ptrepro.pushStateSets, path: location.pathname, pttab: window._pttab })).catch((e) => ({ err: String(e) }));
+        return {
+            ...inPage,
+            liveWorkers: page.workers().map((w) => w.url()),
+            liveFrames: page.frames().filter((f) => f !== page.mainFrame()).map((f) => f.url()),
+            serviceWorkers: context.serviceWorkers().map((w) => w.url()),
+            proxytownPending: R.proxytownLog.filter((x) => !x.tEnd).length,
+            domCounters: await domCounters(),
+        };
+    };
+
+    // ----- initial full load -----
+    const tLoad = t();
+    await page.goto(base + '/', { waitUntil: 'load' });
+    const ready = await page
+        .waitForFunction(() => window.__ptrepro && window.__ptrepro.iframeLoads >= 1, null, { timeout: 15000 })
+        .then(() => true)
+        .catch(() => false);
+    // wait for gtag's initial page_view (vacuity guard)
+    const pvDeadline = Date.now() + 15000;
+    while (Date.now() < pvDeadline && !R.gaRequests.some((g) => g.pageView)) await page.waitForTimeout(100);
+    await page.waitForTimeout(dwell * 1000);
+    const initial = { step: 'full-load /', t: tLoad, sandboxReady: ready, snapshot: await liveSnapshot() };
+    R.initialPageViews = R.gaRequests.filter((g) => g.pageView).length;
+    R.tFirstClick = null;
+    const token0 = initial.snapshot.token;
+
+    const windowOf = (from, to) => ({
+        proxytownErrors: R.consoleErrors.filter((c) => c.t >= from && c.t < to && /proxytown/.test(c.text + (c.argStack || ''))).length,
+        otherConsoleErrors: R.consoleErrors.filter((c) => c.t >= from && c.t < to && !/proxytown/.test(c.text + (c.argStack || ''))).map((c) => c.text.slice(0, 160)),
+        abortedRequests: R.abortedRequests.filter((a) => a.t >= from && a.t < to).map((a) => `${a.error} ${a.url}`),
+        gaHits: R.gaRequests.filter((g) => g.t >= from && g.t < to && g.kind === 'hit').map((g) => ({ ptWorkerGen: g.ptWorkerGen, status: g.status, events: (g.events || []).map((e) => `${e.en}|dl=${e.dl || ''}|dt=${(e.dt || '').slice(0, 40)}|_s=${e._s}`) })),
+        gtagJsLoads: R.gaRequests.filter((g) => g.t >= from && g.t < to && g.kind === 'gtag.js').length,
+        workersCreated: R.workers.filter((w) => w.t >= from && w.t < to).map((w) => `${w.gen}:${w.url.replace(base, '')}`),
+        workersClosed: R.workers.filter((w) => w.closed && w.closed >= from && w.closed < to).map((w) => `${w.gen}:${w.url.replace(base, '')}`),
+        frames: R.frames.filter((f) => f.t >= from && f.t < to).map((f) => `${f.ev}:${f.url.replace(base, '')}`),
+    });
+    let prevEnd = t();
+    initial.window = windowOf(tLoad, prevEnd);
+    R.perNavigation.push(initial);
+
+    // ----- ClientRouter navigations by clicking real links -----
+    const HOME = { name: 'tag->home', sel: 'header a.logo[href="/"]', expect: (p) => p === '/' };
+    const plan = [];
+    for (let i = 0; i < LOOPS; i++) plan.push(...(i ? [HOME] : []), ...STEPS);
+    for (const step of plan) {
+        const tClick = t();
+        if (R.tFirstClick === null) R.tFirstClick = tClick;
+        const nav = { step: step.name, t: tClick };
+        try {
+            const link = page.locator(step.sel).first();
+            nav.href = await link.getAttribute('href');
+            const evBefore = await page.evaluate(() => window.__ptrepro.ev.length);
+            await link.click();
+            await page.waitForFunction(
+                (n) => window.__ptrepro.ev.slice(n).some((e) => e.type === 'astro:page-load'),
+                evBefore,
+                { timeout: 15000 }
+            );
+            nav.path = await page.evaluate(() => location.pathname);
+            nav.expectedPath = step.expect(nav.path);
+            nav.tLoaded = t();
+            await page.waitForTimeout(dwell * 1000);
+            nav.snapshot = await liveSnapshot();
+            nav.softNavigation = nav.snapshot.token === token0; // same window => ClientRouter, not a full load
+            nav.pageEvents = await page.evaluate((n) => window.__ptrepro.ev.slice(n), evBefore);
+        } catch (e) {
+            nav.error = String(e).slice(0, 300);
+        }
+        const tEnd = t();
+        nav.window = windowOf(prevEnd, tEnd);
+        prevEnd = tEnd;
+        R.perNavigation.push(nav);
+    }
+    // settle: catch late errors from the last navigation
+    await page.waitForTimeout(SETTLE * 1000);
+    const tail = { step: 'settle', t: prevEnd, snapshot: await liveSnapshot() };
+    tail.window = windowOf(prevEnd, t());
+    R.perNavigation.push(tail);
+    R.pageEvents = await page.evaluate(() => window.__ptrepro.ev).catch(() => []);
+    R.durationMs = Date.now() - T0;
+    await context.close();
+    await browser.close();
+    return R;
+}
+
+const pwMod = await loadPlaywright();
+const pw = pwMod.chromium ? pwMod : pwMod.default;
+const gtagBody = await ensureGtag();
+const runs = [];
+for (const d of DWELLS) for (let i = 1; i <= REPEATS; i++) runs.push(await runOnce(pw, gtagBody, d, i));
+
+const flat = (k) => runs.flatMap((r) => r[k].map((x) => ({ run: r.label, ...x })));
+const result = {
+    base,
+    mode: { route: !NO_ROUTE, instrument: INSTRUMENT, probe: PROBE, dwells: DWELLS, repeats: REPEATS, loops: LOOPS },
+    consoleErrors: flat('consoleErrors'),
+    proxytownErrors: runs.reduce((a, r) => a + r.proxytownErrors, 0),
+    pageErrors: flat('pageErrors'),
+    abortedRequests: flat('abortedRequests'),
+    gaRequests: flat('gaRequests').map((g) => ({ run: g.run, t: g.t, url: g.url.slice(0, 700), from: g.from, kind: g.kind, status: g.status, pageView: g.pageView, ptWorkerGen: g.ptWorkerGen, dl: (g.events || []).map((e) => e.dl).filter(Boolean)[0], events: g.events || [] })),
+    perNavigation: runs.flatMap((r) => r.perNavigation.map((n) => ({ run: r.label, ...n, pageEvents: undefined }))),
+    perRun: runs.map((r) => ({
+        run: r.label,
+        proxytownErrors: r.proxytownErrors,
+        otherConsoleErrors: r.consoleErrors.filter((c) => !/proxytown/.test(c.text + (c.argStack || ''))).length,
+        initialPageViews: r.initialPageViews,
+        softNavPageViewEvents: r.gaRequests.filter((g) => r.tFirstClick && g.t >= r.tFirstClick).flatMap((g) => (g.events || []).filter((e) => e.en === 'page_view')).length,
+        pageViewsTotal: r.gaRequests.filter((g) => g.pageView).length,
+        gtagServed: r.gtagServed,
+        routeHits: r.routeHits,
+        requestEventsGoogle: r.requestEventsGoogle,
+        proxytown: r.proxytown,
+        partytownWorkersCreated: r.workers.length,
+        partytownWorkersClosed: r.workers.filter((w) => w.closed).length,
+        proxytownPendingAtEnd: r.proxytownLog.filter((x) => !x.tEnd).length,
+        domCounters: r.perNavigation.map((n) => n.snapshot && n.snapshot.domCounters).filter(Boolean),
+        sandboxLoads: r.perNavigation.at(-1)?.snapshot?.iframeLoads,
+        pushStateRewraps: r.perNavigation.at(-1)?.snapshot?.pushStateSets,
+        serviceWorkers: r.serviceWorkers,
+        harnessLeaks: r.harnessLeaks.length,
+        persistRewrites: r.persistRewrites,
+        softNavs: r.perNavigation.filter((n) => n.softNavigation).length,
+        softNavsWithSandboxReload: r.perNavigation.filter((n) => n.softNavigation && (n.window.workersCreated.length || n.window.frames.some((f) => f.startsWith('detached')))).length,
+        durationMs: r.durationMs,
+    })),
+    pageEventsByRun: Object.fromEntries(runs.map((r) => [r.label, r.pageEvents])),
+    workersByRun: Object.fromEntries(runs.map((r) => [r.label, r.workers])),
+    framesByRun: Object.fromEntries(runs.map((r) => [r.label, r.frames])),
+    consoleOther: flat('consoleOther'),
+    harnessLeaks: flat('harnessLeaks'),
+};
+const otherErrors = result.consoleErrors.filter((c) => !/proxytown/.test(c.text + (c.argStack || ''))).length;
+for (const r of runs) if (!NO_ROUTE && r.requestEventsGoogle > r.routeHits) r.harnessLeaks.push({ note: `google request events ${r.requestEventsGoogle} > route hits ${r.routeHits}` });
+result.harnessLeaks = flat('harnessLeaks');
+const badNavs = result.perNavigation.filter((n) => n.step !== 'full-load /' && n.step !== 'settle' && (n.error || !n.softNavigation || !n.expectedPath));
+result.badNavigations = badNavs.map((n) => ({ run: n.run, step: n.step, path: n.path, soft: n.softNavigation, error: n.error }));
+// analytics must still be alive after ClientRouter navigations (a 'fix' that silently kills gtag after the
+// first soft navigation must not pass): at least one page_view event after the first click, per run
+const deadAnalytics = result.perRun.filter((r) => r.softNavPageViewEvents === 0).map((r) => r.run);
+result.deadAnalyticsRuns = deadAnalytics;
+const vacuous = deadAnalytics.length > 0 || badNavs.length > 0 || runs.some((r) => (!NO_ROUTE && r.gtagServed === 0) || r.initialPageViews === 0) || result.harnessLeaks.length > 0;
+const churn = result.perRun.reduce((a, r) => a + r.softNavsWithSandboxReload, 0);
+result.verdict = {
+    proxytownErrors: result.proxytownErrors,
+    softNavigations: result.perRun.reduce((a, r) => a + r.softNavs, 0),
+    softNavsWithSandboxReload: churn,
+    strict: STRICT,
+    otherConsoleErrors: otherErrors,
+    pageErrors: result.pageErrors.length,
+    vacuousOrLeaky: vacuous,
+    exitCode: result.proxytownErrors > 0 || otherErrors > 0 || result.pageErrors.length > 0 || (STRICT && churn > 0) ? 1 : vacuous ? 2 : 0,
+};
+const json = JSON.stringify(result, null, 2);
+if (OUT) fs.writeFileSync(OUT, json);
+process.stdout.write(json + '\n');
+process.exit(result.verdict.exitCode);

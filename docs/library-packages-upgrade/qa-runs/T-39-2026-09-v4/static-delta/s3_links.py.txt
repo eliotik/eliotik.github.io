@@ -1,0 +1,237 @@
+#!/usr/bin/env python3
+"""S3 link integrity over every dist/**/*.html.
+
+usage: s3_links.py <dist> <out_json>
+
+Resolution is case-exact against a set of paths built once with os.walk
+(macOS APFS is case-insensitive; GitHub Pages is not).
+Every internal ref (root-relative, relative, same-site absolute) is resolved
+against BOTH the canonical page URL (trailing slash for dir/index.html pages)
+and the no-slash URL, then mapped to a dist file:
+  path ending '/'       -> path + 'index.html'
+  exact file            -> ok ('file')
+  path + '/index.html'  -> ok ('dir-redirect', GitHub Pages 301 /x -> /x/)
+  path + '.html'        -> ok ('html-ext')
+Fragments are checked against id/name attributes of the target document,
+in-page and cross-page. Empty '#' reported separately.
+"""
+import html
+import json
+import os
+import re
+import sys
+from html.parser import HTMLParser
+from urllib.parse import urljoin, urlsplit, unquote
+
+DIST, OUT = sys.argv[1], sys.argv[2]
+SITE_HOSTS = {'www.novifyx.com', 'novifyx.com'}
+ORIGIN = 'https://www.novifyx.com'
+
+FILES = set()
+for dp, dn, fn in os.walk(DIST):
+    for f in fn:
+        FILES.add(os.path.relpath(os.path.join(dp, f), DIST).replace(os.sep, '/'))
+HTML = sorted(f for f in FILES if f.endswith('.html'))
+
+URL_ATTRS = {
+    ('a', 'href'), ('link', 'href'), ('area', 'href'), ('base', 'href'),
+    ('img', 'src'), ('script', 'src'), ('iframe', 'src'), ('source', 'src'),
+    ('video', 'src'), ('video', 'poster'), ('audio', 'src'), ('track', 'src'),
+    ('embed', 'src'), ('object', 'data'), ('form', 'action'),
+    ('input', 'src'), ('use', 'href'), ('use', 'xlink:href'),
+    ('image', 'href'), ('image', 'xlink:href'),
+    ('astro-island', 'component-url'), ('astro-island', 'renderer-url'),
+    ('astro-island', 'before-hydration-url'),
+}
+SRCSET_TAGS = {'img', 'source'}
+
+
+class P(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.ids, self.names, self.dup_ids = set(), set(), []
+        self.refs = []  # (kind, tag, attr, value)
+        self.props_urls = []
+
+    def handle_starttag(self, tag, attrs):
+        self._tag(tag, attrs)
+
+    def handle_startendtag(self, tag, attrs):
+        self._tag(tag, attrs)
+
+    def _tag(self, tag, attrs):
+        d = {}
+        for k, v in attrs:
+            d.setdefault(k, v)
+        if d.get('id') is not None:
+            if d['id'] in self.ids:
+                self.dup_ids.append(d['id'])
+            self.ids.add(d['id'])
+        if tag == 'a' and d.get('name') is not None:
+            self.names.add(d['name'])
+        for k, v in attrs:
+            if v is None:
+                continue
+            if (tag, k) in URL_ATTRS:
+                self.refs.append((tag, k, v))
+            if k in ('srcset', 'imagesrcset') and (tag in SRCSET_TAGS or tag == 'link'):
+                for cand in v.split(','):
+                    cand = cand.strip()
+                    if cand:
+                        self.refs.append((tag, k, cand.split()[0]))
+        if tag == 'meta' and (d.get('http-equiv') or '').lower() == 'refresh':
+            m = re.search(r'url=(.+)$', d.get('content') or '', re.I)
+            if m:
+                self.refs.append((tag, 'refresh-url', m.group(1).strip()))
+        if tag == 'astro-island' and d.get('props'):
+            # props are already entity-decoded by the parser
+            for s in re.findall(r'"(/[^"\s]*)"', d['props']):
+                if not s.startswith('//'):
+                    self.props_urls.append(s)
+
+
+def page_urls(rel):
+    if rel == 'index.html':
+        return '/', '/'
+    if rel.endswith('/index.html'):
+        d = '/' + rel[: -len('index.html')]
+        return d, d.rstrip('/')
+    return '/' + rel, '/' + rel
+
+
+def resolve_path(path):
+    """path: decoded, absolute, no query/fragment. -> (dist_rel or None, rule)"""
+    p = path.lstrip('/')
+    if path.endswith('/'):
+        cand = p + 'index.html'
+        return (cand, 'dir-index') if cand in FILES else (None, 'missing')
+    if p in FILES:
+        return p, 'file'
+    if (p + '/index.html') in FILES:
+        return p + '/index.html', 'dir-redirect'
+    if (p + '.html') in FILES:
+        return p + '.html', 'html-ext'
+    return None, 'missing'
+
+
+parsed = {}
+
+
+def parse(rel):
+    if rel not in parsed:
+        with open(os.path.join(DIST, rel), encoding='utf-8') as fh:
+            p = P()
+            p.feed(fh.read())
+            parsed[rel] = p
+    return parsed[rel]
+
+
+stats = {
+    'html_files': len(HTML),
+    'refs_total': 0,
+    'by_kind': {},
+    'by_rule': {},
+    'relative_refs': [],
+    'broken': [],
+    'fragments_inpage': 0,
+    'fragments_crosspage': 0,
+    'fragment_missing': [],
+    'empty_hash': [],
+    'props_urls': 0,
+    'props_broken': [],
+    'dup_ids': {},
+    'external': 0,
+    'skipped_schemes': {},
+    'resolutions_checked': 0,
+    'dir_redirect_refs': {},
+}
+
+
+def bump(d, k):
+    d[k] = d.get(k, 0) + 1
+
+
+for rel in HTML:
+    p = parse(rel)
+    if p.dup_ids:
+        stats['dup_ids'][rel] = p.dup_ids
+    canon, noslash = page_urls(rel)
+    for tag, attr, raw in p.refs:
+        v = raw.strip()
+        stats['refs_total'] += 1
+        if v == '':
+            bump(stats['by_kind'], 'empty')
+            stats['broken'].append({'page': rel, 'ref': raw, 'why': 'empty'})
+            continue
+        if v == '#':
+            bump(stats['by_kind'], 'empty-hash')
+            stats['empty_hash'].append({'page': rel, 'tag': tag, 'attr': attr})
+            continue
+        if v.startswith('#'):
+            bump(stats['by_kind'], 'fragment-only')
+            frag = unquote(v[1:])
+            stats['fragments_inpage'] += 1
+            if frag not in p.ids and frag not in p.names:
+                stats['fragment_missing'].append({'page': rel, 'ref': v})
+            continue
+        sp = urlsplit(v)
+        if sp.scheme and sp.scheme not in ('http', 'https'):
+            bump(stats['skipped_schemes'], sp.scheme)
+            continue
+        if sp.scheme or v.startswith('//'):
+            host = (sp.netloc or '').lower()
+            if host not in SITE_HOSTS:
+                stats['external'] += 1
+                continue
+            kind = 'same-site-absolute'
+        elif v.startswith('/'):
+            kind = 'root-relative'
+        else:
+            kind = 'relative'
+            stats['relative_refs'].append({'page': rel, 'tag': tag, 'attr': attr, 'ref': v})
+        bump(stats['by_kind'], kind)
+        bases = [canon] if canon == noslash else [canon, noslash]
+        for base in bases:
+            full = urljoin(ORIGIN + base, v)
+            u = urlsplit(full)
+            path = unquote(u.path) or '/'
+            target, rule = resolve_path(path)
+            stats['resolutions_checked'] += 1
+            bump(stats['by_rule'], rule)
+            if rule == 'dir-redirect':
+                bump(stats['dir_redirect_refs'], f'{tag}[{attr}]={v} (base {"slash" if base.endswith("/") else "noslash"})')
+            if target is None:
+                stats['broken'].append(
+                    {'page': rel, 'base': base, 'tag': tag, 'attr': attr, 'ref': v, 'resolved': path}
+                )
+                continue
+            if u.fragment:
+                frag = unquote(u.fragment)
+                if target == rel:
+                    stats['fragments_inpage'] += 1
+                else:
+                    stats['fragments_crosspage'] += 1
+                if target.endswith('.html'):
+                    tp = parse(target)
+                    if frag not in tp.ids and frag not in tp.names:
+                        stats['fragment_missing'].append(
+                            {'page': rel, 'base': base, 'ref': v, 'target': target}
+                        )
+    for s in p.props_urls:
+        stats['props_urls'] += 1
+        path = unquote(urlsplit(s).path)
+        target, rule = resolve_path(path)
+        if target is None:
+            stats['props_broken'].append({'page': rel, 'url': s})
+
+html404_rel = [r for r in stats['relative_refs'] if r['page'] == '404.html']
+stats['relative_refs_on_404'] = len(html404_rel)
+stats['relative_refs_count'] = len(stats['relative_refs'])
+stats['broken_count'] = len(stats['broken'])
+stats['fragment_missing_count'] = len(stats['fragment_missing'])
+with open(OUT, 'w') as fh:
+    json.dump(stats, fh, indent=1)
+short = dict(stats)
+for k in ['relative_refs']:
+    short[k] = short[k][:10]
+print(json.dumps(short, indent=1))

@@ -30,21 +30,17 @@ const noThreadsHeaderProps = {
         pageTitle="Threads"
         pageDesc="All the articles I've posted grouped by thread (project)."
     >
-        {
-            paginatedEntities.map(({ thread, slug, posts }) => {
-                return <Thread thread={thread} slug={slug} posts={posts} />;
-            })
-        }
+        {paginatedEntities.map(({ thread, slug, posts }) => {
+            return <Thread thread={thread} slug={slug} posts={posts} />;
+        })}
 
-        {
-            !paginatedEntities.length && (
-                <>
-                    <h2 {...noThreadsHeaderProps}>
-                        {noThreadsFoundMessage} [¬º-°]¬
-                    </h2>
-                </>
-            )
-        }
+        {!paginatedEntities.length && (
+            <>
+                <h2 {...noThreadsHeaderProps}>
+                    {noThreadsFoundMessage} [¬º-°]¬
+                </h2>
+            </>
+        )}
     </Main>
 
     <Pagination

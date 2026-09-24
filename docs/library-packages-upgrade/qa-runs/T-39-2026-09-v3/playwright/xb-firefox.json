@@ -1,0 +1,2148 @@
+{
+  "engine": "firefox",
+  "base": "http://localhost:4321",
+  "checks": [
+    {
+      "id": "P9.firefox.H.capture-control",
+      "name": "harness control: page console.error, main-frame worker console.error, sandbox-iframe worker console.error, worker uncaught and pageerror are all captured on this engine",
+      "pass": true,
+      "evidence": {
+        "pageConsoleError": true,
+        "workerConsoleErrorViaWorkerChannel": false,
+        "workerConsoleErrorViaPageChannel": true,
+        "sandboxFrameFound": true,
+        "sandboxIframeWorkerConsoleError": true,
+        "workerUncaughtSeenAnywhere": true,
+        "pageerror": true,
+        "workerEventsHooked": 3,
+        "workerConsoleUnsupported": null,
+        "captured": [
+          "page:warning:[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http:",
+          "page:warning:[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown",
+          "page:warning:[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/",
+          "page:warning:[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown",
+          "page:warning:[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/",
+          "page:warning:[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at",
+          "page:warning:[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed a",
+          "page:error:HARNESS-CONTROL page console.error",
+          "page:error:HARNESS-CONTROL worker console.error",
+          "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+          "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+          "page:warning:[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies ",
+          "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+          "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+          "page:error:HARNESS-CONTROL sandbox-iframe worker console.error",
+          "pageerror:Error: HARNESS-CONTROL uncaught",
+          "pageerror:[JavaScript Error: \"Error: HARNESS-CONTROL worker uncaught\" {file: \"blob:http://localhost:4321/8527d"
+        ]
+      }
+    },
+    {
+      "id": "P9.firefox.P4.soft-navs",
+      "name": "10 real-click ClientRouter navigations are soft (token survives, 0 load events), expected paths, islands hydrated",
+      "pass": true,
+      "evidence": {
+        "navs": [
+          {
+            "k": 1,
+            "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 2,
+            "path": "/search/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 3,
+            "path": "/tags/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 4,
+            "path": "/tags/engineering-management/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 5,
+            "path": "/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 6,
+            "path": "/posts/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 7,
+            "path": "/posts/local-coding-model-desktop-macbook/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 8,
+            "path": "/tips/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 9,
+            "path": "/about/",
+            "soft": true,
+            "ssr": 0
+          },
+          {
+            "k": 10,
+            "path": "/",
+            "soft": true,
+            "ssr": 0
+          }
+        ],
+        "loadEvents": 0
+      }
+    },
+    {
+      "id": "P9.firefox.P4.carousel-after-nav",
+      "name": "after client nav home→post: carousel Next click advances by clientWidth ±2",
+      "pass": true,
+      "evidence": {
+        "from": 0,
+        "to": 734,
+        "clientWidth": 734,
+        "prevDisabledBefore": true,
+        "ok": true
+      }
+    },
+    {
+      "id": "P9.firefox.P4.search-after-nav",
+      "name": "after client nav →/search/: typing 'hiring' lists ≥1 result and sets ?q=hiring",
+      "pass": true,
+      "evidence": {
+        "value": "hiring",
+        "items": 5,
+        "search": "?q=hiring",
+        "ok": true
+      }
+    },
+    {
+      "id": "P9.firefox.P4.tags-after-nav",
+      "name": "after client nav →/tags/: filter 'engin' narrows and includes engineering-management",
+      "pass": true,
+      "evidence": {
+        "before": 68,
+        "after": 5,
+        "hasEM": true,
+        "allMatch": true,
+        "ok": true
+      }
+    },
+    {
+      "id": "P9.firefox.P0.sandbox-parent-html",
+      "name": "sandbox iframe parent is <html>, exactly 1 sandbox, on / and after every navigation",
+      "pass": true,
+      "evidence": {
+        "parents": [
+          "/:HTMLx1",
+          "/posts/octoprint-prusa-core-one-raspberry-pi/:HTMLx1",
+          "/search/:HTMLx1",
+          "/tags/:HTMLx1",
+          "/tags/engineering-management/:HTMLx1",
+          "/:HTMLx1",
+          "/posts/:HTMLx1",
+          "/posts/local-coding-model-desktop-macbook/:HTMLx1",
+          "/tips/:HTMLx1",
+          "/about/:HTMLx1",
+          "/:HTMLx1",
+          "/:HTMLx1"
+        ]
+      }
+    },
+    {
+      "id": "P9.firefox.P0.iframe-not-reloaded",
+      "name": "sandbox iframe never reloads: DOM load events 1, sandbox-html requests 1, same element after every nav, 0 removals",
+      "pass": true,
+      "evidence": {
+        "iframeLoads": 1,
+        "sandboxHtmlRequests": 1,
+        "sbNavigatedEvents": 1,
+        "sbDetachedEvents": 0,
+        "removed": 0,
+        "same": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "P9.firefox.P0.gtag-once",
+      "name": "gtag.js requested exactly once; gtag-src <script> is the same persisted element after every nav; 0 pending text/partytown",
+      "pass": true,
+      "evidence": {
+        "gtagRequests": [
+          "A:/"
+        ],
+        "same": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "P9.firefox.P0.proxytown",
+      "name": "0 failed/aborted proxytown requests and 0 proxytown console errors",
+      "pass": true,
+      "evidence": {
+        "proxytownFailed": []
+      }
+    },
+    {
+      "id": "P9.firefox.P0.worker-internal",
+      "name": "hook inside the real Partytown worker (console.error/warn wrap + error/unhandledrejection listeners, installed at worker creation) buffered nothing across the 10 navigations",
+      "pass": true,
+      "evidence": {
+        "hooked": true,
+        "hookError": null,
+        "buffer": [],
+        "readError": null
+      }
+    },
+    {
+      "id": "P9.firefox.P1.carousels",
+      "name": "octoprint: 7 carousels (7 slider islands); start Prev disabled/Next enabled; each Next click = clientWidth ±2; end state Next disabled at max; all slide images loaded",
+      "pass": true,
+      "evidence": {
+        "carousels": [
+          {
+            "i": 1,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 2,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 3,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 4,
+            "N": 3,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734,
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 3,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 5,
+            "N": 3,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734,
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 3,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 6,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          },
+          {
+            "i": 7,
+            "N": 2,
+            "clientWidth": 734,
+            "startPrevDisabled": true,
+            "startNextDisabled": false,
+            "deltas": [
+              734
+            ],
+            "endNextDisabled": true,
+            "endAtMax": true,
+            "imgsLoaded": 2,
+            "labelsOk": true,
+            "ok": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "P9.firefox.P2.search-typing",
+      "name": "search: real keyboard typing 'hiring' lists ≥1 result, URL ?q=hiring",
+      "pass": true,
+      "evidence": {
+        "value": "hiring",
+        "count": 5,
+        "first": "/posts/ems-the-people-system",
+        "search": "?q=hiring"
+      }
+    },
+    {
+      "id": "P9.firefox.P3.tags-filter",
+      "name": "tags: typing 'engin' narrows the list, includes engineering-management, all items match",
+      "pass": true,
+      "evidence": {
+        "before": 68,
+        "after": 5,
+        "items": [
+          "/tags/engineering-management/",
+          "/tags/engineering-leadership/",
+          "/tags/engineering-culture/",
+          "/tags/senior-software-engineer/",
+          "/tags/software-engineering/"
+        ]
+      }
+    },
+    {
+      "id": "P9.firefox.console",
+      "name": "console errors = 0 except network errors to the blocked analytics hosts; 0 page errors; 0 failed requests to non-analytics URLs",
+      "pass": true,
+      "evidence": {
+        "errorsBySrc": {},
+        "proxyOnlyRefusedAnalytics": true,
+        "requestFailedOther": [],
+        "attributionByLabel": {
+          "H:control": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:/": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav2:/search/": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav4:/tags/engineering-management/": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav6:/posts/": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "A:nav10:/": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "B:P1": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          },
+          "B:P3": {
+            "consoleErrors": 0,
+            "exempt": 0,
+            "blockedAnalyticsRequestFailed": 2
+          }
+        },
+        "nonExempt": [],
+        "exemptCount": 0,
+        "pageErrors": [],
+        "exemptSamples": []
+      }
+    }
+  ],
+  "console": [
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "HARNESS-CONTROL page console.error",
+      "loc": "debugger eval code line 226 > eval"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "HARNESS-CONTROL worker console.error",
+      "loc": "blob:http://localhost:4321/8527d4c2-85e4-4df4-bc5b-ba627b3a27f6"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To know more abo",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277421626"
+    },
+    {
+      "ctx": "H",
+      "src": "page",
+      "label": "H:control",
+      "type": "error",
+      "text": "HARNESS-CONTROL sandbox-iframe worker console.error",
+      "loc": "blob:http://localhost:4321/f7b8d0d7-30b2-451b-8005-4e55dacde9af"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To know more abo",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"MouseEvent.mozPressure is deprecated. Use PointerEvent.pressure instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"MouseEvent.mozInputSource is deprecated. Use PointerEvent.pointerType instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav2:/search/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav2:/search/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav3:/tags/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav3:/tags/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav4:/tags/engineering-management/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav4:/tags/engineering-management/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav6:/posts/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav6:/posts/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav8:/tips/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav8:/tips/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav10:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "A",
+      "src": "page",
+      "label": "A:nav10:/",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To know more abo",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"MouseEvent.mozPressure is deprecated. Use PointerEvent.pressure instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P1",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"MouseEvent.mozInputSource is deprecated. Use PointerEvent.pointerType instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P2",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To know more abo",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    },
+    {
+      "ctx": "B",
+      "src": "page",
+      "label": "B:P3",
+      "type": "warning",
+      "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+      "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+    }
+  ],
+  "pageErrors": [
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "text": "Error: HARNESS-CONTROL uncaught"
+    },
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "text": "[JavaScript Error: \"Error: HARNESS-CONTROL worker uncaught\" {file: \"blob:http://localhost:4321/8527d4c2-85e4-4df4-bc5b-ba627b3a27f6\" line: 1}]\n@blob:http://localhost:4321/8527d4c2-85e4-4df4-bc5b-ba627b3a27f6:1:81\nsetTimeout handler*@blob:http://localhost:4321/8527d4c2-85e4-4df4-bc5b-ba627b3a27f6:1:66\n"
+    }
+  ],
+  "requestFailed": [
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h2v9227439996za208zd9227439996xf1&_p=1790277422565&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "H",
+      "label": "H:control",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n1h2v9227439996za208zd9227439996xf1&_p=1790277422565&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=131963101.",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=70",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=702186908.17",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav2:/search/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav2:/search/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav4:/tags/engineering-management/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav4:/tags/engineering-management/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav6:/posts/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav6:/posts/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav10:/",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AE",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "A",
+      "label": "A:nav10:/",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277426515&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P1",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277457598&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=97",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P1",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277457598&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=971486408.17",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P3",
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277469557&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AA",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    },
+    {
+      "ctx": "B",
+      "label": "B:P3",
+      "url": "https://www.google.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69n0v9227439996za200zd9227439996xf1&_p=1790277469557&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&cid=",
+      "err": "NS_ERROR_PROXY_FORBIDDEN"
+    }
+  ],
+  "proxy": {
+    "blocked": [
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com",
+      "www.google-analytics.com",
+      "www.google.com"
+    ],
+    "tunnels": {
+      "fonts.googleapis.com": 3,
+      "fonts.gstatic.com": 16,
+      "www.googletagmanager.com": 3,
+      "aus5.mozilla.org": 1
+    },
+    "httpRefused": [],
+    "tunnelErrors": []
+  },
+  "details": {
+    "control": {
+      "pageConsoleError": true,
+      "workerConsoleErrorViaWorkerChannel": false,
+      "workerConsoleErrorViaPageChannel": true,
+      "sandboxFrameFound": true,
+      "sandboxIframeWorkerConsoleError": true,
+      "workerUncaughtSeenAnywhere": true,
+      "pageerror": true,
+      "workerEventsHooked": 3,
+      "workerConsoleUnsupported": null,
+      "captured": [
+        "page:warning:[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http:",
+        "page:warning:[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown",
+        "page:warning:[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/",
+        "page:warning:[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown",
+        "page:warning:[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/",
+        "page:warning:[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at",
+        "page:warning:[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed a",
+        "page:error:HARNESS-CONTROL page console.error",
+        "page:error:HARNESS-CONTROL worker console.error",
+        "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+        "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+        "page:warning:[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies ",
+        "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+        "page:warning:[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soo",
+        "page:error:HARNESS-CONTROL sandbox-iframe worker console.error",
+        "pageerror:Error: HARNESS-CONTROL uncaught",
+        "pageerror:[JavaScript Error: \"Error: HARNESS-CONTROL worker uncaught\" {file: \"blob:http://localhost:4321/8527d"
+      ]
+    },
+    "A": {
+      "status": 200,
+      "initial": {
+        "path": "/",
+        "token": "c04ivlymbhk",
+        "pageLoads": 1,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "iframeSame": true,
+        "gtagSrcSame": true,
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "ssrIslands": 0,
+        "islands": 0
+      },
+      "navs": [
+        {
+          "k": 1,
+          "expect": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 2,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 7,
+          "soft": true
+        },
+        {
+          "k": 2,
+          "expect": "/search/",
+          "path": "/search/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 3,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 1,
+          "soft": true
+        },
+        {
+          "k": 3,
+          "expect": "/tags/",
+          "path": "/tags/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 4,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 1,
+          "soft": true
+        },
+        {
+          "k": 4,
+          "expect": "/tags/engineering-management/",
+          "path": "/tags/engineering-management/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 5,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 5,
+          "expect": "/",
+          "path": "/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 6,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 6,
+          "expect": "/posts/",
+          "path": "/posts/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 7,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 7,
+          "expect": "/posts/local-coding-model-desktop-macbook/",
+          "path": "/posts/local-coding-model-desktop-macbook/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 8,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 8,
+          "expect": "/tips/",
+          "path": "/tips/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 9,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 9,
+          "expect": "/about/",
+          "path": "/about/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 10,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        },
+        {
+          "k": 10,
+          "expect": "/",
+          "path": "/",
+          "token": "c04ivlymbhk",
+          "pageLoads": 11,
+          "sandboxCount": 1,
+          "sandboxParent": "HTML",
+          "iframeSame": true,
+          "gtagSrcSame": true,
+          "ptPending": 0,
+          "iframeLoads": 1,
+          "sbAdded": 1,
+          "sbRemoved": 0,
+          "ssrIslands": 0,
+          "islands": 0,
+          "soft": true
+        }
+      ],
+      "final": {
+        "path": "/",
+        "token": "c04ivlymbhk",
+        "pageLoads": 11,
+        "sandboxCount": 1,
+        "sandboxParent": "HTML",
+        "iframeSame": true,
+        "gtagSrcSame": true,
+        "ptPending": 0,
+        "iframeLoads": 1,
+        "sbAdded": 1,
+        "sbRemoved": 0,
+        "ssrIslands": 0,
+        "islands": 0
+      },
+      "island": {
+        "carousel": {
+          "from": 0,
+          "to": 734,
+          "clientWidth": 734,
+          "prevDisabledBefore": true,
+          "ok": true
+        },
+        "search": {
+          "value": "hiring",
+          "items": 5,
+          "search": "?q=hiring",
+          "ok": true
+        },
+        "tags": {
+          "before": 68,
+          "after": 5,
+          "hasEM": true,
+          "allMatch": true,
+          "ok": true
+        }
+      },
+      "T": {
+        "sandboxHtml": 1,
+        "gtag": [
+          "A:/"
+        ],
+        "workers": [
+          "blob:http://localhost:4321/ab811756-b394-4c0c-87d5-e51a340e3d64"
+        ],
+        "workersClosed": 0,
+        "sbNavigated": 1,
+        "sbDetached": 0,
+        "loadEvents": 0,
+        "proxytownFailed": [],
+        "workerHooked": true,
+        "workerBuffer": [],
+        "workersClosedBeforeContextClose": 0
+      },
+      "workerEvent": {
+        "created": 1,
+        "closedBeforeContextClose": 0,
+        "note": null
+      }
+    },
+    "P1": [
+      {
+        "i": 1,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 2,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 3,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 4,
+        "N": 3,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734,
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 3,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 5,
+        "N": 3,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734,
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 3,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 6,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      },
+      {
+        "i": 7,
+        "N": 2,
+        "clientWidth": 734,
+        "startPrevDisabled": true,
+        "startNextDisabled": false,
+        "deltas": [
+          734
+        ],
+        "endNextDisabled": true,
+        "endAtMax": true,
+        "imgsLoaded": 2,
+        "labelsOk": true,
+        "ok": true
+      }
+    ],
+    "P1counts": {
+      "carousels": 7,
+      "sliderIslands": 7
+    },
+    "P2": {
+      "value": "hiring",
+      "items": [
+        "/posts/ems-the-people-system",
+        "/posts/the-emotional-roller-coaster-of-hiring",
+        "/posts/two-books-which-influenced-my-hiring-pipeline",
+        "/posts/ems-why-systems-not-processes",
+        "/posts/dad-ops-playbook"
+      ],
+      "search": "?q=hiring"
+    },
+    "P3": {
+      "before": 68,
+      "after": [
+        "/tags/engineering-management/",
+        "/tags/engineering-leadership/",
+        "/tags/engineering-culture/",
+        "/tags/senior-software-engineer/",
+        "/tags/software-engineering/"
+      ]
+    }
+  },
+  "browserVersion": "125.0.1",
+  "playwrightVersion": "1.44.1",
+  "workerConsoleHooked": 7,
+  "consoleAttribution": {
+    "H:control": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:/": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav2:/search/": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav4:/tags/engineering-management/": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav6:/posts/": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "A:nav10:/": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "B:P1": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    },
+    "B:P3": {
+      "consoleErrors": 0,
+      "exempt": 0,
+      "blockedAnalyticsRequestFailed": 2
+    }
+  },
+  "consoleSummary": {
+    "errors": 0,
+    "errorsBySrc": {},
+    "exemptAnalyticsNetwork": 0,
+    "nonExempt": [],
+    "warnings": [
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To know more abo",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"MouseEvent.mozPressure is deprecated. Use PointerEvent.pressure instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"MouseEvent.mozInputSource is deprecated. Use PointerEvent.pointerType instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav1:/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav2:/search/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav2:/search/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav3:/tags/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav3:/tags/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav4:/tags/engineering-management/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav4:/tags/engineering-management/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav6:/posts/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav6:/posts/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav8:/tips/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav8:/tips/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav10:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "A",
+        "src": "page",
+        "label": "A:nav10:/",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277425525"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To know more abo",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"MouseEvent.mozPressure is deprecated. Use PointerEvent.pressure instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P1",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"MouseEvent.mozInputSource is deprecated. Use PointerEvent.pointerType instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277456636"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P2",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277467443"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"InstallTrigger is deprecated and will be removed in the future.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenchange is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"onmozfullscreenerror is deprecated.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.nearestViewportElement is deprecated and will be removed at a future date. Use SVGElement.viewportElement instead.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"SVGGraphicsElement.farthestViewportElement is deprecated and will be removed at a future date.\" {file: \"http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562\" line: 2}]",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To know more abo",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      },
+      {
+        "ctx": "B",
+        "src": "page",
+        "label": "B:P3",
+        "type": "warning",
+        "text": "[JavaScript Warning: \"Cookie “_ga_QQMCTBW5TH” does not have a proper “SameSite” attribute value. Soon, cookies without the “SameSite” attribute or with an invalid value will be treated as “Lax”. This means that the cookie will no longer be sent in third-party contexts. If your application depends on this cookie being available in such contexts, please add the “SameSite=None“ attribute to it. To kn",
+        "loc": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790277468562"
+      }
+    ],
+    "pageErrors": []
+  },
+  "requestFailedOther": [],
+  "pass": true
+}

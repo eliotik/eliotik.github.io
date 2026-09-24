@@ -1,0 +1,86 @@
+{
+  "entryKey": "astro/runtime/client/dev-toolbar/entrypoint.js",
+  "entryInOptimized": true,
+  "entryFile": "astro_runtime_client_dev-toolbar_entrypoint__js.js",
+  "closure": [
+    {
+      "file": "astro_runtime_client_dev-toolbar_entrypoint__js.js",
+      "viaDynamic": false
+    },
+    {
+      "file": "astro-FHoXtXMg.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "icons-DZkHqnOF.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "window-B3PM1eiy.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "audit-BhVuJR6h.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "astro_n_aria-query.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "rolldown-runtime-BPOCksWG.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "astro_n_axobject-query.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "astro_n_html-escaper.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "highlight-CZC9QMK7.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "xray-d1X_SF6n.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "settings-CwxpV2xH.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "toolbar-m3qV4lOF.js",
+      "viaDynamic": true
+    },
+    {
+      "file": "ui-library-C6QDP-6v.js",
+      "viaDynamic": true
+    }
+  ],
+  "dynamicFromEntry": [
+    "astro-FHoXtXMg.js",
+    "audit-BhVuJR6h.js",
+    "xray-d1X_SF6n.js",
+    "settings-CwxpV2xH.js",
+    "toolbar-m3qV4lOF.js",
+    "ui-library-C6QDP-6v.js"
+  ],
+  "metaChunks": [
+    "astro-FHoXtXMg",
+    "audit-BhVuJR6h",
+    "client-B83HekvG",
+    "events-C2HBXNIf",
+    "highlight-CZC9QMK7",
+    "icons-DZkHqnOF",
+    "rolldown-runtime-BPOCksWG",
+    "settings-CwxpV2xH",
+    "swap-functions-DUqOLkIm",
+    "toolbar-m3qV4lOF",
+    "ui-library-C6QDP-6v",
+    "window-B3PM1eiy",
+    "xray-d1X_SF6n"
+  ]
+}

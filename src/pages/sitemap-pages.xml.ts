@@ -6,7 +6,8 @@ import {
     type SitemapEntry,
 } from '@utils/sitemapXml';
 
-// Static / non-content pages plus the section index pages.
+// Static / non-content pages plus the /posts/ and /tips/ indexes.
+// /tags/ and /threads/ are listed in their own section sitemaps.
 // Pagination tail pages (/posts/2/, /tips/2/, /tags/<x>/2/) are intentionally
 // excluded from the sitemap and emit <meta name="robots" content="noindex,follow">.
 export const GET: APIRoute = async () => {
@@ -15,8 +16,6 @@ export const GET: APIRoute = async () => {
         { loc: absUrl('/about/'), changefreq: 'yearly', priority: 0.7 },
         { loc: absUrl('/posts/'), changefreq: 'weekly', priority: 0.9 },
         { loc: absUrl('/tips/'), changefreq: 'weekly', priority: 0.7 },
-        { loc: absUrl('/threads/'), changefreq: 'weekly', priority: 0.6 },
-        { loc: absUrl('/tags/'), changefreq: 'weekly', priority: 0.5 },
         { loc: absUrl('/search/'), changefreq: 'yearly', priority: 0.3 },
     ];
 

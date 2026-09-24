@@ -1,0 +1,10 @@
+// print horizontal runs of "ink" columns (gap >= G px splits) within a y-band
+import fs from 'node:fs'; import { PNG } from 'pngjs';
+const [f, y0, y1, G = 12, x0 = 0, x1 = 99999] = process.argv.slice(2);
+const p = PNG.sync.read(fs.readFileSync(f));
+const bg = [...p.data.slice(((+y0) * p.width + 5) * 4, ((+y0) * p.width + 5) * 4 + 3)];
+const ink = [];
+for (let x = +x0; x < Math.min(p.width, +x1); x++) { let on = false; for (let y = +y0; y <= +y1; y++) { const i = (y * p.width + x) * 4; if (Math.abs(p.data[i] - bg[0]) + Math.abs(p.data[i+1] - bg[1]) + Math.abs(p.data[i+2] - bg[2]) > 60) { on = true; break; } } ink.push(on ? x : -1); }
+const runs = []; let cur = null;
+for (const x of ink) { if (x < 0) continue; if (cur && x - cur[1] <= +G) cur[1] = x; else { cur = [x, x]; runs.push(cur); } }
+console.log(f.split('/').pop(), `y${y0}-${y1}`, runs.map(r => `${r[0]}-${r[1]}`).join(' '));

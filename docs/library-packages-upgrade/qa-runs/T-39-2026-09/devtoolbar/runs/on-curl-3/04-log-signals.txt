@@ -1,0 +1,7 @@
+--- dev.log signals:
+8:{"message":"[200] /search/ 106ms","label":null,"level":"info"}
+9:{"message":"[200] / 127ms","label":null,"level":"info"}
+10:{"message":"[200] /posts/flutter-google-maps-address-manipulation/ 986ms","label":null,"level":"info"}
+11:{"message":"[200] /posts/flutter-google-maps-embedded-map/ 1193ms","label":null,"level":"info"}
+12:{"message":"[200] /posts/octoprint-prusa-core-one-raspberry-pi/ 1215ms","label":null,"level":"info"}
+13:{"message":"dependencies optimized: astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-swap-functions.js, astro/virtual-modules/transitions-types.js","label":"vite","level":"info"}

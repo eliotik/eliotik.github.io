@@ -1,0 +1,806 @@
+/* eslint-disable */
+// QA harness (T-39 Phase 3 v4, lane "runtime-delta"); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs next to node_modules/playwright
+// (1.63.0) and pngjs (7.0.0).
+// Usage: ONLY=R1,R2,R3,R4,R5 node rd.mjs <results.json> <diffDir> <shotDir>
+// HEAD = ab5c02d (Phase 3 tree) served on :4411, BASE = 9eb1ec3 (v3 verified tree) served on :4412.
+// Browser: installed Google Chrome (channel 'chrome'), headless, clean non-persistent contexts, no extensions.
+// Analytics safety (same as v3 e2e): --host-resolver-rules NXDOMAINs the GA collect hosts; googletagmanager.com is not
+// blocked so the real gtag.js loads inside Partytown. No request interception anywhere.
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+import path from 'node:path';
+import { PNG } from 'pngjs';
+
+const HEAD = 'http://localhost:4411';
+const BASE = 'http://localhost:4412';
+const BUILDS = { head: HEAD, base: BASE };
+const OUT = path.resolve(process.argv[2] || 'rd-results.json');
+const DIFFDIR = path.resolve(process.argv[3] || 'diff');
+const SHOTS = path.resolve(process.argv[4] || 'shots');
+const ONLY = (process.env.ONLY || 'R1,R2,R3,R4,R5').split(',');
+const R1_FULLPAGE = process.env.R1_FULLPAGE !== '0';
+const R1_VIEWPORT = process.env.R1_VIEWPORT !== '0';
+// full-page method: 'pw' = Playwright screenshot({fullPage:true}) (captureBeyondViewport; fires a resize mid-capture),
+// 'tall' = resize the viewport to 1280 x scrollHeight, let resize handlers settle, then take a plain viewport screenshot
+const R1_FP_METHOD = process.env.R1_FP_METHOD || 'pw';
+const R1_TAG = R1_FP_METHOD === 'tall' ? 'fpt' : 'fp';
+fs.mkdirSync(DIFFDIR, { recursive: true });
+fs.mkdirSync(SHOTS, { recursive: true });
+
+const GA_BLOCK =
+    '--host-resolver-rules=MAP www.google-analytics.com ~NOTFOUND, MAP *.google-analytics.com ~NOTFOUND, MAP analytics.google.com ~NOTFOUND, MAP *.doubleclick.net ~NOTFOUND, MAP www.google.com ~NOTFOUND';
+const DESKTOP = { width: 1280, height: 1800 };
+const NOTFOUND_ROUTE = '/this-route-does-not-exist';
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const log = (...a) => console.log(...a);
+const slugId = s => s.replace(/[^a-zA-Z0-9_.-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 120) || 'root';
+
+const results = { meta: { startedAt: new Date().toISOString(), node: process.version, HEAD, BASE, gaBlockArg: GA_BLOCK, only: ONLY }, checks: [], console: [], requestsFailed: [], badResponses: [], R1: [], R2: {}, R3: {}, R4: {}, R5: {} };
+
+let LABEL = 'init';
+const setLabel = l => (LABEL = l);
+
+function check(id, name, pass, evidence) {
+    results.checks.push({ id, name, pass: !!pass, evidence });
+    log(`${pass ? 'PASS' : 'FAIL'} ${id} — ${name}`);
+    return !!pass;
+}
+
+// ---------- console / error capture (page + all frames, dedicated workers, service workers) ----------
+function push(ctxName, e) {
+    results.console.push({ ctx: ctxName, label: LABEL, t: Date.now(), ...e });
+}
+function instrument(ctx, ctxName) {
+    ctx.on('page', p => attachPage(p, ctxName));
+    ctx.on('serviceworker', sw => {
+        push(ctxName, { source: 'sw-created', type: 'info', text: sw.url() });
+        try {
+            sw.on('console', m => push(ctxName, { source: 'serviceworker', type: m.type(), text: m.text(), sw: sw.url() }));
+        } catch {}
+    });
+    ctx.on('requestfailed', r => results.requestsFailed.push({ ctx: ctxName, label: LABEL, url: r.url().slice(0, 200), type: r.resourceType(), err: r.failure()?.errorText }));
+    ctx.on('response', r => {
+        if (r.status() >= 400) results.badResponses.push({ ctx: ctxName, label: LABEL, status: r.status(), url: r.url().slice(0, 200), type: r.request().resourceType() });
+    });
+}
+function attachPage(p, ctxName) {
+    p.on('console', m => push(ctxName, { source: 'page', type: m.type(), text: m.text(), loc: m.location()?.url, url: p.url() }));
+    p.on('pageerror', e => push(ctxName, { source: 'pageerror', type: 'error', text: String(e?.stack || e).split('\n').slice(0, 3).join(' | '), url: p.url() }));
+    p.on('crash', () => push(ctxName, { source: 'crash', type: 'error', text: 'page crashed', url: p.url() }));
+    p.on('worker', w => {
+        push(ctxName, { source: 'worker-created', type: 'info', text: w.url() });
+        w.on('console', m => push(ctxName, { source: 'worker', type: m.type(), text: m.text(), worker: w.url() }));
+    });
+}
+const isErr = c => c.type === 'error' || c.source === 'pageerror' || c.source === 'crash';
+// Narrow carve-out (same as v3 visual-regression lane): Chrome logs the main-document 404 of the deliberately requested
+// nonexistent URL. Only that exact message, located at exactly <origin>/this-route-does-not-exist, is excused.
+const isExpected404Doc = c =>
+    c.source === 'page' && c.type === 'error' && /^Failed to load resource: the server responded with a status of 404 \(Not Found\)$/.test(c.text) && [HEAD, BASE].some(o => c.loc === o + NOTFOUND_ROUTE);
+const errorsFor = ctxPrefix => results.console.filter(c => c.ctx.startsWith(ctxPrefix) && isErr(c));
+const unexpectedErrorsFor = ctxPrefix => errorsFor(ctxPrefix).filter(c => !isExpected404Doc(c));
+
+async function newCtx(browser, name, opts = {}) {
+    const ctx = await browser.newContext({ viewport: DESKTOP, colorScheme: 'light', ...opts });
+    instrument(ctx, name);
+    return ctx;
+}
+async function waitHydrated(page, timeout = 15000) {
+    await page.waitForFunction(() => document.querySelectorAll('astro-island[ssr]').length === 0, null, { timeout }).catch(() => {});
+    return page.evaluate(() => ({ islands: document.querySelectorAll('astro-island').length, ssrLeft: document.querySelectorAll('astro-island[ssr]').length }));
+}
+
+// soft-nav bookkeeping init script (top frame only; init scripts also run in the Partytown sandbox iframe)
+function navInit() {
+    if (window.top !== window) return;
+    window.__rd = { token: Math.random().toString(36).slice(2), pageLoads: 0, afterSwaps: 0, dcl: null, firstFrame: null, themeMut: [] };
+    document.addEventListener('astro:page-load', () => window.__rd.pageLoads++);
+    document.addEventListener('astro:after-swap', () => window.__rd.afterSwaps++);
+    // every data-theme value ever written on <html> during this document's life (subtree observer on the Document
+    // catches the attribute even though <html> does not exist yet when the init script runs)
+    new MutationObserver(ms => {
+        for (const m of ms)
+            if (m.target === document.documentElement)
+                window.__rd.themeMut.push({ t: Math.round(performance.now()), old: m.oldValue, now: document.documentElement.getAttribute('data-theme'), path: location.pathname });
+    }).observe(document, { attributes: true, attributeOldValue: true, attributeFilter: ['data-theme'], subtree: true });
+    const snap = () => ({
+        t: Math.round(performance.now()),
+        path: location.pathname,
+        dataTheme: document.documentElement.getAttribute('data-theme'),
+        classAttr: document.documentElement.getAttribute('class'),
+        bodyBg: document.body ? getComputedStyle(document.body).backgroundColor : null,
+        htmlBg: getComputedStyle(document.documentElement).backgroundColor,
+        scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+        lsTheme: (() => {
+            try {
+                return localStorage.getItem('theme');
+            } catch {
+                return 'ERR';
+            }
+        })(),
+    });
+    document.addEventListener('DOMContentLoaded', () => (window.__rd.dcl = snap()));
+    requestAnimationFrame(() => (window.__rd.firstFrame = snap()));
+}
+
+const docState = page =>
+    page.evaluate(() => ({
+        path: location.pathname,
+        token: window.__rd?.token ?? null,
+        pageLoads: window.__rd?.pageLoads ?? null,
+        classAttr: document.documentElement.getAttribute('class'),
+        classTokens: [...document.documentElement.classList],
+        dataTheme: document.documentElement.getAttribute('data-theme'),
+        scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+        bodyBg: getComputedStyle(document.body).backgroundColor,
+        themeBtnAria: document.querySelector('#theme-btn')?.getAttribute('aria-label') ?? null,
+        h1: document.querySelector('main h1')?.textContent.trim() ?? null,
+        title: document.title,
+    }));
+
+async function softNav(page, clickFn, expectPath) {
+    const before = await page.evaluate(() => window.__rd.pageLoads);
+    const tokenBefore = await page.evaluate(() => window.__rd.token);
+    await clickFn();
+    await page.waitForFunction(({ p, b }) => location.pathname === p && window.__rd && window.__rd.pageLoads > b, { p: expectPath, b: before }, { timeout: 15000 });
+    await sleep(400);
+    const s = await docState(page);
+    return { ...s, soft: s.token === tokenBefore };
+}
+
+// ======================= PNG helpers =======================
+function comparePng(bufA, bufB) {
+    const a = PNG.sync.read(bufA);
+    const b = PNG.sync.read(bufB);
+    if (a.width !== b.width || a.height !== b.height) return { sameSize: false, a: [a.width, a.height], b: [b.width, b.height], diffPx: null };
+    let diffPx = 0;
+    const d = new PNG({ width: a.width, height: a.height });
+    let minY = Infinity,
+        maxY = -1;
+    for (let i = 0; i < a.data.length; i += 4) {
+        const same = a.data[i] === b.data[i] && a.data[i + 1] === b.data[i + 1] && a.data[i + 2] === b.data[i + 2] && a.data[i + 3] === b.data[i + 3];
+        if (!same) {
+            diffPx++;
+            const y = Math.floor(i / 4 / a.width);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+            d.data[i] = 255;
+            d.data[i + 1] = 0;
+            d.data[i + 2] = 0;
+            d.data[i + 3] = 255;
+        } else {
+            const g = Math.round((a.data[i] + a.data[i + 1] + a.data[i + 2]) / 3 / 4 + 190);
+            d.data[i] = d.data[i + 1] = d.data[i + 2] = g;
+            d.data[i + 3] = 255;
+        }
+    }
+    return { sameSize: true, size: [a.width, a.height], diffPx, rows: diffPx ? [minY, maxY] : null, diffPng: diffPx ? PNG.sync.write(d) : null };
+}
+
+// ======================= R1 pixel diff =======================
+const R1_ROUTES = [
+    '/',
+    '/posts/flutter-google-maps-embedded-map/',
+    '/posts/flutter-google-maps-address-manipulation/',
+    '/posts/flutter-google-maps-static-map/',
+    '/posts/audio-vs-paper-books/',
+    '/tags/',
+    '/threads/',
+    NOTFOUND_ROUTE,
+];
+
+async function r1Capture(browser, build, route, theme, fullPage) {
+    const origin = BUILDS[build];
+    const ctxName = `R1:${build}:${theme}:${fullPage ? 'fp' : 'vp'}:${route}`;
+    const ctx = await newCtx(browser, ctxName, { deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: theme });
+    await ctx.addInitScript(t => {
+        if (window.top !== window) return;
+        try {
+            localStorage.setItem('theme', t);
+        } catch {}
+    }, theme);
+    const page = await ctx.newPage();
+    setLabel(ctxName);
+    const resp = await page.goto(origin + route, { waitUntil: 'load', timeout: 60000 });
+    await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+    // Google Fonts sheet is media=print and flips to all in onload; wait for the flip, then for the faces
+    const fontsOk = await page
+        .waitForFunction(
+            () => {
+                const l = [...document.querySelectorAll('link[rel="stylesheet"]')].find(x => /fonts\.googleapis\.com\/css2/.test(x.href));
+                return !!l && l.media === 'all' && [...document.fonts].some(f => /IBM Plex Mono/.test(f.family));
+            },
+            null,
+            { timeout: 15000 }
+        )
+        .then(() => true)
+        .catch(() => false);
+    await page.evaluate(() => document.fonts.ready);
+    const hyd = await waitHydrated(page);
+    if (fullPage) {
+        const h = await page.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < h; y += 900) {
+            await page.evaluate(yy => window.scrollTo({ top: yy, behavior: 'instant' }), y);
+            await sleep(100);
+        }
+        await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+        await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+        await page.waitForFunction(() => [...document.images].every(i => i.complete), null, { timeout: 20000 }).catch(() => {});
+    } else {
+        await page
+            .waitForFunction(
+                () =>
+                    [...document.images]
+                        .filter(i => {
+                            const r = i.getBoundingClientRect();
+                            return r.top < innerHeight && r.bottom > 0 && r.left < innerWidth && r.right > 0;
+                        })
+                        .every(i => i.complete),
+                null,
+                { timeout: 20000 }
+            )
+            .catch(() => {});
+    }
+    await page.evaluate(() => document.fonts.ready);
+    await sleep(500);
+    let tallHeight = null;
+    if (fullPage && R1_FP_METHOD === 'tall') {
+        tallHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+        await page.setViewportSize({ width: 1280, height: tallHeight });
+        await sleep(1000);
+        await page.waitForFunction(() => [...document.images].every(i => i.complete), null, { timeout: 20000 }).catch(() => {});
+        await page.evaluate(() => document.fonts.ready);
+        await sleep(300);
+        const h2 = await page.evaluate(() => document.documentElement.scrollHeight);
+        if (h2 !== tallHeight) {
+            await page.setViewportSize({ width: 1280, height: h2 });
+            await sleep(1000);
+            tallHeight = h2;
+        }
+    }
+    const meta = await page.evaluate(() => ({
+        dataTheme: document.documentElement.getAttribute('data-theme'),
+        classAttr: document.documentElement.getAttribute('class'),
+        plexLoaded: [...document.fonts].filter(f => /IBM Plex Mono/.test(f.family) && f.status === 'loaded').map(f => `${f.weight}/${f.style}/${f.unicodeRange.slice(0, 12)}`).sort(),
+        scrollHeight: document.documentElement.scrollHeight,
+        scrollY,
+        imgs: document.images.length,
+        imgsComplete: [...document.images].filter(i => i.complete).length,
+    }));
+    meta.tallHeight = tallHeight;
+    meta.nextButtons = await page.evaluate(() => [...document.querySelectorAll('button[aria-label="Next slide"]')].map(b => (b.disabled ? 'D' : 'E')).join(''));
+    const buf = await page.screenshot({ fullPage: fullPage && R1_FP_METHOD !== 'tall', animations: 'disabled', caret: 'hide' });
+    await ctx.close();
+    return { build, route, theme, fullPage, status: resp?.status(), fontsOk, hyd, meta, buf };
+}
+
+async function runR1(browser) {
+    const modes = [...(R1_VIEWPORT ? [false] : []), ...(R1_FULLPAGE ? [true] : [])];
+    for (const route of R1_ROUTES)
+        for (const theme of ['light', 'dark'])
+            for (const fullPage of modes) {
+                const id = `R1.${fullPage ? R1_TAG : 'vp'}.${theme}.${slugId(route)}`;
+                const h = await r1Capture(browser, 'head', route, theme, fullPage);
+                const b = await r1Capture(browser, 'base', route, theme, fullPage);
+                const cmp = comparePng(h.buf, b.buf);
+                const rec = {
+                    id,
+                    route,
+                    theme,
+                    fullPage,
+                    status: { head: h.status, base: b.status },
+                    fontsOk: { head: h.fontsOk, base: b.fontsOk },
+                    hydration: { head: h.hyd, base: b.hyd },
+                    meta: { head: h.meta, base: b.meta },
+                    sameSize: cmp.sameSize,
+                    size: cmp.size || { head: cmp.a, base: cmp.b },
+                    diffPx: cmp.diffPx,
+                    diffRows: cmp.rows,
+                };
+                if (cmp.diffPx !== 0) {
+                    const stem = path.join(DIFFDIR, `runtime-delta-${id}`);
+                    fs.writeFileSync(`${stem}-head.png`, h.buf);
+                    fs.writeFileSync(`${stem}-base.png`, b.buf);
+                    if (cmp.diffPng) fs.writeFileSync(`${stem}-diff.png`, cmp.diffPng);
+                    rec.files = [`${stem}-head.png`, `${stem}-base.png`, cmp.diffPng ? `${stem}-diff.png` : null].filter(Boolean);
+                    // noise floor: same-build repeat (base vs base)
+                    const b2 = await r1Capture(browser, 'base', route, theme, fullPage);
+                    const nf = comparePng(b.buf, b2.buf);
+                    rec.noiseFloorBaseVsBase = { sameSize: nf.sameSize, diffPx: nf.diffPx, rows: nf.rows };
+                    const h2 = await r1Capture(browser, 'head', route, theme, fullPage);
+                    const nfh = comparePng(h.buf, h2.buf);
+                    rec.noiseFloorHeadVsHead = { sameSize: nfh.sameSize, diffPx: nfh.diffPx, rows: nfh.rows };
+                    const rerun = comparePng(h2.buf, b2.buf);
+                    rec.rerunHeadVsBase = { sameSize: rerun.sameSize, diffPx: rerun.diffPx, rows: rerun.rows };
+                    if (rerun.diffPng) fs.writeFileSync(`${stem}-rerun-diff.png`, rerun.diffPng);
+                } else if (!fullPage) {
+                    // keep one viewport pair per page for the record (head only; identical to base by construction)
+                    fs.writeFileSync(path.join(SHOTS, `r1-${theme}-${slugId(route)}.png`), h.buf);
+                }
+                results.R1.push(rec);
+                log(`  ${id}: next=${h.meta.nextButtons}/${b.meta.nextButtons} ${cmp.sameSize ? `${cmp.size.join('x')} diffPx=${cmp.diffPx}` : `SIZE MISMATCH head=${cmp.a} base=${cmp.b}`} status=${h.status}/${b.status} theme=${h.meta.dataTheme}/${b.meta.dataTheme} class=${h.meta.classAttr}|${b.meta.classAttr} fonts=${h.fontsOk}/${b.fontsOk}`);
+            }
+    const vp = results.R1.filter(r => !r.fullPage);
+    const fp = results.R1.filter(r => r.fullPage);
+    const expStatus = r => (r.route === NOTFOUND_ROUTE ? 404 : 200);
+    const statusOk = results.R1.every(r => r.status.head === expStatus(r) && r.status.base === expStatus(r));
+    const themeOk = results.R1.every(r => r.meta.head.dataTheme === r.theme && r.meta.base.dataTheme === r.theme);
+    const fontsOk = results.R1.every(r => r.fontsOk.head && r.fontsOk.base && JSON.stringify(r.meta.head.plexLoaded) === JSON.stringify(r.meta.base.plexLoaded));
+    const hydOk = results.R1.every(r => r.hydration.head.ssrLeft === 0 && r.hydration.base.ssrLeft === 0);
+    check('R1.status', 'all R1 routes: expected HTTP status on both builds (200; 404 for the 404 route)', statusOk, results.R1.map(r => `${r.id}:${r.status.head}/${r.status.base}`));
+    check('R1.preconditions', 'R1 captures: data-theme matches requested theme, IBM Plex Mono sheet applied and identical loaded faces on both builds, all islands hydrated', themeOk && fontsOk && hydOk, { themeOk, fontsOk, hydOk });
+    if (vp.length) check('R1.viewport', 'viewport 1280x1800 screenshots: 0 differing pixels head vs base for all 8 routes x light/dark (16 pairs)', vp.length === 16 && vp.every(r => r.sameSize && r.diffPx === 0), vp.map(r => `${r.id}: ${r.sameSize ? r.diffPx : 'size mismatch'}`));
+    if (fp.length) check(`R1.fullpage-${R1_FP_METHOD}`, `full-page screenshots (method '${R1_FP_METHOD}'): 0 differing pixels head vs base for all 8 routes x light/dark (16 pairs)`, fp.length === 16 && fp.every(r => r.sameSize && r.diffPx === 0), fp.map(r => `${r.id}: ${r.sameSize ? `${r.size.join('x')} ${r.diffPx}` : 'size mismatch'}`));
+    const errs = unexpectedErrorsFor('R1:');
+    const excused = errorsFor('R1:').filter(isExpected404Doc);
+    check('R1.console', 'R1 contexts: 0 unexpected console errors / page errors (page, frames, workers, SW); only the main-document 404 message of the 404 route is excused', errs.length === 0, { unexpected: errs, excused404DocMessages: excused.map(c => `${c.ctx} :: ${c.loc}`) });
+}
+
+// ======================= R2 Flutter links =======================
+const R2_LINKS = [
+    { src: '/posts/flutter-google-maps-embedded-map/', href: '/posts/flutter-google-maps-setup/', text: 'First post', oldHref: './flutter-google-maps-setup' },
+    { src: '/posts/flutter-google-maps-address-manipulation/', href: '/posts/flutter-google-maps-embedded-map/', text: 'Second post', oldHref: './flutter-google-maps-embedded-map' },
+    { src: '/posts/flutter-google-maps-address-manipulation/', href: '/posts/flutter-google-maps-setup/', text: 'First post', oldHref: './flutter-google-maps-setup' },
+    { src: '/posts/flutter-google-maps-static-map/', href: '/posts/flutter-google-maps-address-manipulation/', text: 'Third post', oldHref: './flutter-google-maps-address-manipulation' },
+];
+
+async function runR2(browser) {
+    const out = (results.R2 = { clicks: [], fullLoads: [], baseContrast: [] });
+    for (const [k, L] of R2_LINKS.entries()) {
+        const ctxName = `R2:head:link${k + 1}`;
+        setLabel(ctxName);
+        const ctx = await newCtx(browser, ctxName);
+        await ctx.addInitScript(navInit);
+        const page = await ctx.newPage();
+        const targetResponses = [];
+        page.on('response', r => {
+            if (r.url() === HEAD + L.href || r.url() === HEAD + L.href.replace(/\/$/, '')) targetResponses.push({ status: r.status(), type: r.request().resourceType(), purpose: r.request().headers()['purpose'] || r.request().headers()['sec-purpose'] || null, t: Date.now() });
+        });
+        let loadEvents = 0;
+        const rec = { link: k + 1, ...L };
+        try {
+            const resp = await page.goto(HEAD + L.src, { waitUntil: 'load', timeout: 60000 });
+            rec.srcStatus = resp?.status();
+            await waitHydrated(page);
+            page.on('load', () => loadEvents++);
+            const loc = page.locator(`#article a[href="${L.href}"]`).filter({ hasText: new RegExp(`^${L.text}$`) });
+            rec.matchCount = await loc.count();
+            rec.domHref = await loc.first().getAttribute('href');
+            const tClick = Date.now();
+            const s = await softNav(page, () => loc.first().click({ timeout: 10000 }), L.href);
+            rec.after = s;
+            rec.loadEventsDuringClick = loadEvents;
+            rec.targetResponses = targetResponses.map(r => ({ ...r, dtMs: r.t - tClick }));
+        } catch (e) {
+            rec.error = String(e).split('\n')[0].slice(0, 300);
+        }
+        await ctx.close();
+        out.clicks.push(rec);
+        log(`  R2 link${k + 1} ${L.src} -> ${L.href}: ${rec.error || `path=${rec.after.path} soft=${rec.after.soft} h1=${rec.after.h1} resp=${JSON.stringify(rec.targetResponses.map(r => r.status))}`}`);
+    }
+    // full loads of every target (and sources)
+    const ctxName = 'R2:head:fullload';
+    setLabel(ctxName);
+    const ctx = await newCtx(browser, ctxName);
+    const page = await ctx.newPage();
+    for (const t of [...new Set(R2_LINKS.map(l => l.href))]) {
+        const resp = await page.goto(HEAD + t, { waitUntil: 'load', timeout: 60000 });
+        await waitHydrated(page);
+        out.fullLoads.push({ path: t, status: resp?.status(), finalPath: new URL(page.url()).pathname, h1: await page.locator('main h1').first().textContent().then(x => x.trim()), title: await page.title() });
+    }
+    await ctx.close();
+    // base contrast: resolve the old relative hrefs against the source post URL and fetch from Node (no browser click)
+    for (const L of R2_LINKS) {
+        const baseHtml = await (await fetch(BASE + L.src)).text();
+        const headHtml = await (await fetch(HEAD + L.src)).text();
+        const resolved = new URL(L.oldHref, BASE + L.src).href;
+        const r = await fetch(resolved, { redirect: 'manual' });
+        out.baseContrast.push({
+            src: L.src,
+            baseHasOldHref: baseHtml.includes(`href="${L.oldHref}"`),
+            headHasOldHref: headHtml.includes(`href="${L.oldHref}"`),
+            headHasNewHref: headHtml.includes(`href="${L.href}"`),
+            oldResolvedOnBase: resolved.replace(BASE, ''),
+            oldResolvedStatusOnBase: r.status,
+        });
+    }
+    const clicks = out.clicks;
+    const fullMap = Object.fromEntries(out.fullLoads.map(f => [f.path, f]));
+    check('R2.dom', 'each changed link exists exactly once in #article with the new absolute href and the expected text', clicks.every(c => c.matchCount === 1 && c.domHref === c.href), clicks.map(c => `${c.src} [${c.text}] -> ${c.domHref} x${c.matchCount}`));
+    check('R2.click-softnav', 'real click on each of the 4 changed links navigates via ClientRouter (window token survives, 0 load events) to the exact target URL', clicks.every(c => !c.error && c.after.soft && c.after.path === c.href && c.loadEventsDuringClick === 0), clicks.map(c => ({ link: c.link, path: c.after?.path, soft: c.after?.soft, loadEvents: c.loadEventsDuringClick, error: c.error })));
+    check('R2.click-200', 'the target document fetch(es) for each click returned 200 (prefetch and/or navigation fetch), none >= 400', clicks.every(c => c.targetResponses?.length > 0 && c.targetResponses.some(r => r.status === 200) && c.targetResponses.every(r => r.status < 400)), clicks.map(c => ({ link: c.link, responses: c.targetResponses })));
+    check('R2.right-post', 'after each click the rendered h1/title equals the full-load h1/title of the target post', clicks.every(c => c.after && fullMap[c.href] && c.after.h1 === fullMap[c.href].h1 && c.after.title === fullMap[c.href].title), clicks.map(c => ({ link: c.link, h1: c.after?.h1, expectedH1: fullMap[c.href]?.h1 })));
+    check('R2.fullload', 'full load of every target returns 200 at the same path', out.fullLoads.every(f => f.status === 200 && f.finalPath === f.path), out.fullLoads);
+    check('R2.base-contrast', 'contrast: base tree still has the old relative hrefs which resolve to 404 nested URLs; head has only the new hrefs', out.baseContrast.every(b => b.baseHasOldHref && !b.headHasOldHref && b.headHasNewHref && b.oldResolvedStatusOnBase === 404), out.baseContrast);
+    const errs = unexpectedErrorsFor('R2:');
+    check('R2.console', 'R2 contexts: 0 console errors / page errors of any kind', errs.length === 0, { errors: errs, all404: results.badResponses.filter(b => b.ctx.startsWith('R2:')) });
+}
+
+// ======================= R3 <html> class + theme through ClientRouter =======================
+async function r3Sequence(browser, build) {
+    const origin = BUILDS[build];
+    const ctxName = `R3:${build}`;
+    setLabel(ctxName);
+    const ctx = await newCtx(browser, ctxName); // no reducedMotion here
+    await ctx.addInitScript(navInit);
+    const page = await ctx.newPage();
+    let loadEvents = 0;
+    page.on('load', () => loadEvents++);
+    const steps = [];
+    const step = (name, s, extra = {}) => steps.push({ name, ...s, ...extra, loadEventsSoFar: loadEvents });
+    await page.goto(origin + '/', { waitUntil: 'load', timeout: 60000 });
+    await waitHydrated(page);
+    step('1 full load /', await docState(page), { dcl: await page.evaluate(() => window.__rd.dcl), firstFrame: await page.evaluate(() => window.__rd.firstFrame) });
+    // theme toggle (listener is attached in window.onload -> we waited for load)
+    await page.locator('#theme-btn').click();
+    await page.waitForFunction(() => document.documentElement.getAttribute('data-theme') === 'dark', null, { timeout: 5000 }).catch(() => {});
+    step('2 after theme toggle on /', await docState(page), { lsTheme: await page.evaluate(() => localStorage.getItem('theme')) });
+    const darkBg = steps[1].bodyBg;
+    // rAF sampler across soft navs
+    await page.evaluate(() => {
+        window.__frames = [];
+        const loop = () => {
+            window.__frames.push([document.documentElement.getAttribute('data-theme'), getComputedStyle(document.body).backgroundColor, location.pathname, document.documentElement.getAttribute('class')]);
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+    });
+    const POST = '/posts/local-coding-model-desktop-macbook/';
+    step('3 click home card -> post', await softNav(page, () => page.locator(`main a[href="${POST}"]`).first().click(), POST));
+    step('4 click header /tags/', await softNav(page, () => page.locator('header a[href="/tags/"]').click(), '/tags/'));
+    step('5 back button -> post', await softNav(page, () => page.goBack({ waitUntil: 'commit' }), POST));
+    step('5b forward button -> /tags/', await softNav(page, () => page.goForward({ waitUntil: 'commit' }), '/tags/'));
+    step('5c back again -> post', await softNav(page, () => page.goBack({ waitUntil: 'commit' }), POST));
+    const frames = await page.evaluate(() => window.__frames);
+    // full loads with theme=dark in localStorage
+    const fulls = [];
+    const fullLoad = async (name, fn) => {
+        const r = await fn();
+        await page.waitForFunction(() => window.__rd && window.__rd.dcl, null, { timeout: 10000 }).catch(() => {});
+        await sleep(300);
+        const rd = await page.evaluate(() => ({ dcl: window.__rd.dcl, firstFrame: window.__rd.firstFrame, themeMut: window.__rd.themeMut }));
+        const s = await docState(page);
+        fulls.push({ name, status: r?.status(), ...rd, now: s });
+        step(name, s);
+    };
+    await fullLoad('6 reload post (full)', () => page.reload({ waitUntil: 'load' }));
+    await fullLoad('7 goto /tags/ (full)', () => page.goto(origin + '/tags/', { waitUntil: 'load' }));
+    await fullLoad('8 goto / (full)', () => page.goto(origin + '/', { waitUntil: 'load' }));
+    await fullLoad('9 goto post (full)', () => page.goto(origin + POST, { waitUntil: 'load' }));
+    await ctx.close();
+    return { build, darkBg, steps, frames: { count: frames.length, paths: [...new Set(frames.map(f => f[2]))], nonDark: frames.filter(f => f[0] !== 'dark' || f[1] !== darkBg).slice(0, 20), classAttrsSeen: [...new Set(frames.map(f => `${f[2]} => ${f[3]}`))] }, fulls };
+}
+
+async function runR3(browser) {
+    const head = await r3Sequence(browser, 'head');
+    const base = await r3Sequence(browser, 'base');
+    results.R3 = { head, base };
+    const S = head.steps;
+    const noFalse = s => !s.classTokens.includes('false') && s.classAttr !== 'false';
+    const has = (s, t) => s.classTokens.includes(t);
+    for (const s of S) log(`  R3 head ${s.name}: path=${s.path} class=${JSON.stringify(s.classAttr)} scroll=${s.scrollBehavior} theme=${s.dataTheme} soft=${s.soft}`);
+    for (const s of base.steps) log(`  R3 base ${s.name}: path=${s.path} class=${JSON.stringify(s.classAttr)} scroll=${s.scrollBehavior} theme=${s.dataTheme} soft=${s.soft}`);
+    check('R3.home', "head: / has no 'false' class token (and no scroll-smooth), scroll-behavior auto", noFalse(S[0]) && !has(S[0], 'scroll-smooth') && S[0].scrollBehavior === 'auto', S[0]);
+    check('R3.post', "head: soft nav to post -> class contains 'scroll-smooth', computed scrollBehavior 'smooth', no 'false'", S[2].soft && has(S[2], 'scroll-smooth') && S[2].scrollBehavior === 'smooth' && noFalse(S[2]), S[2]);
+    check('R3.tags', "head: header link to /tags/ (soft) -> no scroll-smooth, no 'false', scrollBehavior auto", S[3].soft && !has(S[3], 'scroll-smooth') && noFalse(S[3]) && S[3].scrollBehavior === 'auto', S[3]);
+    check('R3.back', "head: back button -> post (soft) -> 'scroll-smooth' again, scrollBehavior smooth; forward/back repeat consistent", S[4].soft && has(S[4], 'scroll-smooth') && S[4].scrollBehavior === 'smooth' && noFalse(S[4]) && S[5].soft && !has(S[5], 'scroll-smooth') && S[5].scrollBehavior === 'auto' && S[6].soft && has(S[6], 'scroll-smooth') && S[6].scrollBehavior === 'smooth', [S[4], S[5], S[6]].map(s => ({ name: s.name, classAttr: s.classAttr, scroll: s.scrollBehavior, soft: s.soft })));
+    check('R3.all-no-false', "head: no step (soft or full) ever has a 'false' class token; rAF samples never saw class 'false'", S.every(noFalse) && !head.frames.classAttrsSeen.some(c => /(^|\s)false(\s|$)/.test(c.split(' => ')[1])), { classAttrs: S.map(s => `${s.name}: ${JSON.stringify(s.classAttr)}`), rafClassAttrs: head.frames.classAttrsSeen });
+    const darkSteps = S.slice(1);
+    check('R3.theme-dark-every-page', "head: after toggle, data-theme 'dark' on every page (soft + full), localStorage theme 'dark', body bg identical dark", darkSteps.every(s => s.dataTheme === 'dark' && s.bodyBg === head.darkBg) && S[1].lsTheme === 'dark' && head.darkBg !== S[0].bodyBg, { darkBg: head.darkBg, lightBg: S[0].bodyBg, steps: darkSteps.map(s => `${s.name}: ${s.dataTheme} ${s.bodyBg}`) });
+    check('R3.no-flash-softnav', 'head: rAF sampler across 5 soft navs saw only dark frames with the dark body bg', head.frames.nonDark.length === 0 && head.frames.count > 20 && head.frames.paths.length >= 2, head.frames);
+    check('R3.no-flash-fullload', "head: 4 full loads with theme=dark: data-theme 'dark' + dark body bg already at DOMContentLoaded and at first rAF; data-theme never written as anything but 'dark'", head.fulls.every(f => f.dcl?.dataTheme === 'dark' && f.dcl?.bodyBg === head.darkBg && f.firstFrame?.dataTheme === 'dark' && f.firstFrame?.bodyBg === head.darkBg && f.themeMut.every(m => m.now === 'dark')), head.fulls.map(f => ({ name: f.name, status: f.status, dcl: f.dcl, firstFrame: f.firstFrame, themeMut: f.themeMut })));
+    // head vs base behavioural diff (normalise away the removed 'false' token)
+    const norm = s => ({ name: s.name, path: s.path, tokens: s.classTokens.filter(t => t !== 'false').sort().join(' '), scroll: s.scrollBehavior, theme: s.dataTheme, bg: s.bodyBg, soft: s.soft ?? null, btn: s.themeBtnAria, h1: s.h1 });
+    const diffs = [];
+    S.forEach((s, i) => {
+        const a = norm(s),
+            b = norm(base.steps[i]);
+        for (const k of Object.keys(a)) if (a[k] !== b[k]) diffs.push({ step: s.name, key: k, head: a[k], base: b[k] });
+    });
+    const fullDiffs = [];
+    head.fulls.forEach((f, i) => {
+        const g = base.fulls[i];
+        const pick = x => JSON.stringify({ dclTheme: x.dcl?.dataTheme, dclBg: x.dcl?.bodyBg, dclScroll: x.dcl?.scrollBehavior, ffTheme: x.firstFrame?.dataTheme, ffBg: x.firstFrame?.bodyBg, mut: x.themeMut.map(m => m.now), status: x.status });
+        if (pick(f) !== pick(g)) fullDiffs.push({ name: f.name, head: pick(f), base: pick(g) });
+    });
+    const rawClassDiffs = S.map((s, i) => ({ step: s.name, head: s.classAttr, base: base.steps[i].classAttr })).filter(d => d.head !== d.base);
+    check('R3.head-vs-base', "same sequence on 9eb1ec3: identical behaviour except the removed 'false' token (class tokens w/o 'false', scroll-behavior, data-theme, body bg, soft-nav, h1, DCL/first-frame theme all equal)", diffs.length === 0 && fullDiffs.length === 0 && base.frames.nonDark.length === 0, { normalisedDiffs: diffs, fullLoadDiffs: fullDiffs, rawClassAttrDiffs: rawClassDiffs, baseNonDarkFrames: base.frames.nonDark });
+    const errs = unexpectedErrorsFor('R3:');
+    check('R3.console', 'R3 contexts (both builds): 0 console errors / page errors of any kind', errs.length === 0, errs);
+}
+
+// ======================= R4 404 =======================
+async function r4Run(browser, build) {
+    const origin = BUILDS[build];
+    const ctxName = `R4:${build}`;
+    setLabel(ctxName);
+    const ctx = await newCtx(browser, ctxName);
+    await ctx.addInitScript(navInit);
+    const page = await ctx.newPage();
+    const homeResponses = [];
+    page.on('response', r => {
+        if (r.url() === origin + '/') homeResponses.push({ status: r.status(), type: r.request().resourceType() });
+    });
+    const resp = await page.goto(origin + NOTFOUND_ROUTE, { waitUntil: 'load', timeout: 60000 });
+    await waitHydrated(page);
+    const headInfo = () =>
+        page.evaluate(() => ({
+            path: location.pathname,
+            title: document.title,
+            robots: [...document.querySelectorAll('meta[name="robots"]')].map(m => m.content),
+            canonical: [...document.querySelectorAll('link[rel="canonical"]')].map(m => m.href),
+            ogUrl: [...document.querySelectorAll('meta[property="og:url"]')].map(m => m.content),
+            twitterUrl: [...document.querySelectorAll('meta[property="twitter:url"]')].map(m => m.content),
+            ogTitle: document.querySelector('meta[property="og:title"]')?.content ?? null,
+            classAttr: document.documentElement.getAttribute('class'),
+            h1: document.querySelector('main h1')?.textContent.trim() ?? null,
+            h1Aria: document.querySelector('main h1')?.getAttribute('aria-label') ?? null,
+            mainText: document.querySelector('main')?.innerText.replace(/\s+/g, ' ').trim() ?? null,
+            homeLink: [...document.querySelectorAll('main a')].map(a => ({ text: a.textContent.trim(), href: a.getAttribute('href') })),
+            headerPresent: !!document.querySelector('header #theme-btn'),
+            footerPresent: !!document.querySelector('footer'),
+        }));
+    const on404 = await headInfo();
+    await page.screenshot({ path: path.join(SHOTS, `r4-${build}-404.png`) });
+    let loadEvents = 0;
+    page.on('load', () => loadEvents++);
+    let afterHome;
+    try {
+        const s = await softNav(page, () => page.getByRole('link', { name: 'Go back home' }).click(), '/');
+        afterHome = { ...s, ...(await headInfo()), loadEvents, homeResponses };
+    } catch (e) {
+        afterHome = { error: String(e).split('\n')[0] };
+    }
+    await ctx.close();
+    return { build, status: resp?.status(), on404, afterHome };
+}
+
+async function runR4(browser) {
+    const head = await r4Run(browser, 'head');
+    const base = await r4Run(browser, 'base');
+    results.R4 = { head, base };
+    const h = head.on404;
+    log(`  R4 head: status=${head.status} ${JSON.stringify(h)}`);
+    log(`  R4 base: status=${base.status} robots=${base.on404.robots} canonical=${base.on404.canonical} og=${base.on404.ogUrl} tw=${base.on404.twitterUrl}`);
+    check('R4.status-render', 'head: GET /this-route-does-not-exist -> 404 and renders the custom 404 page (h1 404, "Page Not Found", Go back home link, header+footer)', head.status === 404 && h.h1 === '404' && h.h1Aria === '404 Not Found' && /Page Not Found/.test(h.mainText) && h.homeLink.some(a => a.text === 'Go back home' && a.href === '/') && h.headerPresent && h.footerPresent && h.title === '404 Not Found | Novi Fyx', { status: head.status, h1: h.h1, mainText: h.mainText, links: h.homeLink, title: h.title });
+    check('R4.head-meta', 'head: 404 <head> has robots noindex,follow and NO canonical / og:url / twitter:url; <html> has no class attribute', JSON.stringify(h.robots) === '["noindex,follow"]' && h.canonical.length === 0 && h.ogUrl.length === 0 && h.twitterUrl.length === 0 && h.classAttr === null, { robots: h.robots, canonical: h.canonical, ogUrl: h.ogUrl, twitterUrl: h.twitterUrl, classAttr: h.classAttr });
+    const a = head.afterHome;
+    check('R4.go-home', "head: clicking 'Go back home' navigates (ClientRouter, soft) to / with a 200 fetch; home head now has canonical + og:url + twitter:url and no robots meta", !a.error && a.soft && a.path === '/' && a.loadEvents === 0 && a.homeResponses.some(r => r.status === 200) && a.homeResponses.every(r => r.status < 400) && a.canonical.length === 1 && a.canonical[0] === 'https://www.novifyx.com/' && a.ogUrl.length === 1 && a.twitterUrl.length === 1 && a.robots.length === 0, a);
+    check('R4.base-contrast', 'contrast: base 404 had canonical/og:url/twitter:url and no robots (the fixed defect); base Go back home behaves the same', base.status === 404 && base.on404.canonical.length === 1 && base.on404.ogUrl.length === 1 && base.on404.twitterUrl.length === 1 && base.on404.robots.length === 0 && base.afterHome.soft && base.afterHome.path === '/', { status: base.status, robots: base.on404.robots, canonical: base.on404.canonical, ogUrl: base.on404.ogUrl, twitterUrl: base.on404.twitterUrl, classAttr: base.on404.classAttr, afterHomeSoft: base.afterHome.soft });
+    const errs = unexpectedErrorsFor('R4:');
+    const excused = errorsFor('R4:').filter(isExpected404Doc);
+    check('R4.console', 'R4 contexts: 0 unexpected console errors / page errors; the main-document 404 message is the only error and appears identically on both builds', errs.length === 0 && excused.filter(c => c.ctx === 'R4:head').length === excused.filter(c => c.ctx === 'R4:base').length, { unexpected: errs, excused: excused.map(c => `${c.ctx} :: ${c.text} @ ${c.loc}`) });
+}
+
+// ======================= R5 islands smoke + Partytown =======================
+const SANDBOX_RE = /\/~partytown\/partytown-sandbox-sw\.html/;
+const GTAG_RE = /^https:\/\/www\.googletagmanager\.com\/gtag\/js/;
+function ptInitScript() {
+    if (window.top !== window) return;
+    const S = (window.__pt = { token: Math.random().toString(36).slice(2), iframeLoads: [], added: 0, removed: 0, pageLoads: 0 });
+    const isSb = n => n && n.nodeType === 1 && n.tagName === 'IFRAME' && /\/~partytown\//.test(n.getAttribute('src') || '');
+    new MutationObserver(ms => {
+        for (const m of ms) {
+            for (const n of m.addedNodes) {
+                const f = isSb(n) ? n : n.querySelector && n.querySelector('iframe[src*="/~partytown/"]');
+                if (f) {
+                    S.added++;
+                    if (!f.__ptl) {
+                        f.__ptl = 1;
+                        f.addEventListener('load', () => S.iframeLoads.push({ t: Math.round(performance.now()), path: location.pathname }));
+                    }
+                }
+            }
+            for (const n of m.removedNodes) if (isSb(n) || (n.querySelector && n.querySelector('iframe[src*="/~partytown/"]'))) S.removed++;
+        }
+    }).observe(document, { childList: true, subtree: true });
+    document.addEventListener('astro:page-load', () => S.pageLoads++);
+}
+const ptSnap = page =>
+    page.evaluate(() => {
+        const f = [...document.querySelectorAll('iframe')].filter(x => /partytown-sandbox-sw\.html/.test(x.getAttribute('src') || ''));
+        return {
+            path: location.pathname,
+            token: window.__pt.token,
+            sandboxCount: f.length,
+            sandboxParent: f[0] && f[0].parentNode ? f[0].parentNode.nodeName : null,
+            iframeLoads: window.__pt.iframeLoads.length,
+            sbAdded: window.__pt.added,
+            sbRemoved: window.__pt.removed,
+            ptPending: document.querySelectorAll('script[type="text/partytown"]').length,
+        };
+    });
+
+async function r5Run(browser, build) {
+    const origin = BUILDS[build];
+    const R = { build };
+    // (a) octoprint carousel Next
+    {
+        const ctxName = `R5:${build}:carousel`;
+        setLabel(ctxName);
+        const ctx = await newCtx(browser, ctxName);
+        const page = await ctx.newPage();
+        const resp = await page.goto(origin + '/posts/octoprint-prusa-core-one-raspberry-pi/', { waitUntil: 'load', timeout: 60000 });
+        await waitHydrated(page);
+        const CAR = '[aria-roledescription="carousel"]';
+        const sc = page.locator(CAR).first();
+        await sc.scrollIntoViewIfNeeded();
+        await page.waitForFunction(CAR => !document.querySelector(CAR).parentElement.querySelector('button[aria-label="Next slide"]').disabled, CAR, { timeout: 5000 }).catch(() => {});
+        const st = () =>
+            page.evaluate(CAR => {
+                const s = document.querySelector(CAR);
+                const slides = [...s.querySelectorAll('[aria-roledescription="slide"]')];
+                const sr = s.getBoundingClientRect();
+                const vis = slides.findIndex(x => Math.abs(x.getBoundingClientRect().left - sr.left) < 2);
+                return { scrollLeft: Math.round(s.scrollLeft), clientWidth: s.clientWidth, slides: slides.length, visibleIndex: vis, visibleLabel: slides[vis]?.getAttribute('aria-label') ?? null, prevDisabled: s.parentElement.querySelector('button[aria-label="Previous slide"]').disabled, nextDisabled: s.parentElement.querySelector('button[aria-label="Next slide"]').disabled };
+            }, CAR);
+        const s0 = await st();
+        await sc.locator('xpath=..').locator('button[aria-label="Next slide"]').click();
+        await page.waitForFunction(CAR => document.querySelector(CAR).scrollLeft > 0, CAR, { timeout: 5000 }).catch(() => {});
+        await sleep(1200);
+        const s1 = await st();
+        R.carousel = { status: resp?.status(), before: s0, after: s1 };
+        await ctx.close();
+    }
+    // (b) search
+    {
+        const ctxName = `R5:${build}:search`;
+        setLabel(ctxName);
+        const ctx = await newCtx(browser, ctxName);
+        const page = await ctx.newPage();
+        const resp = await page.goto(origin + '/search/', { waitUntil: 'load', timeout: 60000 });
+        await waitHydrated(page);
+        await sleep(300); // known pre-existing 50 ms caret race (user-accepted): wait 300 ms before typing
+        await page.locator('input[name="search"]').click();
+        await page.keyboard.type('hiring', { delay: 60 });
+        await page.waitForFunction(() => document.querySelectorAll('astro-island ul li').length > 0, null, { timeout: 5000 }).catch(() => {});
+        await sleep(300);
+        R.search = {
+            status: resp?.status(),
+            ...(await page.evaluate(() => ({
+                value: document.querySelector('input[name="search"]').value,
+                items: [...document.querySelectorAll('astro-island ul li a')].map(a => a.getAttribute('href')),
+                found: [...document.querySelectorAll('astro-island div')].map(d => d.textContent.trim()).find(t => /^Found \d+/.test(t)) || null,
+                search: location.search,
+            }))),
+        };
+        await ctx.close();
+    }
+    // (c) tags filter
+    {
+        const ctxName = `R5:${build}:tags`;
+        setLabel(ctxName);
+        const ctx = await newCtx(browser, ctxName);
+        const page = await ctx.newPage();
+        const resp = await page.goto(origin + '/tags/', { waitUntil: 'load', timeout: 60000 });
+        await waitHydrated(page);
+        const items = () => page.evaluate(() => [...document.querySelectorAll('astro-island ul li a')].map(a => a.getAttribute('href').replace(/^\/tags\//, '').replace(/\/$/, '')));
+        const t0 = await items();
+        await page.locator('input[aria-label="Filter tags"]').click();
+        await page.keyboard.type('engin', { delay: 60 });
+        await sleep(400);
+        const t1 = await items();
+        R.tags = { status: resp?.status(), before: t0.length, after: t1.length, afterItems: t1 };
+        await ctx.close();
+    }
+    // (d) Partytown over 3 ClientRouter navigations
+    {
+        const ctxName = `R5:${build}:partytown`;
+        setLabel(ctxName);
+        const ctx = await newCtx(browser, ctxName);
+        await ctx.addInitScript(ptInitScript);
+        const T = { gtag: [], sandboxHtml: [], proxytownReq: 0, proxytownFailed: [], proxytownBad: [], workers: 0 };
+        ctx.on('request', r => {
+            const u = r.url();
+            if (GTAG_RE.test(u)) T.gtag.push(u);
+            if (SANDBOX_RE.test(u)) T.sandboxHtml.push(u.replace(origin, ''));
+            if (/\/~partytown\/proxytown/.test(u)) T.proxytownReq++;
+        });
+        ctx.on('requestfailed', r => {
+            if (/\/~partytown\/proxytown/.test(r.url())) T.proxytownFailed.push(r.failure()?.errorText);
+        });
+        ctx.on('response', r => {
+            if (/\/~partytown\/proxytown/.test(r.url()) && r.status() >= 400) T.proxytownBad.push(r.status());
+        });
+        const page = await ctx.newPage();
+        page.on('worker', () => T.workers++);
+        let loadEvents = 0;
+        await page.goto(origin + '/', { waitUntil: 'load', timeout: 60000 });
+        page.on('load', () => loadEvents++);
+        await page.waitForFunction(() => window.__pt && window.__pt.iframeLoads.length >= 1, null, { timeout: 15000 }).catch(() => {});
+        await sleep(4000);
+        const snaps = [await ptSnap(page)];
+        const navs = [
+            { sel: 'main a[href="/posts/octoprint-prusa-core-one-raspberry-pi/"]', expect: '/posts/octoprint-prusa-core-one-raspberry-pi/' },
+            { sel: 'header a[href="/tags/"]', expect: '/tags/' },
+            { sel: 'header a.logo[href="/"]', expect: '/' },
+        ];
+        for (const nv of navs) {
+            const before = await page.evaluate(() => window.__pt.pageLoads);
+            await page.locator(nv.sel).first().click({ timeout: 10000 });
+            await page.waitForFunction(({ p, b }) => location.pathname === p && window.__pt.pageLoads > b, { p: nv.expect, b: before }, { timeout: 15000 }).catch(() => {});
+            await sleep(2500);
+            snaps.push(await ptSnap(page));
+        }
+        await sleep(3000);
+        snaps.push(await ptSnap(page));
+        const ptConsole = results.console.filter(c => c.ctx === ctxName && /proxytown/i.test(c.text || ''));
+        R.partytown = { snaps, gtagRequests: T.gtag.length, sandboxHtmlRequests: T.sandboxHtml.length, proxytownRequests: T.proxytownReq, proxytownFailed: T.proxytownFailed, proxytownBadStatus: T.proxytownBad, proxytownConsole: ptConsole, workers: T.workers, loadEventsAfterInitial: loadEvents };
+        await ctx.close();
+    }
+    return R;
+}
+
+async function runR5(browser) {
+    const head = await r5Run(browser, 'head');
+    const base = await r5Run(browser, 'base');
+    results.R5 = { head, base };
+    for (const R of [head, base]) {
+        const c = R.carousel;
+        log(`  R5 ${R.build} carousel before=${JSON.stringify(c.before)} after=${JSON.stringify(c.after)}`);
+        log(`  R5 ${R.build} search value=${R.search.value} items=${R.search.items.length} found=${R.search.found} q=${R.search.search}`);
+        log(`  R5 ${R.build} tags ${R.tags.before} -> ${R.tags.after}`);
+        log(`  R5 ${R.build} partytown gtag=${R.partytown.gtagRequests} sandboxHtml=${R.partytown.sandboxHtmlRequests} ptReq=${R.partytown.proxytownRequests} ptFailed=${R.partytown.proxytownFailed.length} parents=${R.partytown.snaps.map(s => s.path + ':' + s.sandboxParent + 'x' + s.sandboxCount).join(',')}`);
+    }
+    const c = head.carousel;
+    check('R5.carousel', 'head: octoprint carousel Next moves exactly one slide (Slide 1 -> Slide 2, scrollLeft == clientWidth, Prev enabled)', c.status === 200 && c.before.visibleIndex === 0 && c.before.scrollLeft === 0 && c.after.visibleIndex === 1 && Math.abs(c.after.scrollLeft - c.after.clientWidth) <= 1 && !c.after.prevDisabled && c.before.prevDisabled, c);
+    const s = head.search;
+    check('R5.search', "head: /search/ typing 'hiring' (300 ms after load) shows results and sets ?q=hiring", s.status === 200 && s.value === 'hiring' && s.items.length >= 1 && s.search === '?q=hiring', s);
+    const t = head.tags;
+    check('R5.tags', "head: /tags/ filter 'engin' narrows the list, every item matches, includes engineering-management", t.status === 200 && t.after > 0 && t.after < t.before && t.afterItems.every(x => x.includes('engin')) && t.afterItems.includes('engineering-management'), t);
+    const p = head.partytown;
+    check('R5.partytown', 'head: sandbox iframe parent <html> on every page, 1 sandbox iframe, loaded once; exactly 1 gtag.js request over 3 ClientRouter navs (0 full loads); 0 proxytown errors (failed / >=400 / console)', p.snaps.every(x => x.sandboxParent === 'HTML' && x.sandboxCount === 1) && p.snaps.slice(1).every(x => x.token === p.snaps[0].token) && p.snaps.at(-1).iframeLoads === 1 && p.sandboxHtmlRequests === 1 && p.gtagRequests === 1 && p.loadEventsAfterInitial === 0 && p.proxytownFailed.length === 0 && p.proxytownBadStatus.length === 0 && p.proxytownConsole.length === 0, p);
+    const same = JSON.stringify([base.carousel.after.visibleIndex, base.search.items, base.tags.afterItems, base.partytown.gtagRequests, base.partytown.snaps.map(x => x.sandboxParent)]) === JSON.stringify([c.after.visibleIndex, s.items, t.afterItems, p.gtagRequests, p.snaps.map(x => x.sandboxParent)]);
+    check('R5.head-vs-base', 'base run of the same smoke gives identical outcomes (slide index, search result list, filtered tags, gtag count, sandbox parents)', same, { base: { carousel: base.carousel.after, search: base.search.items.length, tags: base.tags.after, gtag: base.partytown.gtagRequests } });
+    const errs = unexpectedErrorsFor('R5:');
+    check('R5.console', 'R5 contexts (both builds): 0 console errors / page errors of any kind (page, frames, workers, service worker)', errs.length === 0, errs);
+}
+
+// ======================= SELFTEST (capture is non-vacuous) =======================
+async function runSelftest(browser) {
+    const ctxName = 'SELFTEST';
+    setLabel(ctxName);
+    const ctx = await newCtx(browser, ctxName);
+    const page = await ctx.newPage();
+    await page.goto(HEAD + '/', { waitUntil: 'load' });
+    await page.waitForFunction(() => [...document.querySelectorAll('iframe')].some(f => /partytown-sandbox/.test(f.src)), null, { timeout: 15000 }).catch(() => {});
+    await page.evaluate(() => {
+        console.error('rd-selftest page console.error');
+        setTimeout(() => {
+            throw new Error('rd-selftest uncaught');
+        }, 0);
+        const w = new Worker(URL.createObjectURL(new Blob(["console.error('rd-selftest worker console.error')"], { type: 'text/javascript' })));
+        window.__w = w;
+        const f = [...document.querySelectorAll('iframe')].find(x => /partytown-sandbox/.test(x.src));
+        try {
+            f.contentWindow.console.error('rd-selftest sandbox-iframe console.error');
+        } catch (e) {}
+    });
+    await sleep(1500);
+    await ctx.close();
+    const got = results.console.filter(c => c.ctx === ctxName && /rd-selftest/.test(c.text));
+    check('SELFTEST.capture', 'harness self-test: a page console.error, an uncaught page error, a dedicated-worker console.error and a Partytown sandbox-iframe console.error are all captured', ['page', 'pageerror', 'worker'].every(s => got.some(c => c.source === s)) && got.some(c => /sandbox-iframe/.test(c.text)), got.map(c => `${c.source}/${c.type}: ${c.text.slice(0, 80)}`));
+}
+
+// ======================= MAIN =======================
+const browser = await chromium.launch({ channel: 'chrome', headless: true, args: [GA_BLOCK] });
+results.meta.browserVersion = browser.version();
+log(`Chrome ${browser.version()}`);
+try {
+    if (ONLY.includes('SELFTEST')) await runSelftest(browser);
+    if (ONLY.includes('R1')) await runR1(browser);
+    if (ONLY.includes('R2')) await runR2(browser);
+    if (ONLY.includes('R3')) await runR3(browser);
+    if (ONLY.includes('R4')) await runR4(browser);
+    if (ONLY.includes('R5')) await runR5(browser);
+} catch (e) {
+    results.fatal = String(e?.stack || e);
+    log('FATAL', results.fatal);
+}
+await browser.close();
+results.meta.finishedAt = new Date().toISOString();
+results.summary = { total: results.checks.length, failed: results.checks.filter(c => !c.pass).map(c => c.id), allErrors: results.console.filter(isErr).length, excused404Doc: results.console.filter(isExpected404Doc).length };
+fs.writeFileSync(OUT, JSON.stringify(results, null, 1));
+log(JSON.stringify(results.summary));

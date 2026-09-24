@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""Pin island uids to the build path, read-only.
+usage: pin_v3.py <repo_dist built at the repo path> <new_dist> <v3_manifest>
+1) repo_dist vs new_dist: equal after island-uid normalization (ab5c02d-equivalent)?
+2) repo_dist raw sha256 of the uid-only island pages == v3 manifest?
+3) repo_dist Flutter pages with ONLY the 4 Task 18 hrefs reverted: sha256 == v3 manifest?
+"""
+import hashlib, os, re, sys
+R, N, M = sys.argv[1:4]
+U = re.compile(r'(<astro-island\b[^>]*?\buid=")([^"]*)(")')
+man = {}
+for line in open(M):
+    h, p = line.split(None, 1)
+    man[p.strip()[2:]] = h
+def files(r):
+    s = set()
+    for dp, dn, fn in os.walk(r):
+        for f in fn:
+            s.add(os.path.relpath(os.path.join(dp, f), r))
+    return s
+fr, fnw = files(R), files(N)
+print('1) file lists equal:', fr == fnw, len(fr))
+raw = uid = 0; other = []
+for f in sorted(fr & fnw):
+    a = open(os.path.join(R, f), 'rb').read(); b = open(os.path.join(N, f), 'rb').read()
+    if a == b: raw += 1; continue
+    if f.endswith('.html') and U.sub(r'\1U\3', a.decode()) == U.sub(r'\1U\3', b.decode()): uid += 1; continue
+    other.append(f)
+print('   raw-identical', raw, 'uid-only', uid, 'other', other)
+for f in ['posts/from-skeptic-to-champion/index.html', 'posts/octoprint-prusa-core-one-raspberry-pi/index.html']:
+    h = hashlib.sha256(open(os.path.join(R, f), 'rb').read()).hexdigest()
+    print('2)', f, 'raw == v3:', h == man[f], h[:16])
+edits = {'posts/flutter-google-maps-address-manipulation/index.html': ['flutter-google-maps-embedded-map', 'flutter-google-maps-setup'],
+         'posts/flutter-google-maps-embedded-map/index.html': ['flutter-google-maps-setup'],
+         'posts/flutter-google-maps-static-map/index.html': ['flutter-google-maps-address-manipulation']}
+for f, slugs in edits.items():
+    s = open(os.path.join(R, f), encoding='utf-8').read()
+    for sl in slugs:
+        s = s.replace(f'<a href="/posts/{sl}/">', f'<a href="./{sl}">', 1)
+    h = hashlib.sha256(s.encode()).hexdigest()
+    print('3)', f, 'Task18-reverted == v3:', h == man[f], h[:16])

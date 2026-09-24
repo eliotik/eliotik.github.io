@@ -1,0 +1,305 @@
+PASS H.capture-control — harness positive control: page console.error, worker console.error, pageerror and a 404 resource error are all captured
+PASS P0.1.assets — Partytown assets partytown.js / partytown-sw.js / partytown-sandbox-sw.html all 200
+PASS P0.2.initial — initial full load of /: exactly 1 sandbox iframe, parent <html>, loaded once, 1 worker, gtag.js requested, page_view attempted (non-vacuous)
+  P0 nav 1 home → octoprint post (main card): path=/posts/octoprint-prusa-core-one-raspberry-pi/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 2 post → /search/ (header): path=/search/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 3 search → /tags/ (header): path=/tags/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 4 tags → /tags/engineering-management/ (island link): path=/tags/engineering-management/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 5 tag → / (header logo): path=/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 6 home → /posts/ (header): path=/posts/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 7 posts → local-coding-model post (main card): path=/posts/local-coding-model-desktop-macbook/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 8 post → /tips/ (header): path=/tips/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 9 tips → /about/ (header): path=/about/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+  P0 nav 10 about → / (header logo): path=/ soft=true parent=HTML iframeLoads=1 sameIframe=true
+PASS P0.2.soft-navs — 10 real-click ClientRouter navigations, all soft (window token survives, 0 load/DOMContentLoaded events), expected paths
+PASS P0.2.sandbox-parent-html — sandbox iframe parent is <html> on / and after every navigation; exactly 1 sandbox iframe throughout
+PASS P0.2.iframe-never-reloads — sandbox iframe never reloads: DOM 'load' events = 1, sandbox-html requests = 1, sandbox framenavigated = 1, framedetached = 0, element identity preserved, 0 removals
+PASS P0.2.one-worker — exactly 1 Partytown worker created (page.on(worker)) and never closed
+PASS P0.2.gtag-once — gtag.js requested exactly once; both gtag <script>s are the same persisted elements (text/partytown-x) after every navigation; 0 pending text/partytown scripts
+PASS P0.2.proxytown — 0 '/~partytown/proxytown' console errors and 0 failed/aborted proxytown requests
+PASS P0.2.analytics-alive — analytics still alive after the navigations (collect attempts observed after the last navigation; non-vacuous)
+PASS P0.2.console-zero — P0 context: 0 console errors of any kind (page, frames, workers, service worker) and 0 page errors
+PASS P0.2.sw-registration — Partytown SW registered + activated for scope /~partytown/ (no registration error)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.carousel-count — carousel count on octoprint-prusa-core-one-raspberry-pi
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.slide-count — slide count matches island props (N)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.labels — labels 'Slide k of N'
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.kbd-enter — focus Next + Enter advances one slide
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.images — every slide <img> complete && naturalWidth > 0
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c1.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.slide-count — slide count matches island props (N)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.labels — labels 'Slide k of N'
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.kbd-enter — focus Next + Enter advances one slide
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.images — every slide <img> complete && naturalWidth > 0
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c2.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.slide-count — slide count matches island props (N)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.labels — labels 'Slide k of N'
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.kbd-enter — focus Next + Enter advances one slide
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.images — every slide <img> complete && naturalWidth > 0
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c3.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.slide-count — slide count matches island props (N)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.labels — labels 'Slide k of N'
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.walk-end — walk to end: 2 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.kbd-enter — focus Next + Enter advances one slide
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.images — every slide <img> complete && naturalWidth > 0
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c4.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.slide-count — slide count matches island props (N)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.labels — labels 'Slide k of N'
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.walk-end — walk to end: 2 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.kbd-enter — focus Next + Enter advances one slide
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.images — every slide <img> complete && naturalWidth > 0
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c5.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.slide-count — slide count matches island props (N)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.labels — labels 'Slide k of N'
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.kbd-enter — focus Next + Enter advances one slide
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.images — every slide <img> complete && naturalWidth > 0
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c6.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.slide-count — slide count matches island props (N)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.labels — labels 'Slide k of N'
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.kbd-enter — focus Next + Enter advances one slide
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.images — every slide <img> complete && naturalWidth > 0
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.octoprint-prusa-core-one-raspberry-pi.c7.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.flutter-google-maps-embedded-map.carousel-count — carousel count on flutter-google-maps-embedded-map
+PASS P1.flutter-google-maps-embedded-map.c1.slide-count — slide count matches island props (N)
+PASS P1.flutter-google-maps-embedded-map.c1.labels — labels 'Slide k of N'
+PASS P1.flutter-google-maps-embedded-map.c1.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.flutter-google-maps-embedded-map.c1.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.flutter-google-maps-embedded-map.c1.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.flutter-google-maps-embedded-map.c1.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.flutter-google-maps-embedded-map.c1.kbd-enter — focus Next + Enter advances one slide
+PASS P1.flutter-google-maps-embedded-map.c1.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.flutter-google-maps-embedded-map.c1.images — every slide <img> complete && naturalWidth > 0
+PASS P1.flutter-google-maps-embedded-map.c1.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.flutter-google-maps-embedded-map.c1.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.flutter-google-maps-embedded-map.c1.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.flutter-google-maps-embedded-map.c1.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.flutter-google-maps-embedded-map.c1.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1.flutter-google-maps-embedded-map.c2.slide-count — slide count matches island props (N)
+PASS P1.flutter-google-maps-embedded-map.c2.labels — labels 'Slide k of N'
+PASS P1.flutter-google-maps-embedded-map.c2.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1.flutter-google-maps-embedded-map.c2.next-click — mouse click Next advances scrollLeft by clientWidth ±2
+PASS P1.flutter-google-maps-embedded-map.c2.walk-end — walk to end: 2 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1.flutter-google-maps-embedded-map.c2.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1.flutter-google-maps-embedded-map.c2.kbd-enter — focus Next + Enter advances one slide
+PASS P1.flutter-google-maps-embedded-map.c2.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1.flutter-google-maps-embedded-map.c2.images — every slide <img> complete && naturalWidth > 0
+PASS P1.flutter-google-maps-embedded-map.c2.wheel-back — horizontal wheel of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1.flutter-google-maps-embedded-map.c2.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1.flutter-google-maps-embedded-map.c2.wheel-fwd — horizontal wheel of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1.flutter-google-maps-embedded-map.c2.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1.flutter-google-maps-embedded-map.c2.wheel-70 — horizontal wheel of 70% slide advances to the next slide and snaps
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.toggle — theme toggle button switched the page to dark
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.c1.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.c2.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.c3.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.c4.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.c5.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.c6.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.octoprint-prusa-core-one-raspberry-pi.c7.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.flutter-google-maps-embedded-map.toggle — theme toggle button switched the page to dark
+PASS P1dark.flutter-google-maps-embedded-map.c1.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1dark.flutter-google-maps-embedded-map.c2.start — dark: slide count N, Prev disabled, Next enabled, scrollLeft 0, icon contrast ≥ 3:1
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.carousel-count — carousel count on octoprint-prusa-core-one-raspberry-pi
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.slide-count — slide count matches island props (N)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.labels — labels 'Slide k of N'
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.next-click — tap Next advances scrollLeft by clientWidth ±2
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.kbd-enter — focus Next + Enter advances one slide
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.images — every slide <img> complete && naturalWidth > 0
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.swipe-back — touch swipe of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.swipe-fwd — touch swipe of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c1.swipe-70 — touch swipe of 70% slide advances to the next slide and snaps
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.slide-count — slide count matches island props (N)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.labels — labels 'Slide k of N'
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.next-click — tap Next advances scrollLeft by clientWidth ±2
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.kbd-enter — focus Next + Enter advances one slide
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.images — every slide <img> complete && naturalWidth > 0
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.swipe-back — touch swipe of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.swipe-fwd — touch swipe of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c2.swipe-70 — touch swipe of 70% slide advances to the next slide and snaps
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.slide-count — slide count matches island props (N)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.labels — labels 'Slide k of N'
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.next-click — tap Next advances scrollLeft by clientWidth ±2
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.kbd-enter — focus Next + Enter advances one slide
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.images — every slide <img> complete && naturalWidth > 0
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.swipe-back — touch swipe of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.swipe-fwd — touch swipe of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c3.swipe-70 — touch swipe of 70% slide advances to the next slide and snaps
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.slide-count — slide count matches island props (N)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.labels — labels 'Slide k of N'
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.next-click — tap Next advances scrollLeft by clientWidth ±2
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.walk-end — walk to end: 2 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.kbd-enter — focus Next + Enter advances one slide
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.images — every slide <img> complete && naturalWidth > 0
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.swipe-back — touch swipe of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.swipe-fwd — touch swipe of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c4.swipe-70 — touch swipe of 70% slide advances to the next slide and snaps
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.slide-count — slide count matches island props (N)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.labels — labels 'Slide k of N'
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.next-click — tap Next advances scrollLeft by clientWidth ±2
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.walk-end — walk to end: 2 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.kbd-enter — focus Next + Enter advances one slide
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.images — every slide <img> complete && naturalWidth > 0
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.swipe-back — touch swipe of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.swipe-fwd — touch swipe of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c5.swipe-70 — touch swipe of 70% slide advances to the next slide and snaps
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.slide-count — slide count matches island props (N)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.labels — labels 'Slide k of N'
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.next-click — tap Next advances scrollLeft by clientWidth ±2
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.kbd-enter — focus Next + Enter advances one slide
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.images — every slide <img> complete && naturalWidth > 0
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.swipe-back — touch swipe of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.swipe-fwd — touch swipe of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c6.swipe-70 — touch swipe of 70% slide advances to the next slide and snaps
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.slide-count — slide count matches island props (N)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.labels — labels 'Slide k of N'
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.start — start: scrollLeft 0, Prev disabled, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.next-click — tap Next advances scrollLeft by clientWidth ±2
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.walk-end — walk to end: 1 Next presses, every step = clientWidth ±2, Next disabled at end
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.prev-click — Prev goes back exactly one slide (−clientWidth ±2), Next re-enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.kbd-enter — focus Next + Enter advances one slide
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.kbd-space — focus Next + Space advances one slide, page does not scroll
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.images — every slide <img> complete && naturalWidth > 0
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.swipe-back — touch swipe of 40% slide (backwards from end): scroller moved and settled snapped (scrollLeft % clientWidth ≈ 0)
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.walk-start — Prev back to start: each step −clientWidth ±2, Prev disabled at start, Next enabled
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.swipe-fwd — touch swipe of 40% slide (forward from start): scroller moved and settled snapped
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.buttons-track-gesture — Prev/Next disabled state tracks the position after a gesture
+PASS P1m.octoprint-prusa-core-one-raspberry-pi.c7.swipe-70 — touch swipe of 70% slide advances to the next slide and snaps
+PASS P2.type — real keyboard typing 'hiring' lists ≥1 result
+PASS P2.url — URL contains ?q=hiring
+PASS P2.reload — after reload: input value 'hiring' and the same results restored
+PASS P2.click-result — clicking first result navigates to /posts/<slug> with a 200 response
+PASS P2.nomatch — no-match query 'zzzzqqq' shows 'Found 0 results' with no list items and no errors
+PASS P3.initial-count-sort — initial list sorted by count (desc, ties alphabetical), count button pressed
+PASS P3.filter — typing 'engin' narrows the list, contains engineering-management, every item matches
+PASS P3.sort-alpha-filtered — a→z sort (filtered list) is alphabetical
+PASS P3.sort-alpha-full — after Clear filter: full list, alphabetical order
+PASS P3.sort-count — count sort: counts non-increasing (ties alphabetical)
+PASS P3.tag-click — clicking a tag opens /tags/<tag>/ (200)
+PASS P4.nav-post — home → carousel post is client-side (marker survives, no load event), islands hydrated
+PASS P4.post-island — after client nav: carousel Next click advances by clientWidth ±2
+PASS P4.nav-search — header search link → /search/ is client-side, island hydrated
+PASS P4.search-island — after client nav: typing 'hiring' lists results and sets ?q=hiring
+PASS P4.nav-tags — header Tags link → /tags/ is client-side, island hydrated
+PASS P4.tags-island — after client nav: filter 'engin' narrows list and includes engineering-management
+PASS P4b.theme-persist-client-nav — dark theme persists across 2 client-side navigations with no non-dark animation frame
+PASS P4b.toggle-after-nav — theme toggle still works after client-side navigation (dark→light→dark)
+PASS P5.toggle — toggle on / sets data-theme=dark and localStorage.theme=dark; body bg changes
+PASS P5.fouc./posts/ — full load /posts/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))
+PASS P5.fouc./tags/ — full load /tags/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))
+PASS P5.fouc./about/ — full load /about/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))
+PASS P5.fouc./posts/audio-vs-paper-books/ — full load /posts/audio-vs-paper-books/: dark already at DOMContentLoaded and first rAF (bg == measured dark rgb(33, 39, 55))
+PASS P5.persist — localStorage persistence: reload and a new tab both render dark from first paint
+PASS P6.audio-vs-paper-books.collapse — TOC <details> closed initially, opens on summary click
+PASS P6.audio-vs-paper-books.anchors — every TOC link targets an existing in-page id
+PASS P6.audio-vs-paper-books.navigate — clicking TOC links scrolls to the in-page anchor (hash set, target in viewport)
+PASS P6.dad-ops-playbook.collapse — TOC <details> closed initially, opens on summary click
+PASS P6.dad-ops-playbook.anchors — every TOC link targets an existing in-page id
+PASS P6.dad-ops-playbook.navigate — clicking TOC links scrolls to the in-page anchor (hash set, target in viewport)
+PASS P8.dwell500.r1 — home → post → search at 500 ms dwell: 0 console errors, 0 aborted proxytown XHRs
+PASS P8.dwell500.r2 — home → post → search at 500 ms dwell: 0 console errors, 0 aborted proxytown XHRs
+PASS P8.dwell3000.r1 — home → post → search at 3000 ms dwell: 0 console errors, 0 aborted proxytown XHRs
+PASS P8.dwell3000.r2 — home → post → search at 3000 ms dwell: 0 console errors, 0 aborted proxytown XHRs
+PASS P8.dwell10000.r1 — home → post → search at 10000 ms dwell: 0 console errors, 0 aborted proxytown XHRs
+PASS P8.dwell10000.r2 — home → post → search at 10000 ms dwell: 0 console errors, 0 aborted proxytown XHRs
+PASS P7.islands-hydrated — no astro-island[ssr] remains after load/navigation on any visited page (34 visits)
+PASS P7.no-hydration-warnings — no React hydration warnings/errors in console (page, frames, workers, pageerror)
+PASS C.console-zero — ZERO console errors and ZERO page errors across every test (51 messages captured, 34 visits)
+PASS C.requests-failed — no failed request other than the DNS-blocked GA collect hosts
+
+DONE 291 checks, 0 failed -> /private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8v2/playwright-e2e/runs/results-full1.json
+console: 0 errors, 0 warnings; requestsFailed other: 0
+exit=0

@@ -33,7 +33,7 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(
-    `/tags/${tag}${currentPage > 1 ? `/${currentPage}` : ''}`,
+    currentPage > 1 ? `/tags/${tag}/${currentPage}/` : `/tags/${tag}/`,
     Astro.site
 ).href;
 ---
@@ -49,65 +49,59 @@ const canonicalURL = new URL(
         titleTransition={tag}
         pageDesc={`All articles tagged with #${tagName}.`}
     >
-        {
-            totalCount !== undefined && (
-                <span
-                    slot="header-meta"
-                    class="text-skin-base/70 font-mono text-sm tabular-nums"
-                >
-                    <strong class="text-skin-base font-semibold">
-                        {totalCount}
-                    </strong>{' '}
-                    articles
-                </span>
-            )
-        }
+        {totalCount !== undefined && <span
+            slot="header-meta"
+            class="text-skin-base/70 font-mono text-sm tabular-nums"
+        >
+            <strong class="text-skin-base font-semibold">
+                {totalCount}
+            </strong
+            >{' '} articles
+        </span>}
 
-        {
-            relatedTags.length > 0 && (
-                <section class="border-skin-line/60 my-6 border-y border-dashed py-4">
-                    <h2 class="text-skin-base/60 mb-3 font-mono text-xs font-semibold tracking-wider uppercase">
-                        Related tags
-                    </h2>
-                    <div class="flex flex-wrap gap-x-4 gap-y-2">
-                        {relatedTags.map(
-                            ({ tag: relTag, tagName: relName }) => (
-                                <a
-                                    href={`/tags/${relTag}/`}
-                                    class="group text-skin-accent inline-flex items-baseline font-mono text-sm font-semibold whitespace-nowrap transition-colors hover:underline"
-                                >
-                                    <span class="text-skin-base/40 group-hover:text-skin-accent mr-0.5 transition-colors">
-                                        #
-                                    </span>
-                                    {relName}
-                                </a>
-                            )
-                        )}
-                    </div>
-                </section>
-            )
-        }
+        {relatedTags.length > 0 && <section
+            class="border-skin-line/60 my-6 border-y border-dashed py-4"
+        >
+            <h2
+                class="text-skin-base/60 mb-3 font-mono text-xs font-semibold tracking-wider uppercase"
+            >
+                Related tags
+            </h2>
+            <div class="flex flex-wrap gap-x-4 gap-y-2">
+                {relatedTags.map(({ tag: relTag, tagName: relName }) => <a
+                    href={`/tags/${relTag}/`}
+                    class="group text-skin-accent inline-flex items-baseline font-mono text-sm font-semibold whitespace-nowrap transition-colors hover:underline"
+                >
+                    <span
+                        class="text-skin-base/40 group-hover:text-skin-accent mr-0.5 transition-colors"
+                    >
+                        #
+                    </span>
+                    {relName}
+                </a>)}
+            </div>
+        </section>}
 
         <ul class="divide-skin-line/60 divide-y divide-dashed">
-            {
-                paginatedEntities.map(({ data, id }) => (
-                    <Card
-                        href={`/posts/${id}/`}
-                        frontmatter={data}
-                        threadPosition={threadPositions?.[id]}
-                    />
-                ))
-            }
+            {paginatedEntities.map(({ data, id }) => (
+                <Card
+                    href={`/posts/${id}/`}
+                    frontmatter={data}
+                    threadPosition={threadPositions?.[id]}
+                />
+            ))}
         </ul>
     </Main>
 
     <Pagination
         {currentPage}
         {totalPages}
-        prevUrl={`/tags/${tag}${
-            currentPage - 1 !== 1 ? '/' + (currentPage - 1) : ''
-        }`}
-        nextUrl={`/tags/${tag}/${currentPage + 1}`}
+        prevUrl={
+            currentPage - 1 !== 1
+                ? `/tags/${tag}/${currentPage - 1}/`
+                : `/tags/${tag}/`
+        }
+        nextUrl={`/tags/${tag}/${currentPage + 1}/`}
     />
 
     <Footer noMarginTop={totalPages > 1} />

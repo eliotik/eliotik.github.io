@@ -1,0 +1,223 @@
+// CSS rule-set diff, site-wide: every same-origin rule applied on every page of main vs HEAD,
+// canonicalised by Chrome's CSSOM serialisation (+ Astro scope-hash normalisation), with a
+// "superset selector" (state pseudo-classes and pseudo-elements stripped) matched against the
+// live DOM of every page in both themes (+ interactive states on key routes).
+// node cssrules.mjs collect <build:main|up> <outJson> [shard/nshards]
+// node cssrules.mjs analyze <mainJson,...> <upJson,...> <outJson>
+import fs from 'node:fs';
+import path from 'node:path';
+import { launch, newPage, settle, STATES, statesFor, UP, MAIN, ROUTES } from './common.mjs';
+
+const [cmd, ...args] = process.argv.slice(2);
+
+function pageList() {
+    const d = '/Users/ap/development/other/eliotik.github.io/dist';
+    const out = [];
+    (function w(p) {
+        for (const e of fs.readdirSync(p, { withFileTypes: true })) {
+            const q = path.join(p, e.name);
+            if (e.isDirectory()) w(q);
+            else if (e.name.endsWith('.html')) out.push('/' + path.relative(d, q));
+        }
+    })(d);
+    return out
+        .filter((r) => !r.startsWith('/~partytown'))
+        .map((r) => (r === '/404.html' ? '/this-route-doesnt-exist' : r.replace(/index\.html$/, '')))
+        .sort();
+}
+
+function inPage(seen) {
+    const norm = (v) =>
+        v
+            .replace(/localhost:43\d\d/g, 'HOST')
+            .replace(/\bastro-[a-z0-9]{8}\b/g, 'astro-SCOPE')
+            .replace(/(\/_astro\/[^"')\s]*?)\.[A-Za-z0-9_@-]{8}\.(\w+)/g, '$1.HASH.$2');
+    const strip = (s) => {
+        let t = s.replace(/::?-?[a-z-]*(?:placeholder|scrollbar[a-z-]*|selection|marker|before|after|backdrop|file-selector-button|details-marker|first-line|first-letter|-webkit-[a-z-]+)(?:\([^)]*\))?/g, '');
+        t = t.replace(/:(?:hover|focus-visible|focus-within|focus|active|visited|target|checked|disabled|enabled|placeholder-shown|open|popover-open|user-invalid|user-valid|invalid|valid|indeterminate|default|autofill|-webkit-autofill|link|any-link)(?![\w-])/g, '');
+        for (let n = 0; n < 5; n++) t = t.replace(/:(?:not|is|where|has)\(\s*\)/g, '');
+        t = t.replace(/([>+~(]|,)\s*$/, '$1 *').trim();
+        return t || '*';
+    };
+    const h = (str) => {
+        let a = 0x811c9dc5;
+        for (let i = 0; i < str.length; i++) a = Math.imul(a ^ str.charCodeAt(i), 16777619);
+        return (a >>> 0).toString(36) + ':' + str.length;
+    };
+    const sheets = [];
+    const matches = {};
+    const newRules = {};
+    const foreign = [];
+    for (const sh of document.styleSheets) {
+        let rules;
+        try {
+            rules = sh.cssRules;
+        } catch {
+            foreign.push(sh.href);
+            continue;
+        }
+        const id = sh.href ? norm(sh.href.replace(location.origin, '')) : 'inline:' + h(sh.ownerNode?.textContent || '');
+        sheets.push(id);
+        const flat = [];
+        const walk = (rs, ctx, parentSel) => {
+            for (const r of rs) {
+                if (r instanceof CSSStyleRule) {
+                    let sel = r.selectorText;
+                    if (parentSel && sel.includes('&')) sel = sel.replace(/&/g, `:is(${parentSel})`);
+                    else if (parentSel) sel = `:is(${parentSel}) ${sel}`;
+                    flat.push({ key: norm(ctx + sel + ' { ' + r.style.cssText + ' }'), sel, ctx: norm(ctx), selN: norm(sel), decl: norm(r.style.cssText) });
+                    if (r.cssRules && r.cssRules.length) walk(r.cssRules, ctx, sel);
+                } else if (r.cssRules && (r instanceof CSSMediaRule || r instanceof CSSSupportsRule || r instanceof CSSLayerBlockRule || (window.CSSContainerRule && r instanceof CSSContainerRule) || (window.CSSScopeRule && r instanceof CSSScopeRule) || (window.CSSStartingStyleRule && r instanceof CSSStartingStyleRule))) {
+                    const pre = r.cssText.slice(0, r.cssText.indexOf('{')).trim();
+                    walk(r.cssRules, ctx + pre + ' » ', parentSel);
+                } else {
+                    flat.push({ key: norm(ctx + r.cssText), sel: null, ctx: norm(ctx), selN: null, decl: norm(r.cssText), type: r.constructor.name });
+                }
+            }
+        };
+        walk(rules, '', null);
+        if (!seen.includes(id)) newRules[id] = flat.map(({ sel, ...x }) => ({ ...x, supersetRaw: sel ? strip(sel) : null }));
+        const m = {};
+        flat.forEach((x, i) => {
+            if (!x.sel) return;
+            const parts = x.sel.split(/,(?![^(]*\))/);
+            let n = 0;
+            for (const p of parts) {
+                try {
+                    n += document.querySelectorAll(strip(p)).length;
+                } catch {
+                    n = -1;
+                    break;
+                }
+            }
+            if (n) m[i] = n;
+        });
+        matches[id] = m;
+    }
+    const classes = new Set();
+    document.querySelectorAll('[class]').forEach((e) => e.classList.forEach((c) => classes.add(norm(c))));
+    return { sheets, matches, newRules, foreign: [...new Set(foreign)], classes: [...classes] };
+}
+
+if (cmd === 'collect') {
+    const [build, outJson, shardSpec] = args;
+    const base = build === 'main' ? MAIN : UP;
+    let pages = pageList();
+    if (shardSpec) {
+        const [s, n] = shardSpec.split('/').map(Number);
+        pages = pages.filter((_, i) => i % n === s);
+    }
+    const byRoute = Object.fromEntries(ROUTES.map(([n, r]) => [r.replace(/\?.*$/, ''), n]));
+    const browser = await launch();
+    const out = { build, base, browserVersion: browser.version(), catalog: {}, visits: [] };
+    const visit = async (route, theme, state, name) => {
+        const page = await newPage(browser, theme, 1280);
+        const s = await settle(page, base, route);
+        let stateInfo = null;
+        if (state !== 'default') stateInfo = await STATES[state](page);
+        const r = await page.evaluate(inPage, Object.keys(out.catalog));
+        Object.assign(out.catalog, r.newRules);
+        out.visits.push({ route, theme, state, status: s.status, themeOk: s.dataTheme === theme, hydrated: s.hydrated, stateInfo, sheets: r.sheets, foreign: r.foreign, matches: r.matches, classes: r.classes, errors: page.__errors });
+        await page.context().close();
+    };
+    for (const route of pages)
+        for (const theme of ['light', 'dark']) {
+            await visit(route, theme, 'default');
+            const name = byRoute[route] || byRoute[route.replace(/\/$/, '')] || byRoute[route + '/'];
+            if (name) for (const st of statesFor(name, 1280).filter((x) => x !== 'default')) await visit(route, theme, st, name);
+        }
+    // search page with query + narrow-width menu state
+    for (const theme of ['light', 'dark']) {
+        await visit('/search/?q=hiring', theme, 'default');
+        await visit('/search/?q=hiring', theme, 'search-none');
+        const page = await newPage(browser, theme, 375);
+        await settle(page, base, '/');
+        const si = await STATES['menu-open'](page);
+        const r = await page.evaluate(inPage, Object.keys(out.catalog));
+        Object.assign(out.catalog, r.newRules);
+        out.visits.push({ route: '/', theme, state: 'menu-open@375', stateInfo: si, sheets: r.sheets, foreign: r.foreign, matches: r.matches, classes: r.classes, errors: page.__errors });
+        await page.context().close();
+    }
+    fs.writeFileSync(outJson, JSON.stringify(out));
+    console.log(build, 'visits', out.visits.length, 'sheets', Object.keys(out.catalog).length, 'rules', Object.values(out.catalog).reduce((a, b) => a + b.length, 0));
+    await browser.close();
+} else if (cmd === 'analyze') {
+    const [mainFiles, upFiles, outJson] = args;
+    const load = (fl) => {
+        const parts = fl.split(',').map((f) => JSON.parse(fs.readFileSync(f)));
+        const catalog = Object.assign({}, ...parts.map((p) => p.catalog));
+        const visits = parts.flatMap((p) => p.visits);
+        return { catalog, visits };
+    };
+    const M = load(mainFiles),
+        U = load(upFiles);
+    // Canonicalisation for serialisation-only differences (lightningcss 1.33 media range syntax,
+    // whitespace inside token-stream values that Chrome keeps verbatim).
+    const ws = (x) => (x || '').replace(/\s*,\s*/g, ',').replace(/\(\s+/g, '(').replace(/\s+\)/g, ')').replace(/\s*:\s*/g, ':').replace(/\s+/g, ' ').trim();
+    const canonCtx = (c) => ws(c.replace(/\(min-width:\s*([^)]+)\)/g, '(width >= $1)').replace(/\(max-width:\s*([^)]+)\)/g, '(width <= $1)'));
+    const ckey = (r) => canonCtx(r.ctx) + '|' + (r.selN || '') + '|' + ws(r.decl);
+    for (const B of [M, U]) for (const rules of Object.values(B.catalog)) rules.forEach((r) => (r.key = ckey(r)));
+    const index = (B) => {
+        const keys = new Map(); // key -> {rule, sheets:Set, maxMatch, matchVisits}
+        for (const [sid, rules] of Object.entries(B.catalog))
+            rules.forEach((r, i) => {
+                const e = keys.get(r.key) || { rule: r, sheets: new Set(), maxMatch: 0, matchVisits: 0, sample: null };
+                e.sheets.add(sid);
+                keys.set(r.key, e);
+            });
+        for (const v of B.visits)
+            for (const sid of v.sheets) {
+                const m = v.matches[sid] || {};
+                const rules = B.catalog[sid];
+                for (const [i, n] of Object.entries(m)) {
+                    const e = keys.get(rules[i].key);
+                    if (n === -1) {
+                        e.invalid = true;
+                        continue;
+                    }
+                    e.matchVisits++;
+                    if (n > e.maxMatch) {
+                        e.maxMatch = n;
+                        e.sample = `${v.route} ${v.theme} ${v.state}`;
+                    }
+                }
+            }
+        return keys;
+    };
+    const KM = index(M),
+        KU = index(U);
+    const onlyMain = [...KM.entries()].filter(([k]) => !KU.has(k));
+    const onlyUp = [...KU.entries()].filter(([k]) => !KM.has(k));
+    const common = [...KM.keys()].filter((k) => KU.has(k)).length;
+    const fmt = ([k, e]) => ({ ctx: e.rule.ctx, sel: e.rule.selN, decl: e.rule.decl.slice(0, 300), type: e.rule.type, superset: e.rule.supersetRaw, sheets: [...e.sheets], maxMatch: e.maxMatch, matchVisits: e.matchVisits, sample: e.sample, invalid: !!e.invalid });
+    const liveMain = onlyMain.filter(([, e]) => e.maxMatch > 0 || e.invalid);
+    const liveUp = onlyUp.filter(([, e]) => e.maxMatch > 0 || e.invalid);
+    // pair live rules by ctx+selector (declaration re-serialised) or ctx+decl (selector re-serialised)
+    const pairs = [];
+    for (const [k, e] of liveMain) {
+        const bySel = onlyUp.find(([, f]) => canonCtx(f.rule.ctx) === canonCtx(e.rule.ctx) && f.rule.selN === e.rule.selN);
+        const byDecl = onlyUp.find(([, f]) => canonCtx(f.rule.ctx) === canonCtx(e.rule.ctx) && ws(f.rule.decl) === ws(e.rule.decl) && f.rule.selN);
+        pairs.push({ main: fmt([k, e]), upSameSelector: bySel ? fmt(bySel) : null, upSameDecl: !bySel && byDecl ? fmt(byDecl) : null });
+    }
+    const globalsMain = onlyMain.filter(([, e]) => !e.rule.selN).map(fmt);
+    const globalsUp = onlyUp.filter(([, e]) => !e.rule.selN).map(fmt);
+    const clsM = new Set(M.visits.flatMap((v) => v.classes));
+    const clsU = new Set(U.visits.flatMap((v) => v.classes));
+    const res = {
+        visits: { main: M.visits.length, up: U.visits.length },
+        visitProblems: { main: M.visits.filter((v) => !v.themeOk && v.themeOk !== undefined).map((v) => v.route + ' ' + v.theme), up: U.visits.filter((v) => !v.themeOk && v.themeOk !== undefined).map((v) => v.route + ' ' + v.theme) },
+        foreignSheets: { main: [...new Set(M.visits.flatMap((v) => v.foreign))], up: [...new Set(U.visits.flatMap((v) => v.foreign))] },
+        rules: { main: KM.size, up: KU.size, common, onlyMain: onlyMain.length, onlyUp: onlyUp.length },
+        onlyMainDead: onlyMain.filter(([, e]) => e.rule.selN && e.maxMatch === 0 && !e.invalid).length,
+        onlyUpDead: onlyUp.filter(([, e]) => e.rule.selN && e.maxMatch === 0 && !e.invalid).length,
+        liveOnlyMain: pairs,
+        liveOnlyUp: liveUp.map(fmt),
+        globalsOnlyMain: globalsMain,
+        globalsOnlyUp: globalsUp,
+        domClasses: { main: clsM.size, up: clsU.size, onlyMain: [...clsM].filter((c) => !clsU.has(c)), onlyUp: [...clsU].filter((c) => !clsM.has(c)) },
+        onlyMainAll: onlyMain.map(fmt),
+        onlyUpAll: onlyUp.map(fmt),
+    };
+    fs.writeFileSync(outJson, JSON.stringify(res, null, 1));
+    console.log(JSON.stringify({ visits: res.visits, visitProblems: res.visitProblems, foreign: res.foreignSheets, rules: res.rules, onlyMainDead: res.onlyMainDead, onlyUpDead: res.onlyUpDead, liveOnlyMain: pairs.length, liveOnlyUp: liveUp.length, globalsOnlyMain: globalsMain.length, globalsOnlyUp: globalsUp.length, domClasses: { main: clsM.size, up: clsU.size, onlyMain: res.domClasses.onlyMain, onlyUp: res.domClasses.onlyUp } }, null, 1));
+}

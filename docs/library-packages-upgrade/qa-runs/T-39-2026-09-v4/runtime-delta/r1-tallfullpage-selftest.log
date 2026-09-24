@@ -1,0 +1,23 @@
+Chrome 153.0.8010.53
+PASS SELFTEST.capture — harness self-test: a page console.error, an uncaught page error, a dedicated-worker console.error and a Partytown sandbox-iframe console.error are all captured
+  R1.fpt.light.root: next=/ 1280x1800 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.fpt.dark.root: next=/ 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.fpt.light.posts_flutter-google-maps-embedded-map: next=EE/EE 1280x14417 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fpt.dark.posts_flutter-google-maps-embedded-map: next=EE/EE 1280x14417 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fpt.light.posts_flutter-google-maps-address-manipulation: next=EEE/EEE 1280x10283 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fpt.dark.posts_flutter-google-maps-address-manipulation: next=EEE/EEE 1280x10283 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fpt.light.posts_flutter-google-maps-static-map: next=EE/EE 1280x8423 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fpt.dark.posts_flutter-google-maps-static-map: next=EE/EE 1280x8423 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fpt.light.posts_audio-vs-paper-books: next=/ 1280x4542 diffPx=0 status=200/200 theme=light/light class=scroll-smooth|scroll-smooth fonts=true/true
+  R1.fpt.dark.posts_audio-vs-paper-books: next=/ 1280x4542 diffPx=0 status=200/200 theme=dark/dark class=scroll-smooth dark|scroll-smooth dark fonts=true/true
+  R1.fpt.light.tags: next=/ 1280x3029 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.fpt.dark.tags: next=/ 1280x3029 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.fpt.light.threads: next=/ 1280x1800 diffPx=0 status=200/200 theme=light/light class=null|false fonts=true/true
+  R1.fpt.dark.threads: next=/ 1280x1800 diffPx=0 status=200/200 theme=dark/dark class=dark|false dark fonts=true/true
+  R1.fpt.light.this-route-does-not-exist: next=/ 1280x1800 diffPx=0 status=404/404 theme=light/light class=null|false fonts=true/true
+  R1.fpt.dark.this-route-does-not-exist: next=/ 1280x1800 diffPx=0 status=404/404 theme=dark/dark class=dark|false dark fonts=true/true
+PASS R1.status — all R1 routes: expected HTTP status on both builds (200; 404 for the 404 route)
+PASS R1.preconditions — R1 captures: data-theme matches requested theme, IBM Plex Mono sheet applied and identical loaded faces on both builds, all islands hydrated
+PASS R1.fullpage-tall — full-page screenshots (method 'tall'): 0 differing pixels head vs base for all 8 routes x light/dark (16 pairs)
+PASS R1.console — R1 contexts: 0 unexpected console errors / page errors (page, frames, workers, SW); only the main-document 404 message of the 404 route is excused
+{"total":5,"failed":[],"allErrors":9,"excused404Doc":4}

@@ -1,0 +1,133 @@
+// Builds lane-visual-regression.json (summaries; raw per-run files stay in scratch) and prints the numbers for the report.
+import fs from 'node:fs';
+const V = new URL('.', import.meta.url).pathname;
+const R = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v3';
+const J = (f) => JSON.parse(fs.readFileSync(V + f));
+const ign = new Set(fs.readFileSync(V + 'ignore-root-vars.txt', 'utf8').split('\n').filter(Boolean));
+const strip = (o = {}) => Object.fromEntries(Object.entries(o).filter(([k]) => !ign.has(k)));
+
+const diff = J('diff-report.json');
+const capUp = J('capture-up-A.json'), capMain = J('capture-main.json'), capUpB = J('capture-up-B.json');
+const slimShot = (s) => { const { iframes, fontsLoaded, ...rest } = s; return { ...rest, fontsLoadedCount: fontsLoaded.length, iframes }; };
+const slimDiff = (d) => { const { a, b, ...rest } = d; return rest; };
+
+// static computed style
+const sRuns = ['cs-static-1.json', 'cs-static-2.json', 'cs-static-3.json'].flatMap((f) => J(f).runs);
+const sigs = {};
+for (const r of sRuns)
+    for (const d of r.details) {
+        const c = Object.entries(strip(d.cus)).map(([k, v]) => `${k}: ${v.main} => ${v.up}`);
+        const p = Object.entries(d.pseudo || {}).flatMap(([pp, v]) => Object.entries(strip(v.cus)).map(([k, vv]) => `${pp}${k}: ${vv.main} => ${vv.up}`));
+        const s = Object.entries(d.std || {}).map(([k, v]) => `STD ${k}: ${v.main} => ${v.up}`);
+        for (const x of [...c, ...p, ...s, ...(d.rect ? [`RECT ${d.rect.main} => ${d.rect.up}`] : [])]) {
+            sigs[x] = sigs[x] || { count: 0, routes: new Set(), sampleKey: d.k, sampleTag: d.tag, sampleClass: d.clsUp };
+            sigs[x].count++;
+            sigs[x].routes.add(r.name);
+        }
+    }
+const staticSummary = {
+    runs: sRuns.length,
+    routes: [...new Set(sRuns.map((r) => r.name))],
+    widths: [...new Set(sRuns.map((r) => r.width))],
+    states: sRuns.reduce((o, r) => ((o[r.state] = (o[r.state] || 0) + 1), o), {}),
+    elementComparisons: sRuns.reduce((a, r) => a + r.compared, 0),
+    totals: ['std', 'pstd', 'rect', 'cusx', 'cls'].reduce((o, k) => ((o[k] = sRuns.reduce((a, r) => a + r.diff[k].length, 0)), o), {}),
+    onlyMain: sRuns.reduce((a, r) => a + r.onlyMain.length, 0),
+    onlyUp: sRuns.reduce((a, r) => a + r.onlyUp.length, 0),
+    themeBad: sRuns.filter((r) => !r.themeOk).length,
+    notHydrated: sRuns.filter((r) => !r.settle.main.hydrated || !r.settle.up.hydrated).length,
+    rootCustom: sRuns[0].rootCustom,
+    rootCustomAllRunsSame: sRuns.every((r) => JSON.stringify(r.rootCustom) === JSON.stringify(sRuns[0].rootCustom)),
+    signatures: Object.fromEntries(Object.entries(sigs).map(([k, v]) => [k, { ...v, routes: [...v.routes] }])),
+    classDiffs: [...new Set(sRuns.flatMap((r) => r.diff.cls.map((c) => `${r.name}|${c.main}|${c.up}`)))],
+    stateInfo: sRuns.filter((r) => r.stateInfo).map((r) => ({ name: r.name, width: r.width, theme: r.theme, state: r.state, ...r.stateInfo })),
+    errors: sRuns.flatMap((r) => [...r.errors.main.map((e) => `main ${r.name} ${r.width} ${r.theme}: ${e}`), ...r.errors.up.map((e) => `up ${r.name} ${r.width} ${r.theme}: ${e}`)]),
+    perRun: sRuns.map((r) => ({ name: r.name, width: r.width, theme: r.theme, state: r.state, compared: r.compared, std: r.diff.std.length, pstd: r.diff.pstd.length, rect: r.diff.rect.length, cusx: r.diff.cusx.length, cls: r.diff.cls.length, onlyMain: r.onlyMain.length, onlyUp: r.onlyUp.length, themeOk: r.themeOk, hydrated: [r.settle.main.hydrated, r.settle.up.hydrated], idle: [r.settle.main.idle, r.settle.up.idle] })),
+};
+
+// interactive
+const iFiles = ['cs-int-L1.json', 'cs-int-L2.json', 'cs-int-L3.json', 'cs-int-L4.json', 'cs-int-B.json', 'cs-int-L5.json', 'cs-int-L6.json', 'cs-int-D.json'].filter((f) => fs.existsSync(V + f));
+console.log('interactive files', iFiles.join(','));
+const iRuns = iFiles.flatMap((f) => J(f).runs);
+const iSig = {};
+const notes = [];
+for (const r of iRuns)
+    for (const m of r.mismatches) {
+        if (m.note) notes.push(`${r.name} ${r.theme} ${r.kind} ${m.k}: ${m.note}`);
+        for (const d of m.details || []) {
+            const c = Object.entries(strip(d.cus)).map(([k, v]) => `${k}: ${v.main} => ${v.up}`);
+            const p = Object.entries(d.pseudo || {}).flatMap(([pp, v]) => [...Object.entries(strip(v.cus)).map(([k, vv]) => `${pp}${k}: ${vv.main} => ${vv.up}`), ...Object.entries(v.std || {}).map(([k, vv]) => `STD${pp} ${k}: ${vv.main} => ${vv.up}`)]);
+            const s = Object.entries(d.std || {}).map(([k, v]) => `STD ${k}: ${v.main} => ${v.up}`);
+            for (const x of [...c, ...p, ...s, ...(d.rect ? [`RECT ${d.rect.main} => ${d.rect.up}`] : [])]) {
+                iSig[x] = iSig[x] || { count: 0, routes: new Set(), sampleTarget: m.k, sampleKey: d.k, sampleClass: d.clsUp };
+                iSig[x].count++;
+                iSig[x].routes.add(`${r.name} ${r.kind}`);
+            }
+        }
+    }
+const interactiveSummary = {
+    runs: iRuns.length,
+    routes: [...new Set(iRuns.map((r) => r.name))],
+    candidates: iRuns.reduce((a, r) => a + r.candidates, 0),
+    affectedElementComparisons: iRuns.reduce((a, r) => a + r.affectedTotal, 0),
+    changedByStateMain: iRuns.reduce((a, r) => a + r.changedByStateMain, 0),
+    changedByStateUp: iRuns.reduce((a, r) => a + r.changedByStateUp, 0),
+    stateEffectDisagreements: notes,
+    keyMismatch: iRuns.reduce((a, r) => a + r.affectedKeyMismatch.length, 0),
+    candOnly: iRuns.reduce((a, r) => a + r.candMainOnly.length + r.candUpOnly.length, 0),
+    hoverMQAll: iRuns.every((r) => r.hoverMQ.main && r.hoverMQ.up),
+    themeOkAll: iRuns.every((r) => r.themeOk),
+    signatures: Object.fromEntries(Object.entries(iSig).map(([k, v]) => [k, { ...v, routes: [...v.routes] }])),
+    fullArrayTotals: (() => {
+        const tot = { std: 0, pstd: 0, cusx: 0, rect: 0, onlyMain: 0, onlyUp: 0, cls: 0 };
+        let entries = 0;
+        for (const r of iRuns)
+            for (const m of r.mismatches) {
+                if (m.note) continue;
+                entries++;
+                for (const k of Object.keys(tot)) {
+                    const mm = m.summary.match(new RegExp('(?:^| )' + k + '=(\\d+)'));
+                    if (mm) tot[k] += +mm[1];
+                }
+            }
+        return { mismatchEntries: entries, ...tot };
+    })(),
+    detailCapReinspection: fs.existsSync(V + 'cs-int-article11.json') ? J('cs-int-article11.json').runs.map((r) => ({ name: r.name, theme: r.theme, kind: r.kind, target: 'html/body0/main2/article1', summary: r.mismatches.map((m) => m.summary), inspected: r.mismatches.flatMap((m) => m.details || []).length, signatures: [...new Set(r.mismatches.flatMap((m) => m.details || []).map((x) => JSON.stringify({ std: x.std, cus: strip(x.cus), rect: x.rect })))] })) : null,
+    errorsByRoute: iRuns.reduce((o, r) => ((o[r.name] = (o[r.name] || 0) + r.errors.main.length + r.errors.up.length), o), {}),
+    leanRuns: iRuns.filter((r) => r.lean).length,
+    fullRuns: iRuns.filter((r) => !r.lean).length,
+    perRun: iRuns.map((r) => ({ name: r.name, theme: r.theme, kind: r.kind, lean: !!r.lean, candidates: r.candidates, affected: r.affectedTotal, changedMain: r.changedByStateMain, changedUp: r.changedByStateUp, mismatches: r.mismatches.length })),
+    errors: iRuns.flatMap((r) => [...r.errors.main.map((e) => `main ${r.name} ${r.theme} ${r.kind}: ${e}`), ...r.errors.up.map((e) => `up ${r.name} ${r.theme} ${r.kind}: ${e}`)]),
+};
+
+const controls = [...J('cs-control.json').controls, ...(fs.existsSync(V + 'cs-control-lean.json') ? J('cs-control-lean.json').controls : [])];
+const cssrules = J('cssrules-report.json');
+const { onlyMainAll, onlyUpAll, ...cssSummary } = cssrules;
+const repeat = fs.existsSync(V + 'repeat/repeat.json') ? J('repeat/repeat.json').map(({ im, ...x }) => x) : null;
+const april = J('april-aligned.json');
+const varrefs = fs.existsSync(V + 'removed-root-vars-refs.json') ? J('removed-root-vars-refs.json') : null;
+
+const out = {
+    lane: 'visual-regression',
+    head: '9eb1ec391aedca5a7ad615f37d53568f0a0f2aa0',
+    main: '3df6160395385555a22efd646626e6a009114a7d',
+    browser: diff.browser,
+    capture: { upA: { ...capUp, shots: capUp.shots.map(slimShot) }, main: { ...capMain, shots: capMain.shots.map(slimShot) }, upB: { ...capUpB, shots: capUpB.shots.map(slimShot) } },
+    pixel: { mainVsUp: diff.mainVsUp.map(slimDiff), upAvsUpB: diff.upAvsUpB.map(slimDiff), v2VsV3: diff.v2VsV3.map(slimDiff), segments: diff.segments.map(slimDiff), aprilUnaligned: diff.april.map(slimDiff), aprilAligned1268: april, metadata: diff.metadata },
+    segmentRepeat: repeat,
+    computedStyleStatic: staticSummary,
+    computedStyleForcedStates: interactiveSummary,
+    controls,
+    cssRuleSetDiff: { ...cssSummary, onlyMainAll, onlyUpAll },
+    removedRootVars: { list: [...ign].slice(0, 118), refs: varrefs && Object.fromEntries(Object.entries(varrefs).map(([d, v]) => [d.includes('main-before') ? 'main' : 'up', { files: v.files, referenced: Object.keys(v.refs), defined: Object.keys(v.defs).length }])) },
+};
+fs.writeFileSync(`${R}/lane-visual-regression.json`, JSON.stringify(out, null, 1));
+console.log('written', (fs.statSync(`${R}/lane-visual-regression.json`).size / 1024).toFixed(0), 'KB');
+console.log('STATIC', JSON.stringify({ runs: staticSummary.runs, routes: staticSummary.routes.length, widths: staticSummary.widths, states: staticSummary.states, elementComparisons: staticSummary.elementComparisons, totals: staticSummary.totals, onlyMain: staticSummary.onlyMain, onlyUp: staticSummary.onlyUp, themeBad: staticSummary.themeBad, notHydrated: staticSummary.notHydrated, rootCustomAllRunsSame: staticSummary.rootCustomAllRunsSame }));
+console.log('STATIC signatures', JSON.stringify(Object.fromEntries(Object.entries(staticSummary.signatures).map(([k, v]) => [k, { count: v.count, routes: v.routes, cls: v.sampleClass }]))));
+console.log('STATIC errors', staticSummary.errors.length, [...new Set(staticSummary.errors.map((e) => e.replace(/^(main|up) \S+ \d+ \w+: /, '')))]);
+console.log('INTERACTIVE totals', JSON.stringify(interactiveSummary.fullArrayTotals), 'reinspect', JSON.stringify(interactiveSummary.detailCapReinspection), 'errorsByRoute', JSON.stringify(Object.fromEntries(Object.entries(interactiveSummary.errorsByRoute).filter(([, v]) => v))));
+console.log('INTERACTIVE', JSON.stringify({ lean: interactiveSummary.leanRuns, full: interactiveSummary.fullRuns, runs: interactiveSummary.runs, routes: interactiveSummary.routes.length, candidates: interactiveSummary.candidates, affected: interactiveSummary.affectedElementComparisons, changedMain: interactiveSummary.changedByStateMain, changedUp: interactiveSummary.changedByStateUp, notes: interactiveSummary.stateEffectDisagreements, keyMismatch: interactiveSummary.keyMismatch, candOnly: interactiveSummary.candOnly, hoverMQAll: interactiveSummary.hoverMQAll, themeOkAll: interactiveSummary.themeOkAll }));
+console.log('INTERACTIVE signatures', JSON.stringify(Object.fromEntries(Object.entries(interactiveSummary.signatures).map(([k, v]) => [k, { count: v.count, routes: v.routes, cls: v.sampleClass }]))));
+console.log('INTERACTIVE errors', interactiveSummary.errors.length, [...new Set(interactiveSummary.errors.map((e) => e.replace(/^(main|up) \S+ \w+ \w+: /, '')))]);
+console.log('CONTROLS', controls.map((c) => `${c.id}=${c.pass}`).join(' '));
