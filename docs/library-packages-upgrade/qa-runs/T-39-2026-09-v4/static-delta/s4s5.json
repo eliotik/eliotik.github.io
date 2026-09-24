@@ -1,0 +1,280 @@
+{
+ "S4": {
+  "old": {
+   "sitemap_files": [
+    "sitemap-index.xml",
+    "sitemap-pages.xml",
+    "sitemap-posts.xml",
+    "sitemap-tags.xml",
+    "sitemap-threads.xml",
+    "sitemap-tips.xml"
+   ],
+   "xmllint": {
+    "sitemap-index.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-pages.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-posts.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-tags.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-threads.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-tips.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "rss.xml": {
+     "exit": 0,
+     "stderr": ""
+    }
+   },
+   "per_file": {
+    "sitemap-index.xml": {
+     "type": "index",
+     "locs": 5
+    },
+    "sitemap-pages.xml": {
+     "type": "urlset",
+     "locs": 7,
+     "urls": 7
+    },
+    "sitemap-posts.xml": {
+     "type": "urlset",
+     "locs": 28,
+     "urls": 28
+    },
+    "sitemap-tags.xml": {
+     "type": "urlset",
+     "locs": 69,
+     "urls": 69
+    },
+    "sitemap-threads.xml": {
+     "type": "urlset",
+     "locs": 3,
+     "urls": 3
+    },
+    "sitemap-tips.xml": {
+     "type": "urlset",
+     "locs": 7,
+     "urls": 7
+    }
+   },
+   "total_locs": 114,
+   "unique_locs": 112,
+   "duplicates": [
+    "https://www.novifyx.com/tags/",
+    "https://www.novifyx.com/threads/"
+   ],
+   "index_lists": [
+    "sitemap-pages.xml",
+    "sitemap-posts.xml",
+    "sitemap-tags.xml",
+    "sitemap-threads.xml",
+    "sitemap-tips.xml"
+   ],
+   "index_equals_sitemap_files": true,
+   "index_locs_resolve": 5,
+   "loc_resolution_rules": {
+    "dir-index": 112
+   },
+   "unresolved": []
+  },
+  "new": {
+   "sitemap_files": [
+    "sitemap-index.xml",
+    "sitemap-pages.xml",
+    "sitemap-posts.xml",
+    "sitemap-tags.xml",
+    "sitemap-threads.xml",
+    "sitemap-tips.xml"
+   ],
+   "xmllint": {
+    "sitemap-index.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-pages.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-posts.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-tags.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-threads.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "sitemap-tips.xml": {
+     "exit": 0,
+     "stderr": ""
+    },
+    "rss.xml": {
+     "exit": 0,
+     "stderr": ""
+    }
+   },
+   "per_file": {
+    "sitemap-index.xml": {
+     "type": "index",
+     "locs": 5
+    },
+    "sitemap-pages.xml": {
+     "type": "urlset",
+     "locs": 5,
+     "urls": 5
+    },
+    "sitemap-posts.xml": {
+     "type": "urlset",
+     "locs": 28,
+     "urls": 28
+    },
+    "sitemap-tags.xml": {
+     "type": "urlset",
+     "locs": 69,
+     "urls": 69
+    },
+    "sitemap-threads.xml": {
+     "type": "urlset",
+     "locs": 3,
+     "urls": 3
+    },
+    "sitemap-tips.xml": {
+     "type": "urlset",
+     "locs": 7,
+     "urls": 7
+    }
+   },
+   "total_locs": 112,
+   "unique_locs": 112,
+   "duplicates": [],
+   "index_lists": [
+    "sitemap-pages.xml",
+    "sitemap-posts.xml",
+    "sitemap-tags.xml",
+    "sitemap-threads.xml",
+    "sitemap-tips.xml"
+   ],
+   "index_equals_sitemap_files": true,
+   "index_locs_resolve": 5,
+   "loc_resolution_rules": {
+    "dir-index": 112
+   },
+   "unresolved": []
+  },
+  "union_equal": true,
+  "only_old": [],
+  "only_new": []
+ },
+ "S5": {
+  "pages": 130,
+  "counts_new": {
+   "og:image": 127,
+   "twitter:image": 127,
+   "canonical": 128,
+   "og:url": 126,
+   "twitter:url": 126
+  },
+  "resolution_rules_new": {
+   "og:image:file": 127,
+   "twitter:image:file": 127,
+   "canonical:dir-index": 50,
+   "og:url:dir-index": 50,
+   "twitter:url:dir-index": 50,
+   "canonical:dir-redirect": 78,
+   "og:url:dir-redirect": 76,
+   "twitter:url:dir-redirect": 76
+  },
+  "unresolved_new": [],
+  "unresolved_new_url_kinds": [],
+  "404_url_tags": [],
+  "404_robots": [
+   "<meta name=\"robots\" content=\"noindex,follow\">"
+  ],
+  "404_robots_old": [],
+  "noindex_old_count": 17,
+  "noindex_new_count": 18,
+  "noindex_new_minus_old": [
+   "404.html"
+  ],
+  "noindex_old_minus_new": [],
+  "noindex_tag_changed_on_common": [],
+  "noindex_pages_new": {
+   "404.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "posts/1/index.html": [
+    "<meta name=\"robots\" content=\"noindex\">"
+   ],
+   "posts/2/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "posts/3/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "posts/4/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "posts/5/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "posts/6/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/engineering-leadership/2/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/engineering-leadership/3/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/engineering-management/2/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/engineering-management/3/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/leadership/2/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/leadership/3/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/systems-thinking/2/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tags/tutorial/2/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "tips/1/index.html": [
+    "<meta name=\"robots\" content=\"noindex\">"
+   ],
+   "tips/2/index.html": [
+    "<meta name=\"robots\" content=\"noindex,follow\">"
+   ],
+   "~partytown/partytown-sandbox-sw.html": [
+    "<meta name=\"robots\" content=\"noindex\">"
+   ]
+  },
+  "multiple_robots": [],
+  "canonical_missing_new": [
+   "404.html",
+   "~partytown/partytown-sandbox-sw.html"
+  ],
+  "canonical_multiple_new": []
+ }
+}

@@ -1,16 +1,166 @@
 # End-to-End Verification Report: September 2026 upgrade (T-39, Task 8)
 
-This file holds three runs of Task 8 (spec §5.2, final local verification):
+This file holds four runs of Task 8 (spec §5.2, final local verification):
 
-- **v3** (top) verifies the final tree, `9eb1ec3`, after Tasks 17, 17b and 17c. It is the verification of record.
-- **v2** (middle) verified `63efd08`, before Task 17. It is kept unchanged as history, apart from its heading and one added line under its verdict.
+- **v4** (top) verifies `ab5c02d`, the tree after the Phase 3 fixes (Tasks 18-21). It is a delta verification against v3: it proves that the built site differs from `9eb1ec3` only by the intended changes, verifies each change directly, and carries v3's other results forward. It is the verification of record.
+- **v3** verified `9eb1ec3`, after Tasks 17, 17b and 17c. It is kept unchanged as history, apart from its heading and one added line under its verdict.
+- **v2** verified `63efd08`, before Task 17. It is kept unchanged as history, apart from its heading and one added line under its verdict.
 - **v1** (bottom) verified `55a6530`, before Task 8b and Phase 2. It is kept unchanged as history, with one added line under its verdict.
 
-Section references (§) inside each part point to that part's own sections.
+Section references (§) inside each part point to that part's own sections. v4 cites v3's sections as "v3 §n".
 
 ---
 
-## v3 — final (commit 9eb1ec391aedca5a7ad615f37d53568f0a0f2aa0)
+## v4 — Phase 3 delta (commit ab5c02d687e5266ad122db3a37de873ca385a991)
+
+**Date:** 2026-09-24, UTC. The static-delta lane ran from 21:46Z to 22:01Z. The runtime-delta harness runs are timestamped from 21:55:45Z (R2-R5) to 22:13:46Z (tall full-page R1 and the self-test), per the `meta` field of each result JSON. This report was written at 22:23Z.
+**Operator:** claude-opus-5-5, the T-39 Phase 3 delta QA report writer. Phase 3 (Tasks 18-21) fixed four pre-existing site defects that v3 recorded in its §10. v4 does not re-run the whole of Task 8. It proves that the built site at `ab5c02d` differs from the v3-verified tree only by the intended deltas, then verifies each delta directly. Two lanes produced the results:
+- **static-delta**: the gate, a whole-site `dist/` diff, link integrity, sitemaps and SEO heads.
+- **runtime-delta**: pixel diff, real-click navigation, theme and `<html>` class through ClientRouter, the 404 page, and islands and Partytown, in headless Chrome.
+
+**Commit verified:** `ab5c02d687e5266ad122db3a37de873ca385a991` on branch `upgrade/2026-09`.
+**Reference:** `9eb1ec391aedca5a7ad615f37d53568f0a0f2aa0`, verified by v3 (below) with Overall PASS. Each lane built both trees from scratch in its own detached scratch worktrees: Node v22.23.3, pnpm 10.34.5, `pnpm install --frozen-lockfile`, then the full `pnpm build` (`astro check`, `astro build`, jampack). Neither lane built in the main checkout.
+**Test browser:** Google Chrome 153.0.8010.53, headless, through Playwright 1.63.0 (`channel: 'chrome'`), with a fresh non-persistent context per test group and the same GA host blocking as v3. Previews: `ab5c02d` on :4411, `9eb1ec3` on :4412.
+**QA artifacts:** `docs/library-packages-upgrade/qa-runs/T-39-2026-09-v4/`:
+- `static-delta.md` and `static-delta/`: gate logs (`new-gate.txt`, `new-check.log`, `new-lint.log`, `new-format.log`, `new-build.log`, `old-gate.txt`, `*-build-warns.txt`), the scripts as `*.py.txt` and `gate.sh.txt`, the result JSONs (`s2.json`, `s3-new.json`, `s3-old.json`, `s4s5.json`, `c-pages.json`), `pin_v3-output.txt`, `old-vs-v3-differing.txt`, and the sha256 manifests of both builds.
+- `runtime-delta.md` and `runtime-delta/`: the harness `rd.mjs.txt` and its helpers, `results-R2-R5.json`, `results-R1-viewport-and-pwfullpage.json`, `results-R1-tallfullpage-selftest.json`, the per-pair R1 logs and `r4-head-404.png`.
+- `diff/runtime-delta-*`: diff maps and head/base/diff crops from the optional Playwright `fullPage` attempt (§4 item 2).
+
+**Overall: PASS.** Both lanes pass, with no failures and no open defect.
+- The whole built site at `ab5c02d` differs from `9eb1ec3` only by the four intended Phase 3 deltas. CSS, JS, images and every other non-HTML file except the one edited sitemap (and `sitemap-index.xml`'s build-time `<lastmod>`) are byte-identical, and all 100 HTML hunks are classified (S2).
+- Each delta is verified directly. The Flutter links resolve and navigate (S3, R2). The 404 page has no `canonical`, `og:url` or `twitter:url` and is `noindex,follow` (S5, R4). `/tags/` and `/threads/` are listed once (S4). `<html class="false">` is gone, while the 35 post and tip detail pages keep `scroll-smooth` (S2, R3).
+- Rendering is unchanged: 0 differing pixels on 16/16 viewport pairs and 16/16 full-page pairs (R1).
+- v3's results for everything the deltas do not touch therefore carry forward (§2).
+- The Search caret race (v3 §10 item 3) is intentionally not fixed, by user decision on 2026-09-24 (§4 item 1).
+
+---
+
+### 1. What changed since v3 (`9eb1ec3..ab5c02d`)
+
+`git log --oneline 9eb1ec391aedca5a7ad615f37d53568f0a0f2aa0..ab5c02d687e5266ad122db3a37de873ca385a991`:
+
+```
+ab5c02d fix(T-39): render html class only when scroll-smooth is on
+889a6cf fix(T-39): list /tags/ and /threads/ once across sitemaps
+05c8894 fix(T-39): 404 page drops canonical/og:url and is noindex
+1326205 fix(T-39): absolute links between Flutter series posts
+a6622c1 docs(T-39): final verification report v3 (final tree)
+```
+
+`git diff --name-only 9eb1ec3 ab5c02d -- ':!docs'` lists 6 files, all under `src/`: the 3 Flutter `.mdx` posts, `src/layouts/Layout.astro`, `src/pages/404.astro` and `src/pages/sitemap-pages.xml.ts`. `package.json`, `pnpm-lock.yaml` (sha256 `cb7f0f70…` in both trees), `astro.config.mjs` and `public/` are unchanged. v3's stack snapshot, peer warnings and outdated list (v3 header, §8, §9) therefore still apply as recorded.
+
+| Commit | Task | Change | Fixes | Verified in v4 by |
+|---|---|---|---|---|
+| `a6622c1` | 8 (v3) | The v3 report, `qa-runs/T-39-2026-09-v3/` and the backlog (documentation only). `docs/` is outside Tailwind's `source('..')` and outside Prettier's allowlist, so it cannot affect `dist/`. | — | S2 (all CSS/JS byte-identical) |
+| `1326205` | 18 | Three Flutter `.mdx` posts: 4 relative links `./<slug>` → absolute `/posts/<slug>/` (address-manipulation 2, embedded-map 1, static-map 1). | v3 §10 item 1: the relative links 404 from the canonical trailing-slash URLs | S2 (a), S3, R2 |
+| `05c8894` | 19 | `Layout.astro` gains a `notFound` prop. When it is set, the page emits no `canonical`, `og:url` or `twitter:url`, and emits `<meta name="robots" content="noindex,follow">`. `404.astro` passes `notFound`. | v3 §10 item 2: the 404 page's canonical URLs pointed at a nonexistent `/404/` | S2 (b), S3, S5, R4, R1 (404 pair) |
+| `889a6cf` | 20 | `sitemap-pages.xml.ts` drops the `/threads/` and `/tags/` entries. They stay in `sitemap-threads.xml` and `sitemap-tags.xml`. | v3 §10 item 4: duplicate sitemap entries | S2 (`sitemap-pages.xml`), S4 |
+| `ab5c02d` | 21 | `Layout.astro` `<html>`: `` class={`${scrollSmooth && 'scroll-smooth'}`} `` → `class:list={{ 'scroll-smooth': scrollSmooth }}`. Pages without smooth scroll now render `<html lang="en">` instead of `<html lang="en" class="false">`. | v3 §10 item 5: `<html class="false">` | S2 (c), R1, R3 |
+
+v3 §10 item 3, the Search caret race, is not in this range (§4 item 1). `src/components/Search.tsx` is unchanged.
+
+---
+
+### 2. Carry-forward argument
+
+v4 re-verifies only what changed. The argument that v3's results still hold for everything else has three links.
+
+1. **The rebuilt reference is the v3-verified artifact.** The static-delta lane compared its fresh `9eb1ec3` build with the sha256 manifest of the `dist/` that v3's site-wide lane verified. The file lists are identical and 356 of 362 files are byte-identical. The other 6 are:
+   - `sitemap-index.xml`, whose `<lastmod>` is the build time.
+   - The 5 pages with `ImageSliderClient` (`client:only`) islands, which differ only in the island `uid`. Astro 7.3.5 hashes the component URL into the uid, so it depends on the build path. The main checkout's existing `dist/`, built at the repo path like v3's, reproduces v3's hashes exactly: raw for `from-skeptic-to-champion` and `octoprint-prusa-core-one-raspberry-pi`, and for the 3 Flutter posts once the 4 Task 18 hrefs are reverted (`static-delta/pin_v3-output.txt`).
+2. **`ab5c02d` is the reference plus exactly the four intended deltas (S2).**
+   - Both builds have the same 362 files.
+   - 230 of the 232 non-HTML files are byte-identical: all 4 CSS bundles, all 13 JS files (so every hashed `_astro` chunk name), every image, `rss.xml`, the 4 section sitemaps, `robots.txt`, `CNAME` and the rest (the Partytown sandbox HTML is among the 33 raw-identical HTML files).
+   - The other two: `sitemap-index.xml` differs only by `<lastmod>`, and `sitemap-pages.xml` equals the old file with the `/threads/` and `/tags/` `<url>` blocks cut out.
+   - Of 130 HTML files, 33 are raw-identical, 2 differ only in island uid, and 95 have hunks. All 100 hunks are classified by exact token rules, with 0 unclassified: 4 Task 18 hrefs, 4 Task 19 head tags in `404.html`, and 92 `<html lang="en" class="false">` → `<html lang="en">`.
+3. **Each delta is verified directly (§1 table), and none of them reaches anything else:**
+   - The removed `false` token matches no selector. The byte-identical stylesheets contain 0 `.false` selectors, and the `html` rules key on `data-theme`. R1 shows 0 px on every pair, and R3 shows identical class tokens, `scroll-behavior`, theme and background on both builds once the token is removed.
+   - The 404 head tags are not rendered (the R1 404 pairs are 0 px). R4 shows that after "Go back home" the swapped home head has its canonical, `og:url` and `twitter:url` again, so the `notFound` branch does not carry over.
+   - The hrefs and the sitemap entry are link and crawler data. S3 resolves every internal ref (0 unresolved) and S4 shows that the sitemap `<loc>` union is unchanged.
+
+**v3 results carried forward:**
+
+| v3 result | Why it still holds at `ab5c02d` | Re-checked in v4 |
+|---|---|---|
+| §1 gate (install, check, lint, format, build) | Re-run on the new tree | S1: every command exit 0; `astro check` 77 files 0/0/0; 127 pages; the same 9 known warnings. Row G: lint and format:check again at report time. |
+| §2 React islands (user's Chrome, Playwright, P9 WebKit and Firefox) | Island JS and CSS byte-identical; island markup identical apart from the uid | R5 smoke in Chrome 153: carousel, search, tags filter; identical on base |
+| §3 Partytown fix | Partytown assets byte-identical; no HTML hunk outside the four deltas | R5: 1 sandbox iframe under `<html>` across 3 soft navs, 1 gtag.js request, 105 proxytown requests with 0 failed |
+| §4 visual comparison | CSS and images byte-identical; the removed token matches no rule | R1: 0 px on 16 viewport and 16 full-page pairs (8 routes × 2 themes: `/`, the 3 Flutter posts, a plain post, `/tags/`, `/threads/`, 404) |
+| §5 site-wide | Re-run where the deltas reach | S3 links and assets (W2, W6), S4 sitemaps (the sitemap part of W1), S5 SEO heads (W7), R4 custom 404 (W3). The other checks (the RSS part of W1, W4, W5, W5a, W8-W11) cover byte-identical files (`rss.xml`, `robots.txt`, OG PNGs, `~partytown`), HTML outside the classified hunks, the identical 362-file list, or unchanged config. |
+| §6 devToolbar | `astro.config.mjs`, `package.json` and the lockfile unchanged | — |
+| §8-§9 peers and outdated | `package.json` and the lockfile unchanged | — (lockfile sha256 equal in both trees) |
+
+Not re-run in v4, and carried forward on the byte-identical CSS and JS: the WebKit and Firefox smoke (v3 P9), the user's Chrome profile lane, and the devToolbar cold start.
+
+---
+
+### 3. Results
+
+| # | Lane | Check | Result | Evidence |
+|---|---|---|---|---|
+| S1 | static-delta | Gate at `ab5c02d`: install `--frozen-lockfile`, `astro check`, lint, format:check, build | PASS | Scratch worktree `p3v/static-delta-new`, Node v22.23.3, pnpm 10.34.5. Exit codes: install 0, check 0, lint 0, format:check 0, build 0 (`static-delta/new-gate.txt`). `astro check`: `Result (77 files): 0 errors, 0 warnings, 0 hints`, standalone and inside the build. Build: 127 page(s) built; jampack 246/308 files, "No issues". The only warnings are the same 9 `MODULE_LEVEL_DIRECTIVE` lines as v3 and the `9eb1ec3` build. Lockfile sha256 `cb7f0f70…` in both trees. `git status` clean after the gate. |
+| S2 | static-delta | Whole-site diff `9eb1ec3` → `ab5c02d`, both full `pnpm build` including jampack | PASS | 362/362 files, identical lists. 230/230 other non-HTML files byte-identical: css 4, js 13, webp 123, png 67, jpg 7, gif 6, svg 1, xml 5 (`rss.xml` and 4 sitemaps), `robots.txt`, the devtools JSON, `CNAME`, `.gitkeep`; 0 font files in `dist/`. `sitemap-index.xml` equal after stripping `<lastmod>`. `sitemap-pages.xml`: exactly the `/threads/` and `/tags/` `<url>` blocks removed, nothing added, order preserved. HTML: 130 files, only the `astro-island` uid normalized (per-file uid counts equal); 33 raw-identical, 2 uid-only, 95 with hunks. 100 hunks = 4 (a) + 4 (b) + 92 (c), 0 unclassified. (a) the 4 Flutter hrefs `./<slug>` → `/posts/<slug>/`, exactly the source diff. (b) `404.html`: `canonical`, `og:url` and `twitter:url` for `https://www.novifyx.com/404/` deleted, `<meta name="robots" content="noindex,follow">` inserted. (c) 92 pages `<html lang="en" class="false">` → `<html lang="en">`; the old `class="false"` set equals the (c) set. The 35 post and tip detail pages keep `class="scroll-smooth"` (equal sets). `class="false\|undefined\|null"`: 0 in new, 92 in old. |
+| S3 | static-delta | Link integrity over all `dist/**/*.html` at `ab5c02d`, against both the trailing-slash and no-slash page URLs | PASS | 130 HTML files, 4632 refs: 2991 root-relative, 0 relative, 128 same-site absolute, 347 fragment-only. 6195 case-exact resolutions (file 1941, dir-index 3853, dir-redirect 401): 0 unresolved. 347 in-page fragments, 0 missing, 0 empty `#`; 0 cross-page fragments. 35 island-prop URLs, 0 broken. 0 duplicate ids. `404.html` has 0 relative refs. Negative control at `9eb1ec3`: 5 unresolved (the 4 Flutter `./` hrefs against the slash base, and the 404 canonical `/404/`). The rule deltas (dir-index +8, dir-redirect −4) match Task 18 exactly. |
+| S4 | static-delta | Sitemaps: `xmllint`, total = unique, union set-equal to `9eb1ec3`, every `<loc>` maps to `dist/`, the index lists all | PASS | `xmllint --noout` exit 0, no stderr, on `sitemap-index`, pages, posts, tags, threads, tips and `rss.xml`, in both builds. `<loc>` per file: pages 5, posts 28, tips 7, threads 3, tags 69. Total 112 = unique 112, no duplicates (old: 114 total, 112 unique, with `/tags/` and `/threads/` twice). The union is set-equal to `9eb1ec3` (only-old and only-new both empty). 112/112 locs map case-exactly to a `dist/…/index.html`. The index lists exactly the 5 `sitemap-*.xml` files, and all 5 resolve. |
+| S5 | static-delta | SEO heads: `canonical` and `og:url` map to `dist/`; 404 has none of them and is noindex; the noindex pagination set is unchanged | PASS | 128 `canonical`, 126 `og:url` and 126 `twitter:url` tags, 0 unresolved: 50 of each via dir-index, and the 76 tag pages (plus 2 redirect-stub canonicals) via dir-redirect, the same as `9eb1ec3`. 127 `og:image` and 127 `twitter:image` all map to files. `404.html` has no `canonical`, `og:url` or `twitter:url`, and exactly one robots tag, `noindex,follow` (old: none). noindex set: old 17, new 18 = old plus `404.html`. The robots text is identical on all 17 common pages: `/posts/2-6/`, `/tips/2/` and 8 `/tags/<tag>/<n>/` use `noindex,follow`; the 2 redirect stubs and the Partytown sandbox use `noindex`. No page in either build has more than one robots meta. |
+| R1 | runtime-delta | Pixel diff `ab5c02d` (:4411) vs `9eb1ec3` (:4412): 8 routes × light/dark, 1280×1800, DSF 1, `reducedMotion: 'reduce'`, after fonts and network idle | PASS | Required viewport captures: 0 px on all 16 pairs, by exact RGBA equality (pngjs). Full page with the tall-viewport method: 0 px on all 16 pairs (up to 1280×14417). Preconditions held on every capture of both builds: status 200 (404 for the 404 route), `data-theme` as requested, identical IBM Plex Mono faces loaded, all islands hydrated. 0 unexpected console errors. The optional Playwright `fullPage` attempt is §4 item 2. |
+| R2 | runtime-delta | Flutter links: real click, ClientRouter soft nav, 200, correct post, full loads | PASS | Each of the 4 changed links exists once in `#article` with its new absolute href. Each real click was a soft nav (window token kept, 0 load events) to the exact target: embedded-map "First post" → `/posts/flutter-google-maps-setup/`; address-manipulation "Second post" → `/posts/flutter-google-maps-embedded-map/` and "First post" → `/posts/flutter-google-maps-setup/`; static-map "Third post" → `/posts/flutter-google-maps-address-manipulation/`. Every target fetch returned 200, and h1 and title match a full load of the target. Full loads of the 3 targets return 200 at the same path. Base contrast: the old relative hrefs resolve to nested URLs that return 404 (for example `/posts/flutter-google-maps-embedded-map/flutter-google-maps-setup`). 0 console errors. |
+| R3 | runtime-delta | `<html>` class and dark theme through ClientRouter (`/` → post → `/tags/` → back), no light flash, head vs base | PASS | Head: `/` has class `null` and `scroll-behavior: auto`; after the click to a post, `scroll-smooth` and computed `smooth`; header link to `/tags/`, `null` and `auto`; Back, `scroll-smooth` and `smooth`; Forward and Back again behave the same. No `false` token in any step or in any of 139 rAF samples. After the theme toggle, `data-theme` is `dark` and the body background `rgb(33, 39, 55)` on every soft and full page; every rAF frame during the 5 soft navs is dark. On 4 full loads, theme and background are already dark at DOMContentLoaded and at the first rAF, and a MutationObserver saw `data-theme` written only as `dark`. Base, same sequence: identical once the `false` token is removed (class tokens, scroll-behavior, theme, background, soft-nav flag, h1, DCL and first-frame state). The only difference is `class="false"` on `/`, `/tags/` and full loads (`false dark`). 0 console errors on both builds. |
+| R4 | runtime-delta | 404: custom page, robots noindex, no `canonical`/`og:url`/`twitter:url`, "Go back home" | PASS | `GET :4411/this-route-does-not-exist` returns 404 and renders the custom page: title "404 Not Found \| Novi Fyx", h1 "404" (`aria-label="404 Not Found"`), "Page Not Found", the "Go back home" link, header and footer. Head: robots `['noindex,follow']`; `canonical`, `og:url` and `twitter:url` absent; no `<html>` class. Clicking "Go back home" soft-navigates to `/` with a 200 fetch, and the swapped home head has `canonical`, `og:url` and `twitter:url` = `https://www.novifyx.com/` and no robots. Base contrast: `canonical`, `og:url` and `twitter:url` point at `/404/` and there is no robots meta. Console: only the excused main-document 404 message, once per build (§4 item 7). |
+| R5 | runtime-delta | Islands smoke (carousel, search, tags) and Partytown | PASS | Octoprint carousel 1: Next moves exactly one slide ("Slide 1 of 2" → "Slide 2 of 2", scrollLeft 0 → 734 = clientWidth, Prev enabled). `/search/`, after a 300 ms wait and real typing of `hiring`: "Found 5 results", `?q=hiring`. `/tags/` filter `engin`: 68 → 5 tags, all matching, including `engineering-management`. Partytown over 3 real-click ClientRouter navs: the sandbox iframe's parent is `<html>` on every page, 1 iframe, loaded once, 1 sandbox HTML request, 0 full loads, 1 gtag.js request, 1 worker; 105 proxytown requests, 0 failed, 0 ≥ 400, 0 proxytown console messages. Base gives identical outcomes. 0 console errors on both builds. |
+| SELFTEST | runtime-delta | Console-capture harness self-test | PASS | Four injected errors were all captured: a page `console.error`, an uncaught page error, a Blob dedicated-worker `console.error`, and a `console.error` in the Partytown sandbox iframe. So "0 console errors" in R1-R5 is not a blind spot. |
+| G | report writer | Gate re-run at report time, main checkout with the v4 QA directory in place | PASS | At 22:22:10Z, Node v22.23.3: `pnpm lint` exit 0 (no diagnostics); `pnpm format:check` exit 0 ("All matched files use Prettier code style!"). The v4 QA directory has 0 `.js`/`.mjs`/`.cjs`/`.ts`/`.tsx`/`.astro` files (scripts are archived as `*.txt`), and `docs/` is outside Prettier's allowlist and Tailwind's `source('..')`. Run again before the commit. |
+| T | report writer | Teardown | PASS | At report time `lsof -iTCP:4321-4340 -iTCP:4401 -iTCP:4411 -iTCP:4412 -sTCP:LISTEN` exited 1 with no listeners, and `git worktree list` shows only the main checkout (`ab5c02d [upgrade/2026-09]`). The runtime lane stopped its previews (pids 11059, 11091); both lanes removed their scratch worktrees. |
+
+---
+
+### 4. Observations (not failures)
+
+1. **The Search caret race is intentionally not fixed (user decision, 2026-09-24).** This is v3 §10 item 3: a 50 ms post-mount `setTimeout` in `src/components/Search.tsx` resets the caret, so typing that starts inside that window can be reordered (`hiring` → `iringh`). It is pre-existing on main, and Phase 3 does not touch `Search.tsx`. R5 waits 300 ms after hydration before typing, so its query arrived intact on both builds.
+2. **Optional Playwright `fullPage` capture.** The runtime lane also tried Playwright's `fullPage: true`. 12 of its 16 pairs were 0 px. The other 4 (embedded-map and static-map, light and dark: 1600 or 2956 px) all fall inside the 44×44 carousel "Next slide" button, which is enabled in one capture and disabled in the other. Same-build repeats reproduce it (head vs head 1600 px, base vs base 1478 px), so it is capture noise, not a build difference. The lane read the head and base crops (`diff/runtime-delta-R1.fp.*-crop-head-base-diff.png`). The likely cause, not verified, is a race between the resize that `captureBeyondViewport` performs and `ImageSliderClient`'s resize handler; the component is unchanged between the trees. The JSON records this optional check as `R1.fullpage` with `pass: false` (`runtime-delta/results-R1-viewport-and-pwfullpage.json`). It is superseded by `R1.fullpage-tall`, which fixes the viewport at the page height before capture: 0 px on 16/16, with every Next button enabled on both builds. R1 is graded on the required viewport pairs and the tall method.
+3. **Island uid depends on the build path.** It is the only normalized variation. It is stable across two builds in the same worktree. Between worktrees, all 15 `ImageSliderClient` (`client:only`) uids differ, while the `Search` and `TagsList` uids do not. Astro 7.3.5 derives the uid from `shorthash(componentExport:componentUrl + html + props)`.
+4. **Tag-page canonicals have no trailing slash (pre-existing, not a Phase 3 delta).** The 76 tag pages (`/tags/<tag>/` and `/tags/<tag>/<n>/`) emit `canonical`, `og:url` and `twitter:url` without a trailing slash (for example `https://www.novifyx.com/tags/leadership`), while `sitemap-tags.xml` lists `/tags/<tag>/`. There are also 401 root-relative href resolutions without a trailing slash (`/tags`, `/posts`, `/posts/<n>`, `/posts/<slug>`). All resolve through GitHub Pages' `/x` → `/x/` redirect to existing `index.html` files, and they are identical in both builds. A possible future SEO tidy-up.
+5. **ClientRouter drops the `dark` class token on soft navigation (pre-existing, identical on base).** The inline head script adds `dark` on full loads; the root-attribute swap copies the new document's `<html>` attributes and removes it. It is harmless: CSS keys on `data-theme`, which `toggle-theme.js` restores on `astro:after-swap`, and no non-dark frame was ever sampled. On base the swap wrote `class="false"` instead.
+6. **Transitional rAF frames (pre-existing, identical on base).** During soft navs the sampler saw 1-2 frames where `location.pathname` had changed but the `<html>` class still belonged to the previous page. This is ClientRouter's normal history-before-swap order; `data-theme` and the background stayed dark.
+7. **Narrow console exception** (the same one the v3 visual-regression lane used). Chrome logs "Failed to load resource: the server responded with a status of 404 (Not Found)" for the main document of the deliberately requested `/this-route-does-not-exist`. Only that exact text at that exact location is excused. It appeared 12 times across the two R1 runs (6 head, 6 base) and twice in R4 (once per build), identically on both builds. The only other errors in any result JSON are the self-test's injected ones.
+8. **Network failures.** Apart from the intentionally blocked GA hosts (`ERR_NAME_NOT_RESOLVED`), the only failed request was one `googletagmanager.com/td` beacon on base R3, aborted (`net::ERR_ABORTED`) by a full-load navigation. It produced no console message and is not a delta.
+9. **Scope.** v4 ran only headless Chrome 153. WebKit, Firefox, the user's Chrome profile and the devToolbar cold start were not re-run (§2); real Safari is still unverified, as in v3 §10 item 21.
+10. **Lane process.** static-delta started no server, so port 4401 was not used. The runtime lane served on :4411 and :4412, stopped both previews, and removed its worktrees with `--force` (no prune); static-delta removed its worktrees and pruned. Neither lane built in or modified the main checkout apart from the new files under `qa-runs/T-39-2026-09-v4/`, and neither committed. The static-delta lane also ran `pnpm lint` and `format:check` on a copy of the QA directory inside the `ab5c02d` worktree (both exit 0).
+11. **Other v3 §10 items.** Items 6-12 (pre-existing site issues) remain as recorded; Phase 3 does not touch them. Items 13-34 (Partytown, environment, build and process notes) are unchanged.
+
+---
+
+### 5. Defects
+
+| ID | Description | Regression? | Status |
+|---|---|---|---|
+| (none open) | — | — | No open defect. Neither lane found a Phase 3 regression, so no `defects/T-39-D<n>.md` was needed. |
+| v3 §10 item 1 | Four relative links in three Flutter posts 404 from the canonical trailing-slash URLs | No (pre-existing on main) | **Fixed** in `1326205` (Task 18): S3 0 unresolved (control at `9eb1ec3`: these 4 plus the 404 canonical); R2 real clicks land on the right posts with 200. |
+| v3 §10 item 2 | `404.html` canonical, `og:url` and `twitter:url` pointed at a nonexistent `/404/` | No (pre-existing on main) | **Fixed** in `05c8894` (Task 19): S5, R4. The page is also `noindex,follow` now. |
+| v3 §10 item 4 | `/tags/` and `/threads/` listed in two sitemaps (114 locs, 112 unique) | No (pre-existing on main) | **Fixed** in `889a6cf` (Task 20): S4, 112 = 112, union unchanged. |
+| v3 §10 item 5 | `<html class="false">` on 92 pages | No (pre-existing on main) | **Fixed** in `ab5c02d` (Task 21): S2 (c), R3. |
+| v3 §10 item 3 | Search caret race (`Search.tsx` 50 ms `setTimeout`) | No (pre-existing on main) | **Not fixed, by user decision on 2026-09-24** (§4 item 1). |
+
+---
+
+### 6. Overall verdict
+
+| Lane | Lane verdict (as reported) | After grading in this report |
+|---|---|---|
+| static-delta | PASS (S1-S5; no failures) | PASS (§2, §3) |
+| runtime-delta | PASS (R1-R5 and SELFTEST; no failures) | PASS (§3). R1 is graded on its required viewport pairs and the tall full-page method; the optional Playwright `fullPage` attempt is capture noise that reproduces within one build (§4 item 2). |
+| report writer (G, T) | — | PASS (§3) |
+| v3 lanes (build, chrome-islands, playwright-e2e, visual-regression, site-wide, devtoolbar) | PASS at `9eb1ec3` (v3 §12) | Carried forward to `ab5c02d` (§2) |
+
+**FAIL rows:** none.
+
+**Overall: PASS**
+
+No failure is open under R8 and spec §5.3. The built site at `ab5c02d` is the v3-verified site plus exactly the four intended Phase 3 fixes, each verified directly, so v3's verdict carries forward and the Task 8 condition for Task 9 (push and PR) is met on `ab5c02d`.
+
+---
+
+## v3 (2026-09-24, commit 9eb1ec3)
 
 **Date:** 2026-09-24. The recorded lane timestamps run from 18:48Z (build) to about 20:29Z (visual-regression, the last lane to finish), UTC. This report was written at 20:42Z.
 **Operator:** claude-opus-5-5, the T-39 Task 8 v3 QA report writer. Ruling R38 withdrew R36's carry-forward because Task 17b changed the shipped CSS, so the whole of Task 8 was run again on the final tree. The results come from six QA lanes (R2): build, chrome-islands, playwright-e2e, visual-regression and site-wide ran against this commit; devtoolbar is carried over from Task 8b (§6).
@@ -459,6 +609,8 @@ Toolchain: Node v22.23.3 is the latest v22 LTS. pnpm 10.34.5 is the latest 10.x;
 **FAIL rows:** none.
 
 **Overall: PASS**
+
+Carried forward by v4 above (Phase 3 delta proof).
 
 No failure is open under R8 and spec §5.3, so the Task 8 condition for Task 9 (push and PR) is met on `9eb1ec3`. v2's W7 failure is resolved by the fix in `20d335f`, and every lane was re-run on the final tree (R38).
 

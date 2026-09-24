@@ -1,0 +1,287 @@
+#!/usr/bin/env python3
+"""S2 whole-site diff: OLD dist (9eb1ec3) vs NEW dist (ab5c02d).
+
+usage: s2_diff.py <old_dist> <new_dist> <out_json>
+
+- file lists must be identical (case-exact, from os.walk, never os.path.exists)
+- every non-HTML file byte-identical, except sitemap-pages.xml (url-block diff)
+  and sitemap-index.xml (compared after stripping <lastmod>)
+- HTML: normalize ONLY <astro-island ... uid="..."> on both sides, then diff
+  tag/text tokens with SequenceMatcher(autojunk=False) and classify every hunk
+  as exactly one of (a) Task 18, (b) Task 19, (c) Task 21. Anything else is
+  UNCLASSIFIED and fails the check.
+"""
+import difflib
+import json
+import os
+import re
+import sys
+
+OLD, NEW, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
+
+
+def walk(root):
+    out = set()
+    for dp, dn, fn in os.walk(root):
+        for f in fn:
+            out.add(os.path.relpath(os.path.join(dp, f), root))
+    return out
+
+
+def rb(root, rel):
+    with open(os.path.join(root, rel), 'rb') as fh:
+        return fh.read()
+
+
+fo, fn_ = walk(OLD), walk(NEW)
+res = {
+    'old_count': len(fo),
+    'new_count': len(fn_),
+    'only_old': sorted(fo - fn_),
+    'only_new': sorted(fn_ - fo),
+}
+common = sorted(fo & fn_)
+
+UID_RE = re.compile(r'(<astro-island\b[^>]*?\buid=")([^"]*)(")')
+TOK_RE = re.compile(r'<[^>]*>|[^<]+')
+
+# (a) Task 18 expected rewrites, from the source diff 9eb1ec3..ab5c02d
+A_EXPECT = {
+    'posts/flutter-google-maps-address-manipulation/index.html': [
+        'flutter-google-maps-embedded-map',
+        'flutter-google-maps-setup',
+    ],
+    'posts/flutter-google-maps-embedded-map/index.html': [
+        'flutter-google-maps-setup'
+    ],
+    'posts/flutter-google-maps-static-map/index.html': [
+        'flutter-google-maps-address-manipulation'
+    ],
+}
+B_DELETED = {
+    '<link rel="canonical" href="https://www.novifyx.com/404/">': 'canonical',
+    '<meta property="og:url" content="https://www.novifyx.com/404/">': 'og:url',
+    '<meta property="twitter:url" content="https://www.novifyx.com/404/">': 'twitter:url',
+}
+B_INSERTED = {'<meta name="robots" content="noindex,follow">': 'robots-noindex'}
+
+
+def classify(rel, tag, a_toks, b_toks):
+    # (c) Task 21: <html lang="en" class="false"> -> <html lang="en">
+    if tag == 'replace' and len(a_toks) == 1 and len(b_toks) == 1:
+        a, b = a_toks[0], b_toks[0]
+        if (
+            a.startswith('<html ')
+            and ' class="false"' in a
+            and a.replace(' class="false"', '', 1) == b
+            and 'class=' not in b
+        ):
+            return 'c', None
+        # (a) Task 18: href="./X" -> href="/posts/X/", token otherwise identical
+        if rel in A_EXPECT:
+            m = re.search(r'href="\./([^"/#?]+)"', a)
+            if m:
+                slug = m.group(1)
+                if (
+                    a.startswith('<a ')
+                    and a.replace(
+                        f'href="./{slug}"', f'href="/posts/{slug}/"', 1
+                    )
+                    == b
+                ):
+                    return 'a', slug
+    if rel == '404.html':
+        if tag == 'delete' and len(a_toks) == 1 and not b_toks:
+            if a_toks[0] in B_DELETED:
+                return 'b', B_DELETED[a_toks[0]]
+        if tag == 'insert' and len(b_toks) == 1 and not a_toks:
+            if b_toks[0] in B_INSERTED:
+                return 'b', B_INSERTED[b_toks[0]]
+    return None, None
+
+
+nonhtml_ident, nonhtml_diff, ext_counts = [], [], {}
+html_raw_ident, html_uid_only, html_diff = [], [], []
+uid_mismatch = []
+hunks = []
+unclassified = []
+a_found = {}
+b_found = []
+c_pages = []
+special = {}
+
+for rel in common:
+    ext = os.path.splitext(rel)[1].lower() or '(none)'
+    a_b, b_b = rb(OLD, rel), rb(NEW, rel)
+    if ext != '.html':
+        if rel == 'sitemap-pages.xml':
+            a_s, b_s = a_b.decode(), b_b.decode()
+            blk = re.compile(r'  <url>\n.*?\n  </url>\n?', re.S)
+            ab, bb = blk.findall(a_s), blk.findall(b_s)
+            loc = lambda s: re.search(r'<loc>(.*?)</loc>', s).group(1)
+            removed = [x for x in ab if x not in bb]
+            added = [x for x in bb if x not in ab]
+            kept_in_order = [x for x in ab if x in bb] == bb
+            recon = a_s
+            for r in removed:
+                recon = recon.replace(r, '', 1)
+            # blocks are joined with '\n'; removing a block that ends with '\n'
+            # removes its own separator, so reconstruction must match exactly
+            special['sitemap-pages.xml'] = {
+                'old_urls': [loc(x) for x in ab],
+                'new_urls': [loc(x) for x in bb],
+                'removed': [loc(x) for x in removed],
+                'removed_blocks': removed,
+                'added': [loc(x) for x in added],
+                'remaining_order_preserved': kept_in_order,
+                'new_equals_old_minus_removed_blocks': recon == b_s,
+            }
+            continue
+        if rel == 'sitemap-index.xml':
+            strip = lambda s: re.sub(rb'<lastmod>[^<]*</lastmod>', b'<lastmod/>', s)
+            special['sitemap-index.xml'] = {
+                'raw_equal': a_b == b_b,
+                'equal_after_lastmod_strip': strip(a_b) == strip(b_b),
+                'old_lastmods': sorted(set(re.findall(rb'<lastmod>([^<]*)</lastmod>', a_b))),
+                'new_lastmods': sorted(set(re.findall(rb'<lastmod>([^<]*)</lastmod>', b_b))),
+            }
+            special['sitemap-index.xml']['old_lastmods'] = [
+                x.decode() for x in special['sitemap-index.xml']['old_lastmods']
+            ]
+            special['sitemap-index.xml']['new_lastmods'] = [
+                x.decode() for x in special['sitemap-index.xml']['new_lastmods']
+            ]
+            continue
+        ext_counts.setdefault(ext, [0, 0])
+        if a_b == b_b:
+            nonhtml_ident.append(rel)
+            ext_counts[ext][0] += 1
+        else:
+            nonhtml_diff.append(rel)
+            ext_counts[ext][1] += 1
+        continue
+
+    # HTML
+    if a_b == b_b:
+        html_raw_ident.append(rel)
+        continue
+    a_s, b_s = a_b.decode('utf-8'), b_b.decode('utf-8')
+    na = len(UID_RE.findall(a_s))
+    nb = len(UID_RE.findall(b_s))
+    if na != nb:
+        uid_mismatch.append({'file': rel, 'old': na, 'new': nb})
+    a_n = UID_RE.sub(r'\1UID\3', a_s)
+    b_n = UID_RE.sub(r'\1UID\3', b_s)
+    if a_n == b_n:
+        html_uid_only.append({'file': rel, 'islands': na})
+        continue
+    html_diff.append(rel)
+    at, bt = TOK_RE.findall(a_n), TOK_RE.findall(b_n)
+    assert ''.join(at) == a_n and ''.join(bt) == b_n
+    sm = difflib.SequenceMatcher(None, at, bt, autojunk=False)
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == 'equal':
+            continue
+        a_toks, b_toks = at[i1:i2], bt[j1:j2]
+        cls, detail = classify(rel, tag, a_toks, b_toks)
+        h = {
+            'file': rel,
+            'op': tag,
+            'old': a_toks,
+            'new': b_toks,
+            'class': cls,
+            'detail': detail,
+        }
+        hunks.append(h)
+        if cls is None:
+            unclassified.append(h)
+        elif cls == 'a':
+            a_found.setdefault(rel, []).append(detail)
+        elif cls == 'b':
+            b_found.append(detail)
+        elif cls == 'c':
+            c_pages.append(rel)
+
+# Task 21 bookkeeping over ALL html (not only differing ones)
+html_tag_re = re.compile(r'<html\b[^>]*>', re.I)
+old_false, new_noclass, new_bad, smooth_old, smooth_new = [], [], [], [], []
+html_tag_kinds_new = {}
+for rel in common:
+    if not rel.endswith('.html'):
+        continue
+    a_s = rb(OLD, rel).decode('utf-8')
+    b_s = rb(NEW, rel).decode('utf-8')
+    ma, mb = html_tag_re.search(a_s), html_tag_re.search(b_s)
+    ta = ma.group(0) if ma else None
+    tb = mb.group(0) if mb else None
+    html_tag_kinds_new[tb] = html_tag_kinds_new.get(tb, 0) + 1
+    if ta and 'class="false"' in ta:
+        old_false.append(rel)
+    if tb and 'class=' not in tb and tb.startswith('<html lang='):
+        new_noclass.append(rel)
+    if tb and ('class=""' in tb or 'class="false"' in tb):
+        new_bad.append(rel)
+    if ta and 'class="scroll-smooth"' in ta:
+        smooth_old.append(rel)
+    if tb and 'class="scroll-smooth"' in tb:
+        smooth_new.append(rel)
+
+detail_pages = sorted(
+    r
+    for r in common
+    if re.fullmatch(r'(posts|tips)/[^/]+/index\.html', r)
+    and not re.fullmatch(r'(posts|tips)/\d+/index\.html', r)
+)
+
+res.update(
+    {
+        'common': len(common),
+        'nonhtml_identical': len(nonhtml_ident),
+        'nonhtml_different': nonhtml_diff,
+        'nonhtml_ext_counts_identical_different': ext_counts,
+        'special': special,
+        'html_total': sum(1 for r in common if r.endswith('.html')),
+        'html_raw_identical': len(html_raw_ident),
+        'html_uid_only': html_uid_only,
+        'html_with_diffs': len(html_diff),
+        'uid_count_mismatch': uid_mismatch,
+        'hunks_total': len(hunks),
+        'hunks_by_class': {
+            k: sum(1 for h in hunks if h['class'] == k) for k in ['a', 'b', 'c', None]
+        },
+        'a_found': a_found,
+        'a_expected': A_EXPECT,
+        'a_matches_expected': {k: sorted(v) for k, v in a_found.items()}
+        == {k: sorted(v) for k, v in A_EXPECT.items()},
+        'b_found': sorted(b_found),
+        'c_pages_count': len(c_pages),
+        'c_pages_unique': len(set(c_pages)),
+        'old_html_class_false': len(old_false),
+        'new_html_no_class': len(new_noclass),
+        'old_false_set_eq_c_pages': sorted(old_false) == sorted(c_pages),
+        'new_bad_class': new_bad,
+        'html_tag_kinds_new': html_tag_kinds_new,
+        'scroll_smooth_old': len(smooth_old),
+        'scroll_smooth_new': len(smooth_new),
+        'scroll_smooth_sets_equal': sorted(smooth_old) == sorted(smooth_new),
+        'detail_pages': len(detail_pages),
+        'scroll_smooth_eq_detail_pages': sorted(smooth_new) == detail_pages,
+        'unclassified': unclassified,
+        'non_c_hunks': [h for h in hunks if h['class'] != 'c'],
+    }
+)
+with open(OUT, 'w') as fh:
+    json.dump(res, fh, indent=1, ensure_ascii=False)
+
+s = dict(res)
+for k in ['non_c_hunks', 'html_uid_only']:
+    s[k] = len(s[k])
+s['special'] = {
+    'sitemap-pages.xml': {
+        k: v
+        for k, v in res['special'].get('sitemap-pages.xml', {}).items()
+        if k != 'removed_blocks'
+    },
+    'sitemap-index.xml': res['special'].get('sitemap-index.xml'),
+}
+print(json.dumps(s, indent=1, ensure_ascii=False))

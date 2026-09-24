@@ -1,0 +1,5 @@
+import { PNG } from 'pngjs'; import fs from 'node:fs';
+const a = PNG.sync.read(fs.readFileSync(process.argv[2]));
+const boxes = []; 
+for (let y = 0; y < a.height; y++) for (let x = 0; x < a.width; x++) { const i = (y*a.width+x)*4; if (a.data[i]===255 && a.data[i+1]===0 && a.data[i+2]===0) { let b = boxes.find(b => y <= b.y1+5 && y >= b.y0-5 && x >= b.x0-50 && x <= b.x1+50); if (!b) boxes.push(b={x0:x,x1:x,y0:y,y1:y,n:0}); b.x0=Math.min(b.x0,x);b.x1=Math.max(b.x1,x);b.y0=Math.min(b.y0,y);b.y1=Math.max(b.y1,y);b.n++; } }
+console.log(process.argv[2].split('/').pop(), JSON.stringify(boxes));

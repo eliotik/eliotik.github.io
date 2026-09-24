@@ -1,0 +1,8 @@
+2026-09-24T17:42:51-0400 dist/index.html
+1) file lists equal: True 362
+   raw-identical 356 uid-only 5 other ['sitemap-index.xml']
+2) posts/from-skeptic-to-champion/index.html raw == v3: True 44638c6879cc5324
+2) posts/octoprint-prusa-core-one-raspberry-pi/index.html raw == v3: True 9f10b77071e54dc2
+3) posts/flutter-google-maps-address-manipulation/index.html Task18-reverted == v3: True f51a4321da2372ea
+3) posts/flutter-google-maps-embedded-map/index.html Task18-reverted == v3: True 172c2c039ab81100
+3) posts/flutter-google-maps-static-map/index.html Task18-reverted == v3: True 387f0aec09a513f6

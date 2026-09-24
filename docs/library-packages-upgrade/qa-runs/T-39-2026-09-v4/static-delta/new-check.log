@@ -1,0 +1,13 @@
+
+> eliotik.github.io@0.0.1 astro /private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/p3v/static-delta-new
+> astro check
+
+17:47:22 [content] Syncing content
+17:47:22 [content] Synced content
+17:47:22 [types] Generated 803ms
+17:47:22 [check] Getting diagnostics for Astro files in /private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/p3v/static-delta-new...
+Result (77 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
