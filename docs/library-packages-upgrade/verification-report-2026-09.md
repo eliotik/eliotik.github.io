@@ -1,13 +1,45 @@
 # End-to-End Verification Report: September 2026 upgrade (T-39, Task 8)
 
-This file holds four runs of Task 8 (spec §5.2, final local verification):
+This file holds five runs of Task 8 (spec §5.2, final local verification):
 
-- **v4** (top) verifies `ab5c02d`, the tree after the Phase 3 fixes (Tasks 18-21). It is a delta verification against v3: it proves that the built site differs from `9eb1ec3` only by the intended changes, verifies each change directly, and carries v3's other results forward. It is the verification of record.
+- **v5** (top) verifies `81d6e77`, the trailing-slash URL fix (Task 22). It is a delta verification against v4 and is the verification of record.
+- **v4** verifies `ab5c02d`, the tree after the Phase 3 fixes (Tasks 18-21). It is a delta verification against v3: it proves that the built site differs from `9eb1ec3` only by the intended changes, verifies each change directly, and carries v3's other results forward.
 - **v3** verified `9eb1ec3`, after Tasks 17, 17b and 17c. It is kept unchanged as history, apart from its heading and one added line under its verdict.
 - **v2** verified `63efd08`, before Task 17. It is kept unchanged as history, apart from its heading and one added line under its verdict.
 - **v1** (bottom) verified `55a6530`, before Task 8b and Phase 2. It is kept unchanged as history, with one added line under its verdict.
 
 Section references (§) inside each part point to that part's own sections. v4 cites v3's sections as "v3 §n".
+
+---
+
+## v5 — trailing-slash delta (commit 81d6e77)
+
+**Date:** 2026-09-24. **Operator:** the Task 22 Opus QA gate (claude-opus-5-5), summarised by the controller. **Compared against:** `6d55212` (the v4-verified code tree `ab5c02d` plus the v4 report commit), built in a scratch worktree.
+
+**What changed (Task 22, `81d6e77`).**
+- Tag pages declared `/tags/<tag>` (no slash) as `canonical`, `og:url` and `twitter:url`, while the sitemap and GitHub Pages use `/tags/<tag>/`.
+- 121 internal links pointed at no-slash URLs, which 301 on GitHub Pages: breadcrumbs, posts/tag pagination, Thread post links, the home "All Posts" link, and 3 in-content links in `two-books-which-influenced-my-hiring-pipeline.md`.
+- The `/posts/1/` and `/tips/1/` redirect stubs targeted `/posts` and `/tips`.
+- Search result links (client-rendered) gain the slash as well.
+- Layout's default canonical now always ends in `/` for page paths.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Trailing-slash audit (canonical, og:url, twitter:url, meta-refresh target, internal hrefs) | PASS | Before, on `6d55212`: href 121, canonical 78, og:url 76, twitter:url 76, refresh 2. After: 0 of every kind. |
+| Whole-site diff vs `6d55212` | PASS | 362 files on both sides. CSS, images, robots.txt, rss.xml, the 5 urlset sitemaps and 12 of 13 JS files are byte-identical. The Search bundle differs by exactly one inserted `/` (renamed by its content hash). In HTML, every changed attribute is the old value plus `/`: a[href] 121, canonical 78, og:url 76, twitter:url 76, refresh 2. The stub `<title>`/`<code>` text shows the new target. Island uids differ with the build path only. There are no other differences. |
+| Canonical ↔ sitemap consistency | PASS | 112 indexable pages have 112 self-canonicals, equal as a set to the 112 urlset `<loc>` entries (0 in either difference); all end in `/` and map to `dist/<path>/index.html`. Before the fix, 68 tag canonicals did not match. |
+| Link integrity | PASS | All 2706 internal a/link hrefs across 130 HTML files resolve. None is unresolved, and no page link lacks the trailing slash. |
+| Runtime (Chrome 153, clean profile) | PASS | 21 ClientRouter click steps: breadcrumbs, tag and posts pagination, All Posts, a thread post link, and search typing plus result clicks. All were soft navigations to trailing-slash URLs with 200 and no redirect, islands hydrated, and there were 0 console or page errors. `/posts/1/` and `/tips/1/` refresh to `/posts/` and `/tips/`. |
+| Pixel diff vs `6d55212` | PASS | 18/18 full-page comparisons are 0 px: `/`, `/posts/`, `/posts/2/`, `/tags/`, `/tags/leadership/`, `/tags/leadership/2/`, 2 thread pages and `/search/?q=hiring`, each in light and dark. |
+| Gate | PASS | install `--frozen-lockfile`, astro check 0/0/0, lint, format:check and build all exit 0. The peer check shows only the baseline jampack→quicklink entry. |
+
+**Observations.**
+- Pre-existing, unchanged: Astro's redirect stubs have no `<link rel="icon">` and the site ships no `/favicon.ico`, so Chrome may log a `/favicon.ico` 404 before the 0-second refresh leaves a stub. Identical on `6d55212`.
+- One blog content file changed, as stated above: only 3 link targets, with 0 rendered pixels changed.
+
+**Carry-forward.** The diff above confirms that the only changes are URL attribute values plus one character in the Search bundle, so v4's (and through it v3's) results for rendering, islands, cross-browser behaviour, Partytown and the gate still hold.
+
+**Overall: PASS**
 
 ---
 
