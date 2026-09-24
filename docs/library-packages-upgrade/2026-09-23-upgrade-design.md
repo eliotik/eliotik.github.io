@@ -43,7 +43,7 @@
 | typescript | **6.0.x** (not 7.x) | `@typescript-eslint/*@8.70.1` (and its canary) peer `typescript <6.1.0`; `@astrojs/check@0.9.10` peers `^5 \|\| ^6`. No package in the stack requires TS 7. **Rule:** TypeScript tracks the highest version allowed by the tightest peer range. If any package later *requires* a newer TS, upgrade TS in the same commit; if typescript-eslint and @astrojs/check allow 7, move to 7. |
 | eslint-plugin-jsx-a11y | **replace** with `eslint-plugin-jsx-a11y-x` | 6.10.2 is the final release and peers `eslint ≤ 9`. `eslint-plugin-astro@3.2` supports `-x`, which peers `eslint ^9 \|\| ^10`. |
 | @types/github-slugger | **remove** | Deprecated; `github-slugger@2` ships `index.d.ts`. |
-| @astrojs/markdown-remark | **add** `^7.3` | Needed to keep remark plugins under Astro 7 (see §3.2). |
+| @astrojs/markdown-remark | **add** `7.3.1` (exact pin) | Needed to keep remark plugins under Astro 7 (see §3.2). |
 | Node | latest 22.x LTS | Stay on the 22 line (Astro 7 needs ≥22.12; eslint-plugin-astro 3 needs ≥22.22.3). |
 
 ### 2.2 Majors

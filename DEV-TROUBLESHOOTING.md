@@ -17,15 +17,15 @@ If you encounter errors like:
 Then run the clean cache script:
 ```bash
 # Option 1: Using npm script
-yarn clean
-yarn dev
+pnpm clean
+pnpm dev
 
 # Option 2: All-in-one command
-yarn fresh
+pnpm fresh
 
 # Option 3: Direct script
 ./clean-cache.sh
-yarn dev
+pnpm dev
 ```
 
 **Note**: The script will check if the dev server is running and warn you to stop it first.
@@ -45,7 +45,7 @@ yarn dev
 
 3. **Restart dev server**:
    ```bash
-   yarn dev
+   pnpm dev
    ```
 
 ### Nuclear Option
@@ -53,8 +53,8 @@ yarn dev
 If the above doesn't work:
 ```bash
 rm -rf node_modules/.vite .astro dist node_modules
-yarn install
-yarn dev
+pnpm install
+pnpm dev
 ```
 
 ## Why These Errors Happen
@@ -97,5 +97,5 @@ yarn dev
 ## Notes
 
 - These errors **only happen in development**
-- Production builds (`yarn build`) are **never affected**
+- Production builds (`pnpm build`) are **never affected**
 - The errors are annoying but harmless - they don't indicate bugs in your code
