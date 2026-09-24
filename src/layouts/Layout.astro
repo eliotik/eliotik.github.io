@@ -15,6 +15,7 @@ export interface Props {
     modDatetime?: Date | null;
     scrollSmooth?: boolean;
     noindex?: boolean;
+    notFound?: boolean;
 }
 
 const {
@@ -27,6 +28,7 @@ const {
     modDatetime,
     scrollSmooth = false,
     noindex = false,
+    notFound = false,
 } = Astro.props;
 
 const socialImageURL = new URL(
@@ -44,7 +46,7 @@ const socialImageURL = new URL(
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="canonical" href={canonicalURL} />
+        {!notFound && <link rel="canonical" href={canonicalURL} />}
         <meta name="generator" content={Astro.generator} />
 
         <!-- General Meta Tags -->
@@ -52,13 +54,15 @@ const socialImageURL = new URL(
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta name="author" content={author} />
-        {noindex && <meta name="robots" content="noindex,follow" />}
+        {(noindex || notFound) && (
+            <meta name="robots" content="noindex,follow" />
+        )}
         <link rel="sitemap" href="/sitemap-index.xml" />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:url" content={canonicalURL} />
+        {!notFound && <meta property="og:url" content={canonicalURL} />}
         <meta property="og:image" content={socialImageURL} />
 
         <!-- Article Published/Modified time -->
@@ -77,7 +81,7 @@ const socialImageURL = new URL(
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={canonicalURL} />
+        {!notFound && <meta property="twitter:url" content={canonicalURL} />}
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={socialImageURL} />
