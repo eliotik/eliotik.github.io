@@ -1,0 +1,31 @@
+// Sensitivity controls: prove the pipeline detects (a) collapsed inter-element whitespace (compressHTML 'jsx' failure mode)
+// and (b) a 1px layout shift, against the committed up-A screenshot.
+import { chromium } from 'playwright'; import fs from 'node:fs'; import { PNG } from 'pngjs'; import pixelmatch from 'pixelmatch';
+const R = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v2';
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const cases = [
+  ['none (re-capture, expect 0)', '07-tag-detail', '/tags/engineering-management/', () => 'noop'],
+  ['collapse whitespace text nodes between inline links in main (compressHTML jsx simulation)', '07-tag-detail', '/tags/engineering-management/', () => { let n = 0; const w = document.createTreeWalker(document.querySelector('main'), NodeFilter.SHOW_TEXT); const rm = []; while (w.nextNode()) { const t = w.currentNode; if (/^\s+$/.test(t.data) && t.previousSibling && t.nextSibling && t.previousSibling.nodeType === 1 && t.nextSibling.nodeType === 1 && getComputedStyle(t.parentElement).display !== 'flex' && getComputedStyle(t.parentElement).display !== 'grid') rm.push(t); } rm.forEach(t => { t.remove(); n++; }); return 'removed ' + n; }],
+  ['single NBSP inserted before one tag link', '07-tag-detail', '/tags/engineering-management/', () => { const a = [...document.querySelectorAll('main a')].find(x => /leadership/.test(x.textContent)); a.before(' '); return 'nbsp before ' + a.textContent.trim(); }],
+  ['1px margin-top on the header nav', '01-home', '/', () => { document.querySelector('nav').style.marginTop = '1px'; return 'nav +1px'; }],
+];
+const out = [];
+for (const [label, name, route, fn] of cases) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 1800 }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: 'light' });
+  await ctx.addInitScript(() => localStorage.setItem('theme', 'light'));
+  const page = await ctx.newPage();
+  await page.goto('http://localhost:4321' + route, { waitUntil: 'load' });
+  await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+  await page.evaluate(() => document.fonts.ready);
+  const r = await page.evaluate(fn);
+  await page.waitForTimeout(500);
+  const buf = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+  const a = PNG.sync.read(buf), b = PNG.sync.read(fs.readFileSync(`${R}/${name}.png`));
+  const pm = pixelmatch(a.data, b.data, null, 1280, 1800, { threshold: 0.1 });
+  let exact = 0; for (let i = 0; i < a.data.length; i += 4) if (a.data[i] !== b.data[i] || a.data[i+1] !== b.data[i+1] || a.data[i+2] !== b.data[i+2]) exact++;
+  out.push({ control: label, page: name, action: r, pm01: pm, pct: +(pm / (1280 * 1800) * 100).toFixed(4), exact });
+  console.log(label, '|', r, '| pm01', pm, (pm / (1280 * 1800) * 100).toFixed(4) + '%', 'exact', exact);
+  await ctx.close();
+}
+await browser.close();
+fs.writeFileSync('sensitivity.json', JSON.stringify(out, null, 1));

@@ -1,0 +1,3713 @@
+{
+  "base": "http://localhost:4321",
+  "mode": {
+    "route": true,
+    "instrument": false,
+    "probe": null,
+    "dwells": [
+      0.5,
+      3
+    ],
+    "repeats": 1,
+    "loops": 3
+  },
+  "consoleErrors": [],
+  "proxytownErrors": 0,
+  "pageErrors": [],
+  "abortedRequests": [
+    {
+      "run": "dwell=0.5s#1",
+      "t": 1790268085535,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268085425&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=106851472.1790268086&frm=0&ngs=1&pscdl=noa",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "t": 1790268099984,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268085425&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=106851472.1790268086&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268101252,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noa",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268110466,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268116748,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268122906,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268129140,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268135260,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268141391,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268147642,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=",
+      "method": "POST",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "resourceType": "fetch",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "gaRequests": [
+    {
+      "run": "dwell=0.5s#1",
+      "t": 1790268085427,
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270",
+      "kind": "gtag.js",
+      "status": 200,
+      "pageView": false,
+      "ptWorkerGen": 1,
+      "events": []
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "t": 1790268085526,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268085425&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=106851472.1790268086&frm=0&ngs=1&pscdl=noapi&rcb=2&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&_s=1&tag_exp=115616986~115938466~115938468~118897920~118897930~120213116~120385422~120469145~120469153&sid=1790268085&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F&dt=Novi%20Fyx&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=248",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost/",
+          "dt": "Novi Fyx",
+          "_s": "1",
+          "sid": "1790268085",
+          "sct": "1",
+          "seg": "0",
+          "_ss": "1",
+          "_fv": "1",
+          "_nsi": "1",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "106851472.1790268086"
+        }
+      ]
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "t": 1790268099983,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268085425&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=106851472.1790268086&frm=0&ngs=1&pscdl=noapi&rcb=2&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&_s=2&tag_exp=115616986~115938466~115938468~118897920~118897930~120213116~120385422~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2Ftags%2Fengineering-management%2F&dr=http%3A%2F%2Flocalhost%3A4321%2F&sid=1790268085&sct=1&seg=1&dt=Tag%3A%20engineering%20management%20%7C%20Novi%20Fyx&en=page_view&",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/tags/engineering-management/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/tags/engineering-management/",
+          "dt": "Tag: engineering management | Novi Fyx",
+          "dr": "http://localhost:4321/",
+          "_s": "2",
+          "sid": "1790268085",
+          "sct": "1",
+          "seg": "1",
+          "_et": "9431",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "106851472.1790268086"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268101131,
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "gtag.js",
+      "status": 200,
+      "pageView": false,
+      "ptWorkerGen": 1,
+      "events": []
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268101242,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&_s=1&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&sid=1790268101&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F&dt=Novi%20Fyx&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=277",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost/",
+          "dt": "Novi Fyx",
+          "_s": "1",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "0",
+          "_ss": "1",
+          "_fv": "1",
+          "_nsi": "1",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268110461,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2Fposts%2Foctoprint-prusa-core-one-raspberry-pi%2F&dr=http%3A%2F%2Flocalhost%3A4321%2F&sid=1790268101&sct=1&seg=1&dt=Setting%20up%20OctoPrint%20on%20a%20Raspberry%20Pi%204%",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "dt": "Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One | Novi Fyx",
+          "dr": "http://localhost:4321/",
+          "_s": "2",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "4192\r",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        },
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/search/",
+          "dt": "Search | Novi Fyx",
+          "dr": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "_s": "2",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3226",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268116747,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2Ftags%2F&dr=http%3A%2F%2Flocalhost%3A4321%2Fsearch%2F&sid=1790268101&sct=1&seg=1&dt=Tags%20%7C%20Novi%20Fyx&_s=3&tfd=15781",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/tags/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/tags/",
+          "dt": "Tags | Novi Fyx",
+          "dr": "http://localhost:4321/search/",
+          "_s": "3",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3047\r",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        },
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/tags/engineering-management/",
+          "dt": "Tag: engineering management | Novi Fyx",
+          "dr": "http://localhost:4321/tags/",
+          "_s": "3",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3053",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268122905,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2F&dr=http%3A%2F%2Flocalhost%3A4321%2Ftags%2Fengineering-management%2F&sid=1790268101&sct=1&seg=1&dt=Novi%20Fyx&_s=4&tfd=21939",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/",
+          "dt": "Novi Fyx",
+          "dr": "http://localhost:4321/tags/engineering-management/",
+          "_s": "4",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3070\r",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        },
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "dt": "Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One | Novi Fyx",
+          "dr": "http://localhost:4321/",
+          "_s": "4",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3052",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268129137,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2Fsearch%2F&dr=http%3A%2F%2Flocalhost%3A4321%2Fposts%2Foctoprint-prusa-core-one-raspberry-pi%2F&sid=1790268101&sct=1&seg=1&dt=Search%20%7C%20Novi%20Fyx&_s=5&tfd=28170",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/search/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/search/",
+          "dt": "Search | Novi Fyx",
+          "dr": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "_s": "5",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3157\r",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        },
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/tags/",
+          "dt": "Tags | Novi Fyx",
+          "dr": "http://localhost:4321/search/",
+          "_s": "5",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3036",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268135257,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2Ftags%2Fengineering-management%2F&dr=http%3A%2F%2Flocalhost%3A4321%2Ftags%2F&sid=1790268101&sct=1&seg=1&dt=Tag%3A%20engineering%20management%20%7C%20Novi%20Fyx&_s=6&tfd=34",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/tags/engineering-management/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/tags/engineering-management/",
+          "dt": "Tag: engineering management | Novi Fyx",
+          "dr": "http://localhost:4321/tags/",
+          "_s": "6",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3062\r",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        },
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/",
+          "dt": "Novi Fyx",
+          "dr": "http://localhost:4321/tags/engineering-management/",
+          "_s": "6",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3047",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268141390,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2Fposts%2Foctoprint-prusa-core-one-raspberry-pi%2F&dr=http%3A%2F%2Flocalhost%3A4321%2F&sid=1790268101&sct=1&seg=1&dt=Setting%20up%20OctoPrint%20on%20a%20Raspberry%20Pi%204%",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "dt": "Setting up OctoPrint on a Raspberry Pi 4 for the Prusa CORE One | Novi Fyx",
+          "dr": "http://localhost:4321/",
+          "_s": "7",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3073\r",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        },
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/search/",
+          "dt": "Search | Novi Fyx",
+          "dr": "http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/",
+          "_s": "7",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3187",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    },
+    {
+      "run": "dwell=3s#1",
+      "t": 1790268147637,
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1280x900&uaa=arm&uab=64&uafvl=Google%2520Chrome%3B153.0.8010.53%7CNot_A%2520Brand%3B8.0.0.0%7CChromium%3B153.0.8010.53&uam=&uamb=0&uap=macOS&uapv=26.6.2&uaw=0&ul=en-us&tag_exp=115616985~115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&dl=http%3A%2F%2Flocalhost%3A4321%2Ftags%2F&dr=http%3A%2F%2Flocalhost%3A4321%2Fsearch%2F&sid=1790268101&sct=1&seg=1&dt=Tags%20%7C%20Novi%20Fyx&_s=8&tfd=46667",
+      "from": "frame:http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958",
+      "kind": "hit",
+      "status": "failed:net::ERR_ABORTED",
+      "pageView": true,
+      "ptWorkerGen": 1,
+      "dl": "http://localhost:4321/tags/",
+      "events": [
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/tags/",
+          "dt": "Tags | Novi Fyx",
+          "dr": "http://localhost:4321/search/",
+          "_s": "8",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3017\r",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        },
+        {
+          "en": "page_view",
+          "dl": "http://localhost:4321/tags/engineering-management/",
+          "dt": "Tag: engineering management | Novi Fyx",
+          "dr": "http://localhost:4321/tags/",
+          "_s": "8",
+          "sid": "1790268101",
+          "sct": "1",
+          "seg": "1",
+          "_et": "3076",
+          "tid": "G-QQMCTBW5TH",
+          "cid": "904855182.1790268101"
+        }
+      ]
+    }
+  ],
+  "perNavigation": [
+    {
+      "run": "dwell=0.5s#1",
+      "step": "full-load /",
+      "t": 1790268085227,
+      "sandboxReady": true,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268085425&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=106851472.1790268086&frm=0&ngs=1&pscdl=noa"
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost/|dt=Novi Fyx|_s=1"
+            ]
+          }
+        ],
+        "gtagJsLoads": 1,
+        "workersCreated": [
+          "1:blob:/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "workersClosed": [],
+        "frames": [
+          "attached:",
+          "navigated:/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ]
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "home->post",
+      "t": 1790268086058,
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "expectedPath": true,
+      "tLoaded": 1790268086235,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "post->search",
+      "t": 1790268086748,
+      "href": "/search/",
+      "path": "/search/",
+      "expectedPath": true,
+      "tLoaded": 1790268086874,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/search/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "search->tags",
+      "t": 1790268087378,
+      "href": "/tags/",
+      "path": "/tags/",
+      "expectedPath": true,
+      "tLoaded": 1790268087445,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "tags->tag",
+      "t": 1790268087955,
+      "href": "/tags/engineering-management/",
+      "path": "/tags/engineering-management/",
+      "expectedPath": true,
+      "tLoaded": 1790268088024,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "tag->home",
+      "t": 1790268088534,
+      "href": "/",
+      "path": "/",
+      "expectedPath": true,
+      "tLoaded": 1790268088607,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "home->post",
+      "t": 1790268089111,
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "expectedPath": true,
+      "tLoaded": 1790268089234,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "post->search",
+      "t": 1790268089738,
+      "href": "/search/",
+      "path": "/search/",
+      "expectedPath": true,
+      "tLoaded": 1790268089824,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/search/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "search->tags",
+      "t": 1790268090329,
+      "href": "/tags/",
+      "path": "/tags/",
+      "expectedPath": true,
+      "tLoaded": 1790268090391,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "tags->tag",
+      "t": 1790268090902,
+      "href": "/tags/engineering-management/",
+      "path": "/tags/engineering-management/",
+      "expectedPath": true,
+      "tLoaded": 1790268090973,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "tag->home",
+      "t": 1790268091485,
+      "href": "/",
+      "path": "/",
+      "expectedPath": true,
+      "tLoaded": 1790268091559,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "home->post",
+      "t": 1790268092063,
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "expectedPath": true,
+      "tLoaded": 1790268092182,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "post->search",
+      "t": 1790268092691,
+      "href": "/search/",
+      "path": "/search/",
+      "expectedPath": true,
+      "tLoaded": 1790268092793,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/search/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "search->tags",
+      "t": 1790268093299,
+      "href": "/tags/",
+      "path": "/tags/",
+      "expectedPath": true,
+      "tLoaded": 1790268093357,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "tags->tag",
+      "t": 1790268093861,
+      "href": "/tags/engineering-management/",
+      "path": "/tags/engineering-management/",
+      "expectedPath": true,
+      "tLoaded": 1790268093941,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=0.5s#1",
+      "step": "settle",
+      "t": 1790268094446,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "q28ag80bqp",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268085270,
+        "liveWorkers": [
+          "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268085425&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=106851472.1790268086&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/tags/engineering-management/|dt=Tag: engineering management | Novi Fyx|_s=2"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "full-load /",
+      "t": 1790268100894,
+      "sandboxReady": true,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=904855182.1790268101&frm=0&ngs=1&pscdl=noa"
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost/|dt=Novi Fyx|_s=1"
+            ]
+          }
+        ],
+        "gtagJsLoads": 1,
+        "workersCreated": [
+          "1:blob:/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "workersClosed": [],
+        "frames": [
+          "attached:",
+          "navigated:/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ]
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "home->post",
+      "t": 1790268104330,
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "expectedPath": true,
+      "tLoaded": 1790268104526,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "post->search",
+      "t": 1790268107532,
+      "href": "/search/",
+      "path": "/search/",
+      "expectedPath": true,
+      "tLoaded": 1790268107650,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/search/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/|dt=Setting up OctoPrint on a Raspberry Pi 4|_s=2",
+              "page_view|dl=http://localhost:4321/search/|dt=Search | Novi Fyx|_s=2"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "search->tags",
+      "t": 1790268110660,
+      "href": "/tags/",
+      "path": "/tags/",
+      "expectedPath": true,
+      "tLoaded": 1790268110732,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "tags->tag",
+      "t": 1790268113737,
+      "href": "/tags/engineering-management/",
+      "path": "/tags/engineering-management/",
+      "expectedPath": true,
+      "tLoaded": 1790268113798,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/tags/|dt=Tags | Novi Fyx|_s=3",
+              "page_view|dl=http://localhost:4321/tags/engineering-management/|dt=Tag: engineering management | Novi Fyx|_s=3"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "tag->home",
+      "t": 1790268116800,
+      "href": "/",
+      "path": "/",
+      "expectedPath": true,
+      "tLoaded": 1790268116865,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "home->post",
+      "t": 1790268119876,
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "expectedPath": true,
+      "tLoaded": 1790268120005,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/|dt=Novi Fyx|_s=4",
+              "page_view|dl=http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/|dt=Setting up OctoPrint on a Raspberry Pi 4|_s=4"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "post->search",
+      "t": 1790268123010,
+      "href": "/search/",
+      "path": "/search/",
+      "expectedPath": true,
+      "tLoaded": 1790268123098,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/search/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "search->tags",
+      "t": 1790268126102,
+      "href": "/tags/",
+      "path": "/tags/",
+      "expectedPath": true,
+      "tLoaded": 1790268126164,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/search/|dt=Search | Novi Fyx|_s=5",
+              "page_view|dl=http://localhost:4321/tags/|dt=Tags | Novi Fyx|_s=5"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "tags->tag",
+      "t": 1790268129168,
+      "href": "/tags/engineering-management/",
+      "path": "/tags/engineering-management/",
+      "expectedPath": true,
+      "tLoaded": 1790268129234,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "tag->home",
+      "t": 1790268132238,
+      "href": "/",
+      "path": "/",
+      "expectedPath": true,
+      "tLoaded": 1790268132297,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/tags/engineering-management/|dt=Tag: engineering management | Novi Fyx|_s=6",
+              "page_view|dl=http://localhost:4321/|dt=Novi Fyx|_s=6"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "home->post",
+      "t": 1790268135305,
+      "href": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+      "expectedPath": true,
+      "tLoaded": 1790268135437,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "post->search",
+      "t": 1790268138443,
+      "href": "/search/",
+      "path": "/search/",
+      "expectedPath": true,
+      "tLoaded": 1790268138550,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/search/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/posts/octoprint-prusa-core-one-raspberry-pi/|dt=Setting up OctoPrint on a Raspberry Pi 4|_s=7",
+              "page_view|dl=http://localhost:4321/search/|dt=Search | Novi Fyx|_s=7"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "search->tags",
+      "t": 1790268141552,
+      "href": "/tags/",
+      "path": "/tags/",
+      "expectedPath": true,
+      "tLoaded": 1790268141614,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "tags->tag",
+      "t": 1790268144618,
+      "href": "/tags/engineering-management/",
+      "path": "/tags/engineering-management/",
+      "expectedPath": true,
+      "tLoaded": 1790268144680,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "softNavigation": true,
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [
+          "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-QQMCTBW5TH&gtm=45je69m1v9227439996za200zd9227439996xf1&_p=1790268101130&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AEAAAAQ&ae=a&cid=904855182.1790268101&frm="
+        ],
+        "gaHits": [
+          {
+            "ptWorkerGen": 1,
+            "status": "failed:net::ERR_ABORTED",
+            "events": [
+              "page_view|dl=http://localhost:4321/tags/|dt=Tags | Novi Fyx|_s=8",
+              "page_view|dl=http://localhost:4321/tags/engineering-management/|dt=Tag: engineering management | Novi Fyx|_s=8"
+            ]
+          }
+        ],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    },
+    {
+      "run": "dwell=3s#1",
+      "step": "settle",
+      "t": 1790268147682,
+      "snapshot": {
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "token": "vc5o4yyy98",
+        "iframeLoads": 1,
+        "pushStateSets": 0,
+        "path": "/tags/engineering-management/",
+        "pttab": 1790268100958,
+        "liveWorkers": [
+          "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854"
+        ],
+        "liveFrames": [
+          "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+        ],
+        "serviceWorkers": [
+          "http://localhost:4321/~partytown/partytown-sw.js"
+        ],
+        "proxytownPending": 0
+      },
+      "window": {
+        "proxytownErrors": 0,
+        "otherConsoleErrors": [],
+        "abortedRequests": [],
+        "gaHits": [],
+        "gtagJsLoads": 0,
+        "workersCreated": [],
+        "workersClosed": [],
+        "frames": []
+      }
+    }
+  ],
+  "perRun": [
+    {
+      "run": "dwell=0.5s#1",
+      "proxytownErrors": 0,
+      "otherConsoleErrors": 0,
+      "initialPageViews": 1,
+      "softNavPageViewEvents": 1,
+      "pageViewsTotal": 2,
+      "gtagServed": 1,
+      "routeHits": 3,
+      "requestEventsGoogle": 3,
+      "proxytown": {
+        "requests": 139,
+        "failed": 0
+      },
+      "partytownWorkersCreated": 1,
+      "partytownWorkersClosed": 1,
+      "proxytownPendingAtEnd": 0,
+      "domCounters": [],
+      "sandboxLoads": 1,
+      "pushStateRewraps": 0,
+      "serviceWorkers": [
+        {
+          "t": 1790268085262,
+          "url": "http://localhost:4321/~partytown/partytown-sw.js"
+        }
+      ],
+      "harnessLeaks": 0,
+      "softNavs": 14,
+      "softNavsWithSandboxReload": 0,
+      "durationMs": 15713
+    },
+    {
+      "run": "dwell=3s#1",
+      "proxytownErrors": 0,
+      "otherConsoleErrors": 0,
+      "initialPageViews": 1,
+      "softNavPageViewEvents": 14,
+      "pageViewsTotal": 8,
+      "gtagServed": 1,
+      "routeHits": 9,
+      "requestEventsGoogle": 9,
+      "proxytown": {
+        "requests": 326,
+        "failed": 0
+      },
+      "partytownWorkersCreated": 1,
+      "partytownWorkersClosed": 1,
+      "proxytownPendingAtEnd": 0,
+      "domCounters": [],
+      "sandboxLoads": 1,
+      "pushStateRewraps": 0,
+      "serviceWorkers": [
+        {
+          "t": 1790268100937,
+          "url": "http://localhost:4321/~partytown/partytown-sw.js"
+        }
+      ],
+      "harnessLeaks": 0,
+      "softNavs": 14,
+      "softNavsWithSandboxReload": 0,
+      "durationMs": 53155
+    }
+  ],
+  "pageEventsByRun": {
+    "dwell=0.5s#1": [
+      {
+        "t": 1790268085270.8,
+        "type": "mo-sandbox-added",
+        "path": "/",
+        "via": "IFRAME",
+        "to": "HTML"
+      },
+      {
+        "t": 1790268085276.6,
+        "type": "sandbox-load",
+        "path": "/",
+        "loads": 1,
+        "cw": 1,
+        "parent": "HTML",
+        "src": "/~partytown/partytown-sandbox-sw.html?1790268085270"
+      },
+      {
+        "t": 1790268085414.7,
+        "type": "astro:page-load",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 2,
+        "ptScriptsDone": 0
+      },
+      {
+        "t": 1790268086092.8,
+        "type": "astro:before-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268086122.7,
+        "type": "astro:after-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268086124.6,
+        "type": "astro:before-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268086128.5,
+        "type": "astro:after-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268086223.9,
+        "type": "astro:page-load",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268086800.6,
+        "type": "astro:before-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268086811.9,
+        "type": "astro:after-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268086831,
+        "type": "astro:before-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268086852.6,
+        "type": "astro:after-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268086854.6,
+        "type": "astro:page-load",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268087391.8,
+        "type": "astro:before-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268087408.8,
+        "type": "astro:after-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268087424.4,
+        "type": "astro:before-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268087425.8,
+        "type": "astro:after-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268087428.9,
+        "type": "astro:page-load",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268087977.5,
+        "type": "astro:before-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268087991.7,
+        "type": "astro:after-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268088007.5,
+        "type": "astro:before-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268088012.9,
+        "type": "astro:after-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268088014.9,
+        "type": "astro:page-load",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268088561.4,
+        "type": "astro:before-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268088575.6,
+        "type": "astro:after-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268088591.2,
+        "type": "astro:before-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268088593.4,
+        "type": "astro:after-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268088594.3,
+        "type": "astro:page-load",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089125.2,
+        "type": "astro:before-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089143.3,
+        "type": "astro:after-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089158.3,
+        "type": "astro:before-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268089161.9,
+        "type": "astro:after-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089177.7,
+        "type": "astro:page-load",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089774,
+        "type": "astro:before-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089782.7,
+        "type": "astro:after-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089795.5,
+        "type": "astro:before-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268089813.7,
+        "type": "astro:after-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268089814.8,
+        "type": "astro:page-load",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090342.4,
+        "type": "astro:before-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090364.7,
+        "type": "astro:after-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090375.2,
+        "type": "astro:before-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268090377.1,
+        "type": "astro:after-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090380.9,
+        "type": "astro:page-load",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090928.3,
+        "type": "astro:before-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090942.4,
+        "type": "astro:after-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090958.4,
+        "type": "astro:before-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268090964,
+        "type": "astro:after-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268090965.7,
+        "type": "astro:page-load",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268091510.3,
+        "type": "astro:before-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268091526,
+        "type": "astro:after-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268091541.3,
+        "type": "astro:before-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268091543.7,
+        "type": "astro:after-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268091545.3,
+        "type": "astro:page-load",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092074.7,
+        "type": "astro:before-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092093.4,
+        "type": "astro:after-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092107.8,
+        "type": "astro:before-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268092111.6,
+        "type": "astro:after-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092124.1,
+        "type": "astro:page-load",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092733.3,
+        "type": "astro:before-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092746.5,
+        "type": "astro:after-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092764.6,
+        "type": "astro:before-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268092786,
+        "type": "astro:after-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268092787.1,
+        "type": "astro:page-load",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093308.1,
+        "type": "astro:before-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093325.6,
+        "type": "astro:after-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093342,
+        "type": "astro:before-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268093344.1,
+        "type": "astro:after-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093347.8,
+        "type": "astro:page-load",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093892.7,
+        "type": "astro:before-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093908,
+        "type": "astro:after-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093924.2,
+        "type": "astro:before-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268093928.7,
+        "type": "astro:after-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268093930.1,
+        "type": "astro:page-load",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      }
+    ],
+    "dwell=3s#1": [
+      {
+        "t": 1790268100958.7,
+        "type": "mo-sandbox-added",
+        "path": "/",
+        "via": "IFRAME",
+        "to": "HTML"
+      },
+      {
+        "t": 1790268100963.5,
+        "type": "sandbox-load",
+        "path": "/",
+        "loads": 1,
+        "cw": 1,
+        "parent": "HTML",
+        "src": "/~partytown/partytown-sandbox-sw.html?1790268100958"
+      },
+      {
+        "t": 1790268101112.7,
+        "type": "astro:page-load",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 2,
+        "ptScriptsDone": 0
+      },
+      {
+        "t": 1790268104369.4,
+        "type": "astro:before-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268104402.5999,
+        "type": "astro:after-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268104416.2,
+        "type": "astro:before-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268104420.8,
+        "type": "astro:after-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268104487.7,
+        "type": "astro:page-load",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268107573.7,
+        "type": "astro:before-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268107582.7,
+        "type": "astro:after-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268107606.2,
+        "type": "astro:before-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268107629.5999,
+        "type": "astro:after-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268107631.9,
+        "type": "astro:page-load",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268110685.2,
+        "type": "astro:before-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268110705.5,
+        "type": "astro:after-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268110714.8,
+        "type": "astro:before-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268110716.3,
+        "type": "astro:after-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268110720,
+        "type": "astro:page-load",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268113749.5999,
+        "type": "astro:before-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268113765.5,
+        "type": "astro:after-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268113782.0999,
+        "type": "astro:before-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268113787.5,
+        "type": "astro:after-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268113789.5,
+        "type": "astro:page-load",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268116816.3,
+        "type": "astro:before-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268116832.8,
+        "type": "astro:after-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268116848.0999,
+        "type": "astro:before-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268116850.4,
+        "type": "astro:after-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268116851.3,
+        "type": "astro:page-load",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268119900,
+        "type": "astro:before-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268119919.7,
+        "type": "astro:after-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268119932,
+        "type": "astro:before-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268119935.8,
+        "type": "astro:after-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268119952.4,
+        "type": "astro:page-load",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268123046.7,
+        "type": "astro:before-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268123058.2,
+        "type": "astro:after-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268123069.8,
+        "type": "astro:before-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268123089.9,
+        "type": "astro:after-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268123091.0999,
+        "type": "astro:page-load",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268126115.5999,
+        "type": "astro:before-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268126130.4,
+        "type": "astro:after-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268126146.5,
+        "type": "astro:before-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268126147.5999,
+        "type": "astro:after-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268126150.4,
+        "type": "astro:page-load",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268129181,
+        "type": "astro:before-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268129197.4,
+        "type": "astro:after-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268129213.9,
+        "type": "astro:before-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268129218.3,
+        "type": "astro:after-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268129219.7,
+        "type": "astro:page-load",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268132247.5,
+        "type": "astro:before-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268132264.9,
+        "type": "astro:after-preparation",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268132280.2,
+        "type": "astro:before-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268132282.5,
+        "type": "astro:after-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268132283.5,
+        "type": "astro:page-load",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268135331.5,
+        "type": "astro:before-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268135351.0999,
+        "type": "astro:after-preparation",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268135363.8,
+        "type": "astro:before-swap",
+        "path": "/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268135367.9,
+        "type": "astro:after-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268135382.5999,
+        "type": "astro:page-load",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268138488.5999,
+        "type": "astro:before-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268138499.8,
+        "type": "astro:after-preparation",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268138520.4,
+        "type": "astro:before-swap",
+        "path": "/posts/octoprint-prusa-core-one-raspberry-pi/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268138541.9,
+        "type": "astro:after-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268138543.0999,
+        "type": "astro:page-load",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268141564.3,
+        "type": "astro:before-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268141580.2,
+        "type": "astro:after-preparation",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268141596.2,
+        "type": "astro:before-swap",
+        "path": "/search/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268141597.5,
+        "type": "astro:after-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268141600.2,
+        "type": "astro:page-load",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268144631,
+        "type": "astro:before-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268144647,
+        "type": "astro:after-preparation",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268144663.4,
+        "type": "astro:before-swap",
+        "path": "/tags/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2,
+        "newDocHasSandbox": false
+      },
+      {
+        "t": 1790268144667.5,
+        "type": "astro:after-swap",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      },
+      {
+        "t": 1790268144668.7,
+        "type": "astro:page-load",
+        "path": "/tags/engineering-management/",
+        "sandboxInDom": true,
+        "sandboxParent": "HTML",
+        "cw": 1,
+        "iframes": 1,
+        "ptScripts": 0,
+        "ptScriptsDone": 2
+      }
+    ]
+  },
+  "workersByRun": {
+    "dwell=0.5s#1": [
+      {
+        "t": 1790268085278,
+        "url": "blob:http://localhost:4321/c78be20b-0428-42a3-9c12-9e51f9c2ae36",
+        "gen": 1,
+        "closed": 1790268100477
+      }
+    ],
+    "dwell=3s#1": [
+      {
+        "t": 1790268100965,
+        "url": "blob:http://localhost:4321/5399a418-aaa5-4db3-9e29-de661415a854",
+        "gen": 1,
+        "closed": 1790268153695
+      }
+    ]
+  },
+  "framesByRun": {
+    "dwell=0.5s#1": [
+      {
+        "t": 1790268085270,
+        "ev": "attached",
+        "url": ""
+      },
+      {
+        "t": 1790268085274,
+        "ev": "navigated",
+        "url": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268085270"
+      }
+    ],
+    "dwell=3s#1": [
+      {
+        "t": 1790268100958,
+        "ev": "attached",
+        "url": ""
+      },
+      {
+        "t": 1790268100961,
+        "ev": "navigated",
+        "url": "http://localhost:4321/~partytown/partytown-sandbox-sw.html?1790268100958"
+      }
+    ]
+  },
+  "consoleOther": [],
+  "harnessLeaks": [],
+  "badNavigations": [],
+  "deadAnalyticsRuns": [],
+  "verdict": {
+    "proxytownErrors": 0,
+    "softNavigations": 28,
+    "softNavsWithSandboxReload": 0,
+    "strict": true,
+    "otherConsoleErrors": 0,
+    "pageErrors": 0,
+    "vacuousOrLeaky": false,
+    "exitCode": 0
+  }
+}

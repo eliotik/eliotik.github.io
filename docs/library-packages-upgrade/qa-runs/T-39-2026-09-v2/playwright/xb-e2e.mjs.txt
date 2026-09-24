@@ -1,0 +1,451 @@
+/* eslint-disable */
+// QA harness (T-39 Task 8 v2, lane playwright-e2e); not site code. Archived with a .txt suffix so the repo gate
+// (`eslint .`, `astro check`) never picks it up. To run: copy to a scratch dir as .mjs next to node_modules/playwright.
+// T-39 Task 8 v2 lane playwright-e2e, P9: cross-browser smoke in Playwright WebKit / Firefox (Playwright 1.44.1,
+// browsers from the local cache ~/Library/Caches/ms-playwright; nothing downloaded).
+// usage: node xb-e2e.mjs <webkit|firefox|chromium> <baseURL> <out.json>
+// Analytics safety: the browser uses a local CONNECT proxy (localhost bypassed). The proxy REFUSES (403) the GA
+// collect hosts (google-analytics.com, analytics.google.com, doubleclick.net, www.google.com) and tunnels every other
+// host to the real internet, so the real gtag.js (googletagmanager.com) and Google Fonts load but no hit reaches GA.
+// No request interception (context.route) is used.
+import fs from 'node:fs';
+import http from 'node:http';
+import net from 'node:net';
+import pw from 'playwright';
+
+const [engine, baseArg, out] = process.argv.slice(2);
+const BASE = baseArg.replace(/\/$/, '');
+const BLOCK_HOST_RE = /(^|\.)(google-analytics\.com|analytics\.google\.com|doubleclick\.net|www\.google\.com)$/i;
+const BLOCK_URL_RE = /https?:\/\/([a-z0-9-]+\.)*(google-analytics\.com|analytics\.google\.com|doubleclick\.net|google\.com)\//i;
+const SANDBOX_RE = /\/~partytown\/partytown-sandbox-sw\.html/;
+const GTAG_RE = /^https:\/\/www\.googletagmanager\.com\/gtag\/js/;
+const CAR = '[aria-roledescription="carousel"]';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const R = { engine, base: BASE, checks: [], console: [], pageErrors: [], requestFailed: [], proxy: { blocked: [], tunnels: {}, httpRefused: [], tunnelErrors: [] }, details: {} };
+let LABEL = 'init';
+const check = (id, name, pass, evidence) => {
+    R.checks.push({ id: `P9.${engine}.${id}`, name, pass: !!pass, evidence });
+    console.log(`${pass ? 'PASS' : 'FAIL'} P9.${engine}.${id} — ${name}`);
+};
+
+// ---- egress proxy ----
+const proxy = http.createServer((req, res) => {
+    R.proxy.httpRefused.push(`${req.method} ${req.url.slice(0, 120)}`);
+    res.writeHead(403);
+    res.end();
+});
+proxy.on('connect', (req, sock, head) => {
+    const [host, port] = req.url.split(':');
+    if (BLOCK_HOST_RE.test(host)) {
+        R.proxy.blocked.push(host);
+        sock.end('HTTP/1.1 403 Forbidden\r\n\r\n');
+        return;
+    }
+    R.proxy.tunnels[host] = (R.proxy.tunnels[host] || 0) + 1;
+    const up = net.connect(Number(port || 443), host, () => {
+        sock.write('HTTP/1.1 200 Connection Established\r\n\r\n');
+        if (head && head.length) up.write(head);
+        up.pipe(sock);
+        sock.pipe(up);
+    });
+    up.on('error', e => {
+        R.proxy.tunnelErrors.push(`${host}: ${e.code || e.message}`);
+        sock.destroy();
+    });
+    sock.on('error', () => up.destroy());
+});
+await new Promise(r => proxy.listen(0, '127.0.0.1', r));
+
+const browser = await pw[engine].launch({ headless: true, proxy: { server: `http://127.0.0.1:${proxy.address().port}`, bypass: 'localhost,127.0.0.1,[::1]' } });
+R.browserVersion = browser.version();
+R.playwrightVersion = JSON.parse(fs.readFileSync(new URL('./node_modules/playwright/package.json', import.meta.url))).version;
+console.log(`${engine} ${R.browserVersion} (playwright ${R.playwrightVersion})`);
+
+function instrument(ctx, page, cname) {
+    page.on('console', m => {
+        const t = m.type();
+        if (t === 'error' || t === 'warning') R.console.push({ ctx: cname, src: 'page', label: LABEL, type: t, text: m.text().slice(0, 400), loc: (m.location() && m.location().url) || '' });
+    });
+    page.on('worker', w => {
+        R.workerConsoleHooked = (R.workerConsoleHooked || 0) + 1;
+        try {
+            w.on('console', m => {
+                const t = m.type();
+                if (t === 'error' || t === 'warning') R.console.push({ ctx: cname, src: 'worker', label: LABEL, type: t, text: m.text().slice(0, 400), loc: (m.location() && m.location().url) || '', worker: w.url() });
+            });
+        } catch (e) {
+            R.workerConsoleUnsupported = String(e).slice(0, 200);
+        }
+    });
+    page.on('pageerror', e => R.pageErrors.push({ ctx: cname, label: LABEL, text: String(e).slice(0, 400) }));
+    ctx.on('requestfailed', r => R.requestFailed.push({ ctx: cname, label: LABEL, url: r.url().slice(0, 160), err: r.failure() && r.failure().errorText }));
+}
+
+function ptInitScript() {
+    if (window.top !== window) return;
+    const S = (window.__pt = { token: Math.random().toString(36).slice(2), iframeLoads: 0, added: 0, removed: 0, pageLoads: 0 });
+    const isSb = n => n && n.nodeType === 1 && n.tagName === 'IFRAME' && /\/~partytown\//.test(n.getAttribute('src') || '');
+    new MutationObserver(ms => {
+        for (const m of ms) {
+            for (const n of m.addedNodes) {
+                const f = isSb(n) ? n : n.querySelector && n.querySelector('iframe[src*="/~partytown/"]');
+                if (f) {
+                    S.added++;
+                    if (!f.__ptl) {
+                        f.__ptl = 1;
+                        f.addEventListener('load', () => S.iframeLoads++);
+                    }
+                }
+            }
+            for (const n of m.removedNodes) if (isSb(n) || (n.querySelector && n.querySelector('iframe[src*="/~partytown/"]'))) S.removed++;
+        }
+    }).observe(document, { childList: true, subtree: true });
+    document.addEventListener('astro:page-load', () => S.pageLoads++);
+}
+const snap = page =>
+    page.evaluate(() => {
+        const f = [...document.querySelectorAll('iframe')].filter(x => /partytown-sandbox-sw\.html/.test(x.getAttribute('src') || ''));
+        const ids = window.__ptIds;
+        const s1 = document.querySelector('script[data-astro-transition-persist="gtag-src"]');
+        return {
+            path: location.pathname,
+            token: window.__pt.token,
+            pageLoads: window.__pt.pageLoads,
+            sandboxCount: f.length,
+            sandboxParent: f[0] && f[0].parentNode ? f[0].parentNode.nodeName : null,
+            iframeSame: ids ? !!f[0] && ids.get(f[0]) === 'iframe' : null,
+            gtagSrcSame: ids ? !!s1 && ids.get(s1) === 'gtag-src' : null,
+            ptPending: document.querySelectorAll('script[type="text/partytown"]').length,
+            iframeLoads: window.__pt.iframeLoads,
+            sbAdded: window.__pt.added,
+            sbRemoved: window.__pt.removed,
+            ssrIslands: document.querySelectorAll('astro-island[ssr]').length,
+            islands: document.querySelectorAll('astro-island').length,
+        };
+    });
+
+// ---- carousel helpers ----
+const carState = (page, i) =>
+    page.evaluate(
+        ({ i, CAR }) => {
+            const sc = document.querySelectorAll(CAR)[i];
+            const root = sc.parentElement;
+            const prev = root.querySelector('button[aria-label="Previous slide"]');
+            const next = root.querySelector('button[aria-label="Next slide"]');
+            const slides = [...sc.querySelectorAll('[aria-roledescription="slide"]')];
+            return {
+                scrollLeft: sc.scrollLeft,
+                clientWidth: sc.clientWidth,
+                maxScroll: sc.scrollWidth - sc.clientWidth,
+                prevDisabled: prev ? prev.disabled : null,
+                nextDisabled: next ? next.disabled : null,
+                N: slides.length,
+                labels: slides.map(s => s.getAttribute('aria-label')),
+                imgs: slides.map(s => {
+                    const im = s.querySelector('img');
+                    return im ? { complete: im.complete, nw: im.naturalWidth } : null;
+                }),
+            };
+        },
+        { i, CAR }
+    );
+const settle = (page, i, from) =>
+    page.evaluate(
+        async ({ i, CAR, from }) => {
+            const sc = document.querySelectorAll(CAR)[i];
+            const t0 = performance.now();
+            while (performance.now() - t0 < 2500 && Math.abs(sc.scrollLeft - from) < 0.5) await new Promise(r => setTimeout(r, 20));
+            let last = sc.scrollLeft;
+            let stable = 0;
+            while (performance.now() - t0 < 8000) {
+                await new Promise(r => setTimeout(r, 50));
+                if (Math.abs(sc.scrollLeft - last) < 0.01) {
+                    if (++stable >= 8) break;
+                } else {
+                    stable = 0;
+                    last = sc.scrollLeft;
+                }
+            }
+            return sc.scrollLeft;
+        },
+        { i, CAR, from }
+    );
+async function prepCarousel(page, i) {
+    const sc = page.locator(CAR).nth(i);
+    await sc.scrollIntoViewIfNeeded();
+    await page.waitForFunction(({ i, CAR }) => { const s = document.querySelectorAll(CAR)[i]; return s.querySelectorAll('[aria-roledescription="slide"]').length <= 1 || !s.parentElement.querySelector('button[aria-label="Next slide"]').disabled; }, { i, CAR }, { timeout: 8000 }).catch(() => {});
+    return sc.locator('xpath=..');
+}
+
+// =============== Control context H: prove page / worker / pageerror capture on this engine ===============
+{
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 1800 }, colorScheme: 'light' });
+    const page = await ctx.newPage();
+    instrument(ctx, page, 'H');
+    LABEL = 'H:control';
+    await page.goto(BASE + '/about/', { waitUntil: 'load' });
+    await page.evaluate(async () => {
+        console.error('HARNESS-CONTROL page console.error');
+        const w = new Worker(URL.createObjectURL(new Blob(["console.error('HARNESS-CONTROL worker console.error'); setTimeout(() => { throw new Error('HARNESS-CONTROL worker uncaught'); }, 0);"], { type: 'text/javascript' })));
+        setTimeout(() => {
+            throw new Error('HARNESS-CONTROL uncaught');
+        }, 0);
+        await new Promise(r => setTimeout(r, 1500));
+        w.terminate();
+    });
+    await page.waitForFunction(() => [...document.querySelectorAll('iframe')].some(f => /partytown-sandbox-sw/.test(f.getAttribute('src') || '')), null, { timeout: 10000 }).catch(() => {});
+    const sbFrame = page.frames().find(f => /partytown-sandbox-sw\.html/.test(f.url()));
+    let sandboxFrameFound = !!sbFrame;
+    if (sbFrame)
+        await sbFrame.evaluate(async () => {
+            const w = new Worker(URL.createObjectURL(new Blob(["console.error('HARNESS-CONTROL sandbox-iframe worker console.error')"], { type: 'text/javascript' })));
+            await new Promise(r => setTimeout(r, 1500));
+            w.terminate();
+        });
+    await sleep(500);
+    const got = R.console.filter(c => c.ctx === 'H');
+    const r = {
+        pageConsoleError: got.some(c => c.src === 'page' && /HARNESS-CONTROL page console\.error/.test(c.text)),
+        workerConsoleErrorViaWorkerChannel: got.some(c => c.src === 'worker' && /HARNESS-CONTROL worker console\.error/.test(c.text)),
+        workerConsoleErrorViaPageChannel: got.some(c => c.src === 'page' && /HARNESS-CONTROL worker console\.error/.test(c.text)),
+        sandboxFrameFound,
+        sandboxIframeWorkerConsoleError: got.some(c => /HARNESS-CONTROL sandbox-iframe worker console\.error/.test(c.text)),
+        workerUncaughtSeenAnywhere: got.some(c => /HARNESS-CONTROL worker uncaught/.test(c.text)) || R.pageErrors.some(e => e.ctx === 'H' && /HARNESS-CONTROL worker uncaught/.test(e.text)),
+        pageerror: R.pageErrors.some(e => e.ctx === 'H' && /HARNESS-CONTROL uncaught/.test(e.text)),
+        workerEventsHooked: R.workerConsoleHooked || 0,
+        workerConsoleUnsupported: R.workerConsoleUnsupported || null,
+        captured: got.map(c => `${c.src}:${c.type}:${c.text.slice(0, 100)}`).concat(R.pageErrors.filter(e => e.ctx === 'H').map(e => `pageerror:${e.text.slice(0, 100)}`)),
+    };
+    R.details.control = r;
+    check('H.capture-control', 'harness control: page console.error, main-frame worker console.error, sandbox-iframe worker console.error, worker uncaught and pageerror are all captured on this engine', r.pageConsoleError && (r.workerConsoleErrorViaWorkerChannel || r.workerConsoleErrorViaPageChannel) && r.sandboxIframeWorkerConsoleError && r.workerUncaughtSeenAnywhere && r.pageerror, r);
+    await ctx.close();
+}
+
+// =============== Context A: Partytown + ClientRouter (P4 + P0(2)) ===============
+{
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 1800 }, colorScheme: 'light' });
+    await ctx.addInitScript(ptInitScript);
+    const page = await ctx.newPage();
+    instrument(ctx, page, 'A');
+    const T = { sandboxHtml: 0, gtag: [], workers: [], workersClosed: 0, sbNavigated: 0, sbDetached: 0, loadEvents: 0, proxytownFailed: [] };
+    ctx.on('request', r => {
+        if (SANDBOX_RE.test(r.url())) T.sandboxHtml++;
+        if (GTAG_RE.test(r.url())) T.gtag.push(LABEL);
+    });
+    ctx.on('requestfailed', r => {
+        if (/\/~partytown\/proxytown/.test(r.url())) T.proxytownFailed.push(`${LABEL} ${r.failure() && r.failure().errorText}`);
+    });
+    page.on('worker', w => {
+        T.workers.push(w.url());
+        T.workerHandles = T.workerHandles || [];
+        T.workerHandles.push(w);
+        w.on('close', () => T.workersClosed++);
+        // belt and braces: buffer console.error/warn, uncaught errors and unhandled rejections inside the Partytown worker itself
+        w.evaluate(() => {
+            self.__pwBuf = [];
+            for (const k of ['error', 'warn']) {
+                const o = console[k].bind(console);
+                console[k] = (...a) => {
+                    self.__pwBuf.push(`${k}: ${a.map(x => (x && x.stack) || String(x)).join(' ').slice(0, 300)}`);
+                    o(...a);
+                };
+            }
+            self.addEventListener('error', e => self.__pwBuf.push(`uncaught: ${e.message}`));
+            self.addEventListener('unhandledrejection', e => self.__pwBuf.push(`unhandledrejection: ${String(e.reason).slice(0, 300)}`));
+            return true;
+        })
+            .then(v => (T.workerHooked = v))
+            .catch(e => (T.workerHookError = String(e).slice(0, 200)));
+    });
+    page.on('framenavigated', f => {
+        if (f !== page.mainFrame() && SANDBOX_RE.test(f.url())) T.sbNavigated++;
+    });
+    page.on('framedetached', f => {
+        if (SANDBOX_RE.test(f.url())) T.sbDetached++;
+    });
+    LABEL = 'A:/';
+    const resp = await page.goto(BASE + '/', { waitUntil: 'load', timeout: 60000 });
+    page.on('load', () => T.loadEvents++);
+    await page.waitForFunction(() => window.__pt.iframeLoads >= 1, null, { timeout: 15000 }).catch(() => {});
+    const tb = Date.now();
+    while (Date.now() - tb < 15000 && T.gtag.length === 0) await sleep(200);
+    await sleep(2500);
+    await page.evaluate(() => {
+        const m = new WeakMap();
+        const f = [...document.querySelectorAll('iframe')].find(x => /partytown-sandbox-sw\.html/.test(x.getAttribute('src') || ''));
+        if (f) m.set(f, 'iframe');
+        const s1 = document.querySelector('script[data-astro-transition-persist="gtag-src"]');
+        if (s1) m.set(s1, 'gtag-src');
+        window.__ptIds = m;
+    });
+    const s0 = await snap(page);
+    const navs = [];
+    const island = {};
+    const steps = [
+        { sel: 'main a[href="/posts/octoprint-prusa-core-one-raspberry-pi/"]', expect: '/posts/octoprint-prusa-core-one-raspberry-pi/', dwell: 500, after: 'carousel' },
+        { sel: 'header a[href="/search/"]', expect: '/search/', dwell: 3000, after: 'search' },
+        { sel: 'header a[href="/tags/"]', expect: '/tags/', dwell: 500, after: 'tags' },
+        { sel: 'main a[href="/tags/engineering-management/"]', expect: '/tags/engineering-management/', dwell: 3000 },
+        { sel: 'header a.logo[href="/"]', expect: '/', dwell: 500 },
+        { sel: 'header a[href="/posts/"]', expect: '/posts/', dwell: 3000 },
+        { sel: 'main a[href="/posts/local-coding-model-desktop-macbook/"]', expect: '/posts/local-coding-model-desktop-macbook/', dwell: 500 },
+        { sel: 'header a[href="/tips/"]', expect: '/tips/', dwell: 3000 },
+        { sel: 'header a[href="/about/"]', expect: '/about/', dwell: 500 },
+        { sel: 'header a.logo[href="/"]', expect: '/', dwell: 3000 },
+    ];
+    let k = 0;
+    for (const st of steps) {
+        k++;
+        LABEL = `A:nav${k}:${st.expect}`;
+        const rec = { k, expect: st.expect };
+        try {
+            const before = await page.evaluate(() => window.__pt.pageLoads);
+            await page.locator(st.sel).first().click({ timeout: 10000 });
+            await page.waitForFunction(({ p, b }) => location.pathname === p && window.__pt.pageLoads > b, { p: st.expect, b: before }, { timeout: 15000 });
+            await page.waitForFunction(() => document.querySelectorAll('astro-island[ssr]').length === 0, null, { timeout: 10000 }).catch(() => {});
+            await sleep(st.dwell);
+            Object.assign(rec, await snap(page));
+            if (st.after === 'carousel') {
+                const root = await prepCarousel(page, 0);
+                const a = await carState(page, 0);
+                await root.locator('button[aria-label="Next slide"]').click();
+                const to = await settle(page, 0, a.scrollLeft);
+                island.carousel = { from: a.scrollLeft, to, clientWidth: a.clientWidth, prevDisabledBefore: a.prevDisabled, ok: Math.abs(to - a.scrollLeft - a.clientWidth) <= 2 && a.prevDisabled === true };
+            } else if (st.after === 'search') {
+                await page.locator('input[name="search"]').click();
+                await page.keyboard.type('hiring', { delay: 60 });
+                await page.waitForFunction(() => document.querySelectorAll('astro-island ul li').length > 0, null, { timeout: 8000 }).catch(() => {});
+                await sleep(300);
+                island.search = await page.evaluate(() => ({ value: document.querySelector('input[name="search"]').value, items: document.querySelectorAll('astro-island ul li').length, search: location.search }));
+                island.search.ok = island.search.value === 'hiring' && island.search.items >= 1 && island.search.search === '?q=hiring';
+            } else if (st.after === 'tags') {
+                const n0 = await page.locator('astro-island ul li').count();
+                await page.locator('input[aria-label="Filter tags"]').click();
+                await page.keyboard.type('engin', { delay: 60 });
+                await sleep(500);
+                const tags = await page.evaluate(() => [...document.querySelectorAll('astro-island ul li a')].map(a => a.getAttribute('href')));
+                island.tags = { before: n0, after: tags.length, hasEM: tags.includes('/tags/engineering-management/'), allMatch: tags.every(h => /engin/i.test(h)) };
+                island.tags.ok = island.tags.after > 0 && island.tags.after < n0 && island.tags.hasEM && island.tags.allMatch;
+            }
+            rec.soft = rec.token === s0.token;
+        } catch (e) {
+            rec.error = String(e).split('\n')[0].slice(0, 300);
+        }
+        navs.push(rec);
+        console.log(`  nav${k} ${rec.error || `${rec.path} soft=${rec.soft} parent=${rec.sandboxParent} loads=${rec.iframeLoads} same=${rec.iframeSame}`}`);
+    }
+    LABEL = 'A:settle';
+    await sleep(6000);
+    const sEnd = await snap(page);
+    T.workerBuffer = [];
+    for (const w of T.workerHandles || []) {
+        try {
+            T.workerBuffer.push(...(await w.evaluate(() => self.__pwBuf || ['<no buffer>'])));
+        } catch (e) {
+            T.workerBufferReadError = String(e).slice(0, 200);
+        }
+    }
+    const snaps = [s0, ...navs, sEnd];
+    R.details.A = { status: resp && resp.status(), initial: s0, navs, final: sEnd, island, T: { ...T, workerHandles: undefined, workersClosedBeforeContextClose: T.workersClosed } };
+    check('P4.soft-navs', '10 real-click ClientRouter navigations are soft (token survives, 0 load events), expected paths, islands hydrated', navs.length === 10 && navs.every(n => !n.error && n.soft && n.path === n.expect && n.ssrIslands === 0) && T.loadEvents === 0, { navs: navs.map(n => ({ k: n.k, path: n.path, soft: n.soft, ssr: n.ssrIslands, error: n.error })), loadEvents: T.loadEvents });
+    check('P4.carousel-after-nav', 'after client nav home→post: carousel Next click advances by clientWidth ±2', island.carousel && island.carousel.ok, island.carousel);
+    check('P4.search-after-nav', "after client nav →/search/: typing 'hiring' lists ≥1 result and sets ?q=hiring", island.search && island.search.ok, island.search);
+    check('P4.tags-after-nav', "after client nav →/tags/: filter 'engin' narrows and includes engineering-management", island.tags && island.tags.ok, island.tags);
+    check('P0.sandbox-parent-html', 'sandbox iframe parent is <html>, exactly 1 sandbox, on / and after every navigation', snaps.every(s => s.sandboxCount === 1 && s.sandboxParent === 'HTML'), { parents: snaps.map(s => `${s.path}:${s.sandboxParent}x${s.sandboxCount}`) });
+    check('P0.iframe-not-reloaded', "sandbox iframe never reloads: DOM load events 1, sandbox-html requests 1, same element after every nav, 0 removals", sEnd.iframeLoads === 1 && T.sandboxHtml === 1 && sEnd.sbRemoved === 0 && navs.every(n => n.iframeSame === true) && T.sbDetached === 0, { iframeLoads: sEnd.iframeLoads, sandboxHtmlRequests: T.sandboxHtml, sbNavigatedEvents: T.sbNavigated, sbDetachedEvents: T.sbDetached, removed: sEnd.sbRemoved, same: navs.map(n => n.iframeSame) });
+    check('P0.gtag-once', 'gtag.js requested exactly once; gtag-src <script> is the same persisted element after every nav; 0 pending text/partytown', T.gtag.length === 1 && navs.every(n => n.gtagSrcSame === true && n.ptPending === 0), { gtagRequests: T.gtag, same: navs.map(n => n.gtagSrcSame) });
+    check('P0.proxytown', '0 failed/aborted proxytown requests and 0 proxytown console errors', T.proxytownFailed.length === 0 && !R.console.some(c => /proxytown/.test(c.text)), { proxytownFailed: T.proxytownFailed });
+    check('P0.worker-internal', 'hook inside the real Partytown worker (console.error/warn wrap + error/unhandledrejection listeners, installed at worker creation) buffered nothing across the 10 navigations', T.workerHooked === true && Array.isArray(T.workerBuffer) && T.workerBuffer.length === 0 && !T.workerBufferReadError, { hooked: T.workerHooked, hookError: T.workerHookError || null, buffer: T.workerBuffer, readError: T.workerBufferReadError || null });
+    R.details.A.workerEvent = { created: T.workers.length, closedBeforeContextClose: T.workersClosed, note: T.workers.length === 0 ? 'page.on(worker) did not fire for the worker created inside the sandbox iframe on this engine' : null };
+    await ctx.close();
+}
+
+// =============== Context B: reduced P1 / P2 / P3 by goto ===============
+{
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 1800 }, colorScheme: 'light' });
+    const page = await ctx.newPage();
+    instrument(ctx, page, 'B');
+    // P1 reduced
+    LABEL = 'B:P1';
+    await page.goto(BASE + '/posts/octoprint-prusa-core-one-raspberry-pi/', { waitUntil: 'load', timeout: 60000 });
+    await page.waitForFunction(() => document.querySelectorAll('astro-island[ssr]').length === 0 && document.querySelectorAll('[aria-roledescription="carousel"]').length === document.querySelectorAll('astro-island[component-url*="ImageSliderClient"]').length, null, { timeout: 15000 }).catch(() => {});
+    await sleep(300);
+    const nIslands = await page.locator('astro-island[component-url*="ImageSliderClient"]').count();
+    const n = await page.locator(CAR).count();
+    const cars = [];
+    for (let i = 0; i < n; i++) {
+        const root = await prepCarousel(page, i);
+        const st0 = await carState(page, i);
+        const deltas = [];
+        let cur = st0;
+        let guard = 0;
+        while (!cur.nextDisabled && guard++ < st0.N + 2) {
+            await root.locator('button[aria-label="Next slide"]').click();
+            const to = await settle(page, i, cur.scrollLeft);
+            const st = await carState(page, i);
+            deltas.push(Math.round((to - cur.scrollLeft) * 100) / 100);
+            cur = st;
+        }
+        await page.waitForFunction(({ i, CAR }) => [...document.querySelectorAll(CAR)[i].querySelectorAll('img')].every(im => im.complete && im.naturalWidth > 0), { i, CAR }, { timeout: 10000 }).catch(() => {});
+        const stImg = await carState(page, i);
+        const labelsOk = JSON.stringify(st0.labels) === JSON.stringify(Array.from({ length: st0.N }, (_, k) => `Slide ${k + 1} of ${st0.N}`));
+        const rec = { i: i + 1, N: st0.N, clientWidth: st0.clientWidth, startPrevDisabled: st0.prevDisabled, startNextDisabled: st0.nextDisabled, deltas, endNextDisabled: cur.nextDisabled, endAtMax: Math.abs(cur.scrollLeft - cur.maxScroll) <= 2, imgsLoaded: stImg.imgs.filter(x => x && x.complete && x.nw > 0).length, labelsOk };
+        rec.ok = st0.N > 1 && st0.prevDisabled === true && st0.nextDisabled === false && deltas.length === st0.N - 1 && deltas.every(d => Math.abs(d - st0.clientWidth) <= 2) && cur.nextDisabled === true && rec.endAtMax && rec.imgsLoaded === st0.N && labelsOk;
+        cars.push(rec);
+    }
+    R.details.P1 = cars;
+    R.details.P1counts = { carousels: n, sliderIslands: nIslands };
+    check('P1.carousels', `octoprint: ${n} carousels (${nIslands} slider islands); start Prev disabled/Next enabled; each Next click = clientWidth ±2; end state Next disabled at max; all slide images loaded`, n === 7 && nIslands === 7 && cars.every(c => c.ok), { carousels: cars });
+    // P2 reduced
+    LABEL = 'B:P2';
+    await page.goto(BASE + '/search/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.querySelectorAll('astro-island[ssr]').length === 0, null, { timeout: 10000 }).catch(() => {});
+    await sleep(300);
+    await page.locator('input[name="search"]').click();
+    await page.keyboard.type('hiring', { delay: 60 });
+    await page.waitForFunction(() => document.querySelectorAll('astro-island ul li').length > 0, null, { timeout: 8000 }).catch(() => {});
+    await sleep(300);
+    const s2 = await page.evaluate(() => ({ value: document.querySelector('input[name="search"]').value, items: [...document.querySelectorAll('astro-island ul li a')].map(a => a.getAttribute('href')), search: location.search }));
+    R.details.P2 = s2;
+    check('P2.search-typing', "search: real keyboard typing 'hiring' lists ≥1 result, URL ?q=hiring", s2.value === 'hiring' && s2.items.length >= 1 && s2.search === '?q=hiring', { value: s2.value, count: s2.items.length, first: s2.items[0], search: s2.search });
+    // P3 reduced
+    LABEL = 'B:P3';
+    await page.goto(BASE + '/tags/', { waitUntil: 'load' });
+    await page.waitForFunction(() => document.querySelectorAll('astro-island[ssr]').length === 0, null, { timeout: 10000 }).catch(() => {});
+    await sleep(300);
+    const t0 = await page.locator('astro-island ul li').count();
+    await page.locator('input[aria-label="Filter tags"]').click();
+    await page.keyboard.type('engin', { delay: 60 });
+    await sleep(500);
+    const t1 = await page.evaluate(() => [...document.querySelectorAll('astro-island ul li a')].map(a => a.getAttribute('href')));
+    R.details.P3 = { before: t0, after: t1 };
+    check('P3.tags-filter', "tags: typing 'engin' narrows the list, includes engineering-management, all items match", t1.length > 0 && t1.length < t0 && t1.includes('/tags/engineering-management/') && t1.every(h => /engin/i.test(h)), { before: t0, after: t1.length, items: t1 });
+    await ctx.close();
+}
+
+await browser.close();
+proxy.close();
+// ---- console criterion: 0 errors except network errors to the blocked analytics hosts ----
+// WebKit reports proxy-refused loads as 'Failed to load resource: ... (kCFErrorDomainCFNetwork error 310.)' WITHOUT a URL.
+// CFNetwork 310 = kCFErrorHTTPSProxyConnectionFailure: only a CONNECT the proxy refused can produce it, and the proxy
+// refuses ONLY the analytics hosts (R.proxy.blocked; httpRefused/tunnelErrors must be empty). Per-label counts are
+// cross-checked against requestfailed events for the blocked analytics URLs (R.consoleAttribution).
+const WEBKIT_PROXY_REFUSED_RE = /^Failed to load resource: .*kCFErrorDomainCFNetwork error 310/;
+const proxyOnlyRefusedAnalytics = R.proxy.httpRefused.length === 0 && R.proxy.tunnelErrors.length === 0 && R.proxy.blocked.every(h => BLOCK_HOST_RE.test(h));
+const exempt = c => BLOCK_URL_RE.test(c.text) || BLOCK_URL_RE.test(c.loc || '') || (proxyOnlyRefusedAnalytics && WEBKIT_PROXY_REFUSED_RE.test(c.text) && !c.loc);
+R.consoleAttribution = {};
+for (const c of R.console.filter(c => c.type === 'error' && c.ctx !== 'H')) (R.consoleAttribution[c.label] ||= { consoleErrors: 0, exempt: 0, blockedAnalyticsRequestFailed: 0 }).consoleErrors++;
+for (const c of R.console.filter(c => c.type === 'error' && c.ctx !== 'H' && exempt(c))) R.consoleAttribution[c.label].exempt++;
+for (const r of R.requestFailed.filter(r => BLOCK_URL_RE.test(r.url))) (R.consoleAttribution[r.label] ||= { consoleErrors: 0, exempt: 0, blockedAnalyticsRequestFailed: 0 }).blockedAnalyticsRequestFailed++;
+const errs = R.console.filter(c => c.type === 'error' && c.ctx !== 'H');
+const pageErrorsNonControl = R.pageErrors.filter(e => e.ctx !== 'H');
+R.consoleSummary = { errors: errs.length, errorsBySrc: errs.reduce((a, c) => ((a[c.src] = (a[c.src] || 0) + 1), a), {}), exemptAnalyticsNetwork: errs.filter(exempt).length, nonExempt: errs.filter(c => !exempt(c)), warnings: R.console.filter(c => c.type === 'warning' && c.ctx !== 'H'), pageErrors: pageErrorsNonControl };
+R.requestFailedOther = R.requestFailed.filter(r => r.ctx !== 'H' && !BLOCK_URL_RE.test(r.url));
+check('console', 'console errors = 0 except network errors to the blocked analytics hosts; 0 page errors; 0 failed requests to non-analytics URLs', R.consoleSummary.nonExempt.length === 0 && pageErrorsNonControl.length === 0 && R.requestFailedOther.length === 0 && proxyOnlyRefusedAnalytics, {
+    errorsBySrc: R.consoleSummary.errorsBySrc,
+    proxyOnlyRefusedAnalytics,
+    requestFailedOther: R.requestFailedOther,
+    attributionByLabel: R.consoleAttribution, nonExempt: R.consoleSummary.nonExempt, exemptCount: R.consoleSummary.exemptAnalyticsNetwork, pageErrors: pageErrorsNonControl, exemptSamples: errs.filter(exempt).slice(0, 3) });
+R.pass = R.checks.every(c => c.pass);
+fs.writeFileSync(out, JSON.stringify(R, null, 2));
+console.log(`DONE ${engine}: ${R.checks.filter(c => c.pass).length}/${R.checks.length} pass; console errors ${errs.length} (exempt ${R.consoleSummary.exemptAnalyticsNetwork}); proxy blocked ${R.proxy.blocked.length}, tunnels ${JSON.stringify(R.proxy.tunnels)}; worker events ${R.details.A.workerEvent.created}`);

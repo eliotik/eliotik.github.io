@@ -1,0 +1,4 @@
+main build for the caret comparison: scratch worktree of main 3df6160 (Node 22.22.2), pnpm install --frozen-lockfile (exit 0), pnpm astro build (exit 0, generator Astro v6.2.1; jampack not run), served read-only with python3 -m http.server 4333 --bind ::1 from dist; server killed and worktree removed afterwards.
+13:12:04 [build] ✓ Completed in 13.58s.
+13:12:04 [build] 127 page(s) built in 14.36s
+13:12:04 [build] Complete!

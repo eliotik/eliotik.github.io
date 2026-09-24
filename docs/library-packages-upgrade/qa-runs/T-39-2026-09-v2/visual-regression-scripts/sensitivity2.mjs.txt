@@ -1,0 +1,33 @@
+// compressHTML-'jsx' simulation: delete whitespace-only text nodes that sit between two inline-level element siblings
+// in a non-flex/grid parent, over the whole document; compare full-page against the committed fp shot.
+import { chromium } from 'playwright'; import fs from 'node:fs'; import { PNG } from 'pngjs'; import pixelmatch from 'pixelmatch';
+const R = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v2';
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const out = [];
+for (const [name, route, file] of [['fp-ems-the-delivery-system', '/posts/ems-the-delivery-system/', 'fp-ems-the-delivery-system.png'], ['07-tag-detail', '/tags/engineering-management/', '07-tag-detail.png'], ['01-home', '/', '01-home.png']]) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 1800 }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: 'light' });
+  await ctx.addInitScript(() => localStorage.setItem('theme', 'light'));
+  const page = await ctx.newPage();
+  await page.goto('http://localhost:4321' + route, { waitUntil: 'load' });
+  await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+  await page.evaluate(() => document.fonts.ready);
+  const info = await page.evaluate(() => {
+    const isInline = (el) => el && el.nodeType === 1 && getComputedStyle(el).display.startsWith('inline');
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); const rm = [];
+    while (w.nextNode()) { const t = w.currentNode; const pd = getComputedStyle(t.parentElement).display; if (/^\s+$/.test(t.data) && !/flex|grid/.test(pd) && isInline(t.previousSibling) && isInline(t.nextSibling)) rm.push(t); }
+    const samples = rm.slice(0, 6).map(t => (t.previousSibling.textContent.trim().slice(0, 20) + ' ␣ ' + t.nextSibling.textContent.trim().slice(0, 20)));
+    rm.forEach(t => t.remove());
+    return { removed: rm.length, samples };
+  });
+  await page.waitForTimeout(500);
+  const buf = await page.screenshot({ animations: 'disabled', caret: 'hide', fullPage: name.startsWith('fp-') });
+  const a = PNG.sync.read(buf), b = PNG.sync.read(fs.readFileSync(`${R}/${file}`));
+  const w = Math.min(a.width, b.width), h = Math.min(a.height, b.height);
+  const crop = (p) => { if (p.width === w && p.height === h) return p; const o = new PNG({ width: w, height: h }); for (let y = 0; y < h; y++) p.data.copy(o.data, y * w * 4, y * p.width * 4, y * p.width * 4 + w * 4); return o; };
+  const pm = pixelmatch(crop(a).data, crop(b).data, null, w, h, { threshold: 0.1 });
+  out.push({ control: 'collapse inline whitespace', page: name, ...info, sizes: [[a.width, a.height], [b.width, b.height]], pm01: pm, pct: +(pm / (w * h) * 100).toFixed(4) });
+  console.log(name, JSON.stringify(info), 'sizes', a.width + 'x' + a.height, b.width + 'x' + b.height, 'pm01', pm, (pm / (w * h) * 100).toFixed(4) + '%');
+  await ctx.close();
+}
+await browser.close();
+fs.writeFileSync('sensitivity2.json', JSON.stringify(out, null, 1));

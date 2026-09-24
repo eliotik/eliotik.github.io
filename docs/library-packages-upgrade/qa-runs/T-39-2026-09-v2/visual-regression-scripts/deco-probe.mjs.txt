@@ -1,0 +1,30 @@
+import { chromium } from 'playwright'; import fs from 'node:fs'; import { PNG } from 'pngjs'; import pixelmatch from 'pixelmatch';
+const T = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-30-20260430T125829Z/visual';
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const res = [];
+for (const [name, route, region] of [['10-404', '/this-route-doesnt-exist', [560, 975, 160, 35]], ['02-posts-index', '/posts', [450, 36, 90, 36]]]) {
+  for (const css of ['', 'a, a * { text-decoration-thickness: 1px !important; }']) {
+    const ctx = await browser.newContext({ viewport: { width: 1268, height: 1800 }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: 'light' });
+    await ctx.addInitScript(() => localStorage.setItem('theme', 'light'));
+    const page = await ctx.newPage();
+    await page.goto('http://localhost:4321' + route, { waitUntil: 'load' });
+    await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+    await page.evaluate(() => document.fonts.ready);
+    const info = await page.evaluate((sel) => { const a = [...document.querySelectorAll('a')].find(x => x.textContent.trim() === sel); const s = getComputedStyle(a); return { deco: s.textDecorationLine + ' ' + s.textDecorationStyle + ' thickness=' + s.textDecorationThickness + ' offset=' + s.textUnderlineOffset, fontSize: s.fontSize }; }, name === '10-404' ? 'Go back home' : 'Posts');
+    if (css) await page.addStyleTag({ content: css });
+    await page.waitForTimeout(400);
+    const [x, y, w, h] = region;
+    const buf = await page.screenshot({ clip: { x, y, width: w, height: h }, animations: 'disabled' });
+    const a = PNG.sync.read(buf);
+    const t0 = PNG.sync.read(fs.readFileSync(`${T}/${name}.png`));
+    const t = new PNG({ width: w, height: h });
+    for (let yy = 0; yy < h; yy++) t0.data.copy(t.data, yy * w * 4, ((y + yy) * t0.width + x) * 4, ((y + yy) * t0.width + x + w) * 4);
+    let exact = 0; for (let i = 0; i < a.data.length; i += 4) if (a.data[i] !== t.data[i] || a.data[i+1] !== t.data[i+1] || a.data[i+2] !== t.data[i+2]) exact++;
+    const pm = pixelmatch(a.data, t.data, null, w, h, { threshold: 0.1 });
+    res.push({ name, override: css ? '1px' : 'none', computed: info, pm01VsT30: pm, exactVsT30: exact });
+    await ctx.close();
+  }
+}
+await browser.close();
+console.log(JSON.stringify(res, null, 1));
+fs.writeFileSync('deco-probe.json', JSON.stringify(res, null, 1));

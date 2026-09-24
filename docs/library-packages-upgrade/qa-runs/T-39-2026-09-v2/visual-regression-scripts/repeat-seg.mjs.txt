@@ -1,0 +1,35 @@
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+import { PNG } from 'pngjs';
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+fs.mkdirSync('repeat', { recursive: true });
+const route = '/posts/octoprint-prusa-core-one-raspberry-pi/';
+const out = [];
+for (let run = 0; run < 3; run++) {
+  for (const [lbl, base] of [['up', 'http://localhost:4321'], ['main', 'http://localhost:4331']]) {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 1800 }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: 'dark' });
+    await context.addInitScript(() => localStorage.setItem('theme', 'dark'));
+    const page = await context.newPage();
+    await page.goto(base + route, { waitUntil: 'load' });
+    await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+    await page.evaluate(() => document.fonts.ready);
+    const h = await page.evaluate(() => document.documentElement.scrollHeight);
+    // replicate the segment walk so the page state matches segments.mjs
+    for (let k = 0; k <= 18; k++) { await page.evaluate((y) => scrollTo(0, y), Math.min(k * 1800, h - 1800)); await page.waitForTimeout(150); }
+    await page.waitForFunction(() => [...document.images].filter(i => { const r = i.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0 && r.left < innerWidth && r.right > 0; }).every(i => i.complete && i.naturalWidth > 0), null, { timeout: 20000 });
+    await page.waitForTimeout(300);
+    const info = await page.evaluate(() => { const im = [...document.images].filter(i => { const r = i.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }).map(i => { const r = i.getBoundingClientRect(); return { src: i.currentSrc.replace(location.origin, ''), rect: [r.x, r.y, r.width, r.height].map(v => +v.toFixed(2)), natural: [i.naturalWidth, i.naturalHeight] }; }); return { scrollY, im }; });
+    const f = `repeat/${lbl}-${run}.png`;
+    await page.screenshot({ path: f, animations: 'disabled', caret: 'hide' });
+    out.push({ lbl, run, f, ...info });
+    await context.close();
+  }
+}
+await browser.close();
+const img = (f) => PNG.sync.read(fs.readFileSync(f)).data;
+const ref = img('seg-up/seg-11-octoprint-dark-18.png');
+const cnt = (a, b) => { let n = 0; for (let i = 0; i < a.length; i += 4) if (a[i] !== b[i] || a[i+1] !== b[i+1] || a[i+2] !== b[i+2] || a[i+3] !== b[i+3]) n++; return n; };
+const refMain = img('seg-main/seg-11-octoprint-dark-18.png');
+for (const o of out) console.log(o.f, 'scrollY', o.scrollY, 'vs seg-up:', cnt(img(o.f), ref), 'vs seg-main:', cnt(img(o.f), refMain));
+console.log(JSON.stringify(out[0].im));
+fs.writeFileSync('repeat/repeat.json', JSON.stringify(out, null, 1));

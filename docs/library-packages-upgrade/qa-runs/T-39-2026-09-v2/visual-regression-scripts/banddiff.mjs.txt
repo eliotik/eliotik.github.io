@@ -1,0 +1,18 @@
+// node banddiff.mjs <dirA|file> <dirB|file> <width> [label]  -> per-name pm01/exact + y-bands with x-extent
+import fs from 'node:fs'; import { PNG } from 'pngjs'; import pixelmatch from 'pixelmatch';
+const [A, Bd, W, label = ''] = process.argv.slice(2); const w = +W;
+const names = ['01-home','02-posts-index','03-post-with-images','04-post-with-carousel','05-tips-index','06-tags-index','07-tag-detail','08-threads-index','09-about','10-404'];
+const crop = (p) => { const o = new PNG({ width: w, height: 1800 }); for (let y = 0; y < 1800; y++) p.data.copy(o.data, y * w * 4, y * p.width * 4, y * p.width * 4 + w * 4); return o; };
+const out = [];
+for (const n of names) {
+  const a = crop(PNG.sync.read(fs.readFileSync(`${A}/${n}.png`))), b = crop(PNG.sync.read(fs.readFileSync(`${Bd}/${n}.png`)));
+  const m = new PNG({ width: w, height: 1800 });
+  const pm = pixelmatch(a.data, b.data, m.data, w, 1800, { threshold: 0.1, diffMask: true, diffColor: [255,0,0], aaColor: [0,0,255] });
+  let exact = 0; for (let i = 0; i < a.data.length; i += 4) if (a.data[i] !== b.data[i] || a.data[i+1] !== b.data[i+1] || a.data[i+2] !== b.data[i+2]) exact++;
+  const bands = []; let cur = null;
+  for (let y = 0; y < 1800; y++) { let c = 0, x0 = 1e9, x1 = -1; for (let x = 0; x < w; x++) { const i = (y * w + x) * 4; if (m.data[i] === 255 && m.data[i+1] === 0 && m.data[i+3] > 0) { c++; x0 = Math.min(x0, x); x1 = Math.max(x1, x); } }
+    if (c) { if (cur && y - cur.y1 <= 12) { cur.y1 = y; cur.px += c; cur.x0 = Math.min(cur.x0, x0); cur.x1 = Math.max(cur.x1, x1); } else { cur = { y0: y, y1: y, x0, x1, px: c }; bands.push(cur); } } }
+  out.push({ name: n, pm01: pm, pct: +(pm / (w * 1800) * 100).toFixed(4), exact, bands });
+  console.log(label, n.padEnd(22), 'pm01', String(pm).padStart(6), 'exact', String(exact).padStart(6), bands.map(b => `y${b.y0}-${b.y1}/x${b.x0}-${b.x1}(${b.px})`).join(' '));
+}
+if (label) fs.writeFileSync(`banddiff-${label}.json`, JSON.stringify(out, null, 1));

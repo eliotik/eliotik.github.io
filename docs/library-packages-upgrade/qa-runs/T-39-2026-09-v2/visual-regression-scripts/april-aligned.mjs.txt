@@ -1,0 +1,46 @@
+// Capture upgraded light pages at a 1268px layout width (April baseline had a 12px classic scrollbar gutter),
+// then diff the 0..1267 columns against the April PNGs to isolate real content/style differences from the +6px shift.
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+import { PNG } from 'pngjs';
+import pixelmatch from 'pixelmatch';
+const B = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/baseline';
+const R = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v2/diff/april';
+const ROUTES = [['01-home','/'],['02-posts-index','/posts'],['03-post-with-images','/posts/ems-connecting-the-systems'],['04-post-with-carousel','/posts/flutter-google-maps-embedded-map'],['05-tips-index','/tips'],['06-tags-index','/tags'],['07-tag-detail','/tags/engineering-management/'],['08-threads-index','/threads'],['09-about','/about'],['10-404','/this-route-doesnt-exist']];
+fs.mkdirSync('aligned', { recursive: true });
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const out = [];
+for (const [name, route] of ROUTES) {
+  const context = await browser.newContext({ viewport: { width: 1268, height: 1800 }, deviceScaleFactor: 1, reducedMotion: 'reduce', colorScheme: 'light' });
+  await context.addInitScript(() => localStorage.setItem('theme', 'light'));
+  const page = await context.newPage();
+  await page.goto('http://localhost:4321' + route, { waitUntil: 'load' });
+  await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForFunction(() => [...document.images].filter(i => { const r = i.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0 && r.left < innerWidth && r.right > 0; }).every(i => i.complete), null, { timeout: 20000 }).catch(() => {});
+  await page.waitForTimeout(500);
+  const f = `aligned/${name}.png`;
+  await page.screenshot({ path: f, animations: 'disabled', caret: 'hide' });
+  await context.close();
+  const a = PNG.sync.read(fs.readFileSync(f));
+  const b0 = PNG.sync.read(fs.readFileSync(`${B}/${name}.png`));
+  const w = 1268, h = 1800;
+  const b = new PNG({ width: w, height: h });
+  for (let y = 0; y < h; y++) b0.data.copy(b.data, y * w * 4, y * 1280 * 4, y * 1280 * 4 + w * 4);
+  const d = new PNG({ width: w, height: h });
+  const n = pixelmatch(a.data, b.data, d.data, w, h, { threshold: 0.1 });
+  fs.writeFileSync(`${R}/${name}-april-vs-up-aligned1268.png`, PNG.sync.write(d));
+  // row histogram of mismatches (which bands differ)
+  const mask = new PNG({ width: w, height: h });
+  pixelmatch(a.data, b.data, mask.data, w, h, { threshold: 0.1, diffMask: true, diffColor: [255,0,0], aaColor: [0,0,255] });
+  const bands = [];
+  let cur = null;
+  for (let y = 0; y < h; y++) {
+    let c = 0; for (let x = 0; x < w; x++) { const i = (y * w + x) * 4; if (mask.data[i] === 255 && mask.data[i+1] === 0 && mask.data[i+3] > 0) c++; }
+    if (c) { if (cur && y - cur.y1 <= 12) { cur.y1 = y; cur.px += c; } else { cur = { y0: y, y1: y, px: c }; bands.push(cur); } }
+  }
+  out.push({ name, route, pm01: n, pct: +(n / (w * h) * 100).toFixed(4), bands });
+  console.log(name, n, (n / (w * h) * 100).toFixed(4) + '%', 'bands:', bands.map(b => `${b.y0}-${b.y1}(${b.px})`).join(' '));
+}
+await browser.close();
+fs.writeFileSync('april-aligned.json', JSON.stringify(out, null, 1));

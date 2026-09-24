@@ -1,0 +1,7 @@
+command: node /private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/pt/pt-repro.mjs http://localhost:4321 --strict --out=<scratch>/pt-repro.json   (Node v22.23.3; Playwright 1.63.0 resolved from sibling pt/*-pw dir; channel 'chrome' = Google Chrome 153.0.8010.53)
+start/end (UTC):
+2026-09-24T16:41:24Z
+2026-09-24T16:42:33Z
+exit=0
+stderr bytes:        0
+verdict: {"proxytownErrors": 0, "softNavigations": 28, "softNavsWithSandboxReload": 0, "strict": true, "otherConsoleErrors": 0, "pageErrors": 0, "vacuousOrLeaky": false, "exitCode": 0}

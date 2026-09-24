@@ -1,0 +1,125 @@
+# pnpm outdated — T-39 Task 8 v2, lane build
+# HEAD 63efd0867a0ba7fa14759fe98cfe0d1b363ce7a5. Node v22.23.3, pnpm 10.34.5. Run with: source ~/.nvm/nvm.sh >/dev/null && nvm use --silent && pnpm outdated
+# Captured 2026-09-24T16:34:18Z.
+# Exit code: 1. pnpm outdated exits 1 whenever it lists at least one package; the TS cap guarantees it always lists typescript,
+# so exit 1 is by design and the check is judged by WHAT it lists (lane Step 5), not by the exit code.
+
+## 1. pnpm outdated (table, verbatim)
+┌───────────────────┬─────────┬────────┐
+│ Package           │ Current │ Latest │
+├───────────────────┼─────────┼────────┤
+│ @types/node (dev) │ 22.20.4 │ 26.6.2 │
+├───────────────────┼─────────┼────────┤
+│ typescript (dev)  │ 6.0.3   │ 7.0.2  │
+└───────────────────┴─────────┴────────┘
+
+## 2. pnpm outdated --format json (verbatim, exit 1)
+{
+  "@types/node": {
+    "current": "22.20.4",
+    "latest": "26.6.2",
+    "wanted": "22.20.4",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
+  },
+  "typescript": {
+    "current": "6.0.3",
+    "latest": "7.0.2",
+    "wanted": "6.0.3",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
+  }
+}
+
+## 3. typescript 6.0.3 (latest 7.0.2): CAPPED BY PEER RANGES -> accepted
+## typescript
+{
+  "dev": "3.9.4",
+  "tag-for-publishing-older-releases": "4.1.6",
+  "insiders": "4.6.2-insiders.20220225",
+  "beta": "6.0.0-beta",
+  "rc": "7.0.1-rc",
+  "latest": "7.0.2",
+  "next": "7.1.0-dev.20260924.1"
+}
+6.x stable published:
+6.0.2 6.0.3
+@typescript-eslint/eslint-plugin@latest: version=8.70.1 peer.typescript=>=4.8.4 <6.1.0
+@typescript-eslint/parser@latest: version=8.70.1 peer.typescript=>=4.8.4 <6.1.0
+typescript-eslint@latest: version=8.70.1 peer.typescript=>=4.8.4 <6.1.0
+@astrojs/check@latest: version=0.9.10 peer.typescript=^5.0.0 || ^6.0.0
+installed @typescript-eslint/eslint-plugin peer.typescript: >=4.8.4 <6.1.0
+installed @typescript-eslint/parser peer.typescript: >=4.8.4 <6.1.0
+installed @astrojs/check peer.typescript: ^5.0.0 || ^6.0.0
+next tags: typescript-eslint dist-tags {"rc-v8":"8.0.0-alpha.62","latest":"8.70.1","canary":"8.70.2-alpha.7"}
+@astrojs/check dist-tags {"alpha":"0.9.6-alpha.0","beta":"0.9.7-beta.1","latest":"0.9.10"}
+semver check 7.0.2 vs ranges:
+>=4.8.4 <6.1.0 7.0.2: false 6.0.3: true
+^5.0.0 || ^6.0.0 7.0.2: false 6.0.3: true
+# Also: typescript-eslint@canary 8.70.2-alpha.7 peer.typescript=>=4.8.4 <6.1.0 — even the prerelease line still caps TS < 6.1.0.
+# Conclusion: TS 7.0.2 satisfies neither '>=4.8.4 <6.1.0' (@typescript-eslint/eslint-plugin, @typescript-eslint/parser, typescript-eslint, all 8.70.1 = latest)
+# nor '^5.0.0 || ^6.0.0' (@astrojs/check 0.9.10 = latest). 6.0.3 is the highest stable 6.x published (6.0.2, 6.0.3; no 6.0.4/6.1.x).
+# typescript is therefore at the highest version allowed by the tightest peer range (global constraint).
+
+## 4. @types/node 22.20.4 (latest 26.6.2): CAPPED BY CONTROLLER RULING R27, NOT by a peer range -> accepted as ruled exception
+# R27 (global-constraints.md, Phase 2 rulings, binding, supersede earlier rulings): 'Add explicit devDependency @types/node pinned
+#   exactly to the latest 22.x (matches the Node 22 runtime)'. Dependabot enforces the same cap (.github/dependabot.yml:81-82).
+## @types/node
+latest=26.6.2 ts6.0=26.6.2 ts7.0=-
+highest 22.x published: @types/node@22.20.4 '22.20.4'
+engines.node (package.json): 22.23.3  .nvmrc: 22.23.3  runtime: v22.23.3
+semver.maxSatisfying(all published @types/node versions, '^22') = 22.20.4  -> the pin is exactly the latest 22.x (R27 satisfied)
+Every peer declaration on @types/node in the installed tree (node_modules/.pnpm scan):
+  vite@8.3.0 peer @types/node=^20.19.0 || >=22.12.0 (optional)
+# Honest statement: peer ranges do NOT forbid @types/node 26.x — vite's optional '^20.19.0 || >=22.12.0' accepts 26.6.2.
+# The cap is a runtime-typing decision (engines.node / .nvmrc / runtime are Node 22.23.3; @types/node 26 would type Node 26-only APIs),
+# ruled by R27. The lane text lists only typescript as an exception; R27 (binding per the lane's Environment section) adds @types/node.
+
+## 5. Independent cross-check: every direct dependency vs registry (https://registry.npmjs.org/ JSON, dist-tags.latest + deprecated)
+package                                       type  spec     installed  registry_latest  latest_published  installed_deprecated  latest_deprecated  status
+@astrojs/check                                dep   0.9.10   0.9.10     0.9.10           2026-07-27        no                    no                 AT-LATEST
+@astrojs/markdown-remark                      dep   7.3.1    7.3.1      7.3.1            2026-09-08        no                    no                 AT-LATEST
+@astrojs/mdx                                  dep   8.0.2    8.0.2      8.0.2            2026-09-22        no                    no                 AT-LATEST
+@astrojs/partytown                            dep   ^2.1.8   2.1.8      2.1.8            2026-09-22        no                    no                 AT-LATEST
+@astrojs/react                                dep   7.0.0    7.0.0      7.0.0            2026-09-22        no                    no                 AT-LATEST
+@astrojs/rss                                  dep   4.0.19   4.0.19     4.0.19           2026-06-30        no                    no                 AT-LATEST
+@astrojs/ts-plugin                            dep   1.10.12  1.10.12    1.10.12          2026-09-16        no                    no                 AT-LATEST
+@expressive-code/plugin-collapsible-sections  dep   0.44.2   0.44.2     0.44.2           2026-08-31        no                    no                 AT-LATEST
+@expressive-code/plugin-line-numbers          dep   0.44.2   0.44.2     0.44.2           2026-08-31        no                    no                 AT-LATEST
+@resvg/resvg-js                               dep   2.6.2    2.6.2      2.6.2            2024-03-26        no                    no                 AT-LATEST
+astro                                         dep   7.3.5    7.3.5      7.3.5            2026-09-24        no                    no                 AT-LATEST
+astro-expressive-code                         dep   0.44.2   0.44.2     0.44.2           2026-08-31        no                    no                 AT-LATEST
+fuse.js                                       dep   7.5.0    7.5.0      7.5.0            2026-07-13        no                    no                 AT-LATEST
+github-slugger                                dep   2.0.0    2.0.0      2.0.0            2022-10-27        no                    no                 AT-LATEST
+remark-collapse                               dep   0.1.2    0.1.2      0.1.2            2017-03-31        no                    no                 AT-LATEST
+remark-toc                                    dep   9.0.0    9.0.0      9.0.0            2023-09-20        no                    no                 AT-LATEST
+satori                                        dep   0.33.5   0.33.5     0.33.5           2026-09-22        no                    no                 AT-LATEST
+sharp                                         dep   ^0.35.4  0.35.4     0.35.4           2026-08-26        no                    no                 AT-LATEST
+tailwindcss                                   dep   4.3.3    4.3.3      4.3.3            2026-07-16        no                    no                 AT-LATEST
+@divriots/jampack                             dev   0.34.1   0.34.1     0.34.1           2026-03-18        no                    no                 AT-LATEST
+@eslint/js                                    dev   ^10.0.1  10.0.1     10.0.1           2026-02-06        no                    no                 AT-LATEST
+@tailwindcss/typography                       dev   0.5.20   0.5.20     0.5.20           2026-06-08        no                    no                 AT-LATEST
+@tailwindcss/vite                             dev   ^4.3.3   4.3.3      4.3.3            2026-07-16        no                    no                 AT-LATEST
+@types/node                                   dev   22.20.4  22.20.4    26.6.2           2026-09-19        no                    no                 BEHIND
+@types/react                                  dev   ^19.3.0  19.3.0     19.3.0           2026-09-09        no                    no                 AT-LATEST
+@types/react-dom                              dev   ^19.3.0  19.3.0     19.3.0           2026-09-09        no                    no                 AT-LATEST
+@typescript-eslint/eslint-plugin              dev   8.70.1   8.70.1     8.70.1           2026-09-21        no                    no                 AT-LATEST
+@typescript-eslint/parser                     dev   8.70.1   8.70.1     8.70.1           2026-09-21        no                    no                 AT-LATEST
+astro-eslint-parser                           dev   3.2.0    3.2.0      3.2.0            2026-09-24        no                    no                 AT-LATEST
+eslint                                        dev   10.11.0  10.11.0    10.11.0          2026-09-18        no                    no                 AT-LATEST
+eslint-plugin-astro                           dev   3.2.1    3.2.1      3.2.1            2026-09-17        no                    no                 AT-LATEST
+eslint-plugin-jsx-a11y-x                      dev   ^0.2.0   0.2.0      0.2.0            2026-05-10        no                    no                 AT-LATEST
+husky                                         dev   9.1.7    9.1.7      9.1.7            2024-11-18        no                    no                 AT-LATEST
+lint-staged                                   dev   17.5.1   17.5.1     17.5.1           2026-09-10        no                    no                 AT-LATEST
+prettier                                      dev   3.9.9    3.9.9      3.9.9            2026-09-23        no                    no                 AT-LATEST
+prettier-plugin-astro                         dev   1.0.1    1.0.1      1.0.1            2026-09-17        no                    no                 AT-LATEST
+prettier-plugin-tailwindcss                   dev   0.8.1    0.8.1      0.8.1            2026-07-15        no                    no                 AT-LATEST
+react                                         dev   19.3.0   19.3.0     19.3.0           2026-09-09        no                    no                 AT-LATEST
+react-dom                                     dev   19.3.0   19.3.0     19.3.0           2026-09-09        no                    no                 AT-LATEST
+typescript                                    dev   6.0.3    6.0.3      7.0.2            2026-07-08        no                    no                 BEHIND
+# Totals: 40 direct (19 dependencies, 21 devDependencies); AT-LATEST 38; BEHIND 2 (typescript §3, @types/node §4); installed-deprecated 0; latest-deprecated 0.
+# Caret specifiers (@astrojs/partytown, sharp, @eslint/js, @tailwindcss/vite, @types/react, @types/react-dom, eslint-plugin-jsx-a11y-x) all resolve to registry latest.
+
+## 6. Toolchain (informational)
+node: v22.23.3 = latest v22 LTS (nvm ls-remote v22 -> v22.23.3, 'Latest LTS: Jod')
+pnpm: 10.34.5 = registry latest-10 (latest overall 12.6.0; R25 targets latest pnpm 10.x)

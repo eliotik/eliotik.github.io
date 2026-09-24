@@ -1,0 +1,221 @@
+// Pixel-diff library + driver. node diff.mjs <outJson>
+import fs from 'node:fs';
+import path from 'node:path';
+import { PNG } from 'pngjs';
+import pixelmatch from 'pixelmatch';
+
+const S =
+    '/private/tmp/claude-501/-Users-ap-development-other-eliotik-github-io/917b6b41-1b79-43b6-8c59-b21d1efcf946/scratchpad/t8v2';
+const V = `${S}/visual-regression`;
+const R =
+    '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-39-2026-09-v2';
+const BASE =
+    '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/baseline';
+const DIFFDIR = `${R}/diff`;
+fs.mkdirSync(DIFFDIR, { recursive: true });
+fs.mkdirSync(`${DIFFDIR}/april`, { recursive: true });
+fs.mkdirSync(`${V}/diff-scratch`, { recursive: true });
+
+const read = (p) => PNG.sync.read(fs.readFileSync(p));
+
+function crop(img, w, h) {
+    if (img.width === w && img.height === h) return img;
+    const out = new PNG({ width: w, height: h });
+    for (let y = 0; y < h; y++)
+        img.data.copy(out.data, y * w * 4, y * img.width * 4, y * img.width * 4 + w * 4);
+    return out;
+}
+
+function boxes(mask, w, h) {
+    // mask: Uint8Array w*h of 1 = mismatched; cluster on 16px cells
+    const C = 16;
+    const cw = Math.ceil(w / C),
+        ch = Math.ceil(h / C);
+    const cell = new Int32Array(cw * ch).fill(-1);
+    const bb = new Map();
+    for (let y = 0; y < h; y++)
+        for (let x = 0; x < w; x++)
+            if (mask[y * w + x]) cell[((y / C) | 0) * cw + ((x / C) | 0)] = 0;
+    let id = 0;
+    const comps = [];
+    for (let i = 0; i < cell.length; i++) {
+        if (cell[i] !== 0) continue;
+        id++;
+        const stack = [i];
+        cell[i] = id;
+        const cells = [];
+        while (stack.length) {
+            const c = stack.pop();
+            cells.push(c);
+            const cx = c % cw,
+                cy = (c / cw) | 0;
+            for (let dy = -1; dy <= 1; dy++)
+                for (let dx = -1; dx <= 1; dx++) {
+                    const nx = cx + dx,
+                        ny = cy + dy;
+                    if (nx < 0 || ny < 0 || nx >= cw || ny >= ch) continue;
+                    const n = ny * cw + nx;
+                    if (cell[n] === 0) {
+                        cell[n] = id;
+                        stack.push(n);
+                    }
+                }
+        }
+        comps.push(id);
+    }
+    for (let y = 0; y < h; y++)
+        for (let x = 0; x < w; x++) {
+            if (!mask[y * w + x]) continue;
+            const c = cell[((y / C) | 0) * cw + ((x / C) | 0)];
+            const b = bb.get(c) || { x0: x, y0: y, x1: x, y1: y, px: 0 };
+            b.x0 = Math.min(b.x0, x);
+            b.y0 = Math.min(b.y0, y);
+            b.x1 = Math.max(b.x1, x);
+            b.y1 = Math.max(b.y1, y);
+            b.px++;
+            bb.set(c, b);
+        }
+    return [...bb.values()]
+        .sort((a, b) => b.px - a.px)
+        .slice(0, 25)
+        .map((b) => ({ x: b.x0, y: b.y0, w: b.x1 - b.x0 + 1, h: b.y1 - b.y0 + 1, px: b.px }));
+}
+
+export function diffPair(aPath, bPath, { saveDiffTo, saveAbovePct = 0.1 } = {}) {
+    const A = read(aPath),
+        B = read(bPath);
+    const res = {
+        a: aPath,
+        b: bPath,
+        aSize: [A.width, A.height],
+        bSize: [B.width, B.height],
+        sameSize: A.width === B.width && A.height === B.height,
+    };
+    const w = Math.min(A.width, B.width),
+        h = Math.min(A.height, B.height);
+    const a = crop(A, w, h),
+        b = crop(B, w, h);
+    res.comparedSize = [w, h];
+    res.byteIdentical = res.sameSize && Buffer.compare(A.data, B.data) === 0;
+    // exact per-pixel RGBA comparison
+    let exact = 0,
+        firstRow = -1;
+    const exactMask = new Uint8Array(w * h);
+    for (let i = 0, p = 0; p < w * h; p++, i += 4) {
+        if (
+            a.data[i] !== b.data[i] ||
+            a.data[i + 1] !== b.data[i + 1] ||
+            a.data[i + 2] !== b.data[i + 2] ||
+            a.data[i + 3] !== b.data[i + 3]
+        ) {
+            exact++;
+            exactMask[p] = 1;
+            if (firstRow < 0) firstRow = (p / w) | 0;
+        }
+    }
+    res.exactDiffPixels = exact;
+    res.firstDifferingRow = firstRow;
+    // pixelmatch threshold 0.1 (task metric), AA excluded (default)
+    const out = new PNG({ width: w, height: h });
+    const mismatched = pixelmatch(a.data, b.data, out.data, w, h, {
+        threshold: 0.1,
+    });
+    const maskOut = new PNG({ width: w, height: h });
+    pixelmatch(a.data, b.data, maskOut.data, w, h, {
+        threshold: 0.1,
+        diffMask: true,
+        diffColor: [255, 0, 0],
+        aaColor: [0, 0, 255],
+    });
+    const pmMask = new Uint8Array(w * h);
+    for (let p = 0, i = 0; p < w * h; p++, i += 4)
+        if (
+            maskOut.data[i] === 255 &&
+            maskOut.data[i + 1] === 0 &&
+            maskOut.data[i + 2] === 0 &&
+            maskOut.data[i + 3] > 0
+        )
+            pmMask[p] = 1;
+    res.pm01Pixels = mismatched;
+    res.pm01Pct = +((mismatched / (w * h)) * 100).toFixed(4);
+    res.pm0Pixels = pixelmatch(a.data, b.data, null, w, h, {
+        threshold: 0,
+        includeAA: true,
+    });
+    res.pm01Boxes = mismatched ? boxes(pmMask, w, h) : [];
+    res.exactBoxes = exact ? boxes(exactMask, w, h) : [];
+    if (saveDiffTo && res.pm01Pct > saveAbovePct) {
+        fs.writeFileSync(saveDiffTo, PNG.sync.write(out));
+        res.diffPng = saveDiffTo;
+    }
+    return res;
+}
+
+const outJson = process.argv[2];
+const up = (f) => `${R}/${f}`;
+const main = (f) => `${S}/main-shots/${f}`;
+const upB = (f) => `${V}/up-B/${f}`;
+
+const capUp = JSON.parse(fs.readFileSync(`${V}/capture-up-A.json`));
+const capMain = JSON.parse(fs.readFileSync(`${V}/capture-main.json`));
+const capUpB = JSON.parse(fs.readFileSync(`${V}/capture-up-B.json`));
+const segUp = JSON.parse(fs.readFileSync(`${V}/segments-up.json`));
+const segMain = JSON.parse(fs.readFileSync(`${V}/segments-main.json`));
+
+const report = { generatedAt: new Date().toISOString(), mainVsUp: [], upAvsUpB: [], segments: [], april: [], metadata: [] };
+
+for (const s of capUp.shots) {
+    const f = s.file;
+    const d = diffPair(up(f), main(f), { saveDiffTo: `${DIFFDIR}/${f.replace('.png', '')}-main-vs-up.png` });
+    report.mainVsUp.push({ file: f, route: s.route, theme: s.theme, fullPage: s.fullPage, ...d });
+    const n = diffPair(up(f), upB(f), { saveDiffTo: `${V}/diff-scratch/${f.replace('.png', '')}-upA-vs-upB.png` });
+    report.upAvsUpB.push({ file: f, ...n });
+    // metadata comparison
+    const m = capMain.shots.find((x) => x.file === f);
+    const b = capUpB.shots.find((x) => x.file === f);
+    const keys = ['status', 'finalURL', 'title', 'dataTheme', 'htmlClass', 'bodyBg', 'bodyColor', 'bodyFontFamily', 'fontPlexMonoLoaded', 'fontsLoaded', 'scrollHeight', 'scrollWidth', 'elementCount', 'imgTotal', 'imgBroken', 'carouselSlides', 'innerTextLen', 'innerTextHash', 'htmlChildren', 'console', 'pageErrors', 'badResponses'];
+    const cmp = {};
+    for (const k of keys) {
+        const uv = JSON.stringify(s[k]).replace(/localhost:4321/g, 'HOST');
+        const mv = JSON.stringify(m[k]).replace(/localhost:4331/g, 'HOST');
+        if (uv !== mv) cmp[k] = { up: s[k], main: m[k] };
+    }
+    report.metadata.push({
+        file: f,
+        differingKeys: Object.keys(cmp),
+        diffs: cmp,
+        upIframes: s.iframes.map((i) => ({ ...i, src: i.src.replace(/\?\d+$/, '') })),
+        mainIframes: m.iframes.map((i) => ({ ...i, src: i.src.replace(/\?\d+$/, '') })),
+        upB_innerTextHashSame: b.innerTextHash === s.innerTextHash,
+        up: { scrollHeight: s.scrollHeight, elementCount: s.elementCount, innerTextHash: s.innerTextHash, fonts: s.fontsLoaded.length, imgTotal: s.imgTotal, networkIdle: s.networkIdle, failedRequests: s.failedRequests.map((r) => r.replace(/\?.*::/, '?… ::')) },
+        main: { scrollHeight: m.scrollHeight, elementCount: m.elementCount, innerTextHash: m.innerTextHash, fonts: m.fontsLoaded.length, imgTotal: m.imgTotal, networkIdle: m.networkIdle, failedRequests: m.failedRequests.map((r) => r.replace(/\?.*::/, '?… ::')) },
+    });
+}
+
+for (const p of segUp.pages) {
+    const pm = segMain.pages.find((x) => x.name === p.name && x.theme === p.theme);
+    for (const sg of p.segs) {
+        const sm = pm.segs.find((x) => x.k === sg.k);
+        const d = diffPair(`${V}/seg-up/${sg.file}`, `${V}/seg-main/${sm.file}`, { saveDiffTo: `${DIFFDIR}/${sg.file.replace('.png', '')}-main-vs-up.png` });
+        report.segments.push({ file: sg.file, name: p.name, theme: p.theme, k: sg.k, scrollYUp: sg.scrollY, scrollYMain: sm.scrollY, heightUp: p.scrollHeight, heightMain: pm.scrollHeight, ...d });
+    }
+}
+
+const APRIL = ['01-home', '02-posts-index', '03-post-with-images', '04-post-with-carousel', '05-tips-index', '06-tags-index', '07-tag-detail', '08-threads-index', '09-about', '10-404'];
+for (const n of APRIL) {
+    const d = diffPair(up(`${n}.png`), `${BASE}/${n}.png`, { saveDiffTo: `${DIFFDIR}/april/${n}-april-vs-up.png`, saveAbovePct: -1 });
+    report.april.push({ name: n, ...d });
+}
+
+fs.writeFileSync(outJson, JSON.stringify(report, null, 2));
+const fmt = (r) => `${(r.file || r.name).padEnd(44)} size=${r.sameSize ? 'same' : r.aSize + ' vs ' + r.bSize} byteId=${r.byteIdentical} exact=${r.exactDiffPixels} pm0=${r.pm0Pixels} pm01=${r.pm01Pixels} (${r.pm01Pct}%)`;
+console.log('== main vs up-A');
+report.mainVsUp.forEach((r) => console.log(fmt(r)));
+console.log('== up-A vs up-B (noise floor)');
+report.upAvsUpB.forEach((r) => console.log(fmt(r)));
+console.log('== segments main vs up: total', report.segments.length, 'nonzero exact:', report.segments.filter((r) => r.exactDiffPixels).length, 'nonidentical size:', report.segments.filter((r) => !r.sameSize).length);
+report.segments.filter((r) => r.exactDiffPixels || !r.sameSize).forEach((r) => console.log(fmt(r)));
+console.log('== april vs up-A (light)');
+report.april.forEach((r) => console.log(fmt(r)));
+console.log('== metadata differing keys (main vs up-A)');
+report.metadata.forEach((m) => console.log(m.file.padEnd(40), m.differingKeys.join(',') || '-', '| upB textHash same:', m.upB_innerTextHashSame));

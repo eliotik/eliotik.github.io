@@ -1,0 +1,16 @@
+import fs from 'node:fs'; import { PNG } from 'pngjs'; import pixelmatch from 'pixelmatch';
+const D = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/qa-runs/T-30-20260430T125829Z/visual';
+const B = '/Users/ap/development/other/eliotik.github.io/docs/library-packages-upgrade/baseline';
+const names = ['01-home','02-posts-index','03-post-with-images','04-post-with-carousel','05-tips-index','06-tags-index','07-tag-detail','08-threads-index','09-about','10-404'];
+const crop = (p, w) => { const o = new PNG({ width: w, height: 1800 }); for (let y = 0; y < 1800; y++) p.data.copy(o.data, y * w * 4, y * p.width * 4, y * p.width * 4 + w * 4); return o; };
+const bandsOf = (a, b, w) => { const m = new PNG({ width: w, height: 1800 }); const n = pixelmatch(a.data, b.data, m.data, w, 1800, { threshold: 0.1, diffMask: true, diffColor: [255,0,0], aaColor: [0,0,255] }); const bands = []; let cur = null; for (let y = 0; y < 1800; y++) { let c = 0; for (let x = 0; x < w; x++) { const i = (y * w + x) * 4; if (m.data[i] === 255 && m.data[i+1] === 0 && m.data[i+3] > 0) c++; } if (c) { if (cur && y - cur.y1 <= 12) { cur.y1 = y; cur.px += c; } else { cur = { y0: y, y1: y, px: c }; bands.push(cur); } } } return { n, bands }; };
+const out = [];
+for (const n of names) {
+  const t = PNG.sync.read(fs.readFileSync(`${D}/${n}.png`)), a = PNG.sync.read(fs.readFileSync(`aligned/${n}.png`)), bl = PNG.sync.read(fs.readFileSync(`${B}/${n}.png`));
+  const r1 = bandsOf(crop(a, 1268), crop(t, 1268), 1268);
+  const r2 = bandsOf(crop(bl, 1268), crop(t, 1268), 1268);
+  out.push({ name: n, alignedVsT30: r1, aprilBaselineVsT30: r2 });
+  console.log(n.padEnd(22), 'aligned-vs-T30', String(r1.n).padStart(6), (r1.n / (1268 * 18)).toFixed(4) + '%', r1.bands.map(b => `${b.y0}-${b.y1}(${b.px})`).join(' '));
+  console.log(''.padEnd(22), 'baseline-vs-T30', String(r2.n).padStart(6), (r2.n / (1268 * 18)).toFixed(4) + '%', r2.bands.map(b => `${b.y0}-${b.y1}(${b.px})`).join(' '));
+}
+fs.writeFileSync('t30diff.json', JSON.stringify(out, null, 1));
