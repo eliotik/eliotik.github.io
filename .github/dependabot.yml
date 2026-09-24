@@ -77,6 +77,13 @@ updates:
                   - 'tailwindcss'
                   - '@tailwindcss/*'
                   - 'prettier-plugin-tailwindcss'
+      ignore:
+          # @types/node follows the Node runtime major (.nvmrc, Node 22)
+          - dependency-name: '@types/node'
+            update-types: ['version-update:semver-major']
+          # typescript-eslint and @astrojs/check peer ranges cap typescript at 6.0.x (typescript-eslint requires <6.1.0)
+          - dependency-name: 'typescript'
+            versions: ['>= 6.1.0']
       labels:
           - 'dependencies'
 

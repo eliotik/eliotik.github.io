@@ -619,28 +619,9 @@ Expected: no uncommitted changes; `0` FAIL rows.
 
 ```bash
 git push -u origin upgrade/2026-09
-gh pr create --base main --title "build: upgrade to Astro 7, ESLint 10, Node 22.23; fix Partytown on ClientRouter navigation (Sept 2026)" --body "$(cat <<'EOF'
-## Summary
-- Astro 6.2 → 7.x (mdx 8, react 7); remark plugins kept via `@astrojs/markdown-remark` unified processor; `compressHTML: true` pinned
-- ESLint 10 stack: eslint-plugin-astro 3, astro-eslint-parser 3, `eslint-plugin-jsx-a11y` → `eslint-plugin-jsx-a11y-x`
-- Node 22.22.2 → 22.23.3; prettier-plugin-astro 1.0 (reformat-only commit); satori 0.33; minor/patch bumps
-- TypeScript held at 6.0.x (typescript-eslint / @astrojs/check peer ranges exclude 7)
-- Removed deprecated `@types/github-slugger`; refreshed CLAUDE.md / DEV-TROUBLESHOOTING.md
-
-Design: `docs/library-packages-upgrade/2026-09-23-upgrade-design.md`
-Verification: `docs/library-packages-upgrade/verification-report-2026-09.md`
-
-## Test plan
-- [x] install --frozen-lockfile, astro check, lint, format:check, build (per commit)
-- [x] Image slider, Search, TagsList verified in production preview (incl. ClientRouter navigation, light/dark)
-- [x] 10-route screenshot comparison vs baseline
-- [x] RSS, sitemap, OG images, TOC collapse
-- [ ] CI green on this PR
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-EOF
-)"
+gh pr create --base main --title "build: upgrade to Astro 7, ESLint 10, Node 22.23; fix Partytown on ClientRouter navigation (Sept 2026)" --body-file .superpowers/sdd/2026-09-23-upgrade-plan/pr-body.md
 ```
+Note: the PR body is maintained outside the repo by the controller (`.superpowers/sdd/2026-09-23-upgrade-plan/pr-body.md`); the inline heredoc text this replaced is superseded.
 
 - [ ] **Step 3: Watch CI**
 
