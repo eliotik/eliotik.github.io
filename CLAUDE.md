@@ -62,5 +62,6 @@ Key utility functions:
 - Build output is optimized with jampack
 - `compressHTML: true` in `astro.config.mjs` must match `astroCompressHTML` in `.prettierrc`
 - TypeScript is capped by the `typescript-eslint` and `@astrojs/check` peer ranges (6.0.x as of 2026-09)
+- Tailwind scans only `src/` (`@import 'tailwindcss' source('..')` in `src/styles/base.css`), so text in `docs/`, `CLAUDE.md` or other Markdown outside `src/` cannot add CSS (content under `src/content/` is still scanned). A class referenced only from outside `src/` (e.g. a future script in `public/`) needs an explicit `@source` line.
 - Partytown pairing: `sandboxParent: 'html'` (astro.config.mjs) and `transition:persist` on both gtag scripts (src/layouts/Layout.astro) must change together. Soft-navigation page views rely on the GA4 setting 'Page changes based on browser history events' staying on. After bumping astro, @astrojs/partytown or @qwik.dev/partytown, check that a ClientRouter navigation does not reload the `/~partytown/` sandbox iframe (one gtag.js request per visit, no `/~partytown/proxytown` console errors).
 - `@types/node` is pinned to the latest release of the Node major in `.nvmrc` (22.x); move it with the Node major. Dependabot ignores its majors and TypeScript ≥ 6.1 (see `.github/dependabot.yml`).
