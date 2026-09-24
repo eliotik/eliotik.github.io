@@ -22,7 +22,17 @@ export default defineConfig({
         '/tips/1/': '/tips',
     },
     integrations: [
-        partytown({ config: { forward: ['dataLayer.push'] } }),
+        // Keep Partytown's sandbox iframe on <html>, outside <body>. In <body>,
+        // @astrojs/partytown's astro:before-swap hook moves it into the
+        // incoming document on every ClientRouter navigation, which destroys
+        // the sandbox and its worker (aborting in-flight /~partytown/proxytown
+        // XHRs) and restarts gtag. Outside <body> they live for the whole
+        // visit and GA4 history events record soft navigations. Only safe
+        // together with transition:persist on the gtag scripts in
+        // src/layouts/Layout.astro; change both or neither.
+        partytown({
+            config: { forward: ['dataLayer.push'], sandboxParent: 'html' },
+        }),
         expressiveCode({
             plugins: [pluginLineNumbers(), pluginCollapsibleSections()],
         }),

@@ -113,12 +113,20 @@ const socialImageURL = new URL(
         }
 
         <!-- Google tag (gtag.js) -->
+        {/*
+            Run by Partytown. transition:persist keeps the already-executed
+            scripts across ClientRouter navigations, so gtag runs once per visit
+            and GA4 history events count soft navigations. Only safe together
+            with sandboxParent: 'html' in astro.config.mjs (a recreated sandbox
+            would find no scripts left to run); change both or neither.
+        */}
         {import.meta.env.PROD && (
             <>
                 <script
                     data-category="analytics"
                     is:inline
                     type="text/partytown"
+                    transition:persist="gtag-src"
                     async
                     src="https://www.googletagmanager.com/gtag/js?id=G-QQMCTBW5TH"
                 ></script>
@@ -126,6 +134,7 @@ const socialImageURL = new URL(
                     data-category="analytics"
                     is:inline
                     type="text/partytown"
+                    transition:persist="gtag-init"
                 >
                     window.dataLayer = window.dataLayer || [];
                     function gtag() {
