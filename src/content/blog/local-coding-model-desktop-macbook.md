@@ -6,6 +6,7 @@ title: How I run a local coding model on my desktop and use it from my MacBook
 slug: local-coding-model-desktop-macbook
 featured: false
 draft: false
+thread: Setting up local LLM
 tags:
     - local-llm
     - vllm
@@ -13,6 +14,8 @@ tags:
     - opencode
     - qwen
 description: A walkthrough of getting a local coding LLM running on a Windows desktop and using it from Opencode on a MacBook.
+relatedPosts:
+    - local-coding-model-upgrade-vllm-qwen38
 ---
 
 I have a desktop PC with a strong GPU. My main work happens on a MacBook. I wanted my MacBook to use a coding assistant that runs on the desktop, not in the cloud. I was thinking about less of API bills, it can work offline and it is private.
